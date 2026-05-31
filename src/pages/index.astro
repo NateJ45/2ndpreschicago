@@ -84,6 +84,20 @@ const ministries = [
     </div>
   </section>
 
+  {/* ------- This Sunday bar ------------------------------------------------ */}
+  <section class="surface-warm bg-muted border-y border-border-soft" aria-label="This Sunday">
+    <div class="mx-auto max-w-content px-m py-m flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-s text-center">
+      <p class="text-foreground">
+        <span class="font-display text-h4">This Sunday at 11am</span>
+        <span class="text-foreground/70"> · In person and online · 1936 S Michigan Ave</span>
+      </p>
+      <div class="flex flex-wrap justify-center gap-s">
+        <a href="/worship" class={pillPrimary}>Plan a Visit</a>
+        <a href={youtube} target="_blank" rel="noopener noreferrer" class={pillOutline}>Watch</a>
+      </div>
+    </div>
+  </section>
+
   {/* ------- 2. Welcome ----------------------------------------------------- */}
   <section class="bg-background" aria-labelledby="welcome-heading">
     <div data-reveal class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
@@ -115,6 +129,22 @@ const ministries = [
         sizes="(min-width: 768px) 45vw, 100vw"
         class="w-full h-auto rounded-md shadow-sm"
       />
+    </div>
+  </section>
+
+  {/* ------- Inclusive welcome statement ------------------------------------ */}
+  {/* Template note: this affirming statement is a self-contained section; a
+      congregation that is not affirming can edit or remove it without touching
+      anything else. */}
+  <section class="bg-background" aria-label="Our welcome">
+    <div data-reveal class="mx-auto max-w-3xl px-m py-section-md text-center">
+      <p class="font-display text-h3 text-foreground leading-snug">
+        Whoever you are, wherever you are on your journey of faith, you are welcome here.
+      </p>
+      <p class="mt-m text-foreground/75 leading-relaxed">
+        We are an inclusive congregation, and we welcome the full participation of women and LGBTQ people
+        in the life and leadership of the church.
+      </p>
     </div>
   </section>
 
@@ -185,6 +215,23 @@ const ministries = [
         <div class="pt-s">
           <a href="/events" class={pillOutline}>See the Full Calendar</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ------- The Record newsletter ------------------------------------------ */}
+  {/* Works today via a mailto subscribe; swap the button for the
+      NewsletterSignup island once an email provider is configured in Sanity. */}
+  <section class="surface-warm bg-muted" aria-labelledby="record-heading">
+    <div data-reveal class="mx-auto max-w-2xl px-m py-section-lg text-center">
+      <p class="text-xs uppercase tracking-eyebrow text-foreground/80">The Record</p>
+      <div class="mt-s mb-m h-px w-12 bg-primary/60 mx-auto" aria-hidden="true"></div>
+      <h2 id="record-heading" class="font-display text-h2 text-foreground">Stay connected</h2>
+      <p class="mt-m text-lg text-foreground/85 leading-relaxed">
+        News, reflections, and what is coming up at Second, in your inbox.
+      </p>
+      <div class="mt-l flex justify-center">
+        <a href="mailto:office@secondpreschicago.org?subject=Subscribe%20to%20The%20Record" class={pillPrimary}>Subscribe to The Record</a>
       </div>
     </div>
   </section>
