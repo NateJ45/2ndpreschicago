@@ -116,9 +116,9 @@ export function urlForDoc(schemaType: string, doc: any): string | null {
 }
 
 export default defineConfig({
-  name: 'my-studio',
-  // Short title shown in the browser tab when editing. Update to match your project.
-  title: 'My Studio',
+  name: 'secondpres',
+  // Short title shown in the browser tab when editing.
+  title: 'Second Presbyterian Church of Chicago',
 
   // Set SANITY_STUDIO_PROJECT_ID and SANITY_STUDIO_DATASET in studio/.env
   // (or as env vars) after creating your Sanity project at sanity.io/manage.

@@ -8,9 +8,9 @@ export default defineCliConfig({
     projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'placeholder-project-id',
     dataset: process.env.SANITY_STUDIO_DATASET || 'production',
   },
-  // Update studioHost to your desired Sanity Studio subdomain (e.g. 'my-project').
   // The studio will be published at <studioHost>.sanity.studio after `npm run studio:deploy`.
-  studioHost: 'my-studio',
+  // studioHost must be globally unique across *.sanity.studio; change it if deploy reports a clash.
+  studioHost: 'secondpreschicago',
   deployment: {
     autoUpdates: true,
   },
