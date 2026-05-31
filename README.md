@@ -1,67 +1,54 @@
-# ncs-astro-sanity-starter
+# Second Presbyterian Church of Chicago
 
-A reusable starter for building small-business marketing sites on Astro + Sanity + Cloudflare Workers. The infrastructure is already standing: theme system, SEO, animation/polish layer, forms plumbing, image handling, a typed Sanity layer, and an in-Studio editor guide. A new project pours in two things -- its business info and its design -- and the rest is in place.
+The website for [Second Presbyterian Church of Chicago](https://www.secondpreschicago.org) (the "Church of the Angels"), a historic, inclusive Reformed congregation (PCUSA) in the South Loop. Built on Astro + Sanity + Cloudflare Workers, migrated from Squarespace.
 
-Provenance: forked and genericized from a finished client build.
-
----
-
-## Where to start
-
-**To adopt this starter for a new client, read `docs/bootstrap/NEW-PROJECT.md` first.** It is the single entry point: identity setup, design reskin, module enable, seed, and deploy, in order.
-
-Before making any changes, also read `CLAUDE.md` for the Foundation-vs-Safe-to-edit taxonomy (some files require a planned session; others are safe to edit freely).
-
----
-
-## Docs layout
-
-| Path | What it covers |
-|---|---|
-| `CLAUDE.md` | Stack conventions, the rules that bite, Foundation taxonomy, code style |
-| `docs/bootstrap/NEW-PROJECT.md` | **Start here.** Step-by-step adoption runbook for a new project |
-| `docs/bootstrap/setup-checklist.md` | Pre-launch checklist (run before DNS cutover) |
-| `docs/brand/voice.md` | Voice template -- fill in per project |
-| `docs/modules/README.md` | Module index, preset bundles, rough enable time |
-| `docs/modules/<name>.md` | Per-module enable guide (schemas, desk, queries, nav, seed, verify) |
-| `docs/agent/*.md` | Deep reference for AI agents: theme tokens, components, SEO, Sanity, deployment, etc. |
+Provenance: built on our reusable NCS Astro + Sanity starter. The migration inventory is in `docs/migration/content-inventory.md` and the build plan in `docs/superpowers/plans/2026-05-31-secondpres-church-build.md`.
 
 ---
 
 ## Stack
 
 - **Astro 6** (static output) + TypeScript strict mode
-- **Sanity v5** headless CMS (core schemas in `studio/schemaTypes/`)
+- **Sanity v5** headless CMS (schemas in `studio/schemaTypes/`)
 - **Tailwind 4** via `@tailwindcss/vite` (brand tokens in `src/styles/globals.css`, no `tailwind.config`)
 - **React 19** islands for interactivity; Astro components for everything static
-- **shadcn/ui** primitives (`src/components/ui/`)
 - **Cloudflare Workers** for hosting via `wrangler deploy`
+- **Fonts:** Instrument Serif (display) + Newsreader (body). **Brand:** warm cream `#ECE4DA`, espresso `#36302A`, bronze `#8A6A43`.
 
 ---
 
-## Core routes
-
-The starter ships a lean core. Additional surfaces come from opt-in modules (see below).
+## Routes
 
 | Route | Description |
 |---|---|
-| `/` | Home |
-| `/about` | About |
-| `/services` | Services |
-| `/faq` | FAQ grouped by category |
-| `/contact` | Contact form + scheduling embed |
-| `/journal` | Journal/blog index |
-| `/journal/[slug]` | Journal post detail |
-| `/privacy` | Privacy policy |
-| `/404` | Custom 404 |
+| `/` | Home (sanctuary hero, welcome, worship times, get-involved, events teaser) |
+| `/worship` | Service time, what to expect, communion, kids, watch online |
+| `/about` | The church's story + the landmark building |
+| `/what-we-believe` | Beliefs, PCUSA identity, core values |
+| `/music` | The quartette choir and the 1917 Austin organ |
+| `/pastor-staff` | Pastors & staff bios |
+| `/grow`, `/serve`, `/kids` | Get Involved: community groups, outreach, families |
+| `/food` | Food ministry: Lunch Bag + South Loop Community Table |
+| `/use-our-space` | Venue rental and space sharing |
+| `/weddings` | Weddings in the historic sanctuary (FAQ + pricing) |
+| `/give` | Online giving (Vanco), by mail, designated gifts |
+| `/events`, `/events/[slug]` | Events calendar (recurring + one-time) |
+| `/contact` | Contact details + map |
+| `/faq` | Common visitor questions |
+| `/privacy`, `/404` | Privacy policy, custom 404 |
 
-The home, about, and footer include Featured Work, Process, and Press sections that stay hidden until their module is enabled and has content (graceful degradation).
+Nav groups: **About Us** (Worship / What We Believe / Music / Pastors & Staff), **Get Involved** (Grow / Serve / Kids), **Events**, **Food**, **Space** (Use Our Space / Weddings / Friends of Historic Second Church), **Give**.
 
 ---
 
-## Modules (opt-in, staged under `modules/`, OFF by default)
+## How content works
 
-`portfolio`, `process`, `newsletter`, `lead-magnets`, `style-quiz`, `budget-calculator`, `shop`, `e-design`, `gift-certificates`, `press`, `resources`. Each is self-contained (schema + pages + islands + seed). Per-module enable guides are in `docs/modules/`. `portfolio` + `process` together are the informal creative-studio preset.
+Every page renders from inline content in `src/pages/*.astro` today, so the site is fully functional **with no Sanity project connected**. Sanity is an optional, turnkey upgrade:
+
+- **Events** is a live Sanity collection (`event` + `eventsPage`), with a static fallback list of weekly rhythms so `/events` is never empty.
+- `siteSettings`, `homePage`, `aboutPage`, `privacyPage`, and `notFoundPage` are read from Sanity when present, with inline fallbacks otherwise.
+
+See `CLAUDE.md` for the Foundation-vs-Safe-to-edit taxonomy before changing anything structural.
 
 ---
 
@@ -71,31 +58,41 @@ The home, about, and footer include Featured Work, Process, and Press sections t
 npm install
 npm --prefix studio install
 npm run dev          # Astro dev server at localhost:4321
-npm run studio:dev   # Sanity Studio at localhost:3333
+npm run studio:dev   # Sanity Studio at localhost:3333 (once a project is configured)
 ```
-
-The build works with no Sanity project configured: `src/lib/sanity.ts`'s `sanityFetch` wrapper returns empty results when `PUBLIC_SANITY_PROJECT_ID` is unset, so pages render their empty-state fallbacks. Copy `.env.example` to `.env` and set the Sanity values to connect a project.
 
 ---
 
-## Re-skinning a new project (the design seam)
+## Connect Sanity (optional, for editor-managed content)
 
-Editing this short list rebrands the whole site:
-
-- `src/styles/globals.css` -- the `@theme` palette tokens and `:root`/`.dark` (and `--tint-rgb`)
-- fonts -- the `@fontsource` imports + the `--font-*` tokens (default: Libre Baskerville + Inter; the script accent is opt-in)
-- `src/data/site.ts` -- identity constants
-- logo / favicon / OG inputs, then `npm run og`
-
-The step-by-step adoption runbook is at `docs/bootstrap/NEW-PROJECT.md`.
+1. Create a project at [sanity.io/manage](https://sanity.io/manage) and copy `.env.example` to `.env`, filling in `PUBLIC_SANITY_PROJECT_ID` + tokens.
+2. Seed content:
+   ```bash
+   node scripts/seed-core.mjs        # siteSettings + about/privacy/404 + home SEO
+   node modules/events/seed.mjs      # eventsPage + weekly rhythms + an example event
+   ```
+3. `npm run typegen` then `npm run studio:deploy`.
 
 ---
 
 ## Deploy
 
 ```bash
-npm run build
-npm run deploy   # = wrangler deploy
+npm run build        # = typegen-free astro build; use build:full to also run typegen
+npm run deploy       # = npm run build + wrangler deploy
 ```
 
-After any Sanity schema change, also run `npm run typegen` then `npm run studio:deploy`. See `CLAUDE.md` for the conventions and the gotchas that bite.
+After any Sanity schema change, run `npm run typegen` then `npm run studio:deploy`. See `CLAUDE.md` for the conventions and the gotchas that bite.
+
+---
+
+## Docs
+
+| Path | What it covers |
+|---|---|
+| `CLAUDE.md` | Architecture, conventions, the rules that bite, Foundation taxonomy |
+| `OPERATIONS.md` | Tactical playbook (deploy, patch content, audits) |
+| `docs/migration/content-inventory.md` | Everything pulled from the old Squarespace site |
+| `docs/brand/voice.md` | The church's voice and tone |
+| `docs/modules/events.md` | The Events module enable guide |
+| `docs/superpowers/plans/2026-05-31-secondpres-church-build.md` | The build plan |

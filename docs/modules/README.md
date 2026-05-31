@@ -1,8 +1,8 @@
 # Module Library
 
-All 11 opt-in modules are listed below. Each module is OFF by default in the
-starter. Enable only the ones a given client needs by following the steps in
-the module's enable doc.
+All 12 modules are listed below. Each is OFF by default in the starter; enable
+only the ones a given client needs by following the steps in the module's
+enable doc. **`events` is enabled on this (Second Presbyterian) site.**
 
 For the shared folder-shape contract and the verify loop, see
 `modules/README.md`.
@@ -29,6 +29,7 @@ optional additions offer interactive qualification tools.
 
 | Module | Description | Route(s) | Enable doc |
 |--------|-------------|----------|------------|
+| [events](#events) | Church/org events: recurring rhythms + one-time dated events, with a static fallback list | `/events`, `/events/[slug]` | [docs/modules/events.md](events.md) |
 | [portfolio](#portfolio) | Browsable project gallery with category filtering and before/after comparisons | `/portfolio`, `/portfolio/[slug]`, `/portfolio/before-after` | [docs/modules/portfolio.md](portfolio.md) |
 | [process](#process) | Step-by-step "how I work" page driven by orderable processStep documents | `/process` | [docs/modules/process.md](process.md) |
 | [newsletter](#newsletter) | Global email signup widget (no dedicated route; embedded in other pages or the footer) | none | [docs/modules/newsletter.md](newsletter.md) |
@@ -44,6 +45,20 @@ optional additions offer interactive qualification tools.
 ---
 
 ## Module details
+
+### events
+
+Adds a church or organization events system. The index lists upcoming one-time
+events plus the weekly/recurring rhythms, with a static fallback list so the
+page is never empty before Sanity is connected. Each event has its own detail
+page with schedule, location, an optional image, a Portable Text description, an
+optional registration link, and Event JSON-LD. Introduces two schemas
+(`eventsPage` singleton, `event` collection supporting both recurring and
+one-time events). Enabled on the Second Presbyterian site.
+
+Routes: `/events` (index), `/events/[slug]` (detail)
+
+---
 
 ### portfolio
 

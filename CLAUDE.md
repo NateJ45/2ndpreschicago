@@ -2,6 +2,8 @@
 
 This is the always-loaded reference for the `ncs-astro-sanity-starter` codebase: the conventions and landmines an agent needs on every task. Deep detail for specific areas (theme, components, SEO, performance, Sanity, deployment) lives under `docs/agent/` and is read on demand. The topic index at the bottom is the map.
 
+> **This repository is the live site for Second Presbyterian Church of Chicago**, built on the NCS starter and migrated from Squarespace. The architecture and conventions below still apply. Project specifics: the Services page is removed, an **Events** module is enabled, and pages render from inline fallbacks with Sanity as an optional upgrade. See `README.md`, `docs/migration/content-inventory.md`, and the build plan under `docs/superpowers/plans/`.
+
 Companion tactical runbook: `OPERATIONS.md`. New-project setup entry point: `docs/bootstrap/NEW-PROJECT.md` (authored in a later phase — that runbook is the intended start for any team adapting this starter for a new client).
 
 ---
@@ -12,7 +14,7 @@ Companion tactical runbook: `OPERATIONS.md`. New-project setup entry point: `doc
 
 This starter is not a minimal scaffold. It ships with real patterns and real gotchas documented from production. The point is to skip the month of discovering them.
 
-_Provenance: forked from the Reid Design build._
+_Provenance: forked from the Reid Design build; adapted for Second Presbyterian Church of Chicago._
 
 ---
 
@@ -79,16 +81,17 @@ Core routes that ship with the starter (always on, not toggleable):
 |---|---|---|
 | `/` | `src/pages/index.astro` | Home page singleton from Sanity |
 | `/about` | `src/pages/about.astro` | About page singleton |
-| `/services` | `src/pages/services.astro` | Services page + service collection |
 | `/faq` | `src/pages/faq.astro` | FAQ page + faqItem collection grouped by category |
-| `/contact` | `src/pages/contact.astro` | Contact page + Web3Forms form + Calendly embed |
+| `/contact` | `src/pages/contact.astro` | Contact details + map (church build removed the Web3Forms form) |
+| `/events` | `src/pages/events/index.astro` | Events module: upcoming + recurring rhythms |
+| `/events/[slug]` | `src/pages/events/[slug].astro` | Event detail |
 | `/journal` | `src/pages/journal/index.astro` | Post grid with category chips |
 | `/journal/[slug]` | `src/pages/journal/[slug].astro` | Post detail: reading progress + header + cover + body + related |
 | `/privacy` | `src/pages/privacy.astro` | Privacy policy from singleton, with static fallback when doc is absent |
 | `/sitemap-index.xml` | `@astrojs/sitemap` (auto) | Production sitemap |
 | `/404` | `src/pages/404.astro` | Custom 404 |
 
-Additional routes come from opt-in modules staged under `modules/` (OFF by default). Each module is documented under `docs/modules/` (authored in a later phase). Current modules: `portfolio`, `process`, `newsletter`, `lead-magnets`, `style-quiz`, `budget-calculator`, `shop`, `e-design`, `gift-certificates`, `press`, `resources`.
+Additional routes come from opt-in modules staged under `modules/`. Each module is documented under `docs/modules/`. Modules: `events` (ENABLED on this site, see `docs/modules/events.md`), `portfolio`, `process`, `newsletter`, `lead-magnets`, `style-quiz`, `budget-calculator`, `shop`, `e-design`, `gift-certificates`, `press`, `resources`.
 
 ---
 
@@ -198,7 +201,7 @@ These apply to everything written: code comments, PR descriptions, commit messag
 
 ### Site copy voice (for copy that appears on the live site)
 
-Good site copy for a service business follows five patterns. Full rationale and examples should go in a project-specific voice doc.
+The church's specific voice, tone, and banned words live in `docs/brand/voice.md` (read it before writing site copy). The general patterns below still apply.
 
 1. **Say it plainly. Especially about money.** Don't apologize, don't pad, don't soften prices with hedging language.
 2. **Sound like a smart friend, not a brochure.** No "transformative experiences" or "elevated living."

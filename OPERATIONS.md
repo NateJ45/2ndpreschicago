@@ -4,6 +4,8 @@ Tactical reference for common tasks. `CLAUDE.md` is the architecture and design 
 
 If you are a future Claude session and you can only read one doc, read `CLAUDE.md`. This file is the second one to open when you need to do something specific (deploy, patch, audit, regenerate).
 
+> **Project:** this repo is the Second Presbyterian Church of Chicago site. It commits to `master` (Cloudflare auto-deploy is not wired up yet, so deploy with `npm run deploy`). Services was removed; an Events module is enabled. Most pages render from inline content, so Sanity is optional until the church wants editor-managed content.
+
 ---
 
 ## Deploy
@@ -164,9 +166,13 @@ Core routes that ship with the starter:
 |---|---|
 | `/` | Home |
 | `/about` | About |
-| `/services` | Services listing |
 | `/faq` | FAQ grouped by category |
-| `/contact` | Contact form + Calendly + post-inquiry roadmap |
+| `/contact` | Contact details + map |
+| `/events` | Events index (upcoming + recurring rhythms) |
+| `/events/[slug]` | Event detail |
+| `/worship`, `/what-we-believe`, `/music`, `/pastor-staff` | About Us pages |
+| `/grow`, `/serve`, `/kids`, `/food` | Get Involved + food ministry |
+| `/use-our-space`, `/weddings`, `/give` | Space + giving |
 | `/journal` | Journal/blog index |
 | `/journal/[slug]` | Post detail |
 | `/privacy` | Privacy policy |
