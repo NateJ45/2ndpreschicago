@@ -22,6 +22,71 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
+export type Sermon = {
+  _id: string;
+  _type: "sermon";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  date?: string;
+  speaker?: string;
+  series?: string;
+  scripture?: string;
+  videoUrl?: string;
+  audioUrl?: string;
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h3";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  featured?: boolean;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
+};
+
 export type Event = {
   _id: string;
   _type: "event";
@@ -72,28 +137,6 @@ export type Event = {
     _type: "image";
   };
   featured?: boolean;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
 };
 
 export type JournalCategory = {
@@ -404,6 +447,13 @@ export type EventsPageReference = {
   [internalGroqTypeReferenceTo]?: "eventsPage";
 };
 
+export type SermonsPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sermonsPage";
+};
+
 export type JournalEntryReference = {
   _ref: string;
   _type: "reference";
@@ -422,6 +472,7 @@ export type CtaBlock = {
     | ContactPageReference
     | JournalPageReference
     | EventsPageReference
+    | SermonsPageReference
     | JournalEntryReference;
   externalUrl?: string;
   emailAddress?: string;
@@ -605,6 +656,28 @@ export type JournalEntry = {
       _key: string;
     } & JournalEntryReference
   >;
+};
+
+export type SermonsPage = {
+  _id: string;
+  _type: "sermonsPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  livestreamUrl?: string;
 };
 
 export type EventsPage = {
@@ -1142,10 +1215,11 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | SanityImageAssetReference
-  | Event
+  | Sermon
   | SanityImageCrop
   | SanityImageHotspot
   | Slug
+  | Event
   | JournalCategory
   | PhilosophyPoint
   | FaqItem
@@ -1161,10 +1235,12 @@ export type AllSanitySchemaTypes =
   | ContactPageReference
   | JournalPageReference
   | EventsPageReference
+  | SermonsPageReference
   | JournalEntryReference
   | CtaBlock
   | JournalCategoryReference
   | JournalEntry
+  | SermonsPage
   | EventsPage
   | JournalPage
   | ContactPage

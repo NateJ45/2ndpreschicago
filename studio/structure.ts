@@ -27,6 +27,7 @@ import {
   EnvelopeIcon,
   DocumentTextIcon,
   CalendarIcon,
+  PlayIcon,
   StarIcon,
   HeartIcon,
   ThListIcon,
@@ -53,6 +54,7 @@ const SINGLETON_TYPES = [
   'contactPage',
   'journalPage',
   'eventsPage',
+  'sermonsPage',
   'notFoundPage',
   'privacyPage',
   'studioGuide',
@@ -72,6 +74,7 @@ const HIDDEN_FROM_DEFAULT = new Set<string>([
   'journalEntry',
   'journalCategory',
   'event',
+  'sermon',
   // sanity-plugin-media registers this tag type; keep it out of the desk root
   // (the "Media" tool in the top sidebar is where tags belong).
   'media.tag',
@@ -198,6 +201,7 @@ export const deskStructure = (S: StructureBuilder, context: StructureResolverCon
               singletonWithPreview(S, 'contactPage', 'Contact', EnvelopeIcon),
               singletonWithPreview(S, 'journalPage', 'Journal (index page)', BookIcon),
               singletonWithPreview(S, 'eventsPage', 'Events (index page)', CalendarIcon),
+              singletonWithPreview(S, 'sermonsPage', 'Sermons (index page)', PlayIcon),
               singletonWithPreview(S, 'notFoundPage', '404 Page', DocumentTextIcon),
 
               S.divider(),
@@ -246,6 +250,9 @@ export const deskStructure = (S: StructureBuilder, context: StructureResolverCon
 
       // Events — recurring rhythms + one-time dated events shown on /events
       S.documentTypeListItem('event').title('Events').icon(CalendarIcon),
+
+      // Sermons — messages shown on /sermons
+      S.documentTypeListItem('sermon').title('Sermons').icon(PlayIcon),
 
       // Safety net: surface any document type we have NOT explicitly placed above
       // (and keep the hidden set, including media.tag, out of the desk root).

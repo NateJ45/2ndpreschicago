@@ -15,6 +15,8 @@ import { journalPage } from './journalPage';
 import { notFoundPage } from './notFoundPage';
 import { philosophyPoint } from './philosophyPoint';
 import { privacyPage } from './privacyPage';
+import { sermon } from './sermon';
+import { sermonsPage } from './sermonsPage';
 import { siteSettings } from './siteSettings';
 import { studioGuide } from './studioGuide';
 import { studioNotes } from './studioNotes';
@@ -33,6 +35,7 @@ export const schemaTypes = [
   contactPage,
   journalPage,
   eventsPage,
+  sermonsPage,
   notFoundPage,
   privacyPage,
   // Start Here editable singletons
@@ -47,4 +50,5 @@ export const schemaTypes = [
   journalCategory,
   journalEntry,
   event,
+  sermon,
 ];

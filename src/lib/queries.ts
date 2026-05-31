@@ -447,6 +447,50 @@ export async function getAllEventSlugs(): Promise<string[]> {
   return list.map((e) => e.slug?.current).filter(Boolean);
 }
 
+// ---- Sermons module -------------------------------------------------------
+
+const SERMON_CARD = `{
+  _id, title, slug, date, speaker, series, scripture, videoUrl, featured,
+  image${IMAGE_PROJECTION}
+}`;
+
+export async function getSermonsPage() {
+  return sanityFetch(`*[_type == "sermonsPage"][0]{
+    seoTitle, seoDescription,
+    seoImage${IMAGE_PROJECTION},
+    heroEyebrow, heroHeadline, heroSubhead, livestreamUrl
+  }`, {}, null);
+}
+
+export async function getRecentSermons() {
+  return sanityFetch(
+    `*[_type == "sermon"] | order(featured desc, date desc) ${SERMON_CARD}`,
+    {},
+    [],
+  );
+}
+
+export async function getSermonBySlug(slug: string) {
+  return sanityFetch(
+    `*[_type == "sermon" && slug.current == $slug][0]{
+      _id, title, slug, date, speaker, series, scripture, videoUrl, audioUrl, featured,
+      image${IMAGE_PROJECTION},
+      description
+    }`,
+    { slug },
+    null,
+  );
+}
+
+export async function getAllSermonSlugs(): Promise<string[]> {
+  const list: Array<{ slug: { current: string } }> = await sanityFetch(
+    `*[_type == "sermon" && defined(slug.current)]{ slug }`,
+    {},
+    [],
+  );
+  return list.map((s) => s.slug?.current).filter(Boolean);
+}
+
 // ---- Press items (used by core: about.astro + index.astro PressStrip) ----
 
 /** Minimal press item shape used by the core PressStrip component.

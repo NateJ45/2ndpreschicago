@@ -1,0 +1,115 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Sermon detail. Embedded video, meta (date/speaker/series/scripture), notes,
+// optional audio. Built per sermon slug in Sanity; without Sanity no detail
+// pages are generated.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getAllSermonSlugs, getSermonBySlug, getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import PortableText from '@/components/PortableText';
+import FinalCta from '@/components/FinalCta.astro';
+
+export async function getStaticPaths() {
+  const slugs = await getAllSermonSlugs().catch(() => []);
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const [sermon, siteSettings] = await Promise.all([
+  getSermonBySlug(slug as string),
+  getSiteSettings().catch(() => null),
+]);
+
+if (!sermon) {
+  return Astro.redirect('/404');
+}
+
+const title = `${sermon.title} · Sermons · ${site.name}`;
+const description = sermon.scripture ? `${sermon.title} — ${sermon.scripture}` : `A message from ${site.name}.`;
+
+// Turn a YouTube/Vimeo watch URL into an embeddable player URL.
+function embedUrl(url?: string): string | null {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes('youtube.com') && u.searchParams.get('v')) {
+      return `https://www.youtube.com/embed/${u.searchParams.get('v')}`;
+    }
+    if (u.hostname.includes('youtu.be')) {
+      return `https://www.youtube.com/embed/${u.pathname.replace(/^\//, '')}`;
+    }
+    if (u.hostname.includes('vimeo.com')) {
+      return `https://player.vimeo.com/video/${u.pathname.replace(/^\//, '')}`;
+    }
+    return url;
+  } catch {
+    return null;
+  }
+}
+const embed = embedUrl(sermon.videoUrl);
+
+const dateLabel = sermon.date
+  ? new Date(sermon.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  : '';
+const metaLine = [dateLabel, sermon.speaker, sermon.series].filter(Boolean).join(' · ');
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Sermons', url: `${site.url}/sermons` },
+    { name: sermon.title ?? (slug as string), url: `${site.url}/sermons/${slug}` },
+  ]),
+];
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <article class="bg-background">
+    <div class="mx-auto max-w-3xl px-m pt-section-lg pb-l">
+      <p class="text-xs uppercase tracking-widest text-foreground/80 mb-s">
+        <a href="/sermons" class="hover:text-primary-dark transition-colors">Sermons</a>
+        {sermon.series && <span class="mx-xs">·</span>}
+        {sermon.series && <span>{sermon.series}</span>}
+      </p>
+      <h1 class="font-display text-h1 text-foreground leading-tight">{sermon.title}</h1>
+      {metaLine && <p class="mt-m text-foreground/70">{metaLine}</p>}
+      {sermon.scripture && <p class="mt-xs text-lg text-foreground/85 italic">{sermon.scripture}</p>}
+    </div>
+
+    {embed && (
+      <div class="mx-auto max-w-4xl px-m">
+        <div class="relative w-full overflow-hidden rounded-md shadow-sm" style="aspect-ratio: 16 / 9;">
+          <iframe
+            src={embed}
+            title={sermon.title}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="absolute inset-0 h-full w-full border-0"
+          ></iframe>
+        </div>
+      </div>
+    )}
+
+    <div class="mx-auto max-w-3xl px-m py-section-lg">
+      {sermon.description && (
+        <PortableText client:visible value={sermon.description} className="text-foreground/85 text-lg leading-relaxed" />
+      )}
+      {sermon.audioUrl && (
+        <p class="mt-l">
+          <a href={sermon.audioUrl} target="_blank" rel="noopener noreferrer" class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">
+            Listen to the audio →
+          </a>
+        </p>
+      )}
+    </div>
+  </article>
+
+  <FinalCta
+    eyebrow="Come and See"
+    headline="Join us this Sunday"
+    subhead="Worship is at 11am every Sunday at the Church of the Angels. Everyone is welcome."
+    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+  />
+</BaseLayout>

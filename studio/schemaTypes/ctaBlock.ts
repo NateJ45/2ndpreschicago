@@ -40,6 +40,7 @@ export const ctaBlock = defineType({
         { type: 'contactPage' },
         { type: 'journalPage' },
         { type: 'eventsPage' },
+        { type: 'sermonsPage' },
         { type: 'journalEntry' },
       ],
       hidden: ({ parent }) => parent?.linkType !== 'internal',

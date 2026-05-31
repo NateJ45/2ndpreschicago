@@ -1,0 +1,135 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Sermons index. A latest message + an archive grid (grouped/sortable by date),
+// plus a persistent Watch Live link. Works without Sanity: when no sermons are
+// loaded it falls back to a "watch online" state pointing at the church's
+// livestream, so the page is never broken or empty.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSermonsPage, getRecentSermons, getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import SanityImage from '@/components/SanityImage.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const [page, sermons, siteSettings] = await Promise.all([
+  getSermonsPage().catch(() => null),
+  getRecentSermons().catch(() => []),
+  getSiteSettings().catch(() => null),
+]);
+
+const title = page?.seoTitle ?? `Sermons · ${site.name}`;
+const description =
+  page?.seoDescription ??
+  'Watch and listen to messages from Second Presbyterian Church of Chicago, and join Sunday worship online.';
+
+const heroEyebrow = page?.heroEyebrow ?? 'Sermons';
+const heroHeadline = page?.heroHeadline ?? 'Messages from Second';
+const heroSubhead =
+  page?.heroSubhead ??
+  'Sunday worship is preached from the Word and shared online. Catch up on a recent message or join us live.';
+
+const watchUrl = page?.livestreamUrl ?? site.social.youtube;
+
+const featured = sermons[0] ?? null;
+const rest = sermons.slice(1);
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Sermons', url: `${site.url}/sermons` },
+  ]),
+];
+
+const pillPrimary =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+const pillOutline =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] border border-primary text-link hover:bg-accent transition-colors';
+
+function meta(s: any): string {
+  return [
+    s.date ? new Date(s.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : null,
+    s.speaker, s.series,
+  ].filter(Boolean).join(' · ');
+}
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow={heroEyebrow}
+    headline={heroHeadline}
+    subhead={heroSubhead}
+    headingId="sermons-hero"
+    size="short"
+  />
+
+  {sermons.length > 0 ? (
+    <section class="bg-background" aria-label="Sermons">
+      <div class="mx-auto max-w-content px-m py-section-lg">
+        {/* Watch live */}
+        <div class="mb-section-md flex flex-wrap items-center justify-between gap-m">
+          <p class="text-foreground/80">Worship streams live on Sundays at 11am.</p>
+          <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>Watch Live</a>
+        </div>
+
+        {/* Featured latest sermon */}
+        {featured && (
+          <a href={`/sermons/${featured.slug?.current ?? ''}`} class="card-lift group block rounded-md border border-border-soft bg-card overflow-hidden mb-l no-underline">
+            <div class="grid grid-cols-1 md:grid-cols-2">
+              {featured.image?.asset ? (
+                <SanityImage source={featured.image} width={900} sizes="(min-width:768px) 50vw, 100vw" class="w-full h-full object-cover" />
+              ) : (
+                <div class="aspect-[16/9] md:aspect-auto bg-muted" aria-hidden="true"></div>
+              )}
+              <div class="p-l">
+                <span class="text-xs uppercase tracking-eyebrow text-link">Latest message</span>
+                <h2 class="mt-xs font-display text-h3 text-foreground group-hover:text-link transition-colors">{featured.title}</h2>
+                <p class="mt-s text-sm text-foreground/70">{meta(featured)}</p>
+                {featured.scripture && <p class="mt-xs text-sm text-foreground/70 italic">{featured.scripture}</p>}
+              </div>
+            </div>
+          </a>
+        )}
+
+        {/* Archive grid */}
+        {rest.length > 0 && (
+          <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-m list-none p-0" data-stagger-grid>
+            {rest.map((s: any) => (
+              <li>
+                <a href={`/sermons/${s.slug?.current ?? ''}`} class="card-lift group block h-full rounded-md border border-border-soft bg-card p-l no-underline">
+                  {s.series && <span class="text-xs uppercase tracking-eyebrow text-link">{s.series}</span>}
+                  <h3 class="mt-xs font-display text-h4 text-foreground group-hover:text-link transition-colors">{s.title}</h3>
+                  <p class="mt-xs text-sm text-foreground/70">{meta(s)}</p>
+                  {s.scripture && <p class="mt-xs text-sm text-foreground/70 italic">{s.scripture}</p>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  ) : (
+    <section class="surface-warm bg-muted" aria-label="Watch online">
+      <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
+        <SectionHeading eyebrow="Watch online" headline="Join us for worship, wherever you are" headingId="sermons-watch" align="center" class="mx-auto" />
+        <p class="mt-m text-lg text-foreground/85 leading-relaxed">
+          We livestream Sunday worship and post recent messages on our YouTube channel. Watch the latest,
+          or join us live on Sunday at 11am.
+        </p>
+        <div class="mt-l flex flex-wrap justify-center gap-s">
+          <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>Watch on YouTube</a>
+          <a href="/worship" class={pillOutline}>Plan a Visit</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <FinalCta
+    eyebrow="Come and See"
+    headline="Worship with us in person"
+    subhead="There is nothing like being in the room. Join us Sundays at 11am at the Church of the Angels."
+    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+  />
+</BaseLayout>
