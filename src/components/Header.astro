@@ -96,8 +96,8 @@ const fb = siteSettings?.socialFacebook ?? site.social.facebook;
 // and are NOT linked from the core nav.
 
 const NAV_ITEMS = [
+  { kind: 'flat' as const, label: "I'm New", href: '/worship' },
   { kind: 'dropdown' as const, label: 'About Us', items: [
-    { label: 'Worship', href: '/worship' },
     { label: 'What We Believe', href: '/what-we-believe' },
     { label: 'Music', href: '/music' },
     { label: 'Pastors & Staff', href: '/pastor-staff' },
@@ -106,10 +106,10 @@ const NAV_ITEMS = [
     { label: 'Grow', href: '/grow' },
     { label: 'Serve', href: '/serve' },
     { label: 'Kids', href: '/kids' },
+    { label: 'Food Ministry', href: '/food' },
   ] },
   { kind: 'flat' as const, label: 'Watch', href: '/sermons' },
   { kind: 'flat' as const, label: 'Events', href: '/events' },
-  { kind: 'flat' as const, label: 'Food', href: '/food' },
   { kind: 'dropdown' as const, label: 'Space', items: [
     { label: 'Use Our Space', href: '/use-our-space' },
     { label: 'Weddings', href: '/weddings' },
