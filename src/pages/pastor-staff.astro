@@ -1,6 +1,8 @@
 ---
 // Safe to edit by hand for copy + structure changes.
-// Pastors & Staff. Full bios for the people who serve Second.
+// Pastors & Staff. Full bios + headshots for the people who serve Second.
+// Bios reproduced from the church's own staff pages; headshots pulled from the
+// existing site (rights owned by the church).
 // (When the church wants to edit these without code, this is the natural
 // candidate for a Sanity "staffMember" collection later.)
 
@@ -8,8 +10,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
+
+import chesnaPhoto from '@/assets/chesna-hinkley.webp';
+import judyPhoto from '@/assets/judy-landt.webp';
+import michaelPhoto from '@/assets/michael-shawgo.webp';
+import ashleyPhoto from '@/assets/ashley-mclean.webp';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 
@@ -29,33 +37,54 @@ const staff = [
     name: 'Rev. Chesna Hinkley',
     role: 'Interim Pastor',
     email: site.contact.pastorEmail,
+    photo: chesnaPhoto,
     bio: [
-      'Rev. Hinkley began as Interim Pastor in the fall of 2024. She holds degrees from Princeton Theological Seminary and the University of Pittsburgh, where she concentrated in neuroscience, and she is working toward a Doctor of Ministry in Reformed Theology at Pittsburgh Theological Seminary.',
-      'She was ordained in 2021 at Madison Avenue Presbyterian Church in New York City, where she led children\'s ministry, mission, adult education, and the young adult group. Her passions are people, preaching, and strategizing for the future. Off the clock she reads widely, travels (23 countries and 28 states so far), shares meals with friends, and keeps company with her cat, Regan.',
+      `The Rev. Chesna Hinkley has been Interim Pastor at Second since the fall of 2024. She holds degrees from Princeton Theological Seminary and the University of Pittsburgh, where she concentrated in neuroscience, and she is pursuing a Doctor of Ministry in Reformed Theology at Pittsburgh Theological Seminary.`,
+      `She was ordained in 2021 at Madison Avenue Presbyterian Church in New York City, where she led children's ministry, mission, adult education, and the young adult group. At work, her passions are people, preaching, and strategizing for the future.`,
+      `Outside of ministry she loves literature, traveling (23 countries and 28 states so far), sharing meals with friends, and keeping company with her cat, Regan.`,
+    ],
+    favorites: [
+      { label: 'Reading', items: 'The Divine Conspiracy by Dallas Willard, and When You Are Engulfed in Flames by David Sedaris' },
+      { label: 'Watching', items: '30 Rock, Midnight Mass, and Ozark' },
+      { label: 'Listening', items: 'The Ezra Klein Show, the Bible Project podcast, and Sufjan Stevens' },
     ],
   },
   {
     name: 'Rev. Judy Landt',
     role: 'Parish Associate',
+    photo: judyPhoto,
     bio: [
-      'The Rev. Judy Landt serves as Parish Associate at Second. She holds a Master of Divinity from McCormick Theological Seminary, BA and MAT degrees from the University of Chicago, and a JD from Illinois Institute of Technology Chicago-Kent College of Law.',
-      'Ordained a Minister of Word and Sacrament in the PCUSA in 2003, she has served congregations across Illinois, Wisconsin, and Minnesota. Her background also includes mediation and conflict resolution work with churches, families, businesses, and courts.',
+      `The Rev. Judy Landt serves as Parish Associate at Second. She holds a Master of Divinity from McCormick Theological Seminary, BA and MAT degrees from the University of Chicago, and a JD from Illinois Institute of Technology Chicago-Kent College of Law.`,
+      `She was ordained as a Minister of Word and Sacrament in the PCUSA in 2003, and has served churches in Illinois, Wisconsin, and Minnesota. She is also experienced as a mediator and conflict consultant for churches, families, businesses, and courts.`,
     ],
   },
   {
     name: 'Michael Shawgo',
     role: 'Director of Music & Organist',
+    photo: michaelPhoto,
     bio: [
-      'Michael Shawgo leads the musical life of Second. A native of Central Illinois, he earned his Bachelor of Music in Organ Performance from Illinois Wesleyan University in Bloomington under Dr. David Gehrenbeck, and continued his studies with J. Marcus Ritchie at the Cathedral of St. Philip in Atlanta and with Dexter Bailey in Chicago.',
-      'He is a member of the American Guild of Organists, the Organ Historical Society, the American Theatre Organ Society, and Phi Mu Alpha.',
+      `Michael Shawgo earned his Bachelor of Music in Organ Performance from Illinois Wesleyan University in Bloomington, studying under Dr. David Gehrenbeck. He has additionally studied with J. Marcus Ritchie at the Cathedral of St. Philip in Atlanta and with Dexter Bailey in Chicago.`,
+      `He is a member of the American Guild of Organists, the Organ Historical Society, the American Theatre Organ Society, and Phi Mu Alpha.`,
+    ],
+    favorites: [
+      { label: 'Reading', items: 'Grant Williams by Giancarlo Stampalia' },
+      { label: 'Watching', items: 'Downton Abbey' },
+      { label: 'Listening', items: '20s and 30s blues and jazz, and opera' },
     ],
   },
   {
     name: 'Ashley McLean',
     role: 'Office Administrator',
+    email: site.contact.email,
+    photo: ashleyPhoto,
     bio: [
-      'Ashley McLean keeps the office running at Second, bringing experience in communications, graphic arts, and office management to the role.',
-      'Beyond work she makes jewelry, 3D prints, and tackles home improvement projects. She shares her home with her fiance and two dogs, James Brown (JB) and Bella, and loves cooking and trying new recipes.',
+      `Ashley McLean is the Office Administrator at Second. She has a background in communications, graphic arts, and office management.`,
+      `Ashley likes making jewelry, experimenting with her 3D printer, and working on home improvement and decor projects around the house. She and her fiance have two dogs, James Brown (JB) and Bella, who is blind, and together they love to cook and try new recipes.`,
+    ],
+    favorites: [
+      { label: 'Reading', items: "The Artist's Way by Julia Cameron, and women's health" },
+      { label: 'Watching', items: 'documentaries and docuseries' },
+      { label: 'Listening', items: '90s and 00s neo soul and R&B, and audiobooks' },
     ],
   },
 ];
@@ -75,7 +104,16 @@ const staff = [
       {staff.map((person) => (
         <article class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-l md:gap-section-md items-start border-b border-border-soft pb-section-md last:border-b-0 last:pb-0">
           <div class="md:sticky md:top-24">
-            <h2 class="font-display text-h3 text-foreground">{person.name}</h2>
+            <div class="w-44 sm:w-52 aspect-[4/5] overflow-hidden rounded-md border border-border-soft bg-muted shadow-sm">
+              <Image
+                src={person.photo}
+                alt={`${person.name}, ${person.role} at Second Presbyterian Church`}
+                widths={[176, 208, 352, 416]}
+                sizes="(min-width: 640px) 208px, 176px"
+                class="h-full w-full object-cover"
+              />
+            </div>
+            <h2 class="mt-l font-display text-h3 text-foreground">{person.name}</h2>
             <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">{person.role}</p>
             {person.email && (
               <a href={`mailto:${person.email}`} class="mt-s inline-block text-sm text-link underline underline-offset-2 hover:text-primary-dark transition-colors break-all">
@@ -85,6 +123,16 @@ const staff = [
           </div>
           <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
             {person.bio.map((p) => <p>{p}</p>)}
+            {person.favorites && (
+              <dl class="mt-l grid grid-cols-1 gap-y-1 border-t border-border-soft pt-m text-sm text-foreground/70">
+                {person.favorites.map((f) => (
+                  <div class="flex gap-2">
+                    <dt class="w-20 shrink-0 font-semibold uppercase tracking-eyebrow text-xs pt-0.5 text-foreground/60">{f.label}</dt>
+                    <dd class="flex-1">{f.items}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
           </div>
         </article>
       ))}

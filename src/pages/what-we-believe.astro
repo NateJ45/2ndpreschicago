@@ -1,7 +1,8 @@
 ---
-// Safe to edit by hand for copy + structure changes.
-// What We Believe. Core beliefs (God, humanity, the gospel), denominational
-// identity (PCUSA, Reformed), and the church's core values.
+// Safe to edit for layout, but the BODY TEXT here is the congregation's own
+// statement of faith, set by the church's leadership. Reproduced verbatim from
+// secondpreschicago.org/what-we-believe. Do not reword the belief statements;
+// only adjust formatting/layout.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getSiteSettings } from '@/lib/queries';
@@ -15,7 +16,7 @@ const siteSettings = await getSiteSettings().catch(() => null);
 
 const title = `What We Believe · ${site.name}`;
 const description =
-  'Second Presbyterian is a Reformed congregation in the Presbyterian Church (USA). What we believe about God, humanity, and the gospel, and the values that shape our common life.';
+  'Second Presbyterian is a Reformed congregation in the Presbyterian Church (USA). What we believe about humanity, God, and the good news of Jesus Christ, and where we fit and are going as a church.';
 
 const schemas = [
   breadcrumbSchema([
@@ -24,50 +25,114 @@ const schemas = [
   ]),
 ];
 
+// The three core questions and the church's answers (verbatim).
 const beliefs = [
   {
-    title: 'On God',
-    body: 'God is love, eternally three Persons and one Being: Father, Son, and Holy Spirit, coeternal, consubstantial, and coequal. God is made known to us in Jesus Christ, who is fully divine and fully human.',
+    q: 'Who is humanity?',
+    a: [
+      `Humanity and all things, seen and unseen, were created by God out of the abundance of the divine love of the Trinity. Humanity is created in God's image, meaning that each person is invested with profound worth and dignity, and charged with authority to care for and serve creation as God does. We do not live out our identity as image-bearers, and like all things, without Christ we are captive to Sin and Death. But because we are created out of God's extraordinary love, Augustine of Hippo says, "Our hearts are restless until they find rest in you."`,
+    ],
   },
   {
-    title: 'On humanity',
-    body: 'Humanity and all things, seen and unseen, were created by God out of the abundant love of the Trinity. Each person bears God\'s image and carries inherent worth and dignity. As Augustine prayed, our hearts are restless until they find rest in God.',
+    q: 'Who is God?',
+    a: [
+      `God is love, eternally three Persons and one Being. God is Father, Son, and Holy Spirit, each coeternal, consubstantial, and coequal with one another. God is revealed to us in Jesus Christ, who is fully God and fully human, incarnate by the power of the Holy Spirit and the courageous yes of Mary. Because of this, we know God as the One who gives himself. God is holy, complete within himself, all-powerful, all-knowing, and unchanging, and his nature defines the Good.`,
+    ],
   },
   {
-    title: 'On the gospel',
-    body: 'We proclaim that Christ died to take away sin, rose bodily from death, and continues with us through the Holy Spirit. In him, we become a new creation, forgiven of all our sin, with the sure hope of resurrection and eternal life.',
+    q: 'What is the good news?',
+    a: [
+      `Because of humanity's rebellion against God, all of creation suffers in bondage to the powers of Sin and Death, and all things were spiraling toward destruction. In Christ, God the Son entered creation as a creature, and brought God's miraculous healing, abundance, and truth to real people. He died in sacrifice to take away the sin of the world, and defeated death by rising bodily from the grave. He lives today, human and God, at the right hand of the Father, and will come again to judge the world and reign forever. Jesus is still with us by the power of the Holy Spirit, who is active in this world, continuing what he started long ago. Anyone who believes in Jesus is a new creation, forgiven of all their sin, and looks forward to the hope of resurrection and the promise of eternal life.`,
+      `John of Patmos said this of God's plan for the world to come: "I heard a loud voice from the throne, saying, 'Look! The home of God is among mortals. He will dwell with them, and they will be his peoples, and God himself will be with them and be their God'" (Rev. 21:3).`,
+    ],
   },
 ];
 
-const values = [
-  { title: 'Inclusive', body: 'We welcome the full participation of women and LGBTQ people in every part of the church\'s life and leadership.' },
-  { title: 'Neighborhood ministry', body: 'We are rooted in the South Loop and committed to the good of our neighbors.' },
-  { title: 'Authentic worship', body: 'We treasure beautiful music, historic liturgy, and honest fellowship.' },
-  { title: 'A warm welcome', body: 'We are formed as disciples through genuine community. There is a place for you here.' },
+// Where We Fit: our place in the wider Church (verbatim).
+const whereWeFit = [
+  {
+    title: 'Biblical',
+    body: `We live under the authority of scripture, the true and authoritative witness to the Word of God incarnate, and interpret it by the guiding light of God revealed in Jesus, its true center. The Bible is a collection of various kinds of literature, written in many times by many people, all truly and fully inspired by God the Spirit to tell the one, unified story of God's plan to live among us, enfold us into the Triune love, and make all things new.`,
+  },
+  {
+    title: 'Reformed',
+    body: `We affirm the ecumenical creeds of the Church. We believe in God's sovereign, providential care for all things, his irrevocable choice to save, and his everlasting covenant promise to be faithful to his people. We celebrate God's glory displayed in creation, salvation, and restoration. We are led by a humble, growing tradition in the PCUSA Book of Confessions, which we accept as a reliable and faithful exposition of what scripture leads us to believe and do.`,
+  },
+  {
+    title: 'Inclusive',
+    body: `We believe that correctly interpreted, scripture leads us to live out the gospel by the full and sincere welcome of women and LGBTQ people. Accordingly, we do not place restrictions of identity on the Spirit's calling to leadership, and we celebrate the gift of faithful marriage between two people of any gender.`,
+  },
+];
+
+// Where We're Going: how we live as a congregation (verbatim).
+const whereWeGoing = [
+  {
+    title: 'Neighborhood ministry',
+    body: `It matters that we were called to be the Church at Michigan and Cullerton, and we are committed to loving our neighbors and preaching the gospel here in the South Loop.`,
+  },
+  {
+    title: 'Authentic & joyful worship',
+    body: `Our congregation loves its music, liturgy, and fellowship. We are seeking to revel in the abundant life of God by offering our praise and thanksgiving and receiving the gifts of Word and Table.`,
+  },
+  {
+    title: 'Warm welcome',
+    body: `Community is formed in warmth and self-giving. We believe that God is at work drawing people to himself, and we continually prepare to receive, embrace, and grow into the Church of tomorrow, making disciples of all people.`,
+  },
+];
+
+const resources = [
+  { label: 'Community groups at Second', href: '/grow', external: false },
+  { label: 'Lectio 365', href: 'https://www.24-7prayer.com/resource/lectio-365/', external: true },
+  { label: 'BibleProject', href: 'https://bibleproject.com/', external: true },
+  { label: 'Practicing the Way', href: 'https://practicingtheway.org/', external: true },
 ];
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
     eyebrow="What We Believe"
-    headline="Reformed, and always reforming."
-    subhead="We are a congregation of the Presbyterian Church (USA), holding to the historic Christian faith and reading Scripture with Christ at its center."
+    headline="The faith we share"
+    subhead="What we hold to be true about humanity, about God, and about the good news of Jesus Christ."
     headingId="believe-hero"
     size="short"
   />
 
-  {/* Core beliefs */}
-  <section class="bg-background" aria-labelledby="beliefs-heading">
+  {/* Scripture epigraph + the three core questions (verbatim) */}
+  <section class="bg-background" aria-label="What we believe">
+    <div class="mx-auto max-w-content px-m py-section-lg">
+      <blockquote class="mx-auto max-w-prose text-center">
+        <p class="font-display text-h3 leading-snug text-foreground/90">
+          “The Word became flesh and dwelt among us, and we have seen his glory, glory as of the only
+          Son from the Father, full of grace and truth.”
+        </p>
+        <cite class="mt-s block text-sm not-italic uppercase tracking-eyebrow text-foreground/60">John 1:14</cite>
+      </blockquote>
+
+      <div class="mt-section-lg space-y-section-md">
+        {beliefs.map((item) => (
+          <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-m md:gap-section-md items-start border-b border-border-soft pb-section-md last:border-b-0 last:pb-0">
+            <h2 class="font-display text-h3 text-foreground md:sticky md:top-24">{item.q}</h2>
+            <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+              {item.a.map((p) => <p>{p}</p>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Where We Fit */}
+  <section class="surface-warm bg-muted" aria-labelledby="fit-heading">
     <div class="mx-auto max-w-content px-m py-section-lg">
       <SectionHeading
-        eyebrow="The heart of it"
-        headline="What we hold to be true"
-        headingId="beliefs-heading"
+        eyebrow="Our place in the Church"
+        headline="Where We Fit"
+        headingId="fit-heading"
         align="center"
         class="mx-auto"
       />
       <div class="mt-section-lg grid grid-cols-1 md:grid-cols-3 gap-l" data-stagger-grid>
-        {beliefs.map((b) => (
+        {whereWeFit.map((b) => (
           <article class="rounded-md border border-border-soft bg-card p-l">
             <h3 class="font-display text-h3 text-foreground">{b.title}</h3>
             <p class="mt-s text-foreground/85 leading-relaxed">{b.body}</p>
@@ -77,45 +142,43 @@ const values = [
     </div>
   </section>
 
-  {/* Denominational identity */}
-  <section class="surface-warm bg-muted" aria-labelledby="reformed-heading">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
-      <SectionHeading
-        eyebrow="Our tradition"
-        headline="Part of the Presbyterian Church (USA)"
-        headingId="reformed-heading"
-      />
-      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
-        <p>
-          We stand in the Reformed tradition, affirming the ecumenical creeds of the church and the
-          confessions gathered in the PCUSA Book of Confessions.
-        </p>
-        <p>
-          We hold Scripture as our authority for faith and life, and we read it through Jesus Christ,
-          who is its center and its fulfillment.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  {/* Values */}
-  <section class="bg-background" aria-labelledby="values-heading">
+  {/* Where We're Going */}
+  <section class="bg-background" aria-labelledby="going-heading">
     <div class="mx-auto max-w-content px-m py-section-lg">
       <SectionHeading
-        eyebrow="What we value"
-        headline="The shape of our common life"
-        headingId="values-heading"
+        eyebrow="Our hope"
+        headline="Where We're Going"
+        headingId="going-heading"
         align="center"
         class="mx-auto"
       />
-      <div class="mt-section-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-m" data-stagger-grid>
-        {values.map((v) => (
+      <div class="mt-section-lg grid grid-cols-1 md:grid-cols-3 gap-l" data-stagger-grid>
+        {whereWeGoing.map((v) => (
           <article class="rounded-md border border-border-soft bg-card p-l">
             <h3 class="font-display text-h4 text-foreground">{v.title}</h3>
             <p class="mt-s text-foreground/80 leading-relaxed">{v.body}</p>
           </article>
         ))}
       </div>
+    </div>
+  </section>
+
+  {/* Dig deeper */}
+  <section class="surface-warm bg-muted" aria-labelledby="deeper-heading">
+    <div class="mx-auto max-w-content px-m py-section-md text-center">
+      <h2 id="deeper-heading" class="font-display text-h4 text-foreground">Want to dig deeper?</h2>
+      <p class="mt-s text-foreground/80">Explore these resources, and join a community group at Second.</p>
+      <ul class="mt-l flex flex-wrap justify-center gap-x-l gap-y-s">
+        {resources.map((r) => (
+          <li>
+            <a
+              href={r.href}
+              class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors"
+              {...(r.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >{r.label}</a>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
