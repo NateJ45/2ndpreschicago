@@ -1,0 +1,66 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Kids. How children and families are welcomed at Second.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `Kids · ${site.name}`;
+const description =
+  'Children are part of the worshipping congregation at Second Presbyterian Church. How we welcome kids and families on Sunday morning.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Kids', url: `${site.url}/kids` },
+  ]),
+];
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="Get Involved"
+    headline="Children are welcome here"
+    subhead="At Second, little ones are part of the worshipping congregation, and we welcome their noise and their needs."
+    headingId="kids-hero"
+    size="short"
+  />
+
+  <section class="bg-background" aria-labelledby="kids-worship">
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
+      <SectionHeading
+        eyebrow="On Sunday morning"
+        headline="Kids belong in the room"
+        headingId="kids-worship"
+      />
+      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+        <p>
+          We do not tuck children away. They worship right alongside the rest of us, and there is a
+          children's message during the service just for them.
+        </p>
+        <p>
+          We keep books, coloring materials, and fidget toys on hand. And if you need a quieter moment,
+          a cry room with an audio stream of the service is always open.
+        </p>
+        <p>
+          Bringing little ones for the first time? Come as you are. You will not be the only family in
+          the pews, and you will not get any side-eye for the wiggles.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Bring the Whole Family"
+    headline="We would love to meet your family"
+    subhead="Join us Sundays at 11am, or reach out with any question about visiting with children."
+    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+  />
+</BaseLayout>

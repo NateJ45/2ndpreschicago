@@ -1,0 +1,89 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Use Our Space. Venue rental and space sharing at the church.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `Use Our Space · ${site.name}`;
+const description =
+  'Host your event at a National Historic Landmark in the South Loop. Second Presbyterian offers competitive rates, a premium location near transit, and free parking.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Use Our Space', url: `${site.url}/use-our-space` },
+  ]),
+];
+
+const uses = [
+  'Youth sports', 'Board meetings', 'Worship', 'Meal programs', 'Social services',
+  'Speakers', 'Concerts', 'Performance rehearsals', 'Parties', '12-step groups',
+];
+
+const pillPrimary =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="Use Our Space"
+    headline="Interested in using space at Second?"
+    subhead="A historic, welcoming building in the heart of the South Loop, open to the wider community throughout the week."
+    headingId="space-hero"
+    size="short"
+  />
+
+  <section class="bg-background" aria-labelledby="space-intro">
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
+      <SectionHeading
+        eyebrow="A space for the neighborhood"
+        headline="Throughout the week, our doors are open"
+        headingId="space-intro"
+      />
+      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+        <p>
+          We host all sorts of gatherings throughout the week, from youth sports and board meetings to
+          concerts, rehearsals, social services, and 12-step groups.
+        </p>
+        <p>
+          You get a premium South Loop location close to public transit, competitive rates, friendly
+          support, and first-come, first-served free parking.
+        </p>
+        <ul class="flex flex-wrap gap-xs pt-xs list-none p-0">
+          {uses.map((u) => (
+            <li class="text-xs uppercase tracking-eyebrow text-foreground/70 border border-border-soft rounded-full px-3 py-1">{u}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="surface-warm bg-muted" aria-labelledby="space-inquire">
+    <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
+      <h2 id="space-inquire" class="font-display text-h2 text-foreground">Let's talk about your event</h2>
+      <p class="mt-m text-lg text-foreground/85 leading-relaxed">
+        Get in touch to ask about fees and availability. Planning something long-term? We would love to
+        talk about sharing the space. Please skip the form and email the Pastor directly.
+      </p>
+      <div class="mt-l flex flex-wrap justify-center gap-s">
+        <a href={`mailto:${site.contact.email}`} class={pillPrimary}>Inquire About the Space</a>
+        <a href={`mailto:${site.contact.pastorEmail}`} class="press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] border border-primary text-link hover:bg-accent transition-colors">Email the Pastor</a>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Visit First"
+    headline="Come see the space in person"
+    subhead="The best way to picture your event here is to experience the building. Join us for worship, or reach out to arrange a visit."
+    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+  />
+</BaseLayout>

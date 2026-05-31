@@ -1,0 +1,100 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Pastors & Staff. Full bios for the people who serve Second.
+// (When the church wants to edit these without code, this is the natural
+// candidate for a Sanity "staffMember" collection later.)
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `Pastors & Staff · ${site.name}`;
+const description =
+  'Meet the pastors and staff of Second Presbyterian Church of Chicago: Rev. Chesna Hinkley, Rev. Judy Landt, Michael Shawgo, and Ashley McLean.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Pastors & Staff', url: `${site.url}/pastor-staff` },
+  ]),
+];
+
+const staff = [
+  {
+    name: 'Rev. Chesna Hinkley',
+    role: 'Interim Pastor',
+    email: site.contact.pastorEmail,
+    bio: [
+      'Rev. Hinkley began as Interim Pastor in the fall of 2024. She holds degrees from Princeton Theological Seminary and the University of Pittsburgh, where she concentrated in neuroscience, and she is working toward a Doctor of Ministry in Reformed Theology at Pittsburgh Theological Seminary.',
+      'She was ordained in 2021 at Madison Avenue Presbyterian Church in New York City, where she led children\'s ministry, mission, adult education, and the young adult group. Her passions are people, preaching, and strategizing for the future. Off the clock she reads widely, travels (23 countries and 28 states so far), shares meals with friends, and keeps company with her cat, Regan.',
+    ],
+  },
+  {
+    name: 'Rev. Judy Landt',
+    role: 'Parish Associate',
+    bio: [
+      'The Rev. Judy Landt serves as Parish Associate at Second. She holds a Master of Divinity from McCormick Theological Seminary, BA and MAT degrees from the University of Chicago, and a JD from Illinois Institute of Technology Chicago-Kent College of Law.',
+      'Ordained a Minister of Word and Sacrament in the PCUSA in 2003, she has served congregations across Illinois, Wisconsin, and Minnesota. Her background also includes mediation and conflict resolution work with churches, families, businesses, and courts.',
+    ],
+  },
+  {
+    name: 'Michael Shawgo',
+    role: 'Director of Music & Organist',
+    bio: [
+      'Michael Shawgo leads the musical life of Second. A native of Central Illinois, he earned his Bachelor of Music in Organ Performance from Illinois Wesleyan University in Bloomington under Dr. David Gehrenbeck, and continued his studies with J. Marcus Ritchie at the Cathedral of St. Philip in Atlanta and with Dexter Bailey in Chicago.',
+      'He is a member of the American Guild of Organists, the Organ Historical Society, the American Theatre Organ Society, and Phi Mu Alpha.',
+    ],
+  },
+  {
+    name: 'Ashley McLean',
+    role: 'Office Administrator',
+    bio: [
+      'Ashley McLean keeps the office running at Second, bringing experience in communications, graphic arts, and office management to the role.',
+      'Beyond work she makes jewelry, 3D prints, and tackles home improvement projects. She shares her home with her fiance and two dogs, James Brown (JB) and Bella, and loves cooking and trying new recipes.',
+    ],
+  },
+];
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="Pastors & Staff"
+    headline="The people you'll meet at Second"
+    subhead="A small, dedicated team serving a historic congregation in the South Loop."
+    headingId="staff-hero"
+    size="short"
+  />
+
+  <section class="bg-background" aria-label="Pastors and staff">
+    <div class="mx-auto max-w-content px-m py-section-lg space-y-section-md">
+      {staff.map((person) => (
+        <article class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-l md:gap-section-md items-start border-b border-border-soft pb-section-md last:border-b-0 last:pb-0">
+          <div class="md:sticky md:top-24">
+            <h2 class="font-display text-h3 text-foreground">{person.name}</h2>
+            <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">{person.role}</p>
+            {person.email && (
+              <a href={`mailto:${person.email}`} class="mt-s inline-block text-sm text-link underline underline-offset-2 hover:text-primary-dark transition-colors break-all">
+                {person.email}
+              </a>
+            )}
+          </div>
+          <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+            {person.bio.map((p) => <p>{p}</p>)}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Come and See"
+    headline="We would love to meet you"
+    subhead="Join us for worship on Sunday, or reach out to the office any time."
+    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+  />
+</BaseLayout>

@@ -1,0 +1,60 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Grow. Community groups: Bible study, Theology on Tap, reading groups.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `Grow · ${site.name}`;
+const description =
+  'Community groups at Second: Bible study, Theology on Tap, and reading groups. Drop in and walk with others on the Way of Jesus.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Grow', url: `${site.url}/grow` },
+  ]),
+];
+
+const groups = [
+  { name: 'Mid-Morning Bible Study', when: 'First and third Thursdays, 10am', where: 'The Pastor\'s Office', body: 'Read through books of the Bible together over coffee.' },
+  { name: 'Theology on Tap', when: 'Third Thursdays, 7pm', where: 'Rotating neighborhood pubs', body: 'Read short pieces of theological writing over drinks and good conversation.' },
+  { name: 'Alpha to Omega Bible Reading Group', when: 'Thursdays, 5pm to 6pm', where: 'By conference call', body: 'Read through the whole Bible together, a stretch at a time.' },
+  { name: 'Second Church Book Group', when: 'Select Sundays, 9:30am', where: 'At the church', body: 'Read and discuss a book together before worship.' },
+];
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="Get Involved"
+    headline="Community Groups at Second"
+    subhead="Drop in and walk with others on the Way of Jesus."
+    headingId="grow-hero"
+    size="short"
+  />
+
+  <section class="bg-background" aria-label="Community groups">
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-m" data-stagger-grid>
+      {groups.map((g) => (
+        <article class="rounded-md border border-border-soft bg-card p-l">
+          <h2 class="font-display text-h3 text-foreground">{g.name}</h2>
+          <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">{g.when} · {g.where}</p>
+          <p class="mt-s text-foreground/85 leading-relaxed">{g.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Join In"
+    headline="Find your people at Second"
+    subhead="Everyone is welcome at every group. Check the calendar for the next gathering, or just show up."
+    cta={{ label: 'See the Calendar', linkType: 'external', externalUrl: '/events' }}
+  />
+</BaseLayout>

@@ -1,0 +1,59 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Serve. Ways to serve our neighbors through the church.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `Serve · ${site.name}`;
+const description =
+  'Serve alongside Second Presbyterian Church. From our Cullerton-door food ministry to neighborhood gatherings, there are many ways to love our South Loop neighbors.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Serve', url: `${site.url}/serve` },
+  ]),
+];
+
+const ways = [
+  { name: 'Food ministry', href: '/food', body: 'Help pack and hand out Lunch Bags, or host the South Loop Community Table alongside Care for Friends. This is the heart of how we serve our neighbors.' },
+  { name: 'Sunday hospitality', href: '/worship', body: 'Welcome visitors, help with coffee and fellowship, and make sure everyone who walks in feels at home.' },
+  { name: 'Neighborhood events', href: '/events', body: 'Lend a hand at gatherings like the South Michigan Avenue Block Fest, free and open to all our neighbors.' },
+];
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="Get Involved"
+    headline="Love our neighbors"
+    subhead="We are called to serve and celebrate Jesus for the good of the world. Much of that happens right here in the South Loop."
+    headingId="serve-hero"
+    size="short"
+  />
+
+  <section class="bg-background" aria-label="Ways to serve">
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-3 gap-m" data-stagger-grid>
+      {ways.map((w) => (
+        <a href={w.href} class="card-lift group block rounded-md border border-border-soft bg-card p-l no-underline">
+          <h2 class="font-display text-h3 text-foreground group-hover:text-link transition-colors">{w.name}</h2>
+          <p class="mt-s text-foreground/85 leading-relaxed">{w.body}</p>
+          <span class="mt-m inline-flex items-center gap-xs text-xs uppercase tracking-eyebrow font-semibold text-link">Learn more <span aria-hidden="true">&rarr;</span></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Lend a Hand"
+    headline="Ready to get involved?"
+    subhead="Tell us where you would like to serve and we will help you find a place to plug in."
+    cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
+  />
+</BaseLayout>

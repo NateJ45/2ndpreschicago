@@ -1,0 +1,75 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Food ministry. Lunch Bag and the South Loop Community Table.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `Food Ministry · ${site.name}`;
+const description =
+  'Free food for all in need, no questions asked, at our Cullerton door. Lunch Bag runs Tuesday through Thursday, and the South Loop Community Table gathers on Sunday evenings.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Food Ministry', url: `${site.url}/food` },
+  ]),
+];
+
+const pillPrimary =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="Food Ministry"
+    headline="Food for all in need, no questions asked"
+    subhead="Find us at our Cullerton door on Tuesday, Wednesday, Thursday, and Sunday."
+    headingId="food-hero"
+    size="short"
+  />
+
+  <section class="bg-background" aria-label="Food programs">
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l">
+      {/* Lunch Bag */}
+      <article class="rounded-md border border-border-soft bg-card p-l flex flex-col">
+        <h2 class="font-display text-h3 text-foreground">Lunch Bag</h2>
+        <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">Tuesday to Thursday · 11am to 1pm</p>
+        <p class="mt-s text-foreground/85 leading-relaxed flex-1">
+          A grab-and-go lunch for anyone who needs one. Pantry staples, produce, clothing, and hygiene
+          items are offered occasionally as they are available.
+        </p>
+        <div class="mt-l">
+          <a href="/give" class={pillPrimary}>Support Lunch Bag</a>
+        </div>
+      </article>
+
+      {/* South Loop Community Table */}
+      <article class="rounded-md border border-border-soft bg-card p-l flex flex-col">
+        <h2 class="font-display text-h3 text-foreground">South Loop Community Table</h2>
+        <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">Sundays · 6:45pm to 8:30pm</p>
+        <p class="mt-s text-foreground/85 leading-relaxed flex-1">
+          A free, sit-down meal for all. Come play games, listen to music, and share a table with
+          neighbors. Medical and social work services, occupational therapy, and clothing are available,
+          hosted in partnership with Care for Friends. The Table pauses for the summer.
+        </p>
+        <div class="mt-l">
+          <a href="/give" class={pillPrimary}>Support the Table</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Lend a Hand"
+    headline="Everyone is welcome at the table"
+    subhead="Come to eat, come to serve, or help keep the door open with a gift. All are needed."
+    cta={{ label: 'Get Involved', linkType: 'external', externalUrl: '/serve' }}
+  />
+</BaseLayout>

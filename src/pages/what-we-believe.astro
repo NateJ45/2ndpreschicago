@@ -1,0 +1,128 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// What We Believe. Core beliefs (God, humanity, the gospel), denominational
+// identity (PCUSA, Reformed), and the church's core values.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `What We Believe · ${site.name}`;
+const description =
+  'Second Presbyterian is a Reformed congregation in the Presbyterian Church (USA). What we believe about God, humanity, and the gospel, and the values that shape our common life.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'What We Believe', url: `${site.url}/what-we-believe` },
+  ]),
+];
+
+const beliefs = [
+  {
+    title: 'On God',
+    body: 'God is love, eternally three Persons and one Being: Father, Son, and Holy Spirit, coeternal, consubstantial, and coequal. God is made known to us in Jesus Christ, who is fully divine and fully human.',
+  },
+  {
+    title: 'On humanity',
+    body: 'Humanity and all things, seen and unseen, were created by God out of the abundant love of the Trinity. Each person bears God\'s image and carries inherent worth and dignity. As Augustine prayed, our hearts are restless until they find rest in God.',
+  },
+  {
+    title: 'On the gospel',
+    body: 'We proclaim that Christ died to take away sin, rose bodily from death, and continues with us through the Holy Spirit. In him, we become a new creation, forgiven of all our sin, with the sure hope of resurrection and eternal life.',
+  },
+];
+
+const values = [
+  { title: 'Inclusive', body: 'We welcome the full participation of women and LGBTQ people in every part of the church\'s life and leadership.' },
+  { title: 'Neighborhood ministry', body: 'We are rooted in the South Loop and committed to the good of our neighbors.' },
+  { title: 'Authentic worship', body: 'We treasure beautiful music, historic liturgy, and honest fellowship.' },
+  { title: 'A warm welcome', body: 'We are formed as disciples through genuine community. There is a place for you here.' },
+];
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="What We Believe"
+    headline="Reformed, and always reforming."
+    subhead="We are a congregation of the Presbyterian Church (USA), holding to the historic Christian faith and reading Scripture with Christ at its center."
+    headingId="believe-hero"
+    size="short"
+  />
+
+  {/* Core beliefs */}
+  <section class="bg-background" aria-labelledby="beliefs-heading">
+    <div class="mx-auto max-w-content px-m py-section-lg">
+      <SectionHeading
+        eyebrow="The heart of it"
+        headline="What we hold to be true"
+        headingId="beliefs-heading"
+        align="center"
+        class="mx-auto"
+      />
+      <div class="mt-section-lg grid grid-cols-1 md:grid-cols-3 gap-l" data-stagger-grid>
+        {beliefs.map((b) => (
+          <article class="rounded-md border border-border-soft bg-card p-l">
+            <h3 class="font-display text-h3 text-foreground">{b.title}</h3>
+            <p class="mt-s text-foreground/85 leading-relaxed">{b.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Denominational identity */}
+  <section class="surface-warm bg-muted" aria-labelledby="reformed-heading">
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
+      <SectionHeading
+        eyebrow="Our tradition"
+        headline="Part of the Presbyterian Church (USA)"
+        headingId="reformed-heading"
+      />
+      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+        <p>
+          We stand in the Reformed tradition, affirming the ecumenical creeds of the church and the
+          confessions gathered in the PCUSA Book of Confessions.
+        </p>
+        <p>
+          We hold Scripture as our authority for faith and life, and we read it through Jesus Christ,
+          who is its center and its fulfillment.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* Values */}
+  <section class="bg-background" aria-labelledby="values-heading">
+    <div class="mx-auto max-w-content px-m py-section-lg">
+      <SectionHeading
+        eyebrow="What we value"
+        headline="The shape of our common life"
+        headingId="values-heading"
+        align="center"
+        class="mx-auto"
+      />
+      <div class="mt-section-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-m" data-stagger-grid>
+        {values.map((v) => (
+          <article class="rounded-md border border-border-soft bg-card p-l">
+            <h3 class="font-display text-h4 text-foreground">{v.title}</h3>
+            <p class="mt-s text-foreground/80 leading-relaxed">{v.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Come and See"
+    headline="The best way to know us is to worship with us"
+    subhead="Join us this Sunday at 11am, or reach out with any question about faith and life at Second."
+    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+  />
+</BaseLayout>

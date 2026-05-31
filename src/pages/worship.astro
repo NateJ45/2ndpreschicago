@@ -1,0 +1,106 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Worship page. Service time, what to expect, communion, children in worship,
+// and how to watch online.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `Worship · ${site.name}`;
+const description =
+  'Join us for worship Sundays at 11am. A traditional, liturgical service with communion on the first Sunday of each month. Whoever you are, you are welcome here.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Worship', url: `${site.url}/worship` },
+  ]),
+];
+
+const pillPrimary =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+const pillOutline =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] border border-primary text-link hover:bg-accent transition-colors';
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="Sunday Worship"
+    headline="There's a place for you here."
+    subhead="Whether you're a weekly churchgoer, haven't been in ages, or don't know anything about Christianity, you are welcome at Second."
+    headingId="worship-hero"
+    size="short"
+  />
+
+  {/* Service at a glance */}
+  <section class="surface-warm bg-muted" aria-labelledby="worship-times">
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-l md:gap-section-md items-start">
+      <div>
+        <p class="text-xs uppercase tracking-eyebrow text-foreground/80">When we gather</p>
+        <div class="mt-s mb-m h-px w-12 bg-primary/60" aria-hidden="true"></div>
+        <p class="font-display text-h1 text-foreground leading-none">11am</p>
+        <p class="mt-s text-lg text-foreground/85">Every Sunday morning</p>
+        <p class="mt-m text-foreground/80">{site.contact.addressLine}<br />{site.contact.cityStateZip}</p>
+        <div class="mt-l flex flex-wrap gap-s">
+          <a href="/contact" class={pillPrimary}>Get Directions</a>
+          <a href={site.social.youtube} target="_blank" rel="noopener noreferrer" class={pillOutline}>Watch Online</a>
+        </div>
+      </div>
+      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+        <p>
+          Our service follows a traditional, liturgical format, with hymns, spirituals, and anthems
+          led by organ and choir. We celebrate the Eucharist on the first Sunday of each month.
+        </p>
+        <p>
+          Come as you are. Casual attire is always welcome. There is no wrong way to be here, and no
+          experience required.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* Children in worship */}
+  <section class="bg-background" aria-labelledby="worship-kids">
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
+      <SectionHeading
+        eyebrow="Little ones welcome"
+        headline="Children belong in worship"
+        headingId="worship-kids"
+      />
+      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+        <p>
+          Little ones are part of the worshipping congregation at Second, and we welcome their noise
+          and their needs. We keep books, coloring materials, and fidget toys on hand, and there is a
+          children's message during the service.
+        </p>
+        <p>
+          Need a quieter moment? A cry room with an audio stream of the service is always available.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* Quote */}
+  <section class="bg-muted" aria-label="Reflection">
+    <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
+      <blockquote class="font-display italic text-h3 text-foreground leading-snug">
+        &ldquo;We are called to an everlasting preoccupation with God.&rdquo;
+      </blockquote>
+      <p class="mt-m text-xs uppercase tracking-eyebrow text-foreground/70">A.W. Tozer</p>
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Come and See"
+    headline="Plan your first visit"
+    subhead="Have a question before Sunday? We would love to help you feel at home before you arrive."
+    cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
+  />
+</BaseLayout>

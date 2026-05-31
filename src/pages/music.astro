@@ -1,0 +1,102 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Music page. The musical life of the church: the quartette choir tradition
+// and the historic 1917 Austin organ.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `Music · ${site.name}`;
+const description =
+  'Hymns, spirituals, and anthems led by a professional quartette choir and a historic 1917 Austin pipe organ. The musical life of Second Presbyterian Church of Chicago.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Music', url: `${site.url}/music` },
+  ]),
+];
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="Music"
+    headline="Our musical life at Second"
+    subhead="I will sing of your strength, in the morning I will sing of your love. (Psalm 59:16)"
+    headingId="music-hero"
+    size="short"
+  />
+
+  <section class="bg-background" aria-labelledby="music-intro">
+    <div class="mx-auto max-w-3xl px-m py-section-lg text-lg text-foreground/85 leading-relaxed space-y-m">
+      <h2 id="music-intro" class="sr-only">About our music</h2>
+      <p>
+        Sunday worship at Second is sung. Hymns, spirituals, and anthems, accompanied by organ, carry
+        the congregation through the liturgy week by week. Music is not a performance here. It is how
+        we pray together.
+      </p>
+    </div>
+  </section>
+
+  {/* Quartette choir */}
+  <section class="surface-warm bg-muted" aria-labelledby="quartette-heading">
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
+      <SectionHeading
+        eyebrow="The Quartette Choir"
+        headline="A nineteenth-century tradition, still singing"
+        headingId="quartette-heading"
+      />
+      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+        <p>
+          The quartette choir was an early American Protestant practice meant to lift the quality of
+          sung worship. Chicago's first quartette choir was established in 1836, and Second Presbyterian
+          followed about two decades later.
+        </p>
+        <p>
+          Today our quartet is made up of classical professional vocalists who lead the congregation in
+          hymns, anthems, and service music, week in and week out.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* The organ */}
+  <section class="bg-background" aria-labelledby="organ-heading">
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
+      <SectionHeading
+        eyebrow="The Organ"
+        headline="Austin Opus 767, built 1917"
+        headingId="organ-heading"
+      />
+      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+        <p>
+          Our pipe organ carries salvaged parts of an 1873 Johnson &amp; Son instrument that was lost when
+          fire destroyed the sanctuary in 1900. The organ you hear today was completed by the Austin Organ
+          Company of Hartford, Connecticut, in 1917.
+        </p>
+        <p>
+          A &ldquo;thundersheet,&rdquo; acquired in the 1930s and likely salvaged from a theater, still
+          produces rolls of thunder during our annual performance of Theodore Dubois&rsquo; &ldquo;The Seven
+          Last Words of Christ.&rdquo;
+        </p>
+        <p class="text-base">
+          Our music is led by <a href="/pastor-staff" class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">Michael Shawgo, Director of Music &amp; Organist</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Come and Hear"
+    headline="Hear it for yourself on Sunday"
+    subhead="Worship with us at 11am, or watch the livestream online."
+    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+  />
+</BaseLayout>

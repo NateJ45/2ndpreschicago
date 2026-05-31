@@ -1,0 +1,85 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Give. Online giving via Vanco, plus by-mail and designated-gift options.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `Give · ${site.name}`;
+const description =
+  'Support the ministry of Second Presbyterian Church of Chicago. Give online, by mail, or designate your gift to the food ministry. Thank you for your generosity.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Give', url: `${site.url}/give` },
+  ]),
+];
+
+// Online giving portal (Vanco / eServicePayments).
+const giveUrl =
+  'https://www.eservicepayments.com/cgi-bin/Vanco_ver3.vps?appver3=wWsk24ZWJSTZKsGd1RMKlg0BDvsSG3VIWQCPJNNxD8upkiY7JlDavDsozUE7KG0nFx2NSo8LdUKGuGuF396vbQob3Vy7b9Yfe_jNfJWTbVeXHubq5Z7ap5JVmPEpc4ZeYHCKCZhESjGNQmZ5B-6dx5zOQjapagb4-GcDOvSEdsc=&ver=3';
+
+const pillPrimary =
+  'press-tactile inline-flex items-center justify-center min-h-[48px] px-l py-s rounded-full text-sm font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="Give"
+    headline="Thank you"
+    subhead="For entrusting your tithes and offerings to Second. Your generosity sustains worship, music, and a food ministry that feeds our neighbors."
+    headingId="give-hero"
+    size="short"
+  />
+
+  {/* Online giving */}
+  <section class="bg-background" aria-labelledby="give-online">
+    <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
+      <h2 id="give-online" class="font-display text-h2 text-foreground">Give online</h2>
+      <p class="mt-m text-lg text-foreground/85 leading-relaxed">
+        Make a one-time or recurring gift through our secure giving portal. It takes just a minute.
+      </p>
+      <div class="mt-l flex justify-center">
+        <a href={giveUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>Give Now</a>
+      </div>
+    </div>
+  </section>
+
+  {/* Other ways to give */}
+  <section class="surface-warm bg-muted" aria-labelledby="give-ways">
+    <div class="mx-auto max-w-content px-m py-section-lg">
+      <h2 id="give-ways" class="sr-only">Other ways to give</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-m">
+        <article class="rounded-md border border-border-soft bg-card p-l">
+          <h3 class="font-display text-h4 text-foreground">By mail</h3>
+          <p class="mt-s text-foreground/85 leading-relaxed">
+            Prefer to send a check? Make it out to Second Presbyterian Church of Chicago and mail it to:
+          </p>
+          <p class="mt-s text-foreground/80">{site.name}<br />{site.contact.addressLine}<br />{site.contact.cityStateZip}</p>
+        </article>
+        <article class="rounded-md border border-border-soft bg-card p-l">
+          <h3 class="font-display text-h4 text-foreground">Support the food ministry</h3>
+          <p class="mt-s text-foreground/85 leading-relaxed">
+            Want your gift to go directly to feeding our neighbors? You can designate it for Lunch Bag or
+            the South Loop Community Table.
+          </p>
+          <a href="/food" class="mt-m inline-flex items-center gap-xs text-xs uppercase tracking-eyebrow font-semibold text-link">About the food ministry <span aria-hidden="true">&rarr;</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="With Gratitude"
+    headline="Every gift is a part of the work"
+    subhead="Thank you for helping Second serve and celebrate Jesus for the good of the world."
+    cta={{ label: 'Give Now', linkType: 'external', externalUrl: giveUrl, openInNewTab: true }}
+  />
+</BaseLayout>

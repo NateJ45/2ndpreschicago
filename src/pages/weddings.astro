@@ -1,0 +1,99 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Weddings. Overview, FAQ, and pricing for weddings in the historic sanctuary.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const siteSettings = await getSiteSettings().catch(() => null);
+
+const title = `Weddings · ${site.name}`;
+const description =
+  'Get married in a National Historic Landmark. Our 1901 Arts and Crafts sanctuary, home to nine Tiffany windows and extraordinary murals, welcomes weddings of all sizes.';
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Weddings', url: `${site.url}/weddings` },
+  ]),
+];
+
+const faqs = [
+  { q: 'Who can get married at Second?', a: 'We welcome gay and straight couples. Because the sanctuary is a consecrated space, religious ceremonies must be Christian. Nonreligious ceremonies are welcome as long as they are respectful of the space and its purpose. There is no dress code.' },
+  { q: 'What about music?', a: 'Our Music Director\'s services are built into a typical wedding package, which may include our exceptional 1917 Austin organ and a piano. Recorded music is available through a CD player or aux cable. The organ predates standardized pitch, so any instrument played with it must be tuned down to match.' },
+  { q: 'Can we use our own officiant?', a: 'Yes. We require premarital counseling for couples married in our sanctuary. Our pastor is glad to officiate Christian weddings, and that fee is waived for members of the congregation.' },
+  { q: 'Can we celebrate communion?', a: 'Ordained Protestant clergy of the sacramental tradition (Presbyterian, Anglican, Methodist, Lutheran, and certain other evangelical churches) may preside at communion with the special permission of the church Session.' },
+  { q: 'How many guests can the sanctuary hold?', a: 'The main floor of the sanctuary seats 600 people, with additional balcony seating should you need it.' },
+  { q: 'What support and spaces are included?', a: 'A Wedding Coordinator assists at the rehearsal and the ceremony. The Bridal Parlor and North Parlor are included for preparation. Parking accommodates 18 vehicles, with more public options nearby, and the sanctuary is accessible.' },
+  { q: 'Is there space for a reception?', a: 'Our Fellowship Hall may be rented for an additional fee. Please note that it is a carpeted space.' },
+];
+
+const pricing = [
+  { item: 'Standard package (rehearsal plus 3 hours of wedding-day use)', price: '$1,500' },
+  { item: 'Officiant', price: '$500' },
+  { item: 'Premarital counseling only', price: '$250' },
+  { item: 'Live stream of the ceremony', price: '$250' },
+];
+
+const pillPrimary =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow="Weddings"
+    headline="Get married in a National Historic Landmark"
+    subhead="Our 1901 Arts and Crafts sanctuary, home to nine Tiffany windows and extraordinary murals, draws visitors from all over the world. We host weddings of every size."
+    headingId="weddings-hero"
+    size="short"
+  />
+
+  {/* FAQ */}
+  <section class="bg-background" aria-labelledby="weddings-faq">
+    <div class="mx-auto max-w-3xl px-m py-section-lg">
+      <SectionHeading eyebrow="The details" headline="Common questions" headingId="weddings-faq" />
+      <div class="mt-l divide-y divide-border-soft border-t border-b border-border-soft">
+        {faqs.map((f) => (
+          <details class="group py-m">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-m font-display text-h4 text-foreground">
+              {f.q}
+              <span class="shrink-0 text-link transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+            </summary>
+            <p class="mt-s text-foreground/85 leading-relaxed">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Pricing */}
+  <section class="surface-warm bg-muted" aria-labelledby="weddings-pricing">
+    <div class="mx-auto max-w-3xl px-m py-section-lg">
+      <SectionHeading eyebrow="Pricing" headline="Clear and upfront" headingId="weddings-pricing" align="center" class="mx-auto" />
+      <ul class="mt-l list-none p-0 divide-y divide-border-soft border-t border-b border-border-soft">
+        {pricing.map((p) => (
+          <li class="flex items-baseline justify-between gap-m py-m">
+            <span class="text-foreground">{p.item}</span>
+            <span class="font-display text-h4 text-foreground shrink-0">{p.price}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-m text-sm text-foreground/70 text-center">The Fellowship Hall is available for receptions at an additional fee.</p>
+      <div class="mt-l flex justify-center">
+        <a href={`mailto:${site.contact.email}`} class={pillPrimary}>Inquire About Your Date</a>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Say Hello"
+    headline="Let's talk about your wedding"
+    subhead="Reach out to the office to check availability and start planning your day at Second."
+    cta={{ label: 'Contact the Office', linkType: 'external', externalUrl: '/contact' }}
+  />
+</BaseLayout>
