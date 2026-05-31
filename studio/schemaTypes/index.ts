@@ -2,6 +2,7 @@
 // Order doesn't affect runtime; alphabetical here for readability.
 
 import { aboutPage } from './aboutPage';
+import { churchPageSingletons } from './churchPages';
 import { contactPage } from './contactPage';
 import { ctaBlock } from './ctaBlock';
 import { event } from './event';
@@ -38,6 +39,9 @@ export const schemaTypes = [
   sermonsPage,
   notFoundPage,
   privacyPage,
+  // Per-page church singletons (worship, music, grow, serve, kids, food,
+  // use-our-space, weddings, give, what-we-believe, pastors & staff).
+  ...churchPageSingletons,
   // Start Here editable singletons
   studioGuide,
   studioNotes,

@@ -89,6 +89,20 @@ export function urlForDoc(schemaType: string, doc: any): string | null {
     case 'contactPage':   return `${SITE_URL}/contact`;
     case 'journalPage':   return `${SITE_URL}/journal`;
     case 'notFoundPage':  return `${SITE_URL}/404`;
+    // Church index pages + per-page singletons
+    case 'eventsPage':       return `${SITE_URL}/events`;
+    case 'sermonsPage':      return `${SITE_URL}/sermons`;
+    case 'worshipPage':      return `${SITE_URL}/worship`;
+    case 'beliefsPage':      return `${SITE_URL}/what-we-believe`;
+    case 'musicPage':        return `${SITE_URL}/music`;
+    case 'staffPage':        return `${SITE_URL}/pastor-staff`;
+    case 'growPage':         return `${SITE_URL}/grow`;
+    case 'servePage':        return `${SITE_URL}/serve`;
+    case 'kidsPage':         return `${SITE_URL}/kids`;
+    case 'foodPage':         return `${SITE_URL}/food`;
+    case 'useOurSpacePage':  return `${SITE_URL}/use-our-space`;
+    case 'weddingsPage':     return `${SITE_URL}/weddings`;
+    case 'givePage':         return `${SITE_URL}/give`;
     case 'journalEntry':  return slug ? `${SITE_URL}/journal/${slug}` : `${SITE_URL}/journal`;
     case 'project':       return slug ? `${SITE_URL}/portfolio/${slug}` : `${SITE_URL}/portfolio`;
     // New page singletons (Phase 1)
@@ -229,6 +243,20 @@ const SINGLETON_TYPES = new Set<string>([
   'contactPage',
   'journalPage',
   'notFoundPage',
+  // Church index pages + per-page singletons
+  'eventsPage',
+  'sermonsPage',
+  'worshipPage',
+  'beliefsPage',
+  'musicPage',
+  'staffPage',
+  'growPage',
+  'servePage',
+  'kidsPage',
+  'foodPage',
+  'useOurSpacePage',
+  'weddingsPage',
+  'givePage',
   // New singletons (Phase 1)
   'eDesignPage',
   'shopPage',

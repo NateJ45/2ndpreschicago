@@ -269,6 +269,325 @@ export type StudioGuide = {
   }>;
 };
 
+export type GivePage = {
+  _id: string;
+  _type: "givePage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type WeddingsPage = {
+  _id: string;
+  _type: "weddingsPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type UseOurSpacePage = {
+  _id: string;
+  _type: "useOurSpacePage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type FoodPage = {
+  _id: string;
+  _type: "foodPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type KidsPage = {
+  _id: string;
+  _type: "kidsPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type ServePage = {
+  _id: string;
+  _type: "servePage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type GrowPage = {
+  _id: string;
+  _type: "growPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type StaffPage = {
+  _id: string;
+  _type: "staffPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type MusicPage = {
+  _id: string;
+  _type: "musicPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type BeliefsPage = {
+  _id: string;
+  _type: "beliefsPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type WorshipPage = {
+  _id: string;
+  _type: "worshipPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
 export type PrivacyPage = {
   _id: string;
   _type: "privacyPage";
@@ -1226,6 +1545,17 @@ export type AllSanitySchemaTypes =
   | StudioPlaybook
   | StudioNotes
   | StudioGuide
+  | GivePage
+  | WeddingsPage
+  | UseOurSpacePage
+  | FoodPage
+  | KidsPage
+  | ServePage
+  | GrowPage
+  | StaffPage
+  | MusicPage
+  | BeliefsPage
+  | WorshipPage
   | PrivacyPage
   | NotFoundPage
   | SiteSettings

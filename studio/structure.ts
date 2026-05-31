@@ -57,6 +57,18 @@ const SINGLETON_TYPES = [
   'sermonsPage',
   'notFoundPage',
   'privacyPage',
+  // Per-page church singletons
+  'worshipPage',
+  'beliefsPage',
+  'musicPage',
+  'staffPage',
+  'growPage',
+  'servePage',
+  'kidsPage',
+  'foodPage',
+  'useOurSpacePage',
+  'weddingsPage',
+  'givePage',
   'studioGuide',
   'studioNotes',
   'studioPlaybook',
@@ -196,16 +208,36 @@ export const deskStructure = (S: StructureBuilder, context: StructureResolverCon
             .title('Pages')
             .items([
               singletonWithPreview(S, 'homePage', 'Home', HomeIcon),
+              singletonWithPreview(S, 'worshipPage', "I'm New / Worship", StarIcon),
               singletonWithPreview(S, 'aboutPage', 'About', UserIcon),
-              singletonWithPreview(S, 'faqPage', 'FAQ', HelpCircleIcon),
-              singletonWithPreview(S, 'contactPage', 'Contact', EnvelopeIcon),
-              singletonWithPreview(S, 'journalPage', 'Journal (index page)', BookIcon),
-              singletonWithPreview(S, 'eventsPage', 'Events (index page)', CalendarIcon),
-              singletonWithPreview(S, 'sermonsPage', 'Sermons (index page)', PlayIcon),
-              singletonWithPreview(S, 'notFoundPage', '404 Page', DocumentTextIcon),
+              singletonWithPreview(S, 'beliefsPage', 'What We Believe', BookIcon),
+              singletonWithPreview(S, 'musicPage', 'Music', PlayIcon),
+              singletonWithPreview(S, 'staffPage', 'Pastors & Staff', UserIcon),
 
               S.divider(),
 
+              singletonWithPreview(S, 'growPage', 'Grow', HeartIcon),
+              singletonWithPreview(S, 'servePage', 'Serve', HeartIcon),
+              singletonWithPreview(S, 'kidsPage', 'Kids', HeartIcon),
+              singletonWithPreview(S, 'foodPage', 'Food Ministry', HeartIcon),
+
+              S.divider(),
+
+              singletonWithPreview(S, 'eventsPage', 'Events (index page)', CalendarIcon),
+              singletonWithPreview(S, 'sermonsPage', 'Sermons (index page)', PlayIcon),
+
+              S.divider(),
+
+              singletonWithPreview(S, 'useOurSpacePage', 'Use Our Space', PresentationIcon),
+              singletonWithPreview(S, 'weddingsPage', 'Weddings', StarIcon),
+              singletonWithPreview(S, 'givePage', 'Give', HeartIcon),
+
+              S.divider(),
+
+              singletonWithPreview(S, 'faqPage', 'FAQ', HelpCircleIcon),
+              singletonWithPreview(S, 'contactPage', 'Contact', EnvelopeIcon),
+              singletonWithPreview(S, 'journalPage', 'Journal (index page)', BookIcon),
+              singletonWithPreview(S, 'notFoundPage', '404 Page', DocumentTextIcon),
               singletonWithPreview(S, 'privacyPage', 'Privacy Policy Page', LockIcon),
             ]),
         ),
