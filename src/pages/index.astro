@@ -1,390 +1,189 @@
 ---
 // Safe to edit by hand for copy + structure changes.
-// Home page. Section order is conversion-tuned:
-// visual proof and social proof come early, price transparency mid-funnel,
-// the long-read journal sits late for visitors in research mode.
-//   1. Hero (eyebrow, headline, two CTAs, background image)
-//   2. Meet the Designer (photo, intro copy, CTA to About)
-//   3. Featured Work (hero project + companions — visual proof, the hook)
-//   4. Kind Words (1 featured testimonial + grid — social proof, early)
-//   5. How It Works (4-step process preview, CTA to Process)
-//   6. How We Can Help (services grid + pricing)
-//   7. Featured Journal (hero entry + companions — depth for considerers)
-//   8. Service area cue line
-//   9. Final CTA (full-bleed)
+// Home page for Second Presbyterian Church of Chicago.
+// Section order: hero (sanctuary photo) → welcome → Sunday worship →
+// get involved → events teaser → food ministry → welcoming close.
 //
-// Featured Work (3) + Featured Journal (7) auto-populate from the Project +
-// JournalEntry collections, ordered featured-first then by publish date.
-// Content editors pin a piece via the `featured` boolean on the doc; otherwise the
-// section shows the latest 4. Both suppress entirely when there's no content.
-//
-// Background cadence alternates background / muted down the page so adjacent
-// sections never share a surface.
-//
-// Everything inside each section is editable in Sanity via the homePage singleton plus the
-// service / testimonial / processStep / project / journalEntry collections.
+// Content renders from these inline values today; once Sanity is wired the
+// homePage singleton can drive the hero + section copy (see getHomePage()).
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getHomePage, getSiteSettings, getPressItems } from '@/lib/queries';
-import { getSectionVisibility } from '@/lib/sectionVisibility';
+import { Image } from 'astro:assets';
+import { getHomePage, getSiteSettings } from '@/lib/queries';
 import { site } from '@/data/site';
-
-import Hero from '@/components/Hero.astro';
-import SanityImage from '@/components/SanityImage.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
-import CtaLink from '@/components/CtaLink.astro';
-import PortableText from '@/components/PortableText';
-import ProcessStep from '@/components/ProcessStep.astro';
-import FeaturedTestimonial from '@/components/FeaturedTestimonial.astro';
-import TestimonialGrid from '@/components/TestimonialGrid.astro';
-import ServiceCard from '@/components/ServiceCard.astro';
-import ServiceAreaCue from '@/components/ServiceAreaCue.astro';
-import SectionDivider from '@/components/SectionDivider.astro';
 import FinalCta from '@/components/FinalCta.astro';
-import FeaturedWork from '@/components/FeaturedWork.astro';
-import FeaturedJournal from '@/components/FeaturedJournal.astro';
-import PressStrip from '@/components/PressStrip.astro';
+import heroSanctuary from '@/assets/hero-sanctuary.webp';
 
-const [page, siteSettings, pressItems] = await Promise.all([
+const [page, siteSettings] = await Promise.all([
   getHomePage().catch(() => null),
   getSiteSettings().catch(() => null),
-  getPressItems().catch(() => []),
 ]);
 
-// Derive section visibility. Unset fields count as visible so the live site
-// is unchanged until the editor explicitly turns something off in Studio.
-const visible = getSectionVisibility(siteSettings?.sectionVisibility);
+const title = page?.seoTitle ?? site.name;
+const description =
+  page?.seoDescription ??
+  'A historic, welcoming Presbyterian church in Chicago\'s South Loop. Join us for worship Sundays at 11am. Whoever you are, you are welcome here.';
 
-// Top-level SEO meta. Fall back to site identity when Sanity is empty (e.g., before content seed).
-const title       = page?.seoTitle       ?? site.name;
-const description = page?.seoDescription ?? 'Your tagline goes here.';
+const youtube = site.social.youtube;
 
-// Hero defaults — replace with your studio's voice before launch.
-const heroEyebrow  = page?.heroEyebrow  ?? 'Your City, Your State.';
-const heroHeadline = page?.heroHeadline ?? 'Your headline goes here.';
-const heroSubhead  = page?.heroSubhead  ?? '';
+// Shared button classes (pill CTAs, matching the brand).
+const pillPrimary =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+const pillOnDark =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] border border-white/70 text-white hover:bg-white/10 hover:border-white transition-colors';
+const pillOutline =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] border border-primary text-link hover:bg-accent transition-colors';
 
-// Collections: services with showOnHomepage, testimonialsToShow (in order), process steps in order.
-const services       = page?.services       ?? [];
-const processSteps   = page?.processSteps   ?? [];
-const featuredQuote  = page?.featuredTestimonial;
-const gridQuotes     = page?.testimonialsToShow ?? [];
-
-// Google Business URL for "Read more on Google" link + reviews note.
-// Both are sourced from siteSettings so one edit covers every surface.
-const googleBusinessUrl = siteSettings?.googleBusinessUrl;
-const reviewsNote       = siteSettings?.reviewsNote;
-
-// Section copy fallbacks (lock the home page in even before all Sanity copy lands).
-const meetFounderEyebrow  = page?.meetFounderEyebrow  ?? "The Designer.";
-const meetFounderHeadline = page?.meetFounderHeadline ?? "Hi, I’m [Your Name].";
-const meetFounderContent  = page?.meetFounderContent  ?? null;
-
-const processPreviewEyebrow  = page?.processPreviewEyebrow  ?? 'How It Works.';
-const processPreviewHeadline = page?.processPreviewHeadline ?? 'A clear path from first conversation to final reveal.';
-const processPreviewSubhead  = page?.processPreviewSubhead  ??
-  'No guesswork and no pressure. From our first conversation to the day everything comes together, you will always know exactly where things stand and what happens next.';
-
-const testimonialsEyebrow      = page?.testimonialsEyebrow      ?? 'Kind Words.';
-const testimonialsHeadline     = page?.testimonialsHeadline     ?? 'Words from real homes.';
-const testimonialsScriptAccent = page?.testimonialsScriptAccent;
-const testimonialsSubhead      = page?.testimonialsSubhead      ??
-  'The part that matters most: how it felt to work together, and how each space holds up to everyday life long after the last pillow is placed.';
-const testimonialsAttribution  = page?.testimonialsAttribution;
-
-const servicesGridEyebrow        = page?.servicesGridEyebrow        ?? site.name + '.';
-const servicesGridHeadline       = page?.servicesGridHeadline       ?? 'How we can help your home.';
-const servicesGridScriptAccent   = page?.servicesGridScriptAccent;
-const servicesGridSubhead        = page?.servicesGridSubhead;
-const servicesGridFootnote  = page?.servicesGridFootnote;
-
-// Featured Work section. Auto-fetches the 4 most-relevant projects
-// (featured-pinned items first, then newest). Empty array suppresses the
-// section, so the home page degrades gracefully pre-launch.
-// Subhead defaults are written for conversion — they explain what a click
-// will reveal so visitors are pulled into a case study, not just an image.
-const featuredWorkEyebrow  = page?.featuredWorkEyebrow  ?? 'Recent Work';
-const featuredWorkHeadline = page?.featuredWorkHeadline ?? 'Rooms that feel finished.';
-const featuredWorkSubhead  = page?.featuredWorkSubhead  ??
-  'A look at recent projects. Each one starts with a conversation about how the space actually needs to function, then the design follows from there.';
-const featuredProjects     = page?.featuredProjects     ?? [];
-
-// Featured Journal section. Same auto-fetch logic for journal entries.
-const featuredJournalEyebrow  = page?.featuredJournalEyebrow  ?? 'From the Journal';
-const featuredJournalHeadline = page?.featuredJournalHeadline ?? 'How I think about design.';
-const featuredJournalSubhead  = page?.featuredJournalSubhead  ??
-  'Posts on the design moves that change a room, source roundups behind specific projects, and the occasional honest note about what I would do differently. The thinking that informs every consultation.';
-const featuredJournalEntries  = page?.featuredJournalEntries  ?? [];
+const ministries = [
+  { title: 'Grow', href: '/grow', body: 'Walk with others on the Way of Jesus through Bible study and good conversation.' },
+  { title: 'Serve', href: '/serve', body: 'Love our South Loop neighbors through hands-on, practical ministry.' },
+  { title: 'Kids', href: '/kids', body: 'Children are part of the worshipping congregation, noise and needs and all.' },
+  { title: 'Food', href: '/food', body: 'Free food for all in need, no questions asked, at our Cullerton door.' },
+];
 ---
 
-<BaseLayout {title} {description} {siteSettings} seoImage={page?.seoImage}>
-  {/* ------- 1. Hero --------------------------------------------------------- */}
-  {/* rotatingWords cycles the first word of the headline once on first visit
-      per session, then settles back to the original. Tasteful flourish that
-      hints at the design vocabulary without becoming a marquee. Honors
-      prefers-reduced-motion. Both rotatingWords and scriptAccent are
-      Sanity-editable on homePage; sensible defaults keep the design intact
-      if the editor clears the fields. */}
-  <Hero
-    eyebrow={heroEyebrow}
-    headline={heroHeadline}
-    subhead={heroSubhead}
-    backgroundImage={page?.heroImage}
-    backgroundImages={page?.heroImages}
-    primaryCta={page?.heroPrimaryCta}
-    secondaryCta={page?.heroSecondaryCta}
-    headingId="hero-heading"
-    size="tall"
-    rotatingWords={page?.heroRotatingWords ?? ['Lived-in', 'Considered', 'Quiet']}
-    scriptAccent={page?.heroScriptAccent}
-  />
-
-  {/* ------- 2. Meet the Designer -------------------------------------------- */}
+<BaseLayout {title} {description} {siteSettings}>
+  {/* ------- 1. Hero (sanctuary photo) ------------------------------------- */}
   <section
-    class="bg-background"
-    aria-labelledby="meet-founder-heading"
+    class="relative overflow-hidden bg-accent-dark text-bg flex flex-col justify-end min-h-[86svh]"
+    aria-labelledby="hero-heading"
   >
-    <div data-reveal class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
-      {page?.meetFounderPhoto?.asset ? (
-        <div class="order-1 md:order-1">
-          {/* width=800 caps the responsive ladder at 800w — the column
-              never exceeds ~648 px (45vw of a 1440 px viewport) and
-              mobile only needs ~750 px even at high DPR. The previous
-              900 px cap was triggering Lighthouse's "image larger than
-              displayed" warning by ~112 KB on the designer photo. */}
-          <SanityImage
-            source={page.meetFounderPhoto}
-            width={800}
-            sizes="(min-width: 768px) 45vw, 100vw"
-            quality={75}
-            class="w-full h-auto rounded-md"
-          />
-        </div>
-      ) : (
-        <div class="order-1 md:order-1 aspect-[4/5] bg-muted rounded-md" aria-hidden="true"></div>
-      )}
+    <Image
+      src={heroSanctuary}
+      alt="The historic stone sanctuary of Second Presbyterian Church on South Michigan Avenue"
+      widths={[768, 1280, 1600, 2000]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 h-full w-full object-cover object-center"
+    />
+    {/* Scrim for headline legibility. */}
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-accent-dark/90 via-accent-dark/45 to-accent-dark/25"
+      aria-hidden="true"
+    ></div>
 
-      <div class="order-2 md:order-2">
-        <p class="text-xs uppercase tracking-[0.22em] text-foreground/80 mb-s">{meetFounderEyebrow}</p>
-        <h2 id="meet-founder-heading" class="font-display text-h2 text-foreground">
-          {meetFounderHeadline}
-        </h2>
-        {meetFounderContent ? (
-          <PortableText
-            value={meetFounderContent}
-            className="mt-m text-foreground/85 text-lg leading-relaxed"
-          />
-        ) : (
-          <p class="mt-m text-foreground/85 text-lg leading-relaxed">
-            Your intro copy goes here. Tell visitors who you are, where you work,
-            and what makes your approach distinct.
-          </p>
-        )}
-        <div class="mt-l flex justify-center md:justify-start">
-          <CtaLink
-            cta={page?.meetFounderCta}
-            variant="secondary"
-            fallbackHref="/about"
-            fallbackLabel="Get to Know Me"
-          />
+    <div class="relative mx-auto w-full max-w-content px-m pb-section-lg pt-section-md">
+      <div class="hero-entry-stagger max-w-3xl">
+        <p class="text-xs uppercase tracking-eyebrow text-bg/85">The Church of the Angels · South Loop, Chicago</p>
+        <div class="mt-xs mb-m h-px w-12 bg-bg/40" aria-hidden="true"></div>
+        <h1 id="hero-heading" class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-bg">
+          Serving and celebrating Jesus for the good of the world.
+        </h1>
+        <p class="mt-m max-w-2xl text-lg text-bg/90">
+          We gather in the abundant life of Jesus to worship, love, serve, pray, and share the gospel
+          in word and deed. Whoever you are, you are welcome here.
+        </p>
+        <div class="mt-l flex flex-wrap gap-s">
+          <a href="/worship" class={pillPrimary}>Plan a Visit</a>
+          <a href={youtube} target="_blank" rel="noopener noreferrer" class={pillOnDark}>Watch Online</a>
         </div>
       </div>
     </div>
   </section>
 
-  {/* ------- 3. Featured Work (visual proof, the hook) ---------------------- */}
-  {/* Auto-populated by query: 1 hero + up to 3 companion cards, ordered
-      featured-then-newest. Section is render-suppressed when there are no
-      projects yet or when portfolio is off. surface-warm bg-muted. */}
-  {visible.portfolio && (
-    <FeaturedWork
-      projects={featuredProjects}
-      eyebrow={featuredWorkEyebrow}
-      headline={featuredWorkHeadline}
-      subhead={featuredWorkSubhead}
-      cta={page?.featuredWorkCta}
-    />
-  )}
-
-  {/* ------- 4. Kind Words (social proof, early) ---------------------------- */}
-  {(featuredQuote || gridQuotes.length > 0) && (
-    <section
-      class="surface-warm bg-background"
-      aria-labelledby="testimonials-heading"
-    >
-      <div data-reveal class="mx-auto max-w-content px-m py-section-lg">
-        <SectionHeading
-          eyebrow={testimonialsEyebrow}
-          headline={testimonialsHeadline}
-          subhead={testimonialsSubhead}
-          headingId="testimonials-heading"
-          align="center"
-          class="mx-auto"
-          scriptAccent={testimonialsScriptAccent}
-        />
-
-        {featuredQuote && (
-          <div class="mt-section-lg">
-            <FeaturedTestimonial testimonial={featuredQuote} />
-          </div>
-        )}
-
-        {gridQuotes.length > 0 && (
-          <div class="mt-section-lg">
-            <TestimonialGrid testimonials={gridQuotes} limit={6} />
-          </div>
-        )}
-
-        {testimonialsAttribution && (
-          <p class="mt-section-md text-center text-sm text-muted-foreground italic">
-            {testimonialsAttribution}
-          </p>
-        )}
-
-        {/* reviewsNote + Google link — both suppress when unset.
-            reviewsNote is a short plain-text line from siteSettings
-            (e.g., "Rated 5 stars on Google."). The Google link renders
-            only when googleBusinessUrl is populated so there's never a
-            dead link. */}
-        {(reviewsNote || googleBusinessUrl) && (
-          <p class="mt-l text-center text-sm text-foreground/75 flex flex-wrap items-center justify-center gap-s">
-            {reviewsNote && <span>{reviewsNote}</span>}
-            {googleBusinessUrl && (
-              <a
-                href={googleBusinessUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-xs text-link underline underline-offset-2 hover:text-primary-dark transition-colors font-medium"
-              >
-                Read more on Google <span aria-hidden="true">↗</span>
-              </a>
-            )}
-          </p>
-        )}
-      </div>
-    </section>
-  )}
-
-  {/* ------- 5. How It Works (process preview) ------------------------------- */}
-  {/* Section suppresses entirely when no processStep documents exist, so the
-      home page degrades gracefully before the process module is seeded. */}
-  {processSteps.length > 0 && (
-    <section
-      class="bg-muted"
-      aria-labelledby="process-preview-heading"
-    >
-      <div data-reveal class="mx-auto max-w-content px-m py-section-lg">
-        <SectionHeading
-          eyebrow={processPreviewEyebrow}
-          headline={processPreviewHeadline}
-          subhead={processPreviewSubhead}
-          headingId="process-preview-heading"
-          align="center"
-          class="mx-auto"
-        />
-
-        <div class="mt-section-lg grid grid-cols-1 md:grid-cols-2 gap-section-md">
-          {processSteps.slice(0, 4).map((step: any, i: number, arr) => (
-            <ProcessStep step={step} variant="preview" isLast={i === arr.length - 1} />
-          ))}
-        </div>
-
-        <div class="mt-section-lg flex justify-center">
-          <CtaLink
-            cta={page?.processPreviewCta}
-            variant="secondary"
-            fallbackHref="/process"
-            fallbackLabel="See the Full Process"
-          />
-        </div>
-      </div>
-    </section>
-  )}
-
-  {/* ------- 6. How We Can Help (services grid + pricing) ------------------- */}
-  {/* bg-background (not muted) so the cadence alternates cleanly now that
-      Kind Words moved above How It Works. */}
-  <section
-    class="surface-warm bg-background"
-    aria-labelledby="services-heading"
-  >
-    <div data-reveal class="mx-auto max-w-content px-m py-section-lg">
+  {/* ------- 2. Welcome ----------------------------------------------------- */}
+  <section class="bg-background" aria-labelledby="welcome-heading">
+    <div data-reveal class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-l md:gap-section-md items-start">
       <SectionHeading
-        eyebrow={servicesGridEyebrow}
-        headline={servicesGridHeadline}
-        subhead={servicesGridSubhead}
-        headingId="services-heading"
+        eyebrow="Welcome"
+        headline="The Church of the Angels in Chicago's South Loop"
+        headingId="welcome-heading"
+      />
+      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+        <p>
+          Second Presbyterian is a National Historic Landmark on Michigan Avenue, home to nine Tiffany
+          windows and a sanctuary built for worship. The building is remarkable. The people are the point.
+        </p>
+        <p>
+          We are a Reformed congregation in the Presbyterian Church (USA), and we welcome everyone:
+          women and men, gay and straight, lifelong believers and the simply curious. Come as you are.
+        </p>
+        <div class="flex flex-wrap gap-s pt-xs">
+          <a href="/what-we-believe" class={pillOutline}>What We Believe</a>
+          <a href="/pastor-staff" class={pillOutline}>Meet Our Pastors</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ------- 3. Sunday worship --------------------------------------------- */}
+  <section class="surface-warm bg-muted" aria-labelledby="worship-heading">
+    <div data-reveal class="mx-auto max-w-content px-m py-section-lg">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-xs uppercase tracking-eyebrow text-foreground/80">Sunday Worship</p>
+        <div class="mt-s mb-m h-px w-12 bg-primary/60 mx-auto" aria-hidden="true"></div>
+        <h2 id="worship-heading" class="font-display text-h2 text-foreground">Join us at 11am</h2>
+        <p class="mt-m text-lg text-foreground/85 leading-relaxed">
+          Our service is traditional and liturgical, with hymns, spirituals, and anthems led by organ
+          and choir. We share communion on the first Sunday of each month. Little ones are part of the
+          worshipping congregation, and we welcome their noise and their needs.
+        </p>
+        <div class="mt-l flex flex-wrap justify-center gap-s">
+          <a href="/worship" class={pillPrimary}>Plan a Visit</a>
+          <a href={youtube} target="_blank" rel="noopener noreferrer" class={pillOutline}>Watch the Livestream</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ------- 4. Get involved ------------------------------------------------ */}
+  <section class="bg-background" aria-labelledby="involved-heading">
+    <div class="mx-auto max-w-content px-m py-section-lg">
+      <SectionHeading
+        eyebrow="Get Involved"
+        headline="We are formed in community"
+        subhead="Join us for worship, fellowship, study, art, and food. There is a place for you here."
+        headingId="involved-heading"
         align="center"
         class="mx-auto"
-        scriptAccent={servicesGridScriptAccent}
       />
-
-      {services.length > 0 && (
-        <div class="mt-section-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-m" data-stagger-grid>
-          {services.slice(0, 4).map((service: any) => (
-            <ServiceCard service={service} compact={true} />
-          ))}
-        </div>
-      )}
-
-      <div class="mt-section-lg flex justify-center">
-        <CtaLink
-          cta={page?.servicesGridCta}
-          variant="secondary"
-          fallbackHref="/services"
-          fallbackLabel="See All Services"
-        />
+      <div class="mt-section-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-m" data-stagger-grid>
+        {ministries.map((m) => (
+          <a
+            href={m.href}
+            class="card-lift group block rounded-md border border-border-soft bg-card p-l no-underline"
+          >
+            <h3 class="font-display text-h4 text-foreground group-hover:text-link transition-colors">{m.title}</h3>
+            <p class="mt-s text-foreground/80 leading-relaxed">{m.body}</p>
+            <span class="mt-m inline-flex items-center gap-xs text-xs uppercase tracking-eyebrow font-semibold text-link">
+              Learn more <span aria-hidden="true">&rarr;</span>
+            </span>
+          </a>
+        ))}
       </div>
-
-      {servicesGridFootnote && (
-        <p class="mt-section-md text-center text-sm text-muted-foreground italic">
-          {servicesGridFootnote}
-        </p>
-      )}
     </div>
   </section>
 
-  {/* ------- 7. Featured Journal (depth for considerers) -------------------- */}
-  {/* Moved late in the funnel: the long-read journal speaks to visitors in
-      research mode, after Work + testimonials + services have warmed them.
-      surface-warm bg-muted (set in the component). Hidden when journal is off. */}
-  {visible.journal && (
-    <FeaturedJournal
-      entries={featuredJournalEntries}
-      eyebrow={featuredJournalEyebrow}
-      headline={featuredJournalHeadline}
-      subhead={featuredJournalSubhead}
-      cta={page?.featuredJournalCta}
-    />
-  )}
+  {/* ------- 5. Events teaser ----------------------------------------------- */}
+  <section class="bg-muted" aria-labelledby="events-heading">
+    <div data-reveal class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-[1fr_1.1fr] gap-l md:gap-section-md items-center">
+      <SectionHeading
+        eyebrow="What's On"
+        headline="There is always something happening at Second"
+        headingId="events-heading"
+      />
+      <div class="text-foreground/85 text-lg leading-relaxed space-y-s">
+        <p>Worship, study, shared meals, music, and fellowship fill the week. A few of our weekly rhythms:</p>
+        <ul class="space-y-2 list-none p-0 text-base">
+          <li class="flex justify-between gap-m border-b border-border-soft pb-2"><span>Sunday Worship</span><span class="text-foreground/70">Sundays, 11am</span></li>
+          <li class="flex justify-between gap-m border-b border-border-soft pb-2"><span>Lunch Bag</span><span class="text-foreground/70">Tue&ndash;Thu, 11am&ndash;1pm</span></li>
+          <li class="flex justify-between gap-m border-b border-border-soft pb-2"><span>South Loop Community Table</span><span class="text-foreground/70">Sundays, 6:45pm</span></li>
+          <li class="flex justify-between gap-m"><span>Mid-Morning Bible Study</span><span class="text-foreground/70">Thursdays, 10am</span></li>
+        </ul>
+        <div class="pt-s">
+          <a href="/events" class={pillOutline}>See the Full Calendar</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  {/* ------- Press strip (as seen in) --------------------------------------- */}
-  {/* Sits between Featured Journal and the service-area cue. PressStrip
-      suppresses itself when the pressItem collection is empty; also hidden
-      when the press section is turned off in siteSettings. */}
-  {visible.press && <PressStrip items={pressItems} />}
-
-  {/* Bronze ornament between Featured Journal and the service-area cue.
-      Both sit on muted-toned backgrounds, so the alternating color cadence
-      isn't doing the work — this is the case the ornament was built for. */}
-  <div class="bg-muted">
-    <SectionDivider variant="ornament" />
-  </div>
-
-  {/* ------- 8. Service area cue line --------------------------------------- */}
-  <ServiceAreaCue
-    text={page?.serviceAreaCue}
-    cities={siteSettings?.serviceAreas}
-    eyebrow="Where we work"
-  />
-
-  {/* ------- 9. Final CTA --------------------------------------------------- */}
+  {/* ------- 6. Welcoming close --------------------------------------------- */}
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow}
-    headline={page?.finalCtaHeadline}
-    subhead={page?.finalCtaSubhead}
-    cta={page?.finalCta}
-    scriptAccent={page?.finalCtaScriptAccent}
-    backgroundImage={page?.finalCtaBackgroundImage}
+    eyebrow="Come and See"
+    headline="Whoever you are, you are welcome here."
+    subhead="Plan your first visit, or simply show up on Sunday. We will be glad you came."
+    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>
