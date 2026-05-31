@@ -14,6 +14,7 @@ import { site } from '@/data/site';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import heroSanctuary from '@/assets/hero-sanctuary.webp';
+import sanctuaryInterior from '@/assets/sanctuary-interior.webp';
 
 const [page, siteSettings] = await Promise.all([
   getHomePage().catch(() => null),
@@ -85,26 +86,35 @@ const ministries = [
 
   {/* ------- 2. Welcome ----------------------------------------------------- */}
   <section class="bg-background" aria-labelledby="welcome-heading">
-    <div data-reveal class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-l md:gap-section-md items-start">
-      <SectionHeading
-        eyebrow="Welcome"
-        headline="The Church of the Angels in Chicago's South Loop"
-        headingId="welcome-heading"
-      />
-      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
-        <p>
-          Second Presbyterian is a National Historic Landmark on Michigan Avenue, home to nine Tiffany
-          windows and a sanctuary built for worship. The building is remarkable. The people are the point.
-        </p>
-        <p>
-          We are a Reformed congregation in the Presbyterian Church (USA), and we welcome everyone:
-          women and men, gay and straight, lifelong believers and the simply curious. Come as you are.
-        </p>
-        <div class="flex flex-wrap gap-s pt-xs">
-          <a href="/what-we-believe" class={pillOutline}>What We Believe</a>
-          <a href="/pastor-staff" class={pillOutline}>Meet Our Pastors</a>
+    <div data-reveal class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
+      <div>
+        <SectionHeading
+          eyebrow="Welcome"
+          headline="The Church of the Angels in Chicago's South Loop"
+          headingId="welcome-heading"
+        />
+        <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
+          <p>
+            Second Presbyterian is a National Historic Landmark on Michigan Avenue, home to nine Tiffany
+            windows and a sanctuary built for worship. The building is remarkable. The people are the point.
+          </p>
+          <p>
+            We are a Reformed congregation in the Presbyterian Church (USA), and we welcome everyone:
+            women and men, gay and straight, lifelong believers and the simply curious. Come as you are.
+          </p>
+          <div class="flex flex-wrap gap-s pt-xs">
+            <a href="/what-we-believe" class={pillOutline}>What We Believe</a>
+            <a href="/pastor-staff" class={pillOutline}>Meet Our Pastors</a>
+          </div>
         </div>
       </div>
+      <Image
+        src={sanctuaryInterior}
+        alt="Inside the sanctuary at Second Presbyterian, with its Tiffany windows and Arts and Crafts ceiling"
+        widths={[600, 900, 1197]}
+        sizes="(min-width: 768px) 45vw, 100vw"
+        class="w-full h-auto rounded-md shadow-sm"
+      />
     </div>
   </section>
 

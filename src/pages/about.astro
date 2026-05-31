@@ -7,9 +7,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getAboutPage, getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import angelMurals from '@/assets/angel-murals.jpg';
+import sanctuaryInterior from '@/assets/sanctuary-interior.webp';
 
 const [page, siteSettings] = await Promise.all([
   getAboutPage().catch(() => null),
@@ -47,28 +50,51 @@ const pillOutline =
     size="short"
   />
 
+  {/* Feature: the angel murals (the church's namesake) */}
+  <figure class="mx-auto max-w-content px-m pt-section-lg">
+    <Image
+      src={angelMurals}
+      alt="The painted choir of angels on the sanctuary ceiling that gives the church its nickname"
+      widths={[768, 1280, 1500]}
+      sizes="(min-width: 1280px) 1216px, 100vw"
+      class="w-full h-auto rounded-md shadow-sm"
+    />
+    <figcaption class="mt-s text-sm text-foreground/70 italic text-center">
+      The painted angels of the sanctuary, the namesake of the Church of the Angels.
+    </figcaption>
+  </figure>
+
   {/* The building */}
   <section class="bg-background" aria-labelledby="about-building">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
-      <SectionHeading
-        eyebrow="A National Historic Landmark"
-        headline="The Church of the Angels"
-        headingId="about-building"
-      />
-      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
-        <p>
-          Our sanctuary, rebuilt in 1901 in the Arts and Crafts style after fire, is home to nine
-          Tiffany windows and a ceiling of painted angels that gave the church its nickname. Visitors
-          travel from all over the world to see it.
-        </p>
-        <p>
-          It is one of the great interiors in American church architecture, and it is still, first and
-          last, a room built for worship.
-        </p>
-        <div class="pt-xs">
-          <a href="/use-our-space" class={pillOutline}>Visit or Use the Space</a>
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
+      <div>
+        <SectionHeading
+          eyebrow="A National Historic Landmark"
+          headline="The Church of the Angels"
+          headingId="about-building"
+        />
+        <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
+          <p>
+            Our sanctuary, rebuilt in 1901 in the Arts and Crafts style after fire, is home to nine
+            Tiffany windows and a ceiling of painted angels that gave the church its nickname. Visitors
+            travel from all over the world to see it.
+          </p>
+          <p>
+            It is one of the great interiors in American church architecture, and it is still, first and
+            last, a room built for worship.
+          </p>
+          <div class="pt-xs">
+            <a href="/use-our-space" class={pillOutline}>Visit or Use the Space</a>
+          </div>
         </div>
       </div>
+      <Image
+        src={sanctuaryInterior}
+        alt="The nave of Second Presbyterian, lined with Tiffany windows beneath the Arts and Crafts ceiling"
+        widths={[600, 900, 1197]}
+        sizes="(min-width: 768px) 45vw, 100vw"
+        class="w-full h-auto rounded-md shadow-sm"
+      />
     </div>
   </section>
 

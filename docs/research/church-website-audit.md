@@ -4,7 +4,7 @@ Date: 2026-05-31. Purpose: compare our project site against best-in-class Presby
 
 ## Sites researched
 
-Fourth Presbyterian (Chicago, our closest peer: historic urban landmark), Menlo Church (Bay Area, modern exemplar), Redeemer (NYC), National Presbyterian (DC), Village Presbyterian (Kansas City, inclusive PCUSA, our closest values peer), Myers Park (Charlotte), Tenth Presbyterian (Philadelphia), Peachtree (Atlanta), First Pres Orlando, First Pres Houston, Second Presbyterian (Memphis). (Highland Park Dallas has a broken TLS cert and could not be loaded.)
+Highland Park Presbyterian (Dallas, hppres.org — the named gold standard), Fourth Presbyterian (Chicago, our closest peer: historic urban landmark), Menlo Church (Bay Area, modern exemplar), Redeemer (NYC), National Presbyterian (DC), Village Presbyterian (Kansas City, inclusive PCUSA, our closest values peer), Myers Park (Charlotte), Tenth Presbyterian (Philadelphia), Peachtree (Atlanta), First Pres Orlando, First Pres Houston, Second Presbyterian (Memphis).
 
 ---
 
@@ -27,6 +27,18 @@ Fourth Presbyterian (Chicago, our closest peer: historic urban landmark), Menlo 
 **Typography + color.** Split between bold modern sans (Menlo: Gotham 900 uppercase; Fourth: Source Sans) and editorial serif (Village: Adelle serif headings). Serif is fully legitimate for a historic PCUSA church. Palettes are a single brand color (Menlo teal/blue, Fourth purple, Village navy) over white, with warm accents. Buttons trend to rounded/pill. Motion is restrained: fades, gentle reveals, hero carousels.
 
 ---
+
+### Featured exemplar — Highland Park Presbyterian (hppres.org)
+
+The most polished site reviewed and the client's named gold standard. Specific techniques worth copying:
+- **Type pairing:** display serif (Abril Titling) + clean sans body (Proxima Nova) — the premium editorial norm. The hero emphasizes key words in a second color ("Find & Follow" set in sage against deep teal).
+- **Hero:** split layout — an oversized serif headline + two pills ("Sundays" in gold, "Find Your Place" outline) on the left, an **arched-top candid photo** (a congregant serving, not the building) on the right. The arch is a quiet architectural nod.
+- **Service band:** immediately under the hero, a table of every gathering by style / time / location (Classical, Contemporary, plus a "Family of Churches" with Chinese + All Nations services) — instant "when and where" clarity.
+- **Nav:** a utility row (Live · Events · Give · search) above a five-item bar (I'm New · Ministries · Who We Are · Sermons · Sundays). Visit, Watch/Sermons, and Give are all one click away.
+- **Palette:** off-white + deep teal + sage + liturgical gold. Calm, premium, unmistakably a church.
+- **Mission:** "Helping people find and follow Jesus" and "a family of churches for the flourishing of the city."
+
+Our warm-editorial design sits in the same tier; the gaps Highland Park exposes are experiential (an arched/elegant photo treatment, a service-info band, key-word color emphasis, and Sermons + I'm New in the nav) and are already captured in the plan.
 
 ## How our site compares
 
