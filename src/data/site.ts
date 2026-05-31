@@ -4,25 +4,43 @@
 // Replace these placeholders with your project's real values before launch.
 
 export const site = {
-  name: "Studio Starter",
-  studio: "Studio Starter",
-  domain: "example.com",
-  url: "https://example.com",
-  storageKeyPrefix: "studio-starter",
-  themeStorageKey: "studio-starter-theme",
+  name: "Second Presbyterian Church of Chicago",
+  studio: "Second Presbyterian Church of Chicago",
+  domain: "secondpreschicago.org",
+  url: "https://www.secondpreschicago.org",
+  storageKeyPrefix: "secondpres",
+  themeStorageKey: "secondpres-theme",
+
+  // Public contact details. Mirrored into Sanity siteSettings by the seed script;
+  // used as fallbacks so the live site shows real contact info before Sanity is wired.
+  contact: {
+    email: "office@secondpreschicago.org",
+    pastorEmail: "pastorchesna@secondpreschicago.org",
+    phone: "312-225-4951",
+    addressLine: "1936 South Michigan Ave",
+    cityStateZip: "Chicago, IL 60616",
+    officeHours: "Tuesday-Friday, 10am-2pm",
+  },
+
+  // Social profiles.
+  social: {
+    instagram: "https://www.instagram.com/2ndpresbyterian",
+    facebook: "https://www.facebook.com/2ndpreschicago",
+    youtube: "https://www.youtube.com/@secondpreschicago",
+  },
 
   // Brand colors are also declared in src/styles/globals.css.
   // Mirrored here for any script that needs them outside CSS (OG generator, structured data, etc.).
   brandColors: {
-    primary: "#586577",       // Slate
-    primaryDark: "#3E4A57",   // Slate Dark
-    accent: "#2A2D31",        // Ink
-    accentDark: "#1A1D20",    // Ink Dark
-    secondary: "#8E9DAD",     // Slate Mid
-    tertiary: "#A8B5C2",      // Slate Light
-    bg: "#FBFBFA",            // Paper
-    bgSoft: "#F4F4F2",        // Paper Soft
-    border: "#E2E4E6",        // Border Gray
+    primary: "#8A6A43",       // Bronze
+    primaryDark: "#6B4F2E",   // Bronze Dark
+    accent: "#36302A",        // Espresso Ink
+    accentDark: "#241F1A",    // Espresso Dark
+    secondary: "#B9A590",     // Clay
+    tertiary: "#A89A86",      // Warm Stone
+    bg: "#ECE4DA",            // Paper (warm cream)
+    bgSoft: "#F6F3EC",        // Paper Soft
+    border: "#DED6C8",        // Warm Border
   },
 
   // Static asset paths under public/

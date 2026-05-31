@@ -59,24 +59,16 @@ interface MobileNavSiteSettings {
 interface Props {
   links: NavItem[];
   siteSettings?: MobileNavSiteSettings | null;
-  /**
-   * Optimized logo URLs pre-rendered by Astro's getImage() in the parent
-   * Header.astro. We can't import the asset directly in a React component
-   * because client:only skips SSR entirely — so the parent does the work
-   * once at build time and passes the resulting WebP URLs in as strings.
-   */
-  logoLightUrl?: string;
-  logoDarkUrl?: string;
 }
 
 // ---- Component --------------------------------------------------------------
 
-export default function MobileNav({ links, siteSettings, logoLightUrl, logoDarkUrl }: Props) {
+export default function MobileNav({ links, siteSettings }: Props) {
   const [open, setOpen] = useState(false);
 
   const tagline =
     siteSettings?.tagline ??
-    'Your tagline goes here.';
+    'Serving and celebrating Jesus for the good of the world.';
   const email = siteSettings?.email;
   const phone = siteSettings?.phone;
   const ig = siteSettings?.socialInstagram;
@@ -110,11 +102,11 @@ export default function MobileNav({ links, siteSettings, logoLightUrl, logoDarkU
           {/* Primary CTA — main conversion action surfaced before the nav list. */}
           <div className="px-l pb-l">
             <a
-              href="/contact"
+              href="/worship"
               onClick={close}
-              className="block w-full px-m py-m text-center rounded-md bg-primary-dark text-white text-xs uppercase tracking-eyebrow font-semibold hover:bg-accent-dark transition-colors"
+              className="block w-full px-m py-m text-center rounded-full bg-primary text-primary-foreground text-xs uppercase tracking-eyebrow font-semibold hover:bg-primary-dark transition-colors"
             >
-              Book a consultation
+              Plan a Visit
             </a>
           </div>
 
@@ -224,31 +216,10 @@ export default function MobileNav({ links, siteSettings, logoLightUrl, logoDarkU
               URLs come from Astro's image pipeline via Header.astro's
               getImage() calls, so this is a WebP file with the same hash
               as the desktop header logo (free cache hit). */}
-          {logoLightUrl && (
-            <div className="border-t border-border-soft px-l py-l flex justify-center">
-              <img
-                src={logoLightUrl}
-                alt="Studio Starter"
-                width={280}
-                height={60}
-                className="block dark:hidden h-10 w-auto"
-                loading="lazy"
-                decoding="async"
-              />
-              {logoDarkUrl && (
-                <img
-                  src={logoDarkUrl}
-                  alt=""
-                  aria-hidden="true"
-                  width={280}
-                  height={60}
-                  className="hidden dark:block h-10 w-auto"
-                  loading="lazy"
-                  decoding="async"
-                />
-              )}
-            </div>
-          )}
+          <div className="border-t border-border-soft px-l py-l flex flex-col items-center text-center leading-none">
+            <span className="font-display text-xl text-foreground">Second Presbyterian</span>
+            <span className="font-display text-base text-foreground/70 mt-0.5">Church of Chicago</span>
+          </div>
         </SheetContent>
       </Sheet>
     </div>

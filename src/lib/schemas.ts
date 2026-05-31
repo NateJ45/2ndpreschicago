@@ -47,36 +47,44 @@ interface Breadcrumb {
 
 // ---------- LocalBusiness (site-wide, BaseLayout injects on every page) ----
 
-export function localBusinessSchema(settings: SiteSettings | null | undefined): string {
+export function churchSchema(settings: SiteSettings | null | undefined): string {
   const s = settings ?? {};
   const schema: Record<string, any> = {
     '@context': 'https://schema.org',
-    '@type': 'InteriorDesigner',
-    '@id': `${site.url}/#business`,
+    '@type': 'Church',
+    '@id': `${site.url}/#church`,
     name: s.title ?? site.name,
     url: site.url,
     image: `${site.url}${site.assets.ogDefault}`,
-    email: s.email ?? undefined,
+    email: s.email ?? site.contact.email,
+    telephone: s.phone ?? site.contact.phone,
     address: {
       '@type': 'PostalAddress',
-      addressLocality: s.city ?? 'Your City',
-      addressRegion: s.region ?? 'Your State',
+      streetAddress: site.contact.addressLine,
+      addressLocality: 'Chicago',
+      addressRegion: 'IL',
+      postalCode: '60616',
       addressCountry: 'US',
     },
-    // Update geo coordinates to your studio's actual location.
+    // Approximate coordinates for 1936 S Michigan Ave, Chicago.
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: s.lat ?? 0,
-      longitude: s.lon ?? 0,
+      latitude: 41.8558,
+      longitude: -87.6243,
     },
-    areaServed: (s.serviceAreas ?? ['Your City']).map((city) => ({
-      '@type': 'City',
-      name: city,
-    })),
-    priceRange: '$$',
-    sameAs: [s.socialInstagram, s.socialFacebook].filter(Boolean),
+    // Sunday worship service.
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Sunday',
+      opens: '11:00',
+      closes: '12:15',
+    },
+    sameAs: [
+      s.socialInstagram ?? site.social.instagram,
+      s.socialFacebook ?? site.social.facebook,
+      site.social.youtube,
+    ].filter(Boolean),
   };
-  if (s.phone) schema.telephone = s.phone;
   return JSON.stringify(schema);
 }
 

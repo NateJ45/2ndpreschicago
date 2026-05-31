@@ -22,7 +22,6 @@ import {
   CogIcon,
   HomeIcon,
   UserIcon,
-  PackageIcon,
   HelpCircleIcon,
   InfoOutlineIcon,
   EnvelopeIcon,
@@ -49,7 +48,6 @@ const SINGLETON_TYPES = [
   // Core pages
   'homePage',
   'aboutPage',
-  'servicesPage',
   'faqPage',
   'contactPage',
   'journalPage',
@@ -61,7 +59,6 @@ const SINGLETON_TYPES = [
 ] as const;
 
 const ORDERABLE_TYPES = [
-  'service',
   'philosophyPoint',
 ] as const;
 
@@ -194,7 +191,6 @@ export const deskStructure = (S: StructureBuilder, context: StructureResolverCon
             .items([
               singletonWithPreview(S, 'homePage', 'Home', HomeIcon),
               singletonWithPreview(S, 'aboutPage', 'About', UserIcon),
-              singletonWithPreview(S, 'servicesPage', 'Services', PackageIcon),
               singletonWithPreview(S, 'faqPage', 'FAQ', HelpCircleIcon),
               singletonWithPreview(S, 'contactPage', 'Contact', EnvelopeIcon),
               singletonWithPreview(S, 'journalPage', 'Journal (index page)', BookIcon),
@@ -217,13 +213,6 @@ export const deskStructure = (S: StructureBuilder, context: StructureResolverCon
           S.list()
             .title('Content')
             .items([
-              orderableDocumentListDeskItem({
-                type: 'service',
-                title: 'Services',
-                icon: PackageIcon,
-                S,
-                context,
-              }),
               orderableDocumentListDeskItem({
                 type: 'philosophyPoint',
                 title: 'Philosophy Values',

@@ -13,8 +13,6 @@ import { journalPage } from './journalPage';
 import { notFoundPage } from './notFoundPage';
 import { philosophyPoint } from './philosophyPoint';
 import { privacyPage } from './privacyPage';
-import { service } from './service';
-import { servicesPage } from './servicesPage';
 import { siteSettings } from './siteSettings';
 import { studioGuide } from './studioGuide';
 import { studioNotes } from './studioNotes';
@@ -29,7 +27,6 @@ export const schemaTypes = [
   siteSettings,
   homePage,
   aboutPage,
-  servicesPage,
   faqPage,
   contactPage,
   journalPage,
@@ -44,7 +41,6 @@ export const schemaTypes = [
   testimonial,
   faqItem,
   philosophyPoint,
-  service,
   journalCategory,
   journalEntry,
 ];
