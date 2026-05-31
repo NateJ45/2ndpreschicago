@@ -1,8 +1,8 @@
 # Module Library
 
-All 12 modules are listed below. Each is OFF by default in the starter; enable
+All 13 modules are listed below. Each is OFF by default in the starter; enable
 only the ones a given client needs by following the steps in the module's
-enable doc. **`events` is enabled on this (Second Presbyterian) site.**
+enable doc. **`events` and `sermons` are enabled on this (Second Presbyterian) site.**
 
 For the shared folder-shape contract and the verify loop, see
 `modules/README.md`.
@@ -30,6 +30,7 @@ optional additions offer interactive qualification tools.
 | Module | Description | Route(s) | Enable doc |
 |--------|-------------|----------|------------|
 | [events](#events) | Church/org events: recurring rhythms + one-time dated events, with a static fallback list | `/events`, `/events/[slug]` | [docs/modules/events.md](events.md) |
+| [sermons](#sermons) | Sermons/media: featured latest + archive + livestream, with a graceful "watch online" fallback | `/sermons`, `/sermons/[slug]` | [docs/modules/sermons.md](sermons.md) |
 | [portfolio](#portfolio) | Browsable project gallery with category filtering and before/after comparisons | `/portfolio`, `/portfolio/[slug]`, `/portfolio/before-after` | [docs/modules/portfolio.md](portfolio.md) |
 | [process](#process) | Step-by-step "how I work" page driven by orderable processStep documents | `/process` | [docs/modules/process.md](process.md) |
 | [newsletter](#newsletter) | Global email signup widget (no dedicated route; embedded in other pages or the footer) | none | [docs/modules/newsletter.md](newsletter.md) |
@@ -57,6 +58,19 @@ optional registration link, and Event JSON-LD. Introduces two schemas
 one-time events). Enabled on the Second Presbyterian site.
 
 Routes: `/events` (index), `/events/[slug]` (detail)
+
+---
+
+### sermons
+
+Adds a sermons/media section. The index shows a featured latest message, an
+archive grid, and a persistent Watch Live link, with a graceful "watch online"
+fallback when empty. Each sermon has a detail page with an embedded
+YouTube/Vimeo player, date/speaker/series/scripture, optional audio, and notes.
+Two schemas (`sermonsPage` singleton, `sermon` collection). Enabled on the
+Second Presbyterian site.
+
+Routes: `/sermons` (index), `/sermons/[slug]` (detail)
 
 ---
 

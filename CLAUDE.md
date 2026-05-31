@@ -85,13 +85,16 @@ Core routes that ship with the starter (always on, not toggleable):
 | `/contact` | `src/pages/contact.astro` | Contact details + map (church build removed the Web3Forms form) |
 | `/events` | `src/pages/events/index.astro` | Events module: upcoming + recurring rhythms |
 | `/events/[slug]` | `src/pages/events/[slug].astro` | Event detail |
+| `/sermons` | `src/pages/sermons/index.astro` | Sermons module: featured + archive + livestream |
+| `/sermons/[slug]` | `src/pages/sermons/[slug].astro` | Sermon detail (embedded video) |
+| `/worship` | `src/pages/worship.astro` | The "I'm New / Plan a Visit" page (first-visit info) |
 | `/journal` | `src/pages/journal/index.astro` | Post grid with category chips |
 | `/journal/[slug]` | `src/pages/journal/[slug].astro` | Post detail: reading progress + header + cover + body + related |
 | `/privacy` | `src/pages/privacy.astro` | Privacy policy from singleton, with static fallback when doc is absent |
 | `/sitemap-index.xml` | `@astrojs/sitemap` (auto) | Production sitemap |
 | `/404` | `src/pages/404.astro` | Custom 404 |
 
-Additional routes come from opt-in modules staged under `modules/`. Each module is documented under `docs/modules/`. Modules: `events` (ENABLED on this site, see `docs/modules/events.md`), `portfolio`, `process`, `newsletter`, `lead-magnets`, `style-quiz`, `budget-calculator`, `shop`, `e-design`, `gift-certificates`, `press`, `resources`.
+Additional routes come from opt-in modules staged under `modules/`. Each module is documented under `docs/modules/`. Modules: `events` and `sermons` (both ENABLED on this site, see their docs in `docs/modules/`), `portfolio`, `process`, `newsletter`, `lead-magnets`, `style-quiz`, `budget-calculator`, `shop`, `e-design`, `gift-certificates`, `press`, `resources`.
 
 ---
 

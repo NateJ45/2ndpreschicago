@@ -22,7 +22,7 @@ Provenance: built on our reusable NCS Astro + Sanity starter. The migration inve
 | Route | Description |
 |---|---|
 | `/` | Home (sanctuary hero, welcome, worship times, get-involved, events teaser) |
-| `/worship` | Service time, what to expect, communion, kids, watch online |
+| `/worship` | The "I'm New / Plan a Visit" page: service time, what to expect, parking, kids, accessibility |
 | `/about` | The church's story + the landmark building |
 | `/what-we-believe` | Beliefs, PCUSA identity, core values |
 | `/music` | The quartette choir and the 1917 Austin organ |
@@ -33,11 +33,12 @@ Provenance: built on our reusable NCS Astro + Sanity starter. The migration inve
 | `/weddings` | Weddings in the historic sanctuary (FAQ + pricing) |
 | `/give` | Online giving (Vanco), by mail, designated gifts |
 | `/events`, `/events/[slug]` | Events calendar (recurring + one-time) |
+| `/sermons`, `/sermons/[slug]` | Sermons: featured latest + archive + livestream |
 | `/contact` | Contact details + map |
 | `/faq` | Common visitor questions |
 | `/privacy`, `/404` | Privacy policy, custom 404 |
 
-Nav groups: **About Us** (Worship / What We Believe / Music / Pastors & Staff), **Get Involved** (Grow / Serve / Kids), **Events**, **Food**, **Space** (Use Our Space / Weddings / Friends of Historic Second Church), **Give**.
+Nav: **I'm New** (the worship/visit page), **About Us** (What We Believe / Music / Pastors & Staff), **Get Involved** (Grow / Serve / Kids / Food Ministry), **Watch** (sermons), **Events**, **Space** (Use Our Space / Weddings / Friends of Historic Second Church), **Give**.
 
 ---
 
