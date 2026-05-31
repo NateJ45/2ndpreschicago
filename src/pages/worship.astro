@@ -7,9 +7,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import tiffanyWindows from '@/assets/tiffany-windows.webp';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 
@@ -68,22 +70,31 @@ const pillOutline =
 
   {/* Children in worship */}
   <section class="bg-background" aria-labelledby="worship-kids">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
-      <SectionHeading
-        eyebrow="Little ones welcome"
-        headline="Children belong in worship"
-        headingId="worship-kids"
-      />
-      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
-        <p>
-          Little ones are part of the worshipping congregation at Second, and we welcome their noise
-          and their needs. We keep books, coloring materials, and fidget toys on hand, and there is a
-          children's message during the service.
-        </p>
-        <p>
-          Need a quieter moment? A cry room with an audio stream of the service is always available.
-        </p>
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
+      <div>
+        <SectionHeading
+          eyebrow="Little ones welcome"
+          headline="Children belong in worship"
+          headingId="worship-kids"
+        />
+        <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
+          <p>
+            Little ones are part of the worshipping congregation at Second, and we welcome their noise
+            and their needs. We keep books, coloring materials, and fidget toys on hand, and there is a
+            children's message during the service.
+          </p>
+          <p>
+            Need a quieter moment? A cry room with an audio stream of the service is always available.
+          </p>
+        </div>
       </div>
+      <Image
+        src={tiffanyWindows}
+        alt="Three Tiffany landscape windows of trees and hills in the sanctuary"
+        widths={[480, 768, 968]}
+        sizes="(min-width: 768px) 45vw, 100vw"
+        class="w-full h-auto rounded-md shadow-sm"
+      />
     </div>
   </section>
 

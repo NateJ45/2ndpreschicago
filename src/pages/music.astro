@@ -7,9 +7,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import muralAngels from '@/assets/mural-angels.jpg';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 
@@ -69,13 +71,21 @@ const schemas = [
 
   {/* The organ */}
   <section class="bg-background" aria-labelledby="organ-heading">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
-      <SectionHeading
-        eyebrow="The Organ"
-        headline="Austin Opus 767, built 1917"
-        headingId="organ-heading"
+    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
+      <Image
+        src={muralAngels}
+        alt="A painted panel of angels with instruments in the sanctuary's Arts and Crafts decoration"
+        widths={[480, 768, 800]}
+        sizes="(min-width: 768px) 45vw, 100vw"
+        class="w-full h-auto rounded-md shadow-sm order-last md:order-first"
       />
       <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+        <SectionHeading
+          eyebrow="The Organ"
+          headline="Austin Opus 767, built 1917"
+          headingId="organ-heading"
+        />
+        <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
         <p>
           Our pipe organ carries salvaged parts of an 1873 Johnson &amp; Son instrument that was lost when
           fire destroyed the sanctuary in 1900. The organ you hear today was completed by the Austin Organ
@@ -89,6 +99,7 @@ const schemas = [
         <p class="text-base">
           Our music is led by <a href="/pastor-staff" class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">Michael Shawgo, Director of Music &amp; Organist</a>.
         </p>
+        </div>
       </div>
     </div>
   </section>
