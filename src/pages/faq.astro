@@ -4,13 +4,15 @@
 // native (no-JS) accordion. Emits FAQPage JSON-LD for rich results.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroFaq from '@/assets/sanctuary-interior.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('faqPage').catch(() => null);
 
 const title = `Frequently Asked Questions · ${site.name}`;
 const description =
@@ -55,9 +57,12 @@ const schemas = [
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Common Questions"
-    headline="Everything you want to know"
-    subhead="If your question is not here, just ask. We would love to help you feel at home before you ever walk in."
+    eyebrow={page?.heroEyebrow ?? 'Common Questions'}
+    headline={page?.heroHeadline ?? 'Everything you want to know'}
+    subhead={page?.heroSubhead ?? 'If your question is not here, just ask. We would love to help you feel at home before you ever walk in.'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroFaq}
+    localImageAlt="Inside the sanctuary at Second Presbyterian"
     headingId="faq-hero"
     size="short"
   />

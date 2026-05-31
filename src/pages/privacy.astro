@@ -10,6 +10,7 @@
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
+import heroPrivacy from '@/assets/hero-sanctuary.webp';
 import PortableText from '@/components/PortableText';
 import { getPrivacyPage, getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
@@ -56,6 +57,9 @@ const hasSanityBody = Boolean(page?.body);
     eyebrow={heroEyebrow}
     headline={heroHeadline}
     subhead={heroSubhead}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroPrivacy}
+    localImageAlt="Second Presbyterian Church on South Michigan Avenue"
     headingId="privacy-hero-heading"
     size="short"
   />

@@ -3,13 +3,15 @@
 // Grow. Community groups: Bible study, Theology on Tap, reading groups.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroGrow from '@/assets/hero-grow.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('growPage').catch(() => null);
 
 const title = `Grow · ${site.name}`;
 const description =
@@ -32,9 +34,12 @@ const groups = [
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Get Involved"
-    headline="Community Groups at Second"
-    subhead="Drop in and walk with others on the Way of Jesus."
+    eyebrow={page?.heroEyebrow ?? 'Get Involved'}
+    headline={page?.heroHeadline ?? 'Community Groups at Second'}
+    subhead={page?.heroSubhead ?? 'Drop in and walk with others on the Way of Jesus.'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroGrow}
+    localImageAlt="Inside the historic sanctuary at Second Presbyterian"
     headingId="grow-hero"
     size="short"
   />

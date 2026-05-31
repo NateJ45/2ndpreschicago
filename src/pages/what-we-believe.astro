@@ -5,7 +5,8 @@
 // only adjust formatting/layout.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroBeliefs from '@/assets/tiffany-windows.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
@@ -13,6 +14,7 @@ import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('beliefsPage').catch(() => null);
 
 const title = `What We Believe · ${site.name}`;
 const description =
@@ -90,9 +92,12 @@ const resources = [
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="What We Believe"
-    headline="The faith we share"
-    subhead="What we hold to be true about humanity, about God, and about the good news of Jesus Christ."
+    eyebrow={page?.heroEyebrow ?? 'What We Believe'}
+    headline={page?.heroHeadline ?? 'The faith we share'}
+    subhead={page?.heroSubhead ?? 'What we hold to be true about humanity, about God, and about the good news of Jesus Christ.'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroBeliefs}
+    localImageAlt="A Tiffany stained-glass window at Second Presbyterian"
     headingId="believe-hero"
     size="short"
   />

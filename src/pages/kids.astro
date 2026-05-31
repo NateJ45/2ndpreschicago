@@ -3,7 +3,8 @@
 // Kids. How children and families are welcomed at Second.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroKids from '@/assets/sanctuary-interior.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
@@ -11,6 +12,7 @@ import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('kidsPage').catch(() => null);
 
 const title = `Kids · ${site.name}`;
 const description =
@@ -26,9 +28,12 @@ const schemas = [
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Get Involved"
-    headline="Children are welcome here"
-    subhead="At Second, little ones are part of the worshipping congregation, and we welcome their noise and their needs."
+    eyebrow={page?.heroEyebrow ?? 'Get Involved'}
+    headline={page?.heroHeadline ?? 'Children are welcome here'}
+    subhead={page?.heroSubhead ?? 'At Second, little ones are part of the worshipping congregation, and we welcome their noise and their needs.'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroKids}
+    localImageAlt="The welcoming nave of Second Presbyterian"
     headingId="kids-hero"
     size="short"
   />

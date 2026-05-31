@@ -11,6 +11,7 @@ import { getEventsPage, getRecurringEvents, getUpcomingEvents, getSiteSettings }
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
+import heroEvents from '@/assets/hero-events.webp';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
@@ -68,6 +69,9 @@ function whenLabel(ev: any): string {
     eyebrow={heroEyebrow}
     headline={heroHeadline}
     subhead={heroSubhead}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroEvents}
+    localImageAlt="A gathering inside the historic sanctuary at Second Presbyterian"
     headingId="events-hero"
     size="short"
   />

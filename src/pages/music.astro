@@ -4,7 +4,8 @@
 // and the historic 1917 Austin organ.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroMusic from '@/assets/hero-music.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import { Image } from 'astro:assets';
@@ -14,6 +15,7 @@ import FinalCta from '@/components/FinalCta.astro';
 import muralAngels from '@/assets/mural-angels.jpg';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('musicPage').catch(() => null);
 
 const title = `Music · ${site.name}`;
 const description =
@@ -29,9 +31,12 @@ const schemas = [
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Music"
-    headline="Our musical life at Second"
-    subhead="I will sing of your strength, in the morning I will sing of your love. (Psalm 59:16)"
+    eyebrow={page?.heroEyebrow ?? 'Music'}
+    headline={page?.heroHeadline ?? 'Our musical life at Second'}
+    subhead={page?.heroSubhead ?? 'I will sing of your strength, in the morning I will sing of your love. (Psalm 59:16)'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroMusic}
+    localImageAlt="The historic Austin pipe organ in the Second Presbyterian sanctuary"
     headingId="music-hero"
     size="short"
   />

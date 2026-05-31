@@ -3,7 +3,8 @@
 // Use Our Space. Venue rental and space sharing at the church.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroSpace from '@/assets/hero-space.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
@@ -11,6 +12,7 @@ import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('useOurSpacePage').catch(() => null);
 
 const title = `Use Our Space · ${site.name}`;
 const description =
@@ -34,9 +36,12 @@ const pillPrimary =
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Use Our Space"
-    headline="Interested in using space at Second?"
-    subhead="A historic, welcoming building in the heart of the South Loop, open to the wider community throughout the week."
+    eyebrow={page?.heroEyebrow ?? 'Use Our Space'}
+    headline={page?.heroHeadline ?? 'Interested in using space at Second?'}
+    subhead={page?.heroSubhead ?? 'A historic, welcoming building in the heart of the South Loop, open to the wider community throughout the week.'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroSpace}
+    localImageAlt="The historic sanctuary interior available to rent at Second Presbyterian"
     headingId="space-hero"
     size="short"
   />

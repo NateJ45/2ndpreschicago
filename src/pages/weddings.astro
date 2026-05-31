@@ -3,7 +3,8 @@
 // Weddings. Overview, FAQ, and pricing for weddings in the historic sanctuary.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroWeddings from '@/assets/hero-weddings.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
@@ -11,6 +12,7 @@ import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('weddingsPage').catch(() => null);
 
 const title = `Weddings · ${site.name}`;
 const description =
@@ -46,9 +48,12 @@ const pillPrimary =
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Weddings"
-    headline="Get married in a National Historic Landmark"
-    subhead="Our 1901 Arts and Crafts sanctuary, home to nine Tiffany windows and extraordinary murals, draws visitors from all over the world. We host weddings of every size."
+    eyebrow={page?.heroEyebrow ?? 'Weddings'}
+    headline={page?.heroHeadline ?? 'Get married in a National Historic Landmark'}
+    subhead={page?.heroSubhead ?? 'Our 1901 Arts and Crafts sanctuary, home to nine Tiffany windows and extraordinary murals, draws visitors from all over the world. We host weddings of every size.'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroWeddings}
+    localImageAlt="The sanctuary aisle beneath the Tiffany windows at Second Presbyterian"
     headingId="weddings-hero"
     size="short"
   />

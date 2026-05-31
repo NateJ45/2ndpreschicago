@@ -4,7 +4,8 @@
 // and how to watch online.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroWorship from '@/assets/hero-worship.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import { Image } from 'astro:assets';
@@ -14,6 +15,7 @@ import FinalCta from '@/components/FinalCta.astro';
 import tiffanyWindows from '@/assets/tiffany-windows.webp';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('worshipPage').catch(() => null);
 
 const title = `Worship · ${site.name}`;
 const description =
@@ -34,9 +36,12 @@ const pillOutline =
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Sunday Worship"
-    headline="There's a place for you here."
-    subhead="Whether you're a weekly churchgoer, haven't been in ages, or don't know anything about Christianity, you are welcome at Second."
+    eyebrow={page?.heroEyebrow ?? 'Sunday Worship'}
+    headline={page?.heroHeadline ?? "There's a place for you here."}
+    subhead={page?.heroSubhead ?? "Whether you're a weekly churchgoer, haven't been in ages, or don't know anything about Christianity, you are welcome at Second."}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroWorship}
+    localImageAlt="The sanctuary of Second Presbyterian set for Sunday worship"
     headingId="worship-hero"
     size="short"
   />

@@ -3,13 +3,15 @@
 // Food ministry. Lunch Bag and the South Loop Community Table.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroFood from '@/assets/hero-food.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('foodPage').catch(() => null);
 
 const title = `Food Ministry · ${site.name}`;
 const description =
@@ -28,9 +30,12 @@ const pillPrimary =
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Food Ministry"
-    headline="Food for all in need, no questions asked"
-    subhead="Find us at our Cullerton door on Tuesday, Wednesday, Thursday, and Sunday."
+    eyebrow={page?.heroEyebrow ?? 'Food Ministry'}
+    headline={page?.heroHeadline ?? 'Food for all in need, no questions asked'}
+    subhead={page?.heroSubhead ?? 'Find us at our Cullerton door on Tuesday, Wednesday, Thursday, and Sunday.'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroFood}
+    localImageAlt="Neighbors sharing a meal at the South Loop Community Table at Second Presbyterian"
     headingId="food-hero"
     size="short"
   />

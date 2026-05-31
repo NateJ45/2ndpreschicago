@@ -3,13 +3,15 @@
 // Serve. Ways to serve our neighbors through the church.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroServe from '@/assets/hero-exterior.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('servePage').catch(() => null);
 
 const title = `Serve · ${site.name}`;
 const description =
@@ -31,9 +33,12 @@ const ways = [
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Get Involved"
-    headline="Love our neighbors"
-    subhead="We are called to serve and celebrate Jesus for the good of the world. Much of that happens right here in the South Loop."
+    eyebrow={page?.heroEyebrow ?? 'Get Involved'}
+    headline={page?.heroHeadline ?? 'Love our neighbors'}
+    subhead={page?.heroSubhead ?? 'We are called to serve and celebrate Jesus for the good of the world. Much of that happens right here in the South Loop.'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroServe}
+    localImageAlt="Second Presbyterian Church on South Michigan Avenue"
     headingId="serve-hero"
     size="short"
   />

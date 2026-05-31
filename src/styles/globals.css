@@ -591,6 +591,18 @@
   .hero-slide { transition: none; animation: none; transform: none; }
 }
 
+/* ---- Single static hero image (interior pages + home). A slow, continuous
+   Ken Burns drift so a one-image hero still feels alive, reusing the same
+   hero-kb keyframe as the slideshow. Transform-only (no layout shift / CLS).
+   Reduced-motion users get a perfectly still image. ---- */
+.hero-kb-img { transform-origin: center; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-kb-img {
+    animation: hero-kb 22s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+}
+
 /* ---- Drop cap -- float cap on the first paragraph of every journal post.
    JournalPortableText.tsx adds .prose-drop-cap to the first <p> only. ---- */
 .prose-drop-cap::first-letter {

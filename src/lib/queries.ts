@@ -55,6 +55,23 @@ export async function getSiteSettings() {
   }`, {}, null);
 }
 
+// ---- Generic per-page hero (church page singletons) -----------------------
+// One helper for every per-page singleton (worshipPage, musicPage, growPage,
+// etc.). Returns the hero + SEO fields, or null when Sanity is unconfigured or
+// the document doesn't exist yet, so pages fall back to their inline copy +
+// built-in photo. Pass the singleton's _type, e.g. getPageHero('worshipPage').
+export async function getPageHero(type: string) {
+  return sanityFetch(`*[_type == $type][0]{
+    heroEyebrow,
+    heroHeadline,
+    heroSubhead,
+    heroImage${IMAGE_PROJECTION},
+    seoTitle,
+    seoDescription,
+    seoImage${IMAGE_PROJECTION}
+  }`, { type }, null);
+}
+
 // ---- Home page ------------------------------------------------------------
 
 export async function getHomePage() {

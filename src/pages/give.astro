@@ -3,13 +3,15 @@
 // Give. Online giving via Vanco, plus by-mail and designated-gift options.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroGive from '@/assets/mural-angels.jpg';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('givePage').catch(() => null);
 
 const title = `Give · ${site.name}`;
 const description =
@@ -32,9 +34,12 @@ const pillPrimary =
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Give"
-    headline="Thank you"
-    subhead="For entrusting your tithes and offerings to Second. Your generosity sustains worship, music, and a food ministry that feeds our neighbors."
+    eyebrow={page?.heroEyebrow ?? 'Give'}
+    headline={page?.heroHeadline ?? 'Thank you'}
+    subhead={page?.heroSubhead ?? 'For entrusting your tithes and offerings to Second. Your generosity sustains worship, music, and a food ministry that feeds our neighbors.'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroGive}
+    localImageAlt="The painted angels on the sanctuary ceiling at Second Presbyterian"
     headingId="give-hero"
     size="short"
   />

@@ -15,6 +15,8 @@ import CtaLink from '@/components/CtaLink.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import { splitScriptAccent } from '@/lib/scriptAccent';
 import { ChevronDown } from 'lucide-react';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
 interface CtaBlock {
   label?: string;
@@ -41,6 +43,12 @@ interface Props {
   /** Optional list of hero images. 2+ render a cross-fading slideshow; 1 (or
       falling back to backgroundImage) renders a single static image. */
   backgroundImages?: SanityImageObject[] | null;
+  /** Local fallback hero image (an imported Astro asset). Used when no Sanity
+      backgroundImage/backgroundImages is set, so the page always shows a hero
+      photo even before an editor uploads one in the Studio. */
+  localImage?: ImageMetadata;
+  /** Alt text for the local fallback image. */
+  localImageAlt?: string;
   primaryCta?: CtaBlock | null;
   secondaryCta?: CtaBlock | null;
   headingId: string;
@@ -70,6 +78,8 @@ const {
   subhead,
   backgroundImage,
   backgroundImages,
+  localImage,
+  localImageAlt,
   primaryCta,
   secondaryCta,
   headingId,
@@ -123,7 +133,8 @@ const heroImageList = (Array.isArray(backgroundImages) ? backgroundImages : []).
 const effectiveImages = heroImageList.length > 0
   ? heroImageList
   : (backgroundImage?.asset ? [backgroundImage] : []);
-const hasImage = effectiveImages.length > 0;
+// An image hero renders when there's a Sanity image OR a local fallback photo.
+const hasImage = effectiveImages.length > 0 || !!localImage;
 
 // "tall" (homepage) fills the screen below the sticky header on first load.
 // The exact fill height comes from the .hero-fill class plus the measured
@@ -237,9 +248,31 @@ const wrapperHeight =
     ]}
     aria-labelledby={headingId}
   >
-    {/* Background: single static image or a cross-fading slideshow (2+ images),
-        plus the readability overlays. See HeroBackground.astro. */}
-    <HeroBackground images={effectiveImages} />
+    {/* Background: a Sanity image / cross-fading slideshow when set (see
+        HeroBackground.astro), otherwise the page's local fallback photo. Both
+        carry the same readability overlays and a slow Ken Burns drift. */}
+    {effectiveImages.length > 0 ? (
+      <HeroBackground images={effectiveImages} />
+    ) : (
+      <>
+        <Image
+          src={localImage!}
+          alt={localImageAlt ?? ''}
+          widths={[768, 1280, 1600, 2000]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="absolute inset-0 h-full w-full object-cover object-center hero-kb-img"
+        />
+        {/* Uniform overlay for baseline readability across the whole image. */}
+        <div class="absolute inset-0 bg-accent-dark/25" aria-hidden="true"></div>
+        {/* Bottom-weighted gradient, extra darkening behind the text. */}
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-accent-dark/85 via-accent-dark/45 to-transparent"
+          aria-hidden="true"
+        ></div>
+      </>
+    )}
 
     {/* Content sits at the bottom of the section thanks to justify-end on the
         section itself. Avoids the h-full-on-flex-item brittleness that left

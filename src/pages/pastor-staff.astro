@@ -7,7 +7,8 @@
 // candidate for a Sanity "staffMember" collection later.)
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings } from '@/lib/queries';
+import heroStaff from '@/assets/hero-staff.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import { Image } from 'astro:assets';
@@ -20,6 +21,7 @@ import michaelPhoto from '@/assets/michael-shawgo.webp';
 import ashleyPhoto from '@/assets/ashley-mclean.webp';
 
 const siteSettings = await getSiteSettings().catch(() => null);
+const page = await getPageHero('staffPage').catch(() => null);
 
 const title = `Pastors & Staff · ${site.name}`;
 const description =
@@ -92,9 +94,12 @@ const staff = [
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow="Pastors & Staff"
-    headline="The people you'll meet at Second"
-    subhead="A small, dedicated team serving a historic congregation in the South Loop."
+    eyebrow={page?.heroEyebrow ?? 'Pastors & Staff'}
+    headline={page?.heroHeadline ?? "The people you'll meet at Second"}
+    subhead={page?.heroSubhead ?? 'A small, dedicated team serving a historic congregation in the South Loop.'}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroStaff}
+    localImageAlt="The sanctuary of Second Presbyterian Church"
     headingId="staff-hero"
     size="short"
   />

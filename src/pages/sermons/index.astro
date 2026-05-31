@@ -11,6 +11,7 @@ import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import SanityImage from '@/components/SanityImage.astro';
 import Hero from '@/components/Hero.astro';
+import heroSermons from '@/assets/hero-worship.webp';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
@@ -61,6 +62,9 @@ function meta(s: any): string {
     eyebrow={heroEyebrow}
     headline={heroHeadline}
     subhead={heroSubhead}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroSermons}
+    localImageAlt="The sanctuary at Second Presbyterian set for worship"
     headingId="sermons-hero"
     size="short"
   />
