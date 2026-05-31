@@ -4,6 +4,8 @@
 import { aboutPage } from './aboutPage';
 import { contactPage } from './contactPage';
 import { ctaBlock } from './ctaBlock';
+import { event } from './event';
+import { eventsPage } from './eventsPage';
 import { faqItem } from './faqItem';
 import { faqPage } from './faqPage';
 import { homePage } from './homePage';
@@ -30,6 +32,7 @@ export const schemaTypes = [
   faqPage,
   contactPage,
   journalPage,
+  eventsPage,
   notFoundPage,
   privacyPage,
   // Start Here editable singletons
@@ -43,4 +46,5 @@ export const schemaTypes = [
   philosophyPoint,
   journalCategory,
   journalEntry,
+  event,
 ];

@@ -36,10 +36,10 @@ export const ctaBlock = defineType({
       to: [
         { type: 'homePage' },
         { type: 'aboutPage' },
-        { type: 'servicesPage' },
         { type: 'faqPage' },
         { type: 'contactPage' },
         { type: 'journalPage' },
+        { type: 'eventsPage' },
         { type: 'journalEntry' },
       ],
       hidden: ({ parent }) => parent?.linkType !== 'internal',

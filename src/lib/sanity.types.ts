@@ -15,23 +15,6 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
-export type JournalCategory = {
-  _id: string;
-  _type: "journalCategory";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  description?: string;
-};
-
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
-};
-
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -39,20 +22,48 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
-export type Service = {
+export type Event = {
   _id: string;
-  _type: "service";
+  _type: "event";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  name?: string;
+  title?: string;
   slug?: Slug;
-  price?: string;
-  priceNumeric?: number;
-  shortDescription?: string;
-  features?: Array<string>;
-  bestFor?: string;
-  featuredImage?: {
+  eventType?: "recurring" | "oneTime";
+  category?:
+    | "Worship"
+    | "Study"
+    | "Meals"
+    | "Music"
+    | "Fellowship"
+    | "Service"
+    | "Special";
+  scheduleLabel?: string;
+  start?: string;
+  end?: string;
+  location?: string;
+  summary?: string;
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h3";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  registrationUrl?: string;
+  image?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
@@ -60,24 +71,7 @@ export type Service = {
     alt?: string;
     _type: "image";
   };
-  longDescription?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: null;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-  displayOrder?: number;
-  showOnHomepage?: boolean;
-  ctaLabel?: string;
-  orderRank?: string;
+  featured?: boolean;
 };
 
 export type SanityImageCrop = {
@@ -94,6 +88,23 @@ export type SanityImageHotspot = {
   y?: number;
   height?: number;
   width?: number;
+};
+
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
+};
+
+export type JournalCategory = {
+  _id: string;
+  _type: "journalCategory";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  description?: string;
 };
 
 export type PhilosophyPoint = {
@@ -365,13 +376,6 @@ export type AboutPageReference = {
   [internalGroqTypeReferenceTo]?: "aboutPage";
 };
 
-export type ServicesPageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "servicesPage";
-};
-
 export type FaqPageReference = {
   _ref: string;
   _type: "reference";
@@ -393,6 +397,13 @@ export type JournalPageReference = {
   [internalGroqTypeReferenceTo]?: "journalPage";
 };
 
+export type EventsPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "eventsPage";
+};
+
 export type JournalEntryReference = {
   _ref: string;
   _type: "reference";
@@ -407,10 +418,10 @@ export type CtaBlock = {
   internalLink?:
     | HomePageReference
     | AboutPageReference
-    | ServicesPageReference
     | FaqPageReference
     | ContactPageReference
     | JournalPageReference
+    | EventsPageReference
     | JournalEntryReference;
   externalUrl?: string;
   emailAddress?: string;
@@ -596,6 +607,35 @@ export type JournalEntry = {
   >;
 };
 
+export type EventsPage = {
+  _id: string;
+  _type: "eventsPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
 export type JournalPage = {
   _id: string;
   _type: "journalPage";
@@ -743,80 +783,6 @@ export type FaqPage = {
     _type: "image";
   };
   secondaryCta?: CtaBlock;
-  note?: string;
-};
-
-export type ServicesPage = {
-  _id: string;
-  _type: "servicesPage";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  heroEyebrow?: string;
-  heroHeadline?: string;
-  heroSubhead?: string;
-  heroImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  heroScriptAccent?: string;
-  stickyCtaLabel?: string;
-  servicesListEyebrow?: string;
-  servicesListHeadline?: string;
-  servicesListSubhead?: string;
-  builderRealtorSection?: {
-    eyebrow?: string;
-    headline?: string;
-    description?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal";
-      listItem?: "bullet" | "number";
-      markDefs?: null;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
-    forBuildersText?: string;
-    forRealtorsText?: string;
-    forContractorsText?: string;
-    cta?: CtaBlock;
-  };
-  serviceAreaSection?: {
-    eyebrow?: string;
-    headline?: string;
-    description?: string;
-  };
-  finalCtaEyebrow?: string;
-  finalCtaHeadline?: string;
-  finalCtaScriptAccent?: string;
-  finalCtaSubhead?: string;
-  finalCta?: CtaBlock;
-  finalCtaBackgroundImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
   note?: string;
 };
 
@@ -1175,12 +1141,12 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
-  | JournalCategory
-  | Slug
   | SanityImageAssetReference
-  | Service
+  | Event
   | SanityImageCrop
   | SanityImageHotspot
+  | Slug
+  | JournalCategory
   | PhilosophyPoint
   | FaqItem
   | StudioPlaybook
@@ -1191,18 +1157,18 @@ export type AllSanitySchemaTypes =
   | SiteSettings
   | HomePageReference
   | AboutPageReference
-  | ServicesPageReference
   | FaqPageReference
   | ContactPageReference
   | JournalPageReference
+  | EventsPageReference
   | JournalEntryReference
   | CtaBlock
   | JournalCategoryReference
   | JournalEntry
+  | EventsPage
   | JournalPage
   | ContactPage
   | FaqPage
-  | ServicesPage
   | AboutPage
   | TestimonialReference
   | HomePage

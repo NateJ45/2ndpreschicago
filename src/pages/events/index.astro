@@ -1,0 +1,132 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Events index. Two groups: upcoming one-time events (future-dated, from Sanity)
+// and the weekly/recurring rhythms of the church. The recurring rhythms fall
+// back to a known list so the page is complete before Sanity is connected.
+// Fallback rhythms have no slug, so they render as plain rows (no detail link);
+// once events are seeded in Sanity, each links to its /events/[slug] page.
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getEventsPage, getRecurringEvents, getUpcomingEvents, getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import FinalCta from '@/components/FinalCta.astro';
+
+const [page, recurring, upcoming, siteSettings] = await Promise.all([
+  getEventsPage().catch(() => null),
+  getRecurringEvents().catch(() => []),
+  getUpcomingEvents().catch(() => []),
+  getSiteSettings().catch(() => null),
+]);
+
+const title = page?.seoTitle ?? `Events · ${site.name}`;
+const description =
+  page?.seoDescription ??
+  'Worship, study, shared meals, music, and fellowship at Second Presbyterian Church of Chicago. See what is coming up and the rhythms of our week.';
+
+const heroEyebrow = page?.heroEyebrow ?? 'Events';
+const heroHeadline = page?.heroHeadline ?? 'Upcoming at Second';
+const heroSubhead =
+  page?.heroSubhead ??
+  "There is always something happening here. We're formed in community: worship, fellowship, study, art, and food.";
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Events', url: `${site.url}/events` },
+  ]),
+];
+
+// Known weekly rhythms — used when no recurring events exist in Sanity yet.
+const RECURRING_FALLBACK = [
+  { title: 'Sunday Worship', scheduleLabel: 'Sundays, 11am to 12:15pm', summary: 'A service of word and sacrament. Whoever you are, you are welcome here.' },
+  { title: 'Lunch Bag', scheduleLabel: 'Tuesday to Thursday, 11am to 1pm', summary: 'Grab-and-go food for all in need, no questions asked, at our Cullerton door.' },
+  { title: 'South Loop Community Table', scheduleLabel: 'Sundays, 6:45pm to 8:30pm', summary: 'A free, sit-down meal hosted with Care for Friends. Pauses for the summer.' },
+  { title: 'Mid-Morning Bible Study', scheduleLabel: 'First and third Thursdays, 10am', summary: 'Reading through books of the Bible together over coffee.' },
+  { title: 'Theology on Tap', scheduleLabel: 'Third Thursdays, 7pm', summary: 'Short theological readings and conversation at rotating pubs.' },
+  { title: 'Alpha to Omega Bible Reading Group', scheduleLabel: 'Thursdays, 5pm', summary: 'Reading through the whole Bible together by conference call.' },
+  { title: 'Second Church Book Group', scheduleLabel: 'Select Sundays, 9:30am', summary: 'Reading and discussing a book together before worship.' },
+];
+
+const displayRecurring = recurring.length > 0 ? recurring : RECURRING_FALLBACK;
+
+function whenLabel(ev: any): string {
+  if (ev.scheduleLabel) return ev.scheduleLabel;
+  if (ev.start) {
+    return new Date(ev.start).toLocaleDateString('en-US', {
+      weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+    });
+  }
+  return '';
+}
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <Hero
+    eyebrow={heroEyebrow}
+    headline={heroHeadline}
+    subhead={heroSubhead}
+    headingId="events-hero"
+    size="short"
+  />
+
+  {/* Upcoming one-time events */}
+  <section class="bg-background" aria-labelledby="upcoming-heading">
+    <div class="mx-auto max-w-content px-m py-section-lg">
+      <SectionHeading eyebrow="Mark your calendar" headline="Upcoming events" headingId="upcoming-heading" />
+      {upcoming.length > 0 ? (
+        <ul class="mt-l grid grid-cols-1 md:grid-cols-2 gap-m list-none p-0" data-stagger-grid>
+          {upcoming.map((ev: any) => (
+            <li>
+              <a href={`/events/${ev.slug?.current ?? ''}`} class="card-lift group block h-full rounded-md border border-border-soft bg-card p-l no-underline">
+                {ev.category && <span class="text-xs uppercase tracking-eyebrow text-link">{ev.category}</span>}
+                <h3 class="mt-xs font-display text-h4 text-foreground group-hover:text-link transition-colors">{ev.title}</h3>
+                <p class="mt-xs text-sm text-foreground/70">{whenLabel(ev)}</p>
+                {ev.summary && <p class="mt-s text-foreground/80 leading-relaxed">{ev.summary}</p>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="mt-l text-foreground/80 italic">
+          No special events on the calendar right now. Our weekly rhythms below never stop, and the best
+          place to start is <a href="/worship" class="text-link underline underline-offset-2">Sunday worship</a>.
+        </p>
+      )}
+    </div>
+  </section>
+
+  {/* Recurring rhythms */}
+  <section class="surface-warm bg-muted" aria-labelledby="recurring-heading">
+    <div class="mx-auto max-w-content px-m py-section-lg">
+      <SectionHeading eyebrow="Every week" headline="Our weekly rhythms" headingId="recurring-heading" align="center" class="mx-auto" />
+      <ul class="mt-l max-w-3xl mx-auto list-none p-0 divide-y divide-border-soft border-t border-b border-border-soft">
+        {displayRecurring.map((ev: any) => (
+          <li class="py-m">
+            {ev.slug?.current ? (
+              <a href={`/events/${ev.slug.current}`} class="group flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-xs no-underline">
+                <span class="font-display text-h4 text-foreground group-hover:text-link transition-colors">{ev.title}</span>
+                <span class="text-sm text-foreground/70 shrink-0">{whenLabel(ev)}</span>
+              </a>
+            ) : (
+              <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-xs">
+                <span class="font-display text-h4 text-foreground">{ev.title}</span>
+                <span class="text-sm text-foreground/70 shrink-0">{whenLabel(ev)}</span>
+              </div>
+            )}
+            {ev.summary && <p class="mt-xs text-foreground/75">{ev.summary}</p>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <FinalCta
+    eyebrow="Come and See"
+    headline="Join us this week"
+    subhead="Worship is at 11am every Sunday, and everyone is welcome at every gathering."
+    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+  />
+</BaseLayout>

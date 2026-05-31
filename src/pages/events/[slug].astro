@@ -1,0 +1,125 @@
+---
+// Safe to edit by hand for copy + structure changes.
+// Event detail page. Built for each event slug in Sanity. Without a Sanity
+// project there are no slugs, so no detail pages are generated (the index's
+// fallback rhythms render as plain rows instead of links).
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getAllEventSlugs, getEventBySlug, getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
+import { site } from '@/data/site';
+import SanityImage from '@/components/SanityImage.astro';
+import PortableText from '@/components/PortableText';
+import FinalCta from '@/components/FinalCta.astro';
+
+export async function getStaticPaths() {
+  const slugs = await getAllEventSlugs().catch(() => []);
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const [event, siteSettings] = await Promise.all([
+  getEventBySlug(slug as string),
+  getSiteSettings().catch(() => null),
+]);
+
+if (!event) {
+  return Astro.redirect('/404');
+}
+
+const title = `${event.title} · ${site.name}`;
+const description = event.summary ?? `An event at ${site.name}.`;
+
+function whenLabel(ev: any): string {
+  if (ev.scheduleLabel) return ev.scheduleLabel;
+  if (ev.start) {
+    return new Date(ev.start).toLocaleString('en-US', {
+      weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+      hour: 'numeric', minute: '2-digit',
+    });
+  }
+  return '';
+}
+
+const schemas = [
+  breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Events', url: `${site.url}/events` },
+    { name: event.title ?? (slug as string), url: `${site.url}/events/${slug}` },
+  ]),
+];
+
+// Event JSON-LD when a concrete start date is set.
+if (event.start) {
+  schemas.push(
+    JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: event.title,
+      startDate: event.start,
+      ...(event.end ? { endDate: event.end } : {}),
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      description: event.summary ?? undefined,
+      location: {
+        '@type': 'Place',
+        name: event.location ?? site.name,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: site.contact.addressLine,
+          addressLocality: 'Chicago',
+          addressRegion: 'IL',
+          postalCode: '60616',
+          addressCountry: 'US',
+        },
+      },
+      organizer: { '@type': 'Organization', name: site.name, url: site.url },
+    }),
+  );
+}
+
+const pillPrimary =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+---
+
+<BaseLayout {title} {description} {schemas} {siteSettings}>
+  <article>
+    <header class="bg-background">
+      <div class="mx-auto max-w-3xl px-m pt-section-lg pb-l">
+        <p class="text-xs uppercase tracking-widest text-foreground/80 mb-s">
+          <a href="/events" class="hover:text-primary-dark transition-colors">Events</a>
+          {event.category && <span class="mx-xs">·</span>}
+          {event.category && <span>{event.category}</span>}
+        </p>
+        <h1 class="font-display text-h1 text-foreground leading-tight">{event.title}</h1>
+        <p class="mt-m text-lg text-foreground/80">{whenLabel(event)}</p>
+        {event.location && <p class="mt-xs text-foreground/70">{event.location}</p>}
+        {event.summary && <p class="mt-m text-xl text-foreground/85 leading-relaxed">{event.summary}</p>}
+        {event.registrationUrl && (
+          <div class="mt-l">
+            <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>Register</a>
+          </div>
+        )}
+      </div>
+    </header>
+
+    {event.image?.asset && (
+      <figure class="mx-auto max-w-4xl px-m">
+        <SanityImage source={event.image} width={1600} loading="eager" sizes="(min-width: 920px) 896px, 100vw" class="w-full h-auto rounded-md" />
+      </figure>
+    )}
+
+    {event.description && (
+      <div class="mx-auto max-w-3xl px-m py-section-lg">
+        <PortableText client:visible value={event.description} className="text-foreground/85 text-lg leading-relaxed" />
+      </div>
+    )}
+  </article>
+
+  <FinalCta
+    eyebrow="Come and See"
+    headline="Join us at Second"
+    subhead="Everyone is welcome. Worship is at 11am every Sunday, and the door is always open."
+    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+  />
+</BaseLayout>

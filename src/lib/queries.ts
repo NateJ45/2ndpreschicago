@@ -385,6 +385,68 @@ export async function getPrivacyPage() {
   }`, {}, null);
 }
 
+// ---- Events module --------------------------------------------------------
+
+// Card projection for the events list (no full description body).
+const EVENT_CARD = `{
+  _id, title, slug, eventType, category, scheduleLabel, start, end, location,
+  summary, registrationUrl, featured,
+  image${IMAGE_PROJECTION}
+}`;
+
+export async function getEventsPage() {
+  return sanityFetch(`*[_type == "eventsPage"][0]{
+    seoTitle, seoDescription,
+    seoImage${IMAGE_PROJECTION},
+    heroEyebrow, heroHeadline, heroSubhead,
+    heroImage${IMAGE_PROJECTION}
+  }`, {}, null);
+}
+
+// Recurring rhythms (weekly worship, Bible study) — always shown, ordered by
+// representative start time then title.
+export async function getRecurringEvents() {
+  return sanityFetch(
+    `*[_type == "event" && eventType == "recurring"] | order(start asc, title asc) ${EVENT_CARD}`,
+    {},
+    [],
+  );
+}
+
+// One-time events that haven't passed yet (end time if set, else start).
+// "now" is resolved at build time; a rebuild refreshes the list.
+export async function getUpcomingEvents() {
+  const now = new Date().toISOString();
+  return sanityFetch(
+    `*[_type == "event" && eventType == "oneTime" && coalesce(end, start, "9999-12-31T00:00:00Z") >= $now]
+      | order(featured desc, start asc) ${EVENT_CARD}`,
+    { now },
+    [],
+  );
+}
+
+export async function getEventBySlug(slug: string) {
+  return sanityFetch(
+    `*[_type == "event" && slug.current == $slug][0]{
+      _id, title, slug, eventType, category, scheduleLabel, start, end, location,
+      summary, registrationUrl, featured,
+      image${IMAGE_PROJECTION},
+      description
+    }`,
+    { slug },
+    null,
+  );
+}
+
+export async function getAllEventSlugs(): Promise<string[]> {
+  const list: Array<{ slug: { current: string } }> = await sanityFetch(
+    `*[_type == "event" && defined(slug.current)]{ slug }`,
+    {},
+    [],
+  );
+  return list.map((e) => e.slug?.current).filter(Boolean);
+}
+
 // ---- Press items (used by core: about.astro + index.astro PressStrip) ----
 
 /** Minimal press item shape used by the core PressStrip component.
