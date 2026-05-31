@@ -44,7 +44,7 @@ const schemas = [
 ];
 
 // Contact email for the fallback copy
-const contactEmail = siteSettings?.email ?? `hello@${site.domain}`;
+const contactEmail = siteSettings?.email ?? site.contact.email;
 
 // Whether to use Sanity body content
 const hasSanityBody = Boolean(page?.body);
@@ -78,20 +78,19 @@ const hasSanityBody = Boolean(page?.body);
         <div class="space-y-l text-foreground leading-relaxed">
           <p class="text-foreground/80">
             This is the privacy policy for {site.name}. The goal here is to be
-            straightforward about what information is collected and why.
+            straightforward about what information we collect and why.
           </p>
 
           <div>
             <h2 class="font-display text-h3 text-foreground mb-s">What gets collected</h2>
             <p class="text-foreground/80">
-              When you fill out the contact form on this site, you share your name, email address,
-              and whatever details you include in your message. That information is used only to
-              respond to you and to help plan your project. Nothing else.
+              When you email the church or send a message through this site, you share your name,
+              email address, and whatever details you include. We use that information only to
+              respond to you. Nothing else.
             </p>
             <p class="mt-s text-foreground/80">
-              If you subscribe to the newsletter, your email address goes to the email marketing
-              provider so occasional studio updates, room ideas, and project previews can reach
-              you. It is not shared with anyone else.
+              If you subscribe to our newsletter, your email address goes to our email provider so
+              occasional news from the church can reach you. It is not shared with anyone else.
             </p>
           </div>
 

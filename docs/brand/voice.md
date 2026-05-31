@@ -16,7 +16,9 @@ alongside `CLAUDE.md`.
 _One sentence. What does this brand sound like? Who is the reader and what do
 they feel after reading a page?_
 
-> (fill in)
+> Warm, plain-spoken, and unpretentious, like a friend who saved you a seat: a
+> historic congregation that takes God seriously and itself lightly, so a first-time
+> visitor (churchgoer or not) finishes a page feeling personally invited and at ease.
 
 ---
 
@@ -25,11 +27,11 @@ they feel after reading a page?_
 _Five pairs. Each pair is a specific, actionable contrast, not a vague
 preference._
 
-1. **Do:** (fill in) / **Not:** (fill in)
-2. **Do:** (fill in) / **Not:** (fill in)
-3. **Do:** (fill in) / **Not:** (fill in)
-4. **Do:** (fill in) / **Not:** (fill in)
-5. **Do:** (fill in) / **Not:** (fill in)
+1. **Do:** Invite plainly ("Whoever you are, you are welcome here.") / **Not:** Market the church ("Experience a transformative worship encounter.")
+2. **Do:** Give the practical facts early (time, place, parking, what to expect) / **Not:** Bury the logistics under mission language.
+3. **Do:** Welcome newcomers and doubt out loud ("haven't been in ages, or don't know anything about Christianity") / **Not:** Assume insider knowledge or lean on churchy jargon.
+4. **Do:** Be concrete about this place (nine Tiffany windows, the 1917 Austin organ, the Cullerton door) / **Not:** Reach for generic "historic beauty."
+5. **Do:** Lead with people and welcome, and let the landmark building come second / **Not:** Make the building the hero of every page.
 
 ---
 
@@ -65,7 +67,17 @@ these and replace them with plain language.
 _Add words or phrases that are specific to this client or industry and should
 never appear in their copy:_
 
-- (fill in)
+- "do life together"
+- "unchurched"
+- "worship experience"
+- "life-changing" (as hype)
+- "passionate about" / "on fire for"
+- "radical" (as a hype word)
+- "authentic community" (as filler)
+- "join us as we..." (church-bulletin filler)
+
+Note: "sanctuary" is fine and encouraged when it means our actual room. Do not
+use it as a generic metaphor for "a peaceful space."
 
 ---
 

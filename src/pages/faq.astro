@@ -1,92 +1,92 @@
 ---
 // Safe to edit by hand for copy + structure changes.
-// FAQ page. All common questions, grouped by category in the order
-// set by faqPage.categoryOrder. Visitors who get this far are pre-qualifying themselves.
-//
-// Sections:
-//   1. Hero (text-only)
-//   2. Full FAQ list, grouped by category (FaqAccordion island)
-//   3. Final CTA
-//
-// Per CLAUDE.md: this page injects FAQPage JSON-LD so each question is eligible for
-// Google's rich-result accordion in search.
+// FAQ page. Common questions for visitors, grouped by category, rendered as a
+// native (no-JS) accordion. Emits FAQPage JSON-LD for rich results.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getFaqPage, getSiteSettings } from '@/lib/queries';
-import { breadcrumbSchema, faqPageSchema } from '@/lib/schemas';
+import { getSiteSettings } from '@/lib/queries';
+import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
-
 import Hero from '@/components/Hero.astro';
-import FaqAccordion from '@/components/FaqAccordion';
 import FinalCta from '@/components/FinalCta.astro';
 
-const [page, siteSettings] = await Promise.all([
-  getFaqPage().catch(() => null),
-  getSiteSettings().catch(() => null),
-]);
+const siteSettings = await getSiteSettings().catch(() => null);
 
-const title       = page?.seoTitle       ?? `Frequently Asked Questions · ${site.name}`;
-const description = page?.seoDescription ?? 'Pricing, process, logistics, and service area — everything visitors ask before reaching out.';
+const title = `Frequently Asked Questions · ${site.name}`;
+const description =
+  'Everything a first-time visitor wants to know about worship, parking, kids, giving, weddings, and our food ministry at Second Presbyterian Church of Chicago.';
 
-const heroEyebrow  = page?.heroEyebrow  ?? 'Common Questions.';
-const heroHeadline = page?.heroHeadline ?? 'Everything You Want to Know.';
-const heroSubhead  = page?.heroSubhead  ?? '';
+const faqs = [
+  { category: 'Visiting', q: 'What time is worship?', a: 'Worship is every Sunday at 11am, and it usually runs about an hour and fifteen minutes. We are at 1936 South Michigan Avenue in the South Loop.' },
+  { category: 'Visiting', q: 'Where do I park?', a: 'We sit on Michigan Avenue close to public transit, with first-come, first-served free parking. There are additional public parking options nearby.' },
+  { category: 'Visiting', q: 'Do I have to be a member, or a Christian, to come?', a: 'Not at all. Whether you are a weekly churchgoer, have not been in ages, or do not know anything about Christianity, there is a place for you here. Everyone is welcome.' },
+  { category: 'Worship', q: 'I have never been here. What should I expect?', a: 'Our service is traditional and liturgical, with hymns, spirituals, and anthems led by organ and choir. We share communion on the first Sunday of each month. Casual attire is always welcome.' },
+  { category: 'Worship', q: 'Can I watch online?', a: 'Yes. We livestream worship on our YouTube channel, so you can join from anywhere.' },
+  { category: 'Family', q: 'Can I bring my kids?', a: 'Please do. Little ones are part of the worshipping congregation, and we welcome their noise and their needs. There is a children\'s message during the service, plus books and quiet toys, and a cry room with an audio stream if you need it.' },
+  { category: 'Giving', q: 'How do I give?', a: 'You can give online through our secure giving portal, by mail with a check, or designate your gift to the food ministry. Visit the Give page to get started.' },
+  { category: 'Weddings & Space', q: 'Can I get married at Second?', a: 'Yes. We welcome gay and straight couples to marry in our historic sanctuary. See the Weddings page for details, pricing, and how to inquire about your date.' },
+  { category: 'Weddings & Space', q: 'Can my group use the building?', a: 'Often, yes. We host all sorts of gatherings throughout the week. See the Use Our Space page and get in touch about fees and availability.' },
+  { category: 'Food', q: 'I need food. How does that work?', a: 'Find free food for all in need, no questions asked, at our Cullerton door. Lunch Bag runs Tuesday through Thursday from 11am to 1pm, and the South Loop Community Table gathers on Sunday evenings.' },
+];
 
-const categoryOrder = page?.categoryOrder ?? [];
-const faqs          = page?.faqs ?? [];
+const categoryOrder = ['Visiting', 'Worship', 'Family', 'Giving', 'Weddings & Space', 'Food'];
+const grouped = categoryOrder
+  .map((cat) => ({ category: cat, items: faqs.filter((f) => f.category === cat) }))
+  .filter((g) => g.items.length > 0);
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+});
 
 const schemas = [
   breadcrumbSchema([
     { name: 'Home', url: site.url },
-    { name: 'FAQ',  url: `${site.url}/faq` },
+    { name: 'FAQ', url: `${site.url}/faq` },
   ]),
-  faqPageSchema(faqs),
+  faqSchema,
 ];
 ---
 
-<BaseLayout {title} {description} {schemas} {siteSettings} seoImage={page?.seoImage}>
-  {/* ------- 1. Hero --------------------------------------------------------- */}
+<BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
-    eyebrow={heroEyebrow}
-    headline={heroHeadline}
-    subhead={heroSubhead}
-    backgroundImage={page?.heroImage}
-    headingId="faq-hero-heading"
+    eyebrow="Common Questions"
+    headline="Everything you want to know"
+    subhead="If your question is not here, just ask. We would love to help you feel at home before you ever walk in."
+    headingId="faq-hero"
     size="short"
-    scriptAccent={page?.heroScriptAccent ?? 'Know'}
   />
 
-  {/* ------- 2. FAQ accordion (grouped by category) ------------------------- */}
-  <section
-    class="bg-background"
-    aria-label="Frequently asked questions"
-  >
-    <div class="mx-auto max-w-content px-m py-section-lg">
-      <div class="max-w-3xl mx-auto">
-        {faqs.length > 0 ? (
-          <FaqAccordion
-            client:visible
-            faqs={faqs}
-            categoryOrder={categoryOrder}
-            idPrefix="faq-page"
-          />
-        ) : (
-          <p class="text-center text-muted-foreground italic">
-            FAQ content is being updated. <a href="/contact" class="text-link underline underline-offset-2">Ask anything</a> in the meantime.
-          </p>
-        )}
-      </div>
+  <section class="bg-background" aria-label="Frequently asked questions">
+    <div class="mx-auto max-w-3xl px-m py-section-lg space-y-section-md">
+      {grouped.map((group) => (
+        <div>
+          <h2 class="font-display text-h3 text-foreground mb-m">{group.category}</h2>
+          <div class="divide-y divide-border-soft border-t border-b border-border-soft">
+            {group.items.map((f) => (
+              <details class="group py-m">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-m text-lg text-foreground">
+                  {f.q}
+                  <span class="shrink-0 text-link transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                </summary>
+                <p class="mt-s text-foreground/85 leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 
-  {/* ------- 3. Final CTA ---------------------------------------------------- */}
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow}
-    headline={page?.finalCtaHeadline}
-    subhead={page?.finalCtaSubhead}
-    cta={page?.finalCta}
-    secondaryCta={page?.secondaryCta}
-    scriptAccent={page?.finalCtaScriptAccent}
-    backgroundImage={page?.finalCtaBackgroundImage}
+    eyebrow="Still Wondering?"
+    headline="Ask us anything"
+    subhead="The best answer to most questions is a Sunday morning. Reach out and we will help however we can."
+    cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>
