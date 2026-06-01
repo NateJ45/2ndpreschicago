@@ -23,6 +23,27 @@ const CTA_PROJECTION = `{
   internalLink->{ _type, "slug": slug.current }
 }`;
 
+// Configurable form (native fields or external embed). Dereferenced wherever a
+// page references a form.
+const FORM_PROJECTION = `{
+  _id, title, "slug": slug.current, heading, intro, mode,
+  fields[]{ label, name, type, required, placeholder, helpText, options, width },
+  submitLabel, successMessage, consentNote,
+  provider,
+  embedUrl, embedHtml
+}`;
+
+// Page-builder block members (flexibleSections[] / page.sections[]). Resolves
+// image + form references; other blocks carry their fields via the spread.
+const SECTION_MEMBERS = `{
+  ...,
+  background{ ..., image${IMAGE_PROJECTION} },
+  _type == "sectionImageText" => { image${IMAGE_PROJECTION} },
+  _type == "sectionFeatureCards" => { cards[]{ ..., image${IMAGE_PROJECTION} } },
+  _type == "sectionGallery" => { images[]${IMAGE_PROJECTION} },
+  _type == "sectionForm" => { form->${FORM_PROJECTION} }
+}`;
+
 // ---- Site settings (used in BaseLayout / Header / Footer) -----------------
 
 export async function getSiteSettings() {
@@ -32,9 +53,14 @@ export async function getSiteSettings() {
     mission,
     email,
     phone,
+    favicon${IMAGE_PROJECTION},
     serviceTimes,
     watchUrl,
     giveUrl,
+    appUrl,
+    directoryUrl,
+    registrationBaseUrl,
+    prayerUrl,
     socialInstagram,
     socialFacebook,
     socialYoutube,
@@ -42,8 +68,49 @@ export async function getSiteSettings() {
     footerCredit,
     footerCreditUrl,
     newsletter,
-    announcement
+    navItems[]{
+      _type,
+      _key,
+      label,
+      href,
+      links[]{ _type, _key, label, href }
+    },
+    footerColumns[]{
+      _key,
+      title,
+      links[]{ _key, label, href }
+    }
   }`, {}, null);
+}
+
+// ---- Announcement (site-wide banner; collection) --------------------------
+// The single active announcement: enabled, started (or no start), not yet
+// ended (or no end). Most urgent first, then soonest to end. "now" resolves at
+// build time; a scheduled rebuild refreshes the active banner.
+export async function getActiveAnnouncement() {
+  const now = new Date().toISOString();
+  return sanityFetch(
+    `*[_type == "announcement" && enabled == true
+      && (!defined(startDate) || startDate <= $now)
+      && (!defined(endDate) || endDate >= $now)]
+      | order(select(style == "urgent" => 0, style == "special" => 1, 2) asc, endDate asc)[0]{
+        message, style, link
+      }`,
+    { now },
+    null,
+  );
+}
+
+// ---- Worship resources (bulletins, orders of worship, The Record) ---------
+export async function getWorshipResources(limit = 6) {
+  return sanityFetch(
+    `*[_type == "worshipResource"] | order(date desc)[0...$limit]{
+      _id, title, date, type, externalUrl, description,
+      "fileUrl": file.asset->url
+    }`,
+    { limit },
+    [],
+  );
 }
 
 // ---- Generic per-page hero (church page singletons) -----------------------
@@ -52,14 +119,14 @@ export async function getSiteSettings() {
 // the document doesn't exist yet, so pages fall back to their inline copy +
 // built-in photo. Pass the singleton's _type, e.g. getPageHero('worshipPage').
 export async function getPageHero(type: string) {
+  // Spread (...) so any body-copy fields added to a page singleton (via the
+  // definePageSingleton factory's extra fields) flow through automatically,
+  // without listing each here. Images + flexibleSections are resolved explicitly.
   return sanityFetch(`*[_type == $type][0]{
-    heroEyebrow,
-    heroHeadline,
-    heroSubhead,
+    ...,
     heroImage${IMAGE_PROJECTION},
-    seoTitle,
-    seoDescription,
-    seoImage${IMAGE_PROJECTION}
+    seoImage${IMAGE_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, { type }, null);
 }
 
@@ -74,13 +141,26 @@ export async function getHomePage() {
     seoImage${IMAGE_PROJECTION},
     heroEyebrow,
     heroHeadline,
+    heroKeyword,
     heroSubhead,
     heroImage${IMAGE_PROJECTION},
     heroImages[]${IMAGE_PROJECTION},
     heroPrimaryCta${CTA_PROJECTION},
     heroSecondaryCta${CTA_PROJECTION},
     heroRotatingWords,
-    heroScriptAccent
+    heroScriptAccent,
+    seasonalHero{
+      enabled, startDate, endDate, eyebrow, headline, keyword, subhead,
+      image${IMAGE_PROJECTION},
+      primaryCtaLabel, primaryCtaUrl
+    },
+    thisSunday,
+    welcomeEyebrow, welcomeHeadline, welcomeBodyP1, welcomeBodyP2,
+    inclusiveStatement, inclusiveBody,
+    involvedEyebrow, involvedHeadline, involvedSubhead,
+    recordEyebrow, recordHeadline, recordBody, recordCtaLabel,
+    finalCtaEyebrow, finalCtaHeadline, finalCtaSubhead,
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -95,9 +175,13 @@ export async function getAboutPage() {
     heroImage${IMAGE_PROJECTION},
     heroScriptAccent,
     storyEyebrow, storyHeadline, storyContent,
+    muralCaption,
+    buildingEyebrow, buildingHeadline, buildingBodyP1, buildingBodyP2,
+    whoEyebrow, whoHeadline, whoBodyP1, whoBodyP2,
     finalCtaEyebrow, finalCtaHeadline, finalCtaScriptAccent, finalCtaSubhead,
     finalCtaBackgroundImage${IMAGE_PROJECTION},
-    finalCta${CTA_PROJECTION}
+    finalCta${CTA_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -118,7 +202,8 @@ export async function getFaqPage() {
     finalCtaEyebrow, finalCtaHeadline, finalCtaScriptAccent, finalCtaSubhead,
     finalCtaBackgroundImage${IMAGE_PROJECTION},
     finalCta${CTA_PROJECTION},
-    secondaryCta${CTA_PROJECTION}
+    secondaryCta${CTA_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -126,17 +211,59 @@ export async function getFaqPage() {
 
 export async function getContactPage() {
   return sanityFetch(`*[_type == "contactPage"][0]{
-    seoTitle,
-    seoDescription,
+    ...,
     seoImage${IMAGE_PROJECTION},
+    heroImage${IMAGE_PROJECTION},
+    contactForm->${FORM_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
+  }`, {}, null);
+}
+
+// ---- Weddings + Use Our Space pages (hero + dereferenced inquiry form) -----
+
+export async function getWeddingsPage() {
+  return sanityFetch(`*[_type == "weddingsPage"][0]{
+    ...,
+    heroImage${IMAGE_PROJECTION},
+    seoImage${IMAGE_PROJECTION},
+    inquiryForm->${FORM_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
+  }`, {}, null);
+}
+
+export async function getUseOurSpacePage() {
+  return sanityFetch(`*[_type == "useOurSpacePage"][0]{
+    ...,
+    heroImage${IMAGE_PROJECTION},
+    seoImage${IMAGE_PROJECTION},
+    inquiryForm->${FORM_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
+  }`, {}, null);
+}
+
+// Standalone form fetch by slug (page-builder formRef block, ad-hoc embeds).
+export async function getForm(slug: string) {
+  return sanityFetch(`*[_type == "form" && slug.current == $slug][0]${FORM_PROJECTION}`, { slug }, null);
+}
+
+// ---- Generic custom pages (/[slug], page-builder blocks) ------------------
+export async function getPageBySlug(slug: string) {
+  return sanityFetch(`*[_type == "page" && slug.current == $slug][0]{
+    title, "slug": slug.current,
     heroEyebrow, heroHeadline, heroSubhead,
     heroImage${IMAGE_PROJECTION},
-    heroScriptAccent,
-    formIntroNote,
-    whatToExpectEyebrow,
-    whatToExpectHeadline,
-    whatToExpectContent
-  }`, {}, null);
+    seoTitle, seoDescription, seoImage${IMAGE_PROJECTION},
+    sections[]${SECTION_MEMBERS}
+  }`, { slug }, null);
+}
+
+export async function getAllPageSlugs(): Promise<string[]> {
+  const list: Array<{ slug: string }> = await sanityFetch(
+    `*[_type == "page" && defined(slug.current)]{ "slug": slug.current }`,
+    {},
+    [],
+  );
+  return list.map((p) => p.slug).filter(Boolean);
 }
 
 // ---- 404 page -------------------------------------------------------------
@@ -166,7 +293,8 @@ export async function getPrivacyPage() {
     heroImage${IMAGE_PROJECTION},
     heroScriptAccent,
     lastUpdated,
-    body
+    body,
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -184,7 +312,9 @@ export async function getStaffMembers() {
 // ---- Ministries collection ------------------------------------------------
 
 const MINISTRY_CARD = `{
-  _id, title, audience, summary, link,
+  _id, title, audience, ageRange, schedule, season, summary, link,
+  registrationUrl, contactName, contactEmail,
+  "parentMinistry": parentMinistry->{ _id, title },
   image${IMAGE_PROJECTION}
 }`;
 
@@ -209,17 +339,19 @@ export async function getFeaturedMinistries() {
 
 // Card projection for the events list (no full description body).
 const EVENT_CARD = `{
-  _id, title, slug, eventType, category, scheduleLabel, start, end, location,
-  summary, registrationUrl, featured,
+  _id, title, slug, eventType, category, audience, specialService, liturgicalSeason,
+  scheduleLabel, start, end, allDay, location,
+  summary, cost, registrationUrl, registrationLabel, contactName, contactEmail,
+  featured, featuredOnHome,
   image${IMAGE_PROJECTION}
 }`;
 
 export async function getEventsPage() {
   return sanityFetch(`*[_type == "eventsPage"][0]{
-    seoTitle, seoDescription,
+    ...,
     seoImage${IMAGE_PROJECTION},
-    heroEyebrow, heroHeadline, heroSubhead,
-    heroImage${IMAGE_PROJECTION}
+    heroImage${IMAGE_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -245,11 +377,37 @@ export async function getUpcomingEvents() {
   );
 }
 
+// Upcoming special services (Christmas Eve, Ash Wednesday, Easter): one-time
+// events flagged specialService that haven't passed. Powers the home + events
+// "Special services" band.
+export async function getSpecialServices() {
+  const now = new Date().toISOString();
+  return sanityFetch(
+    `*[_type == "event" && specialService == true && coalesce(end, start, "9999-12-31T00:00:00Z") >= $now]
+      | order(start asc) ${EVENT_CARD}`,
+    { now },
+    [],
+  );
+}
+
+// Events the editor pinned to the home page (upcoming only).
+export async function getHomeFeaturedEvents() {
+  const now = new Date().toISOString();
+  return sanityFetch(
+    `*[_type == "event" && featuredOnHome == true && coalesce(end, start, "9999-12-31T00:00:00Z") >= $now]
+      | order(start asc) ${EVENT_CARD}`,
+    { now },
+    [],
+  );
+}
+
 export async function getEventBySlug(slug: string) {
   return sanityFetch(
     `*[_type == "event" && slug.current == $slug][0]{
-      _id, title, slug, eventType, category, scheduleLabel, start, end, location,
-      summary, registrationUrl, featured,
+      _id, title, slug, eventType, category, audience, specialService, liturgicalSeason,
+      scheduleLabel, start, end, allDay, location,
+      summary, cost, registrationUrl, registrationLabel, contactName, contactEmail,
+      featured, featuredOnHome,
       image${IMAGE_PROJECTION},
       description
     }`,
@@ -276,9 +434,10 @@ const SERMON_CARD = `{
 
 export async function getSermonsPage() {
   return sanityFetch(`*[_type == "sermonsPage"][0]{
-    seoTitle, seoDescription,
+    ...,
     seoImage${IMAGE_PROJECTION},
-    heroEyebrow, heroHeadline, heroSubhead, livestreamUrl
+    heroImage${IMAGE_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 

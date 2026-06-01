@@ -1,0 +1,25 @@
+---
+// Logos / partners strip. Responsive row of logos, optional grayscale-to-color
+// on hover, optional links. Heading inherits the SectionShell tone color.
+import SanityImage from '@/components/SanityImage.astro';
+
+const { block } = Astro.props as { block: any };
+const items = (block?.items ?? []).filter((i: any) => i?.asset);
+const gray = block?.grayscale !== false;
+const imgCls = `max-h-16 w-auto object-contain ${gray ? 'grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition' : ''}`;
+---
+
+{
+  block && items.length > 0 && (
+    <div class="mx-auto max-w-content px-m text-center">
+      {block.heading && <h2 class="font-display text-h3">{block.heading}</h2>}
+      {block.intro && <p class="mt-s opacity-80 leading-relaxed max-w-2xl mx-auto">{block.intro}</p>}
+      <ul class="mt-l flex flex-wrap items-center justify-center gap-l list-none p-0">
+        {items.map((logo: any) => {
+          const img = <SanityImage source={logo} width={240} sizes="160px" alt={logo.alt || ''} class={imgCls} />;
+          return <li>{logo.url ? <a href={logo.url} target="_blank" rel="noopener noreferrer">{img}</a> : img}</li>;
+        })}
+      </ul>
+    </div>
+  )
+}

@@ -1,6 +1,7 @@
 // Sermons index page singleton. Hero copy + SEO for /sermons.
 
 import { defineType, defineField } from 'sanity';
+import { FLEXIBLE_SECTION_MEMBERS } from './blocks';
 
 export const sermonsPage = defineType({
   name: 'sermonsPage',
@@ -24,6 +25,20 @@ export const sermonsPage = defineType({
       title: 'Livestream URL',
       type: 'url',
       description: 'Where Sunday worship streams (e.g. the church YouTube). Shown as the Watch Live button.',
+    }),
+    defineField({ name: 'latestEyebrow', title: 'Latest message label', type: 'string' }),
+    defineField({ name: 'watchEyebrow', title: 'Watch online eyebrow', type: 'string' }),
+    defineField({ name: 'watchHeadline', title: 'Watch online headline', type: 'string' }),
+    defineField({ name: 'watchBody', title: 'Watch online body', type: 'text', rows: 3 }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2 }),
+    defineField({
+      name: 'flexibleSections',
+      title: 'Page sections',
+      type: 'array',
+      description: 'Add on-brand sections below the hero (text, image + text, cards, quote, CTA band, form, embed). Drag to reorder.',
+      of: FLEXIBLE_SECTION_MEMBERS,
     }),
   ],
   preview: { prepare: () => ({ title: 'Sermons (index page)' }) },

@@ -6,7 +6,8 @@
 // areas, travel fees, Google Business / reviews, satisfaction guarantee, and
 // the module section-visibility toggles) were removed. Church fields replace them.
 
-import { defineType, defineField } from 'sanity';
+import { defineType, defineField, defineArrayMember } from 'sanity';
+import { LinkIcon, ChevronDownIcon, ListIcon } from '@sanity/icons';
 
 export const siteSettings = defineType({
   name: 'siteSettings',
@@ -16,10 +17,11 @@ export const siteSettings = defineType({
   options: { canvasApp: { exclude: true } },
   groups: [
     { name: 'identity', title: 'Identity & contact' },
-    { name: 'worship', title: 'Worship & giving' },
+    { name: 'navigation', title: 'Navigation (menus)' },
+    { name: 'worship', title: 'Worship times' },
+    { name: 'connect', title: 'Connect & integrations' },
     { name: 'social', title: 'Social & footer' },
     { name: 'newsletter', title: 'Newsletter' },
-    { name: 'announcement', title: 'Announcement banner' },
   ],
   fields: [
     defineField({
@@ -63,8 +65,173 @@ export const siteSettings = defineType({
       description: 'Public phone number. Leave blank to hide.',
       group: 'identity',
     }),
+    defineField({
+      name: 'favicon',
+      title: 'Favicon (browser tab icon)',
+      type: 'image',
+      group: 'identity',
+      description:
+        'The small icon shown in the browser tab and in bookmarks. Use a simple, roughly square logo mark, at least 128 by 128 pixels (fine detail disappears at tiny sizes). Leave blank to use the built-in church mark.',
+      options: { hotspot: true },
+    }),
 
-    // ── Worship & giving ──────────────────────────────────────────────────────
+    // ── Navigation (top menu) ─────────────────────────────────────────────────
+    // The website header menu. When this is empty the header renders its
+    // built-in default menu (see src/components/Header.astro). As soon as any
+    // items are added here, this list becomes the ENTIRE menu.
+    defineField({
+      name: 'navItems',
+      title: 'Top menu links',
+      type: 'array',
+      group: 'navigation',
+      description:
+        'The links in the website header. Drag to reorder. Add a "Link" for a single page, or a "Dropdown menu" to group several links under one label. Leave this empty to use the built-in default menu. Once you add items here, they replace the whole menu, so include every link you want.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'navLink',
+          title: 'Link',
+          icon: LinkIcon,
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              description: 'What visitors see, e.g. "Events".',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'href',
+              title: 'Address',
+              type: 'string',
+              description: 'A page on this site like /worship, or a full web address like https://example.com.',
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: { select: { title: 'label', subtitle: 'href' } },
+        }),
+        defineArrayMember({
+          type: 'object',
+          name: 'navGroup',
+          title: 'Dropdown menu',
+          icon: ChevronDownIcon,
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Menu label',
+              type: 'string',
+              description: 'The dropdown heading, e.g. "About Us".',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'links',
+              title: 'Menu links',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'object',
+                  name: 'navSubLink',
+                  title: 'Link',
+                  icon: LinkIcon,
+                  fields: [
+                    defineField({
+                      name: 'label',
+                      title: 'Label',
+                      type: 'string',
+                      validation: (Rule) => Rule.required(),
+                    }),
+                    defineField({
+                      name: 'href',
+                      title: 'Address',
+                      type: 'string',
+                      description: 'A page on this site like /grow, or a full web address.',
+                      validation: (Rule) => Rule.required(),
+                    }),
+                  ],
+                  preview: { select: { title: 'label', subtitle: 'href' } },
+                }),
+              ],
+              validation: (Rule) => Rule.required().min(1),
+            }),
+          ],
+          preview: {
+            select: { title: 'label', links: 'links' },
+            prepare: ({ title, links }) => ({
+              title: title ?? '(no label)',
+              subtitle: `Dropdown · ${Array.isArray(links) ? links.length : 0} link(s)`,
+            }),
+          },
+        }),
+      ],
+    }),
+
+    // Footer link columns. When empty the footer renders its built-in columns
+    // (see src/components/Footer.astro). The "Get in touch" column (email, phone,
+    // social) is always shown automatically and is not configured here.
+    defineField({
+      name: 'footerColumns',
+      title: 'Footer link columns',
+      type: 'array',
+      group: 'navigation',
+      description:
+        'The titled link columns in the footer, for example "Visit", "Get Involved", "Connect". Drag to reorder. Leave empty to use the built-in default columns. The "Get in touch" column (email, phone, social) always shows automatically. Aim for three columns so the footer grid stays balanced.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'footerColumn',
+          title: 'Column',
+          icon: ListIcon,
+          fields: [
+            defineField({
+              name: 'title',
+              title: 'Column heading',
+              type: 'string',
+              description: 'The small heading above the links, e.g. "Visit".',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'links',
+              title: 'Links',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'object',
+                  name: 'footerLink',
+                  title: 'Link',
+                  icon: LinkIcon,
+                  fields: [
+                    defineField({
+                      name: 'label',
+                      title: 'Label',
+                      type: 'string',
+                      validation: (Rule) => Rule.required(),
+                    }),
+                    defineField({
+                      name: 'href',
+                      title: 'Address',
+                      type: 'string',
+                      description: 'A page on this site like /give, or a full web address.',
+                      validation: (Rule) => Rule.required(),
+                    }),
+                  ],
+                  preview: { select: { title: 'label', subtitle: 'href' } },
+                }),
+              ],
+              validation: (Rule) => Rule.required().min(1),
+            }),
+          ],
+          preview: {
+            select: { title: 'title', links: 'links' },
+            prepare: ({ title, links }) => ({
+              title: title ?? '(no heading)',
+              subtitle: `Column · ${Array.isArray(links) ? links.length : 0} link(s)`,
+            }),
+          },
+        }),
+      ],
+    }),
+
+    // ── Worship times ─────────────────────────────────────────────────────────
     defineField({
       name: 'serviceTimes',
       title: 'Service time line',
@@ -73,19 +240,52 @@ export const siteSettings = defineType({
       initialValue: 'Sundays at 11am',
       group: 'worship',
     }),
+
+    // ── Connect & integrations ────────────────────────────────────────────────
+    // Generic "URL or embed" hooks so any church can point at its own tools
+    // (Vanco, Subsplash, Planning Center, Mailchimp) without code. Each is
+    // optional and only surfaces in the UI when set.
     defineField({
       name: 'watchUrl',
       title: 'Livestream / Watch URL',
       type: 'url',
       description: 'Where "Watch Live" points (YouTube channel or livestream). Leave blank to use the Sermons page.',
-      group: 'worship',
+      group: 'connect',
     }),
     defineField({
       name: 'giveUrl',
       title: 'Giving link',
       type: 'url',
-      description: 'Online giving portal (e.g. Vanco). Leave blank to use the Give page.',
-      group: 'worship',
+      description: 'Online giving portal (e.g. Vanco, Subsplash Giving). Leave blank to use the Give page.',
+      group: 'connect',
+    }),
+    defineField({
+      name: 'appUrl',
+      title: 'Church app link',
+      type: 'url',
+      description: 'Link to your church app (e.g. Subsplash). Surfaces in the footer when set.',
+      group: 'connect',
+    }),
+    defineField({
+      name: 'directoryUrl',
+      title: 'Member directory link',
+      type: 'url',
+      description: 'Link to an online member directory (e.g. Planning Center, Instant Church Directory). Leave blank to hide.',
+      group: 'connect',
+    }),
+    defineField({
+      name: 'registrationBaseUrl',
+      title: 'Registration / sign-up base link',
+      type: 'url',
+      description: 'Default place to register for events when an event has no link of its own (e.g. a Planning Center or Eventbrite organizer page).',
+      group: 'connect',
+    }),
+    defineField({
+      name: 'prayerUrl',
+      title: 'Prayer / connection card link',
+      type: 'url',
+      description: 'Link to a prayer-request or connection-card form. Surfaces as a footer link when set.',
+      group: 'connect',
     }),
 
     // ── Social & footer ───────────────────────────────────────────────────────
@@ -143,22 +343,10 @@ export const siteSettings = defineType({
       ],
     }),
 
-    // ── Announcement banner ───────────────────────────────────────────────────
-    // Optional site-wide banner for time-sensitive notices (special services,
-    // closures). When disabled or empty, nothing renders.
-    defineField({
-      name: 'announcement',
-      title: 'Announcement banner',
-      type: 'object',
-      group: 'announcement',
-      description: 'Optional banner shown at the very top of every page. Use for special services or closures.',
-      fields: [
-        defineField({ name: 'enabled', title: 'Show banner', type: 'boolean', initialValue: false }),
-        defineField({ name: 'text', title: 'Message', type: 'string', description: 'Example: "Join us for Christmas Eve worship at 5pm and 11pm."' }),
-        defineField({ name: 'linkLabel', title: 'Link label (optional)', type: 'string' }),
-        defineField({ name: 'linkUrl', title: 'Link URL (optional)', type: 'string', description: 'Internal path like "/events" or a full https:// URL.' }),
-      ],
-    }),
+    // Note: the announcement banner moved from a single object here to its own
+    // "Announcement" collection (so the secretary can queue several by date).
+    // The old siteSettings.announcement field is cleared by
+    // scripts/cleanup-orphaned-fields.mjs.
   ],
   preview: {
     prepare: () => ({ title: 'Site Settings' }),

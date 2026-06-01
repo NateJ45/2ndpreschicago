@@ -5,17 +5,20 @@
 // the page surfaces direct contact paths, which is how most visitors reach a church.)
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getContactPage, getSiteSettings } from '@/lib/queries';
 import heroContact from '@/assets/hero-sanctuary.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { telHref } from '@/lib/phone';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import FormBlock from '@/components/FormBlock.astro';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
-const page = await getPageHero('contactPage').catch(() => null);
+const page = await getContactPage().catch(() => null);
 
 const title = `Contact · ${site.name}`;
 const description =
@@ -74,7 +77,7 @@ const reasons = [
         </ul>
 
         <div class="border-t border-border-soft pt-l">
-          <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">Who to reach</p>
+          <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">{page?.whoToReachLabel ?? 'Who to reach'}</p>
           <ul class="space-y-2 list-none p-0">
             {reasons.map((r) => (
               <li class="flex flex-wrap justify-between gap-m border-b border-border-soft pb-2 last:border-b-0">
@@ -86,10 +89,9 @@ const reasons = [
         </div>
 
         <div class="border-t border-border-soft pt-l text-foreground/80 leading-relaxed">
-          <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">Getting here</p>
+          <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">{page?.gettingHereLabel ?? 'Getting here'}</p>
           <p>
-            We sit on Michigan Avenue in the South Loop, close to public transit, with first-come,
-            first-served free parking. Looking for our food ministry? Find us at the Cullerton door.
+            {page?.gettingHereBody ?? 'We sit on Michigan Avenue in the South Loop, close to public transit, with first-come, first-served free parking. Looking for our food ministry? Find us at the Cullerton door.'}
           </p>
         </div>
       </div>
@@ -109,10 +111,29 @@ const reasons = [
     </div>
   </section>
 
+  {/* Contact form (configurable in Sanity; falls back to a mailto when none is set) */}
+  <section class="surface-warm bg-muted" aria-labelledby="contact-form">
+    <div class="mx-auto max-w-3xl px-m py-section-lg">
+      <SectionHeading
+        eyebrow={page?.whatToExpectEyebrow ?? 'Send a Note'}
+        headline={page?.formSectionHeadline ?? 'Start the conversation'}
+        headingId="contact-form"
+      />
+      {page?.formIntroNote && (
+        <p class="mt-m text-lg text-foreground/85 leading-relaxed">{page.formIntroNote}</p>
+      )}
+      <div class="mt-l">
+        <FormBlock form={page?.contactForm} fallbackEmail={site.contact.email} fallbackLabel="Email the Office" />
+      </div>
+    </div>
+  </section>
+
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+
   <FinalCta
-    eyebrow="Come and See"
-    headline="We hope to see you Sunday"
-    subhead="Worship is at 11am every Sunday. Whoever you are, you are welcome here."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
+    headline={page?.finalCtaHeadline ?? "We hope to see you Sunday"}
+    subhead={page?.finalCtaSubhead ?? "Worship is at 11am every Sunday. Whoever you are, you are welcome here."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

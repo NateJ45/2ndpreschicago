@@ -1,0 +1,17 @@
+---
+// Quote / scripture block. Inner content only; SectionShell provides the
+// background (defaults to chapel green). Text inherits the section tone color.
+const { block } = Astro.props as { block: any };
+---
+
+{
+  block?.quote && (
+    <div class="mx-auto max-w-3xl px-m text-center">
+      <div class="mb-m h-px w-12 bg-gold/70 mx-auto" aria-hidden="true" />
+      <blockquote class="font-display italic text-h3 leading-snug">{block.quote}</blockquote>
+      {block.attribution && (
+        <p class="mt-m text-xs uppercase tracking-eyebrow opacity-70">{block.attribution}</p>
+      )}
+    </div>
+  )
+}

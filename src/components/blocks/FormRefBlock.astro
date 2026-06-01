@@ -1,0 +1,20 @@
+---
+// Form block. Drops a referenced, configurable form into a page section.
+import FormBlock from '@/components/FormBlock.astro';
+
+const { block, fallbackEmail } = Astro.props as { block: any; fallbackEmail?: string };
+---
+
+{
+  block?.form && (
+    <section class="surface-warm bg-muted">
+      <div class="mx-auto max-w-3xl px-m py-section-md">
+        {block.heading && <h2 class="font-display text-h2 text-foreground">{block.heading}</h2>}
+        {block.intro && <p class="mt-s text-foreground/80 leading-relaxed">{block.intro}</p>}
+        <div class="mt-l">
+          <FormBlock form={block.form} fallbackEmail={fallbackEmail} />
+        </div>
+      </div>
+    </section>
+  )
+}

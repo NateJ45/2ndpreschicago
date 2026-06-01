@@ -54,7 +54,7 @@ export const site = {
   // from public/.
   assets: {
     ogDefault: "/og-default.png",
-    favicon: "/favicon.svg",
+    favicon: "/favicon.png",
   },
 
   // Public repo URL (used in footer credit if shown)

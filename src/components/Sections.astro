@@ -1,0 +1,81 @@
+---
+// Page-builder renderer. Maps each flexibleSections block (_type) to its
+// on-brand component. Unknown types are skipped. Used by the generic `page`
+// type at /[slug] and any page that adds a flexibleSections[] field.
+//
+// Shell-aware blocks (the newer, tone-adaptive ones) render their inner content
+// only and are wrapped in <SectionShell> so a single editor control sets their
+// background (token tone, or image/video with overlay). The original blocks
+// render their own section background and are passed through unwrapped.
+import SectionShell from '@/components/SectionShell.astro';
+import RichTextBlock from '@/components/blocks/RichTextBlock.astro';
+import ImageTextBlock from '@/components/blocks/ImageTextBlock.astro';
+import CardGridBlock from '@/components/blocks/CardGridBlock.astro';
+import QuoteBlock from '@/components/blocks/QuoteBlock.astro';
+import CtaBandBlock from '@/components/blocks/CtaBandBlock.astro';
+import FormRefBlock from '@/components/blocks/FormRefBlock.astro';
+import FeatureCardsBlock from '@/components/blocks/FeatureCardsBlock.astro';
+import StatsBlock from '@/components/blocks/StatsBlock.astro';
+import AccordionBlock from '@/components/blocks/AccordionBlock.astro';
+import GalleryBlock from '@/components/blocks/GalleryBlock.astro';
+import StepsBlock from '@/components/blocks/StepsBlock.astro';
+import LogosBlock from '@/components/blocks/LogosBlock.astro';
+import MediaFeatureBlock from '@/components/blocks/MediaFeatureBlock.astro';
+import DynamicListBlock from '@/components/blocks/DynamicListBlock.astro';
+import EmbedBlock from '@/components/EmbedBlock.astro';
+
+interface Props {
+  sections?: any[] | null;
+  /** Passed to form blocks for the keyless mailto fallback. */
+  fallbackEmail?: string;
+}
+const { sections = [], fallbackEmail } = Astro.props;
+
+const MAP: Record<string, any> = {
+  sectionRichText: RichTextBlock,
+  sectionImageText: ImageTextBlock,
+  sectionCardGrid: CardGridBlock,
+  sectionQuote: QuoteBlock,
+  sectionCtaBand: CtaBandBlock,
+  sectionForm: FormRefBlock,
+  sectionFeatureCards: FeatureCardsBlock,
+  sectionStats: StatsBlock,
+  sectionAccordion: AccordionBlock,
+  sectionGallery: GalleryBlock,
+  sectionSteps: StepsBlock,
+  sectionLogos: LogosBlock,
+  sectionMediaFeature: MediaFeatureBlock,
+  sectionDynamicList: DynamicListBlock,
+  embed: EmbedBlock,
+};
+
+// Blocks that render inner content only and take their background from SectionShell.
+const SHELL_AWARE = new Set([
+  'sectionRichText', 'sectionImageText', 'sectionCardGrid', 'sectionQuote', 'sectionCtaBand',
+  'sectionFeatureCards', 'sectionStats', 'sectionAccordion', 'sectionGallery',
+  'sectionSteps', 'sectionLogos', 'sectionMediaFeature', 'sectionDynamicList',
+]);
+
+// Default background tone when the editor hasn't chosen one (the quote + CTA
+// bands were originally chapel green, so they keep that look by default).
+const DEFAULT_TONE: Record<string, string> = {
+  sectionQuote: 'chapel',
+  sectionCtaBand: 'chapel',
+};
+---
+
+{
+  (sections ?? []).map((block: any) => {
+    const Cmp = MAP[block?._type];
+    if (!Cmp) return null;
+    if (SHELL_AWARE.has(block._type)) {
+      const dt = DEFAULT_TONE[block._type] ?? 'default';
+      return (
+        <SectionShell background={block.background} defaultTone={dt}>
+          <Cmp block={block} defaultTone={dt} fallbackEmail={fallbackEmail} />
+        </SectionShell>
+      );
+    }
+    return <Cmp block={block} fallbackEmail={fallbackEmail} />;
+  })
+}

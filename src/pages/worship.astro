@@ -4,7 +4,7 @@
 // and how to watch online.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings, getWorshipResources } from '@/lib/queries';
 import heroWorship from '@/assets/hero-worship.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
@@ -12,10 +12,15 @@ import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 import tiffanyWindows from '@/assets/tiffany-windows.webp';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('worshipPage').catch(() => null);
+const worshipResources = await getWorshipResources(6).catch(() => []);
+
+const fmtDate = (d: string) =>
+  d ? new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
 
 const title = `Worship · ${site.name}`;
 const description =
@@ -50,10 +55,10 @@ const pillOutline =
   <section class="surface-warm bg-muted" aria-labelledby="worship-times">
     <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-l md:gap-section-md items-start">
       <div>
-        <p class="text-xs uppercase tracking-eyebrow text-foreground/80">When we gather</p>
+        <p class="text-xs uppercase tracking-eyebrow text-foreground/80">{page?.gatherEyebrow ?? 'When we gather'}</p>
         <div class="mt-s mb-m h-px w-12 bg-primary/60" aria-hidden="true"></div>
-        <p class="font-display text-h1 text-foreground leading-none">11am</p>
-        <p class="mt-s text-lg text-foreground/85">Every Sunday morning</p>
+        <p class="font-display text-h1 text-foreground leading-none">{page?.gatherTime ?? '11am'}</p>
+        <p class="mt-s text-lg text-foreground/85">{page?.gatherDay ?? 'Every Sunday morning'}</p>
         <p class="mt-m text-foreground/80">{site.contact.addressLine}<br />{site.contact.cityStateZip}</p>
         <div class="mt-l flex flex-wrap gap-s">
           <a href="/contact" class={pillPrimary}>Get Directions</a>
@@ -62,12 +67,10 @@ const pillOutline =
       </div>
       <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
         <p>
-          Our service follows a traditional, liturgical format, with hymns, spirituals, and anthems
-          led by organ and choir. We celebrate the Eucharist on the first Sunday of each month.
+          {page?.serviceBodyP1 ?? 'Our service follows a traditional, liturgical format, with hymns, spirituals, and anthems led by organ and choir. We celebrate the Eucharist on the first Sunday of each month.'}
         </p>
         <p>
-          Come as you are. Casual attire is always welcome. There is no wrong way to be here, and no
-          experience required.
+          {page?.serviceBodyP2 ?? 'Come as you are. Casual attire is always welcome. There is no wrong way to be here, and no experience required.'}
         </p>
       </div>
     </div>
@@ -77,28 +80,28 @@ const pillOutline =
   <section class="bg-background" aria-labelledby="plan-visit">
     <div class="mx-auto max-w-content px-m py-section-lg">
       <SectionHeading
-        eyebrow="Planning your first visit?"
-        headline="Here's what to know"
+        eyebrow={page?.planEyebrow ?? 'Planning your first visit?'}
+        headline={page?.planHeadline ?? "Here's what to know"}
         headingId="plan-visit"
         align="center"
         class="mx-auto"
       />
       <div class="mt-section-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-m" data-stagger-grid>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
-          <h3 class="font-display text-h4 text-foreground">Getting here</h3>
-          <p class="mt-s text-foreground/80 leading-relaxed">We are at 1936 South Michigan Ave in the South Loop, close to public transit, with first-come, first-served free parking.</p>
+          <h3 class="font-display text-h4 text-foreground">{page?.planCard1Title ?? 'Getting here'}</h3>
+          <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard1Body ?? 'We are at 1936 South Michigan Ave in the South Loop, close to public transit, with first-come, first-served free parking.'}</p>
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
-          <h3 class="font-display text-h4 text-foreground">What to wear</h3>
-          <p class="mt-s text-foreground/80 leading-relaxed">Whatever feels right to you. Some dress up, many do not. Come as you are.</p>
+          <h3 class="font-display text-h4 text-foreground">{page?.planCard2Title ?? 'What to wear'}</h3>
+          <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard2Body ?? 'Whatever feels right to you. Some dress up, many do not. Come as you are.'}</p>
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
-          <h3 class="font-display text-h4 text-foreground">For families</h3>
-          <p class="mt-s text-foreground/80 leading-relaxed">Children are welcome in worship, with a children's message and a cry room if you need it. <a href="/kids" class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">More for kids</a>.</p>
+          <h3 class="font-display text-h4 text-foreground">{page?.planCard3Title ?? 'For families'}</h3>
+          <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard3Body ?? "Children are welcome in worship, with a children's message and a cry room if you need it."} <a href="/kids" class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">More for kids</a>.</p>
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
-          <h3 class="font-display text-h4 text-foreground">Accessibility</h3>
-          <p class="mt-s text-foreground/80 leading-relaxed">The sanctuary is accessible. If you need any accommodation to join us, reach out and we will be glad to help.</p>
+          <h3 class="font-display text-h4 text-foreground">{page?.planCard4Title ?? 'Accessibility'}</h3>
+          <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard4Body ?? 'The sanctuary is accessible. If you need any accommodation to join us, reach out and we will be glad to help.'}</p>
         </article>
       </div>
     </div>
@@ -109,18 +112,16 @@ const pillOutline =
     <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
       <div>
         <SectionHeading
-          eyebrow="Little ones welcome"
-          headline="Children belong in worship"
+          eyebrow={page?.kidsEyebrow ?? 'Little ones welcome'}
+          headline={page?.kidsHeadline ?? 'Children belong in worship'}
           headingId="worship-kids"
         />
         <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
           <p>
-            Little ones are part of the worshipping congregation at Second, and we welcome their noise
-            and their needs. We keep books, coloring materials, and fidget toys on hand, and there is a
-            children's message during the service.
+            {page?.kidsBodyP1 ?? "Little ones are part of the worshipping congregation at Second, and we welcome their noise and their needs. We keep books, coloring materials, and fidget toys on hand, and there is a children's message during the service."}
           </p>
           <p>
-            Need a quieter moment? A cry room with an audio stream of the service is always available.
+            {page?.kidsBodyP2 ?? 'Need a quieter moment? A cry room with an audio stream of the service is always available.'}
           </p>
         </div>
       </div>
@@ -134,20 +135,59 @@ const pillOutline =
     </div>
   </section>
 
+  {/* Worship resources — bulletins, orders of worship, The Record (Sanity-driven) */}
+  {worshipResources.length > 0 && (
+    <section class="bg-background" aria-labelledby="worship-resources">
+      <div class="mx-auto max-w-content px-m py-section-lg">
+        <SectionHeading
+          eyebrow="Worship resources"
+          headline="Bulletins and downloads"
+          headingId="worship-resources"
+        />
+        <ul class="mt-l grid grid-cols-1 sm:grid-cols-2 gap-m list-none p-0">
+          {worshipResources.map((r: any) => {
+            const href = r.fileUrl || r.externalUrl;
+            return (
+              <li class="card-lift rounded-md border border-border-soft bg-card p-l">
+                <p class="text-xs uppercase tracking-eyebrow text-foreground/70">
+                  {r.type}{r.date ? ` · ${fmtDate(r.date)}` : ''}
+                </p>
+                <h3 class="mt-s font-display text-h4 text-foreground">{r.title}</h3>
+                {r.description && <p class="mt-xs text-foreground/80 leading-relaxed">{r.description}</p>}
+                {href && (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-s inline-block text-link underline underline-offset-2 hover:text-primary-dark transition-colors"
+                  >
+                    {r.fileUrl ? 'Download PDF' : 'Open'}
+                  </a>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  )}
+
   {/* Quote */}
   <section class="bg-muted" aria-label="Reflection">
     <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
       <blockquote class="font-display italic text-h3 text-foreground leading-snug">
-        &ldquo;We are called to an everlasting preoccupation with God.&rdquo;
+        &ldquo;{page?.quoteText ?? 'We are called to an everlasting preoccupation with God.'}&rdquo;
       </blockquote>
-      <p class="mt-m text-xs uppercase tracking-eyebrow text-foreground/70">A.W. Tozer</p>
+      <p class="mt-m text-xs uppercase tracking-eyebrow text-foreground/70">{page?.quoteAttribution ?? 'A.W. Tozer'}</p>
     </div>
   </section>
 
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+
   <FinalCta
-    eyebrow="Come and See"
-    headline="Plan your first visit"
-    subhead="Have a question before Sunday? We would love to help you feel at home before you arrive."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
+    headline={page?.finalCtaHeadline ?? "Plan your first visit"}
+    subhead={page?.finalCtaSubhead ?? "Have a question before Sunday? We would love to help you feel at home before you arrive."}
     cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

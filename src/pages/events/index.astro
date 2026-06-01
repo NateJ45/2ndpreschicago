@@ -7,18 +7,20 @@
 // once events are seeded in Sanity, each links to its /events/[slug] page.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getEventsPage, getRecurringEvents, getUpcomingEvents, getSiteSettings } from '@/lib/queries';
+import { getEventsPage, getRecurringEvents, getUpcomingEvents, getSpecialServices, getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import heroEvents from '@/assets/hero-events.webp';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
-const [page, recurring, upcoming, siteSettings] = await Promise.all([
+const [page, recurring, upcoming, specialServices, siteSettings] = await Promise.all([
   getEventsPage().catch(() => null),
   getRecurringEvents().catch(() => []),
   getUpcomingEvents().catch(() => []),
+  getSpecialServices().catch(() => []),
   getSiteSettings().catch(() => null),
 ]);
 
@@ -76,10 +78,37 @@ function whenLabel(ev: any): string {
     size="short"
   />
 
+  {/* Special services — Christmas Eve, Ash Wednesday, Holy Week, Easter (Sanity-driven) */}
+  {specialServices.length > 0 && (
+    <section class="bg-chapel text-chapel-foreground" aria-labelledby="special-services">
+      <div class="mx-auto max-w-content px-m py-section-lg">
+        <p class="text-xs uppercase tracking-eyebrow text-gold">{page?.specialEyebrow ?? 'Mark the season'}</p>
+        <h2 id="special-services" class="mt-s font-display text-h2">{page?.specialHeadline ?? 'Special services'}</h2>
+        <ul class="mt-l grid grid-cols-1 md:grid-cols-2 gap-m list-none p-0">
+          {specialServices.map((ev: any) => (
+            <li>
+              <a
+                href={`/events/${ev.slug?.current ?? ''}`}
+                class="group block h-full rounded-md border border-chapel-foreground/20 bg-chapel-deep/40 p-l no-underline"
+              >
+                {ev.liturgicalSeason && (
+                  <span class="text-xs uppercase tracking-eyebrow text-gold">{ev.liturgicalSeason}</span>
+                )}
+                <h3 class="mt-xs font-display text-h4 group-hover:text-gold transition-colors">{ev.title}</h3>
+                <p class="mt-xs text-sm text-chapel-foreground/80">{whenLabel(ev)}</p>
+                {ev.summary && <p class="mt-s text-chapel-foreground/85 leading-relaxed">{ev.summary}</p>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
   {/* Upcoming one-time events */}
   <section class="bg-background" aria-labelledby="upcoming-heading">
     <div class="mx-auto max-w-content px-m py-section-lg">
-      <SectionHeading eyebrow="Mark your calendar" headline="Upcoming events" headingId="upcoming-heading" />
+      <SectionHeading eyebrow={page?.upcomingEyebrow ?? 'Mark your calendar'} headline={page?.upcomingHeadline ?? 'Upcoming events'} headingId="upcoming-heading" />
       {upcoming.length > 0 ? (
         <ul class="mt-l grid grid-cols-1 md:grid-cols-2 gap-m list-none p-0" data-stagger-grid>
           {upcoming.map((ev: any) => (
@@ -95,8 +124,8 @@ function whenLabel(ev: any): string {
         </ul>
       ) : (
         <p class="mt-l text-foreground/80 italic">
-          No special events on the calendar right now. Our weekly rhythms below never stop, and the best
-          place to start is <a href="/worship" class="text-link underline underline-offset-2">Sunday worship</a>.
+          {page?.upcomingEmpty ?? 'No special events on the calendar right now. Our weekly rhythms below never stop, and the best place to start is'}{' '}
+          <a href="/worship" class="text-link underline underline-offset-2">Sunday worship</a>.
         </p>
       )}
     </div>
@@ -105,7 +134,7 @@ function whenLabel(ev: any): string {
   {/* Recurring rhythms */}
   <section class="surface-warm bg-muted" aria-labelledby="recurring-heading">
     <div class="mx-auto max-w-content px-m py-section-lg">
-      <SectionHeading eyebrow="Every week" headline="Our weekly rhythms" headingId="recurring-heading" align="center" class="mx-auto" />
+      <SectionHeading eyebrow={page?.rhythmsEyebrow ?? 'Every week'} headline={page?.rhythmsHeadline ?? 'Our weekly rhythms'} headingId="recurring-heading" align="center" class="mx-auto" />
       <ul class="mt-l max-w-3xl mx-auto list-none p-0 divide-y divide-border-soft border-t border-b border-border-soft">
         {displayRecurring.map((ev: any) => (
           <li class="py-m">
@@ -127,10 +156,12 @@ function whenLabel(ev: any): string {
     </div>
   </section>
 
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+
   <FinalCta
-    eyebrow="Come and See"
-    headline="Join us this week"
-    subhead="Worship is at 11am every Sunday, and everyone is welcome at every gathering."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
+    headline={page?.finalCtaHeadline ?? "Join us this week"}
+    subhead={page?.finalCtaSubhead ?? "Worship is at 11am every Sunday, and everyone is welcome at every gathering."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

@@ -9,6 +9,7 @@ import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('servePage').catch(() => null);
@@ -55,10 +56,12 @@ const ways = [
     </div>
   </section>
 
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+
   <FinalCta
-    eyebrow="Lend a Hand"
-    headline="Ready to get involved?"
-    subhead="Tell us where you would like to serve and we will help you find a place to plug in."
+    eyebrow={page?.serveCtaEyebrow ?? 'Lend a Hand'}
+    headline={page?.serveCtaHeadline ?? 'Ready to get involved?'}
+    subhead={page?.serveCtaSubhead ?? 'Tell us where you would like to serve and we will help you find a place to plug in.'}
     cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

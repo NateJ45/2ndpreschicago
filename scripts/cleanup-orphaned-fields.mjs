@@ -49,6 +49,9 @@ const REMOVED = {
   siteSettings: [
     'availabilityStatus', 'serviceAreas', 'travelFees', 'googleBusinessUrl',
     'reviewsNote', 'satisfactionGuarantee', 'sectionVisibility',
+    // Church CMS Phase 2: the announcement banner moved from this object to its
+    // own Announcement collection.
+    'announcement',
   ],
   homePage: [
     'meetFounderPhoto', 'meetFounderEyebrow', 'meetFounderHeadline', 'meetFounderContent', 'meetFounderCta',

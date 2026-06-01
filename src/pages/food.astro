@@ -9,6 +9,7 @@ import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('foodPage').catch(() => null);
@@ -44,11 +45,10 @@ const pillPrimary =
     <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l">
       {/* Lunch Bag */}
       <article class="card-lift rounded-md border border-border-soft bg-card p-l flex flex-col">
-        <h2 class="font-display text-h3 text-foreground">Lunch Bag</h2>
-        <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">Tuesday to Thursday · 11am to 1pm</p>
+        <h2 class="font-display text-h3 text-foreground">{page?.lunchBagHeadline ?? 'Lunch Bag'}</h2>
+        <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">{page?.lunchBagSchedule ?? 'Tuesday to Thursday · 11am to 1pm'}</p>
         <p class="mt-s text-foreground/85 leading-relaxed flex-1">
-          A grab-and-go lunch for anyone who needs one. Pantry staples, produce, clothing, and hygiene
-          items are offered occasionally as they are available.
+          {page?.lunchBagBodyP1 ?? 'A grab-and-go lunch for anyone who needs one. Pantry staples, produce, clothing, and hygiene items are offered occasionally as they are available.'}
         </p>
         <div class="mt-l">
           <a href="/give" class={pillPrimary}>Support Lunch Bag</a>
@@ -57,12 +57,10 @@ const pillPrimary =
 
       {/* South Loop Community Table */}
       <article class="card-lift rounded-md border border-border-soft bg-card p-l flex flex-col">
-        <h2 class="font-display text-h3 text-foreground">South Loop Community Table</h2>
-        <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">Sundays · 6:45pm to 8:30pm</p>
+        <h2 class="font-display text-h3 text-foreground">{page?.tableHeadline ?? 'South Loop Community Table'}</h2>
+        <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">{page?.tableSchedule ?? 'Sundays · 6:45pm to 8:30pm'}</p>
         <p class="mt-s text-foreground/85 leading-relaxed flex-1">
-          A free, sit-down meal for all. Come play games, listen to music, and share a table with
-          neighbors. Medical and social work services, occupational therapy, and clothing are available,
-          hosted in partnership with Care for Friends. The Table pauses for the summer.
+          {page?.tableBodyP1 ?? 'A free, sit-down meal for all. Come play games, listen to music, and share a table with neighbors. Medical and social work services, occupational therapy, and clothing are available, hosted in partnership with Care for Friends. The Table pauses for the summer.'}
         </p>
         <div class="mt-l">
           <a href="/give" class={pillPrimary}>Support the Table</a>
@@ -71,10 +69,12 @@ const pillPrimary =
     </div>
   </section>
 
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+
   <FinalCta
-    eyebrow="Lend a Hand"
-    headline="Everyone is welcome at the table"
-    subhead="Come to eat, come to serve, or help keep the door open with a gift. All are needed."
+    eyebrow={page?.finalCtaEyebrow ?? "Lend a Hand"}
+    headline={page?.finalCtaHeadline ?? "Everyone is welcome at the table"}
+    subhead={page?.finalCtaSubhead ?? "Come to eat, come to serve, or help keep the door open with a gift. All are needed."}
     cta={{ label: 'Get Involved', linkType: 'external', externalUrl: '/serve' }}
   />
 </BaseLayout>

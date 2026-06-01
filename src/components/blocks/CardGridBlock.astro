@@ -1,0 +1,44 @@
+---
+// Card grid block. Inner content only; SectionShell provides the background.
+// Section heading inherits the tone color; cards are light surfaces with dark text.
+const { block } = Astro.props as { block: any };
+const cards = block?.cards ?? [];
+const COLS: Record<string, string> = {
+  '2': 'sm:grid-cols-2',
+  '3': 'sm:grid-cols-2 lg:grid-cols-3',
+  '4': 'sm:grid-cols-2 lg:grid-cols-4',
+};
+const colClass = COLS[block?.columns ?? '3'] ?? COLS['3'];
+---
+
+{
+  block && cards.length > 0 && (
+    <div class="mx-auto max-w-content px-m">
+      {(block.eyebrow || block.heading || block.subhead) && (
+        <div class="max-w-2xl">
+          {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
+          {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
+          {block.subhead && <p class="mt-s opacity-80 leading-relaxed">{block.subhead}</p>}
+        </div>
+      )}
+      <div class={`mt-l grid grid-cols-1 ${colClass} gap-m`} data-stagger-grid>
+        {cards.map((c: any) => {
+          const inner = (
+            <Fragment>
+              <span class="block h-1.5 w-10 rounded-t-full bg-gold/70 mb-m" aria-hidden="true" />
+              <h3 class="font-display text-h4 text-foreground">{c.title}</h3>
+              {c.body && <p class="mt-s text-foreground/80 leading-relaxed">{c.body}</p>}
+            </Fragment>
+          );
+          return c.link ? (
+            <a href={c.link} class="card-lift group block rounded-lg border border-border-soft bg-card p-l no-underline">
+              {inner}
+            </a>
+          ) : (
+            <div class="rounded-lg border border-border-soft bg-card p-l">{inner}</div>
+          );
+        })}
+      </div>
+    </div>
+  )
+}

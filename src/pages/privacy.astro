@@ -12,6 +12,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
 import heroPrivacy from '@/assets/hero-sanctuary.webp';
 import PortableText from '@/components/PortableText';
+import Sections from '@/components/Sections.astro';
 import { getPrivacyPage, getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
@@ -139,4 +140,6 @@ const hasSanityBody = Boolean(page?.body);
       )}
     </div>
   </section>
+
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 </BaseLayout>

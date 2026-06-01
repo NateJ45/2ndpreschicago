@@ -4,6 +4,7 @@
 // Safe to edit by hand.
 
 import { defineType, defineField, defineArrayMember } from 'sanity';
+import { FLEXIBLE_SECTION_MEMBERS } from './blocks';
 
 export const privacyPage = defineType({
   name: 'privacyPage',
@@ -15,6 +16,7 @@ export const privacyPage = defineType({
     { name: 'seo', title: 'SEO' },
     { name: 'hero', title: 'Hero' },
     { name: 'content', title: 'Content' },
+    { name: 'sections', title: 'Page sections' },
   ],
   fields: [
     // SEO
@@ -129,6 +131,14 @@ export const privacyPage = defineType({
         }),
       ],
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'flexibleSections',
+      title: 'Page sections',
+      type: 'array',
+      group: 'sections',
+      description: 'Add on-brand sections to this page (text, image + text, cards, quote, CTA band, form, embed). They render below the built-in content. Drag to reorder.',
+      of: FLEXIBLE_SECTION_MEMBERS,
     }),
   ],
   preview: { prepare: () => ({ title: 'Privacy Policy Page' }) },

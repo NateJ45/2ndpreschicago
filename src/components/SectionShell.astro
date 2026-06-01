@@ -1,0 +1,55 @@
+---
+// Shared wrapper for page-builder blocks. Renders a section background:
+//   - a design-token color tone (default / warm / chapel / chapel deep), OR
+//   - a background image or video with a darkening overlay so text stays readable.
+// Sets the base text color so the block content inside inherits it (cream on the
+// chapel tones, white over media). Block components render tone-neutral content
+// (no hardcoded section background), so a single editor control restyles them.
+import { urlFor } from '@/lib/sanity';
+
+interface Props {
+  background?: any;
+  /** Tone used when the block has no background tone set. */
+  defaultTone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
+}
+const { background = null, defaultTone = 'default' } = Astro.props;
+
+const tone = background?.tone ?? defaultTone;
+const hasImage = !!background?.image?.asset;
+const videoUrl = background?.videoUrl ?? null;
+const hasMedia = hasImage || !!videoUrl;
+const overlay = Math.min(90, Math.max(0, Number(background?.overlay ?? 55))) / 100;
+const padding = background?.padding ?? 'normal';
+
+const TONE: Record<string, string> = {
+  default: 'bg-background text-foreground',
+  warm: 'surface-warm bg-muted text-foreground',
+  chapel: 'bg-chapel text-chapel-foreground',
+  chapelDeep: 'bg-chapel-deep text-chapel-foreground',
+};
+const PAD: Record<string, string> = {
+  compact: 'py-section-md',
+  normal: 'py-section-lg',
+  spacious: 'py-32',
+};
+
+const toneCls = hasMedia ? 'text-white' : (TONE[tone] ?? TONE.default);
+const padCls = PAD[padding] ?? PAD.normal;
+const bgImg = hasImage ? urlFor(background.image).width(2000).quality(70).auto('format').url() : null;
+---
+
+<section class:list={['relative isolate', toneCls, padCls]}>
+  {hasMedia && (
+    <div class="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+      {videoUrl ? (
+        <video class="h-full w-full object-cover" autoplay muted loop playsinline poster={bgImg ?? undefined}>
+          <source src={videoUrl} />
+        </video>
+      ) : bgImg ? (
+        <img src={bgImg} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+      ) : null}
+      <div class="absolute inset-0 bg-chapel-deep" style={`opacity:${overlay}`}></div>
+    </div>
+  )}
+  <slot />
+</section>

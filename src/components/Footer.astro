@@ -49,9 +49,18 @@ interface Props {
     mission?: string;
     serviceTimes?: string;
     giveUrl?: string;
+    appUrl?: string;
+    directoryUrl?: string;
+    prayerUrl?: string;
     footerCredit?: string;
     footerCreditUrl?: string;
     newsletter?: NewsletterConfig | null;
+    // Editor-managed footer link columns (Site Settings -> Navigation). When
+    // empty, the built-in columns below render.
+    footerColumns?: Array<{
+      title?: string;
+      links?: Array<{ label?: string; href?: string }>;
+    }> | null;
   } | null;
 }
 
@@ -99,6 +108,47 @@ const CONNECT_LINKS = [
   { label: 'Weddings', href: '/weddings' },
   { label: 'Give', href: '/give' },
 ];
+
+// Optional external integrations (church app, member directory, prayer card).
+// Appended to the Connect column only when set in siteSettings, so the template
+// can point at Subsplash / Planning Center / etc. without code, and nothing
+// extra shows for a church (like Second) that doesn't use them.
+const connectLinks = [
+  ...CONNECT_LINKS,
+  ...(siteSettings?.appUrl ? [{ label: 'Church App', href: siteSettings.appUrl, external: true }] : []),
+  ...(siteSettings?.directoryUrl ? [{ label: 'Member Directory', href: siteSettings.directoryUrl, external: true }] : []),
+  ...(siteSettings?.prayerUrl ? [{ label: 'Prayer Request', href: siteSettings.prayerUrl, external: true }] : []),
+];
+
+// Footer link columns. Editors can override these in Site Settings -> Navigation
+// (Footer link columns). When unset, the built-in columns render, with the
+// optional app/directory/prayer integrations appended to Connect. The separate
+// "Get in touch" column (contact + social) always renders and is not configured
+// here. External links open in a new tab.
+type FooterColumn = { title: string; links: { label: string; href: string; external?: boolean }[] };
+
+const FALLBACK_FOOTER_COLUMNS: FooterColumn[] = [
+  { title: 'Visit', links: VISIT_LINKS },
+  { title: 'Get Involved', links: INVOLVED_LINKS },
+  { title: 'Connect', links: connectLinks },
+];
+
+function footerColumnsFromSettings(
+  cols?: Array<{ title?: string; links?: Array<{ label?: string; href?: string }> }> | null,
+): FooterColumn[] | null {
+  if (!Array.isArray(cols) || cols.length === 0) return null;
+  const mapped: FooterColumn[] = [];
+  for (const c of cols) {
+    const links = (Array.isArray(c?.links) ? c.links : [])
+      .filter((l) => l?.label && l?.href)
+      .map((l) => ({ label: l.label as string, href: l.href as string }));
+    if (c?.title && links.length > 0) mapped.push({ title: c.title, links });
+  }
+  return mapped.length > 0 ? mapped : null;
+}
+
+const FOOTER_COLUMNS: FooterColumn[] =
+  footerColumnsFromSettings(siteSettings?.footerColumns) ?? FALLBACK_FOOTER_COLUMNS;
 
 // Shared link class for the footer columns (cream on green, animated underline).
 const footerLink =
@@ -166,32 +216,24 @@ const footerLink =
 
   {/* ---- Four-column link grid. Single centered column on mobile. ----------- */}
   <div class="mx-auto max-w-content px-m pb-l grid gap-l grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 text-center sm:text-left border-t border-chapel-foreground/15 pt-l">
-    <nav aria-labelledby="footer-visit">
-      <p id="footer-visit" class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70 mb-s">Visit</p>
-      <ul class="text-sm space-y-2 list-none p-0">
-        {VISIT_LINKS.map((l) => (
-          <li><a href={l.href} class={footerLink}>{l.label}</a></li>
-        ))}
-      </ul>
-    </nav>
-
-    <nav aria-labelledby="footer-involved">
-      <p id="footer-involved" class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70 mb-s">Get Involved</p>
-      <ul class="text-sm space-y-2 list-none p-0">
-        {INVOLVED_LINKS.map((l) => (
-          <li><a href={l.href} class={footerLink}>{l.label}</a></li>
-        ))}
-      </ul>
-    </nav>
-
-    <nav aria-labelledby="footer-connect">
-      <p id="footer-connect" class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70 mb-s">Connect</p>
-      <ul class="text-sm space-y-2 list-none p-0">
-        {CONNECT_LINKS.map((l) => (
-          <li><a href={l.href} class={footerLink}>{l.label}</a></li>
-        ))}
-      </ul>
-    </nav>
+    {FOOTER_COLUMNS.map((col, i) => (
+      <nav aria-labelledby={`footer-col-${i}`}>
+        <p id={`footer-col-${i}`} class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70 mb-s">{col.title}</p>
+        <ul class="text-sm space-y-2 list-none p-0">
+          {col.links.map((l) => (
+            <li>
+              <a
+                href={l.href}
+                class={footerLink}
+                {...((l.external || /^https?:\/\//.test(l.href)) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    ))}
 
     {/* GET IN TOUCH — email, phone, office hours, socials. */}
     <div>

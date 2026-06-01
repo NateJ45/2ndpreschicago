@@ -16,6 +16,7 @@ import Hero from '@/components/Hero.astro';
 import SanityImage from '@/components/SanityImage.astro';
 import PortableText from '@/components/PortableText';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
 import chesnaPhoto from '@/assets/chesna-hinkley.webp';
 import judyPhoto from '@/assets/judy-landt.webp';
@@ -192,10 +193,12 @@ const people = useSanityStaff
     </div>
   </section>
 
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+
   <FinalCta
-    eyebrow="Come and See"
-    headline="We would love to meet you"
-    subhead="Join us for worship on Sunday, or reach out to the office any time."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
+    headline={page?.finalCtaHeadline ?? "We would love to meet you"}
+    subhead={page?.finalCtaSubhead ?? "Join us for worship on Sunday, or reach out to the office any time."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

@@ -2,6 +2,7 @@
 // Form field options (project types) are wired in the Astro component, not Sanity.
 
 import { defineType, defineField, defineArrayMember } from 'sanity';
+import { FLEXIBLE_SECTION_MEMBERS } from './blocks';
 
 export const contactPage = defineType({
   name: 'contactPage',
@@ -13,6 +14,8 @@ export const contactPage = defineType({
     { name: 'seo', title: 'SEO' },
     { name: 'hero', title: 'Hero' },
     { name: 'form', title: 'Form intro + expectations' },
+    { name: 'content', title: 'Page copy' },
+    { name: 'sections', title: 'Page sections' },
     // removed empty interior-designer scheduling group during church remodel
   ],
   fields: [
@@ -76,6 +79,14 @@ export const contactPage = defineType({
       group: 'form',
       description: 'Pre-submit expectation note shown above the form.',
     }),
+    defineField({
+      name: 'contactForm',
+      title: 'Contact form',
+      type: 'reference',
+      to: [{ type: 'form' }],
+      group: 'form',
+      description: 'The form shown on the contact page. Leave empty to show direct contact links only.',
+    }),
     // removed interior-designer contact form dropdown option fields (formProjectTypeOptions, formLocationOptions, formBudgetOptions, formTimelineOptions, formSourceOptions) during church remodel
     defineField({
       name: 'whatToExpectEyebrow',
@@ -121,6 +132,21 @@ export const contactPage = defineType({
       type: 'text',
       rows: 3,
       description: 'Internal-only reminder for editors. Anything you write here stays in Studio and never renders on the live page.',
+    }),
+    defineField({ name: 'whoToReachLabel', title: 'Who to reach label', type: 'string', group: 'content' }),
+    defineField({ name: 'gettingHereLabel', title: 'Getting here label', type: 'string', group: 'content' }),
+    defineField({ name: 'gettingHereBody', title: 'Getting here body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'formSectionHeadline', title: 'Form section headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
+    defineField({
+      name: 'flexibleSections',
+      title: 'Page sections',
+      type: 'array',
+      group: 'sections',
+      description: 'Add on-brand sections to this page (text, image + text, cards, quote, CTA band, form, embed). They render below the built-in content. Drag to reorder.',
+      of: FLEXIBLE_SECTION_MEMBERS,
     }),
   ],
   preview: { prepare: () => ({ title: 'Contact Page' }) },

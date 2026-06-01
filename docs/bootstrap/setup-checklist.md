@@ -56,7 +56,7 @@ off or explicitly deferred with a reason.
 
 - [ ] Logo files (`logo-light.*`, `logo-dark.*`) in `src/assets/`, not
       placeholder assets
-- [ ] `public/favicon.svg` replaced with real favicon
+- [ ] `public/favicon.png` (+ `public/apple-touch-icon.png`) replaced with the real favicon (or set `siteSettings.favicon` in Studio)
 - [ ] `public/og-default.png` regenerated (`npm run og`) with real brand colors
       and tagline
 - [ ] Per-page OG variants generated if needed (`npm run og:pages`)

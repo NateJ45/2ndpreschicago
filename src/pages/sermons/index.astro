@@ -14,6 +14,7 @@ import Hero from '@/components/Hero.astro';
 import heroSermons from '@/assets/hero-worship.webp';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
 const [page, sermons, siteSettings] = await Promise.all([
   getSermonsPage().catch(() => null),
@@ -88,7 +89,7 @@ function meta(s: any): string {
                 <div class="aspect-[16/9] md:aspect-auto bg-muted" aria-hidden="true"></div>
               )}
               <div class="p-l">
-                <span class="text-xs uppercase tracking-eyebrow text-link">Latest message</span>
+                <span class="text-xs uppercase tracking-eyebrow text-link">{page?.latestEyebrow ?? 'Latest message'}</span>
                 <h2 class="mt-xs font-display text-h3 text-foreground group-hover:text-link transition-colors">{featured.title}</h2>
                 <p class="mt-s text-sm text-foreground/70">{meta(featured)}</p>
                 {featured.scripture && <p class="mt-xs text-sm text-foreground/70 italic">{featured.scripture}</p>}
@@ -117,10 +118,9 @@ function meta(s: any): string {
   ) : (
     <section class="surface-warm bg-muted" aria-label="Watch online">
       <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
-        <SectionHeading eyebrow="Watch online" headline="Join us for worship, wherever you are" headingId="sermons-watch" align="center" class="mx-auto" />
+        <SectionHeading eyebrow={page?.watchEyebrow ?? 'Watch online'} headline={page?.watchHeadline ?? 'Join us for worship, wherever you are'} headingId="sermons-watch" align="center" class="mx-auto" />
         <p class="mt-m text-lg text-foreground/85 leading-relaxed">
-          We livestream Sunday worship and post recent messages on our YouTube channel. Watch the latest,
-          or join us live on Sunday at 11am.
+          {page?.watchBody ?? 'We livestream Sunday worship and post recent messages on our YouTube channel. Watch the latest, or join us live on Sunday at 11am.'}
         </p>
         <div class="mt-l flex flex-wrap justify-center gap-s">
           <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>Watch on YouTube</a>
@@ -130,10 +130,12 @@ function meta(s: any): string {
     </section>
   )}
 
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+
   <FinalCta
-    eyebrow="Come and See"
-    headline="Worship with us in person"
-    subhead="There is nothing like being in the room. Join us Sundays at 11am at the Church of the Angels."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
+    headline={page?.finalCtaHeadline ?? "Worship with us in person"}
+    subhead={page?.finalCtaSubhead ?? "There is nothing like being in the room. Join us Sundays at 11am at the Church of the Angels."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

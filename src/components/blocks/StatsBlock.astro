@@ -1,0 +1,36 @@
+---
+// Stats / numbers block. Big values + labels, sitting directly on the section
+// background, so all text inherits the SectionShell tone color (reads on paper,
+// chapel green, or over media).
+const { block } = Astro.props as { block: any };
+const items = block?.items ?? [];
+const COLS: Record<string, string> = {
+  '2': 'sm:grid-cols-2',
+  '3': 'sm:grid-cols-3',
+  '4': 'grid-cols-2 sm:grid-cols-4',
+};
+const colClass = COLS[block?.columns ?? '3'] ?? COLS['3'];
+---
+
+{
+  block && items.length > 0 && (
+    <div class="mx-auto max-w-content px-m">
+      {(block.eyebrow || block.heading || block.intro) && (
+        <div class="max-w-2xl mb-l">
+          {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
+          {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
+          {block.intro && <p class="mt-s opacity-80 leading-relaxed">{block.intro}</p>}
+        </div>
+      )}
+      <div class={`grid grid-cols-2 ${colClass} gap-l text-center`} data-stagger-grid>
+        {items.map((s: any) => (
+          <div>
+            <p class="font-display text-h1 leading-none">{s.value}</p>
+            <p class="mt-s text-xs uppercase tracking-eyebrow opacity-80">{s.label}</p>
+            {s.note && <p class="mt-xs text-sm opacity-60 leading-relaxed">{s.note}</p>}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

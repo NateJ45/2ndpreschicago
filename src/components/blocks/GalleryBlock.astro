@@ -1,0 +1,45 @@
+---
+// Photo gallery block. Responsive grid of images with optional captions. Turns
+// "a single photo" into a gallery with one editor control. Captions/headings
+// inherit the SectionShell tone color.
+import SanityImage from '@/components/SanityImage.astro';
+
+const { block } = Astro.props as { block: any };
+const images = (block?.images ?? []).filter((i: any) => i?.asset);
+const COLS: Record<string, string> = {
+  '2': 'grid-cols-2',
+  '3': 'grid-cols-2 sm:grid-cols-3',
+  '4': 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
+};
+const colClass = COLS[block?.columns ?? '3'] ?? COLS['3'];
+---
+
+{
+  block && images.length > 0 && (
+    <div class="mx-auto max-w-content px-m">
+      {(block.eyebrow || block.heading || block.intro) && (
+        <div class="max-w-2xl mb-l">
+          {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
+          {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
+          {block.intro && <p class="mt-s opacity-80 leading-relaxed">{block.intro}</p>}
+        </div>
+      )}
+      <div class={`grid ${colClass} gap-s sm:gap-m`} data-stagger-grid>
+        {images.map((img: any) => (
+          <figure>
+            <div class="overflow-hidden rounded-md ring-1 ring-border-soft img-zoom group aspect-[4/3]">
+              <SanityImage
+                source={img}
+                width={800}
+                sizes="(min-width: 1024px) 30vw, 50vw"
+                alt={img.alt || ''}
+                class="h-full w-full object-cover"
+              />
+            </div>
+            {img.caption && <figcaption class="mt-xs text-sm opacity-70">{img.caption}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    </div>
+  )
+}

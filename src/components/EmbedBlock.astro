@@ -1,0 +1,37 @@
+---
+// Renders an `embed` object (a Portable Text node or, in Phase 4, a page block)
+// by mounting the shared Embed.tsx island. Handles plain iframe URLs and
+// script-based snippets (Subsplash, Planning Center) alike.
+import Embed from '@/components/Embed.tsx';
+
+interface EmbedData {
+  title?: string;
+  mode?: 'url' | 'html';
+  url?: string | null;
+  html?: string | null;
+  aspect?: string | null;
+}
+interface Props extends EmbedData {
+  /** Pass the whole embed object, or the individual fields. */
+  block?: EmbedData | null;
+}
+const { block = null, title, mode, url, html, aspect } = Astro.props;
+const data: EmbedData = block ?? { title, mode, url, html, aspect };
+const hasContent = !!(data?.mode && (data.url || data.html));
+---
+
+{
+  hasContent && (
+    <div class="my-l">
+      {data.title && <h3 class="font-display text-h4 text-foreground mb-s">{data.title}</h3>}
+      <Embed
+        client:visible
+        mode={data.mode!}
+        url={data.url ?? undefined}
+        html={data.html ?? undefined}
+        title={data.title}
+        aspect={data.aspect ?? undefined}
+      />
+    </div>
+  )
+}

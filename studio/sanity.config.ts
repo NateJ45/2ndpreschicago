@@ -14,58 +14,77 @@ import { Iframe } from 'sanity-plugin-iframe-pane';
 import { schemaTypes } from './schemaTypes';
 import { deskStructure } from './structure';
 import StudioLogo from './components/StudioLogo';
+import StudioLayout from './components/StudioLayout';
 import { CharacterCountInput } from './components/CharacterCountInput';
 import { documentBadges } from './components/documentBadges';
 
 // Brand theme for the Studio UI. Uses Sanity's legacy theme builder which
 // maps a handful of CSS custom properties to the Studio's full internal design
 // system (it derives the complete light + dark palette from these inputs).
-// Slate primary (#586577) — update to match your brand's primary action color.
 //
-// The three "foundation" values do the heavy lifting: a near-black, a near-white,
-// and a gray-base tint every neutral surface, border, and muted label toward the
-// site's Paper-and-Ink feel instead of Sanity's stock cool gray. The state colors
-// keep inline validation and the custom document badges visually consistent.
+// These values mirror the website's own design tokens (src/styles/globals.css)
+// so the Studio shares the site's Paper-and-Ink feel: warm Bronze as the
+// interactive accent, cream Paper surfaces, Espresso Ink text, and a deep
+// Chapel-green top bar with cream text — the same green the site uses for its
+// utility bar, footer, and closing CTA. The fonts are patched on below.
 const studioThemeProps = {
   // Foundation — neutrals everything else derives from.
-  '--black': '#2A2D31',   // Ink
-  '--white': '#FBFBFA',   // Paper
-  '--gray-base': '#586577', // Slate
+  '--black': '#36302A',   // Espresso Ink — darkest text
+  '--white': '#FBF8F2',   // Soft Paper — lightest surface
+  '--gray-base': '#6E6354', // Warm taupe — tints every neutral warm, not cool
 
-  // Brand accent.
-  '--brand-primary': '#586577',
+  // Brand accent — Warm Bronze.
+  '--brand-primary': '#8A6A43',
   '--brand-primary--inverted': '#ffffff',
-  '--focus-color': '#586577',
+  '--focus-color': '#8A6A43',
 
   // Paper surfaces for inputs and components.
-  '--input-bg': '#F3F4F2',
-  '--component-bg': '#F3F4F2',
-  '--component-text-color': '#2A2D31',
+  '--input-bg': '#F1EBE0',
+  '--component-bg': '#FBF8F2',
+  '--component-text-color': '#36302A',
 
   // Buttons.
-  '--default-button-color': '#586577',
-  '--default-button-primary-color': '#586577',
-  '--default-button-success-color': '#43a85e',
-  '--default-button-warning-color': '#d99a3f',
-  '--default-button-danger-color': '#e34141',
+  '--default-button-color': '#8A6A43',
+  '--default-button-primary-color': '#8A6A43',
+  '--default-button-success-color': '#3E7C66',
+  '--default-button-warning-color': '#A07D45',
+  '--default-button-danger-color': '#C0392B',
 
   // Validation + status states.
-  '--state-success-color': '#43a85e',
-  '--state-warning-color': '#d99a3f',
-  '--state-danger-color': '#e34141',
+  '--state-success-color': '#3E7C66',
+  '--state-warning-color': '#A07D45',
+  '--state-danger-color': '#C0392B',
 
-  // Top navigation bar.
-  '--main-navigation-color': '#2A2D31',
-  '--main-navigation-color--inverted': '#FBFBFA',
+  // Top navigation bar — deep Chapel green with cream text, echoing the site's
+  // utility bar and footer.
+  '--main-navigation-color': '#1E423B',
+  '--main-navigation-color--inverted': '#F1EAD9',
 };
 
-// Assign the props to a const before passing them so TypeScript skips
-// excess-property checking. The object keeps a couple of legacy `--*--inverted`
-// CSS-variable keys (notably --brand-primary--inverted, which sets white text on
-// the primary button) that predate, and aren't included in, Sanity's current
-// LegacyThemeProps type. Passing a variable leaves the runtime object
-// byte-identical while keeping `tsc --noEmit` clean. Don't inline this back.
-const studioTheme = buildLegacyTheme(studioThemeProps);
+// Patch the brand fonts onto the legacy theme. buildLegacyTheme returns a full
+// theme object whose `fonts` map (@sanity/ui) carries a `family` per role; we
+// override the heading + text families with the site's faces (Instrument Serif
+// for display, Newsreader for body). The font files themselves are injected via
+// the StudioLayout component (a Google Fonts <link>), so these names resolve.
+// Optional chaining keeps a future @sanity/ui shape change from throwing.
+const DISPLAY_STACK = "'Instrument Serif', Georgia, 'Times New Roman', serif";
+const BODY_STACK = "'Newsreader', Georgia, 'Times New Roman', serif";
+
+const baseTheme = buildLegacyTheme(studioThemeProps);
+const studioTheme = {
+  ...baseTheme,
+  fonts: baseTheme.fonts
+    ? {
+        ...baseTheme.fonts,
+        heading: baseTheme.fonts.heading
+          ? { ...baseTheme.fonts.heading, family: DISPLAY_STACK }
+          : baseTheme.fonts.heading,
+        text: baseTheme.fonts.text
+          ? { ...baseTheme.fonts.text, family: BODY_STACK }
+          : baseTheme.fonts.text,
+      }
+    : baseTheme.fonts,
+};
 
 // Re-export so structure.ts can attach the iframe view to every singleton.
 export { Iframe };
@@ -106,6 +125,8 @@ export function urlForDoc(schemaType: string, doc: any): string | null {
     case 'sermon':      return slug ? `${SITE_URL}/sermons/${slug}` : `${SITE_URL}/sermons`;
     case 'staffMember': return `${SITE_URL}/pastor-staff`;
     case 'faqItem':     return `${SITE_URL}/faq`;
+    // Generic custom pages live at /<slug>.
+    case 'page':        return slug ? `${SITE_URL}/${slug}` : null;
     default:            return null;
   }
 }
@@ -123,10 +144,13 @@ export default defineConfig({
   // Brand theme — Slate primary + Paper background.
   theme: studioTheme,
 
-  // Studio chrome overrides. Logo replaces the default Sanity wordmark.
+  // Studio chrome overrides. Logo replaces the default Sanity wordmark; the
+  // layout wrapper injects the brand web fonts so the theme's serif families
+  // (set above) actually load in the Studio.
   studio: {
     components: {
       logo: StudioLogo,
+      layout: StudioLayout,
     },
   },
 

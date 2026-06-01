@@ -1,48 +1,87 @@
 ---
 // Safe to edit by hand for copy + structure changes.
-// FAQ page. Common questions for visitors, grouped by category, rendered as a
-// native (no-JS) accordion. Emits FAQPage JSON-LD for rich results.
+// FAQ page. Questions come from the faqItem collection in Sanity, grouped by
+// category in the order set on the FAQ Page singleton, so editors add, edit, and
+// reorder questions without touching code. When the collection is empty (e.g.
+// Sanity not configured) the page falls back to a built-in starter set, so it is
+// never broken or empty. Rendered as a native (no-JS) accordion; emits FAQPage
+// JSON-LD for rich results. Collection answers are Portable Text; the built-in
+// fallback answers are plain strings. The render handles both.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getFaqPage, getSiteSettings } from '@/lib/queries';
 import heroFaq from '@/assets/sanctuary-interior.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
+import PortableText from '@/components/PortableText';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
-const siteSettings = await getSiteSettings().catch(() => null);
-const page = await getPageHero('faqPage').catch(() => null);
+const [siteSettings, page] = await Promise.all([
+  getSiteSettings().catch(() => null),
+  getFaqPage().catch(() => null),
+]);
 
-const title = `Frequently Asked Questions · ${site.name}`;
+const title = page?.seoTitle ?? `Frequently Asked Questions · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Everything a first-time visitor wants to know about worship, parking, kids, giving, weddings, and our food ministry at Second Presbyterian Church of Chicago.';
 
-const faqs = [
-  { category: 'Visiting', q: 'What time is worship?', a: 'Worship is every Sunday at 11am, and it usually runs about an hour and fifteen minutes. We are at 1936 South Michigan Avenue in the South Loop.' },
-  { category: 'Visiting', q: 'Where do I park?', a: 'We sit on Michigan Avenue close to public transit, with first-come, first-served free parking. There are additional public parking options nearby.' },
-  { category: 'Visiting', q: 'Do I have to be a member, or a Christian, to come?', a: 'Not at all. Whether you are a weekly churchgoer, have not been in ages, or do not know anything about Christianity, there is a place for you here. Everyone is welcome.' },
-  { category: 'Worship', q: 'I have never been here. What should I expect?', a: 'Our service is traditional and liturgical, with hymns, spirituals, and anthems led by organ and choir. We share communion on the first Sunday of each month. Casual attire is always welcome.' },
-  { category: 'Worship', q: 'Can I watch online?', a: 'Yes. We livestream worship on our YouTube channel, so you can join from anywhere.' },
-  { category: 'Family', q: 'Can I bring my kids?', a: 'Please do. Little ones are part of the worshipping congregation, and we welcome their noise and their needs. There is a children\'s message during the service, plus books and quiet toys, and a cry room with an audio stream if you need it.' },
-  { category: 'Giving', q: 'How do I give?', a: 'You can give online through our secure giving portal, by mail with a check, or designate your gift to the food ministry. Visit the Give page to get started.' },
-  { category: 'Weddings & Space', q: 'Can I get married at Second?', a: 'Yes. We welcome gay and straight couples to marry in our historic sanctuary. See the Weddings page for details, pricing, and how to inquire about your date.' },
-  { category: 'Weddings & Space', q: 'Can my group use the building?', a: 'Often, yes. We host all sorts of gatherings throughout the week. See the Use Our Space page and get in touch about fees and availability.' },
-  { category: 'Food', q: 'I need food. How does that work?', a: 'Find free food for all in need, no questions asked, at our Cullerton door. Lunch Bag runs Tuesday through Thursday from 11am to 1pm, and the South Loop Community Table gathers on Sunday evenings.' },
+// Built-in starter questions. Used only when the faqItem collection is empty.
+// Mirrors scripts/seed-faq-items.mjs (same categories + order). Answers here are
+// plain strings; collection answers are Portable Text.
+const fallbackFaqs = [
+  { category: 'Visiting', question: 'What time is worship?', answer: 'Worship is every Sunday at 11am, and it usually runs about an hour and fifteen minutes. We are at 1936 South Michigan Avenue in the South Loop.' },
+  { category: 'Visiting', question: 'Where do I park?', answer: 'We sit on Michigan Avenue close to public transit, with first-come, first-served free parking. There are additional public parking options nearby.' },
+  { category: 'Visiting', question: 'Do I have to be a member, or a Christian, to come?', answer: 'Not at all. Whether you are a weekly churchgoer, have not been in ages, or do not know anything about Christianity, there is a place for you here. Everyone is welcome.' },
+  { category: 'Worship', question: 'I have never been here. What should I expect?', answer: 'Our service is traditional and liturgical, with hymns, spirituals, and anthems led by organ and choir. We share communion on the first Sunday of each month. Casual attire is always welcome.' },
+  { category: 'Worship', question: 'Can I watch online?', answer: 'Yes. We livestream worship on our YouTube channel, so you can join from anywhere.' },
+  { category: 'Kids & Family', question: 'Can I bring my kids?', answer: 'Please do. Little ones are part of the worshipping congregation, and we welcome their noise and their needs. There is a children\'s message during the service, plus books and quiet toys, and a cry room with an audio stream if you need it.' },
+  { category: 'Giving', question: 'How do I give?', answer: 'You can give online through our secure giving portal, by mail with a check, or designate your gift to the food ministry. Visit the Give page to get started.' },
+  { category: 'Weddings & Space', question: 'Can I get married at Second?', answer: 'Yes. We welcome gay and straight couples to marry in our historic sanctuary. See the Weddings page for details, pricing, and how to inquire about your date.' },
+  { category: 'Weddings & Space', question: 'Can my group use the building?', answer: 'Often, yes. We host all sorts of gatherings throughout the week. See the Use Our Space page and get in touch about fees and availability.' },
+  { category: 'Food Ministry', question: 'I need food. How does that work?', answer: 'Find free food for all in need, no questions asked, at our Cullerton door. Lunch Bag runs Tuesday through Thursday from 11am to 1pm, and the South Loop Community Table gathers on Sunday evenings.' },
 ];
 
-const categoryOrder = ['Visiting', 'Worship', 'Family', 'Giving', 'Weddings & Space', 'Food'];
+const DEFAULT_CATEGORY_ORDER = ['Visiting', 'Worship', 'Kids & Family', 'Getting Involved', 'Giving', 'Weddings & Space', 'Food Ministry'];
+
+const faqs: any[] = (Array.isArray(page?.faqs) && page.faqs.length > 0) ? page.faqs : fallbackFaqs;
+const categoryOrder: string[] = (page?.categoryOrder?.length) ? page.categoryOrder : DEFAULT_CATEGORY_ORDER;
+
+// Group by the editor's category order, dropping empty categories. Any category
+// present in the data but missing from the order list is appended, so a new
+// category can never silently hide its questions.
 const grouped = categoryOrder
   .map((cat) => ({ category: cat, items: faqs.filter((f) => f.category === cat) }))
   .filter((g) => g.items.length > 0);
+const known = new Set(categoryOrder);
+for (const f of faqs) {
+  if (f.category && !known.has(f.category)) {
+    known.add(f.category);
+    grouped.push({ category: f.category, items: faqs.filter((x) => x.category === f.category) });
+  }
+}
+
+// Flatten a Portable Text answer (or pass a string through) for the JSON-LD.
+function answerText(a: any): string {
+  if (typeof a === 'string') return a;
+  if (Array.isArray(a)) {
+    return a
+      .map((block) => (block?.children ?? []).map((c: any) => c?.text ?? '').join(''))
+      .join(' ')
+      .trim();
+  }
+  return '';
+}
 
 const faqSchema = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: faqs.map((f) => ({
     '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: answerText(f.answer) },
   })),
 });
 
@@ -76,10 +115,16 @@ const schemas = [
             {group.items.map((f) => (
               <details class="group py-m">
                 <summary class="flex cursor-pointer list-none items-center justify-between gap-m text-lg text-foreground">
-                  {f.q}
+                  {f.question}
                   <span class="shrink-0 text-link transition-transform group-open:rotate-45" aria-hidden="true">+</span>
                 </summary>
-                <p class="mt-s text-foreground/85 leading-relaxed">{f.a}</p>
+                {typeof f.answer === 'string' ? (
+                  <p class="mt-s text-foreground/85 leading-relaxed">{f.answer}</p>
+                ) : (
+                  <div class="mt-s text-foreground/85 leading-relaxed [&>div>*:first-child]:mt-0">
+                    <PortableText value={f.answer} />
+                  </div>
+                )}
               </details>
             ))}
           </div>
@@ -88,10 +133,12 @@ const schemas = [
     </div>
   </section>
 
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+
   <FinalCta
-    eyebrow="Still Wondering?"
-    headline="Ask us anything"
-    subhead="The best answer to most questions is a Sunday morning. Reach out and we will help however we can."
+    eyebrow={page?.finalCtaEyebrow ?? "Still Wondering?"}
+    headline={page?.finalCtaHeadline ?? "Ask us anything"}
+    subhead={page?.finalCtaSubhead ?? "The best answer to most questions is a Sunday morning. Reach out and we will help however we can."}
     cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

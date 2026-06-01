@@ -16,6 +16,8 @@
 
 import type { StructureBuilder, StructureResolverContext } from 'sanity/structure';
 import { Iframe, urlForDoc } from './sanity.config';
+import GuideView from './components/GuideView';
+import { guides } from './guides/content';
 import {
   CogIcon,
   HomeIcon,
@@ -32,6 +34,8 @@ import {
   BookIcon,
   LockIcon,
   PresentationIcon,
+  BellIcon,
+  DocumentsIcon,
 } from '@sanity/icons';
 
 const SINGLETON_TYPES = [
@@ -67,6 +71,10 @@ const HIDDEN_FROM_DEFAULT = new Set<string>([
   'ministry',
   'event',
   'sermon',
+  'form',
+  'announcement',
+  'worshipResource',
+  'page',
   // sanity-plugin-media registers this tag type; keep it out of the desk root
   // (the "Media" tool in the top sidebar is where tags belong).
   'media.tag',
@@ -114,10 +122,47 @@ function singletonWithPreview(
     );
 }
 
+/**
+ * "How This Works" — a pinned, read-only help center built from repo data
+ * (studio/guides/content.tsx), rendered by GuideView. Lives in code so staff
+ * can't edit or delete it and every future client site inherits it. Each guide
+ * is a navigable item that opens its own component pane.
+ */
+function howThisWorks(S: StructureBuilder) {
+  return S.listItem()
+    .id('how-this-works')
+    .title('How This Works')
+    .icon(BookIcon)
+    .child(
+      S.list()
+        .id('how-this-works-list')
+        .title('How This Works')
+        .items(
+          guides.map((g) =>
+            S.listItem()
+              .id(`guide-${g.slug}`)
+              .title(g.title)
+              .icon(g.icon)
+              .child(
+                S.component(GuideView)
+                  .id(`guide-view-${g.slug}`)
+                  .title(g.title)
+                  .options({ guideSlug: g.slug }),
+              ),
+          ),
+        ),
+    );
+}
+
 export const deskStructure = (S: StructureBuilder, _context: StructureResolverContext) =>
   S.list()
     .title('Second Presbyterian')
     .items([
+      // How This Works — pinned help center (first thing editors see).
+      howThisWorks(S),
+
+      S.divider(),
+
       // Site Settings — pinned singleton (no preview; not a page)
       singletonWithPreview(S, 'siteSettings', 'Site Settings', CogIcon),
 
@@ -162,6 +207,11 @@ export const deskStructure = (S: StructureBuilder, _context: StructureResolverCo
               singletonWithPreview(S, 'contactPage', 'Contact', EnvelopeIcon),
               singletonWithPreview(S, 'notFoundPage', '404 Page', DocumentTextIcon),
               singletonWithPreview(S, 'privacyPage', 'Privacy Policy Page', LockIcon),
+
+              S.divider(),
+
+              // Custom pages (collection): build new pages at /<slug> with blocks.
+              S.documentTypeListItem('page').title('Custom Pages').icon(DocumentTextIcon),
             ]),
         ),
 
@@ -178,6 +228,9 @@ export const deskStructure = (S: StructureBuilder, _context: StructureResolverCo
               S.documentTypeListItem('staffMember').title('Pastors & Staff').icon(UsersIcon),
               S.documentTypeListItem('ministry').title('Ministries').icon(HeartIcon),
               S.documentTypeListItem('faqItem').title('FAQ Items').icon(HelpCircleIcon),
+              S.documentTypeListItem('form').title('Forms').icon(EnvelopeIcon),
+              S.documentTypeListItem('worshipResource').title('Worship Resources').icon(DocumentsIcon),
+              S.documentTypeListItem('announcement').title('Announcements').icon(BellIcon),
             ]),
         ),
 

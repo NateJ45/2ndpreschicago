@@ -92,12 +92,13 @@ The Portable Text renderer (`JournalPortableText.tsx`) detects image orientation
 - `ThemeToggle.tsx`, `BackToTop.tsx`, `SanityImage.astro`, `CtaLink.astro`.
 
 **Sanity Studio components (in `studio/components/`):**
-- `StudioGuide.tsx` -- Panel 1 of the "Start Here" handbook. Fetches content from the `studioGuide` singleton and renders the guide title, intro, site map, how-tos, and tips. Editor-driven: update the handbook text directly in Studio without a code change.
-- `BusinessOverview.tsx` -- Panel 2. Fetches live business facts from Sanity via `useClient` plus the three static sections from the `studioNotes` singleton (business summary, ideal client, voice summary + words to avoid).
-- `BrandKit.tsx` -- Panel 3. Displays the brand color palette (hex values) and font names. **Hardcoded on purpose:** colors and fonts mirror the real `globals.css` tokens. Putting them in Sanity would create a second source of truth that can drift from the live site.
-- `StudioPlaybook.tsx` -- Panel 4 ("Grow your studio"). Fetches the `studioPlaybook` singleton and renders professional-development guides as tabs.
+- `GuideView.tsx` -- renders one "How This Works" help guide as a read-only desk pane. Content is repo-based data in `studio/guides/content.tsx` (12 plain-English guides for church staff); the guide to show is chosen per desk item via `.options({ guideSlug })`. Replaces the interior-designer "Start Here" handbook (the old `StudioGuide` / `BusinessOverview` / `BrandKit` / `StudioPlaybook` panels and their `studioGuide` / `studioNotes` / `studioPlaybook` singletons were removed in the remodel).
+- `StudioLogo.tsx` -- the wordmark in the Studio header ("Second Presbyterian" in the display serif), wired via `studio.components.logo`.
+- `StudioLayout.tsx` -- wraps the Studio (`studio.components.layout`) to inject the brand web fonts so the themed serif families resolve.
+- `CharacterCountInput.tsx` -- global form input wrapper showing a live character counter under any capped text field (SEO title / description); registered once via `form.components.input`.
+- `documentBadges.tsx` -- at-a-glance status badges shown next to the publish status.
 
-All four panels are wired in `studio/structure.ts` under a "Start Here" parent list item at the top of the Studio sidebar. The `studioGuide`, `studioNotes`, and `studioPlaybook` singletons each have two views: a rendered component view and an Edit form view. All use plain text fields throughout (no Portable Text) to avoid a Studio renderer dependency, and all are excluded from Canvas.
+The "How This Works" section is pinned at the top of `studio/structure.ts`, one navigable pane per guide. Because the guides are code (not singletons), staff cannot edit or delete them and every template clone inherits them. The Studio theme + fonts are configured in `studio/sanity.config.ts`.
 
 The desktop nav dropdowns live directly in `Header.astro` as SSR'd `<details>` (see `docs/agent/page-architecture.md`), not as a React island.
 
