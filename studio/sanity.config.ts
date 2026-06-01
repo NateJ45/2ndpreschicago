@@ -106,6 +106,8 @@ export function urlForDoc(schemaType: string, doc: any): string | null {
     case 'sermon':      return slug ? `${SITE_URL}/sermons/${slug}` : `${SITE_URL}/sermons`;
     case 'staffMember': return `${SITE_URL}/pastor-staff`;
     case 'faqItem':     return `${SITE_URL}/faq`;
+    // Generic custom pages live at /<slug>.
+    case 'page':        return slug ? `${SITE_URL}/${slug}` : null;
     default:            return null;
   }
 }

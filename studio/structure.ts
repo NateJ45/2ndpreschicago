@@ -72,6 +72,7 @@ const HIDDEN_FROM_DEFAULT = new Set<string>([
   'form',
   'announcement',
   'worshipResource',
+  'page',
   // sanity-plugin-media registers this tag type; keep it out of the desk root
   // (the "Media" tool in the top sidebar is where tags belong).
   'media.tag',
@@ -167,6 +168,11 @@ export const deskStructure = (S: StructureBuilder, _context: StructureResolverCo
               singletonWithPreview(S, 'contactPage', 'Contact', EnvelopeIcon),
               singletonWithPreview(S, 'notFoundPage', '404 Page', DocumentTextIcon),
               singletonWithPreview(S, 'privacyPage', 'Privacy Policy Page', LockIcon),
+
+              S.divider(),
+
+              // Custom pages (collection): build new pages at /<slug> with blocks.
+              S.documentTypeListItem('page').title('Custom Pages').icon(DocumentTextIcon),
             ]),
         ),
 

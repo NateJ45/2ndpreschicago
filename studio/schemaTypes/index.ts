@@ -7,6 +7,7 @@
 
 import { aboutPage } from './aboutPage';
 import { announcement } from './announcement';
+import { sectionBlocks } from './blocks';
 import { churchPageSingletons } from './churchPages';
 import { contactPage } from './contactPage';
 import { ctaBlock } from './ctaBlock';
@@ -19,6 +20,7 @@ import { form } from './form';
 import { homePage } from './homePage';
 import { ministry } from './ministry';
 import { notFoundPage } from './notFoundPage';
+import { page } from './page';
 import { privacyPage } from './privacyPage';
 import { sermon } from './sermon';
 import { sermonsPage } from './sermonsPage';
@@ -30,6 +32,8 @@ export const schemaTypes = [
   // Object types (embedded) first so they're defined before docs that reference them
   ctaBlock,
   embed,
+  // Page-builder block library (flexibleSections members)
+  ...sectionBlocks,
 
   // Reusable documents referenced by pages (define before the singletons that point at them)
   form,
@@ -56,4 +60,7 @@ export const schemaTypes = [
   sermon,
   announcement,
   worshipResource,
+
+  // Generic page (build new pages at /<slug> with the block library)
+  page,
 ];
