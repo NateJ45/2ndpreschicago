@@ -16,6 +16,8 @@
 
 import type { StructureBuilder, StructureResolverContext } from 'sanity/structure';
 import { Iframe, urlForDoc } from './sanity.config';
+import GuideView from './components/GuideView';
+import { guides } from './guides/content';
 import {
   CogIcon,
   HomeIcon,
@@ -120,10 +122,47 @@ function singletonWithPreview(
     );
 }
 
+/**
+ * "How This Works" — a pinned, read-only help center built from repo data
+ * (studio/guides/content.tsx), rendered by GuideView. Lives in code so staff
+ * can't edit or delete it and every future client site inherits it. Each guide
+ * is a navigable item that opens its own component pane.
+ */
+function howThisWorks(S: StructureBuilder) {
+  return S.listItem()
+    .id('how-this-works')
+    .title('How This Works')
+    .icon(BookIcon)
+    .child(
+      S.list()
+        .id('how-this-works-list')
+        .title('How This Works')
+        .items(
+          guides.map((g) =>
+            S.listItem()
+              .id(`guide-${g.slug}`)
+              .title(g.title)
+              .icon(g.icon)
+              .child(
+                S.component(GuideView)
+                  .id(`guide-view-${g.slug}`)
+                  .title(g.title)
+                  .options({ guideSlug: g.slug }),
+              ),
+          ),
+        ),
+    );
+}
+
 export const deskStructure = (S: StructureBuilder, _context: StructureResolverContext) =>
   S.list()
     .title('Second Presbyterian')
     .items([
+      // How This Works — pinned help center (first thing editors see).
+      howThisWorks(S),
+
+      S.divider(),
+
       // Site Settings — pinned singleton (no preview; not a page)
       singletonWithPreview(S, 'siteSettings', 'Site Settings', CogIcon),
 
