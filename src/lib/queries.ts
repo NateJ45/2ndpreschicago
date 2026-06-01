@@ -66,7 +66,14 @@ export async function getSiteSettings() {
     seoImage${IMAGE_PROJECTION},
     footerCredit,
     footerCreditUrl,
-    newsletter
+    newsletter,
+    navItems[]{
+      _type,
+      _key,
+      label,
+      href,
+      links[]{ _type, _key, label, href }
+    }
   }`, {}, null);
 }
 

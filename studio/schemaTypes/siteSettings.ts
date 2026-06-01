@@ -6,7 +6,8 @@
 // areas, travel fees, Google Business / reviews, satisfaction guarantee, and
 // the module section-visibility toggles) were removed. Church fields replace them.
 
-import { defineType, defineField } from 'sanity';
+import { defineType, defineField, defineArrayMember } from 'sanity';
+import { LinkIcon, ChevronDownIcon } from '@sanity/icons';
 
 export const siteSettings = defineType({
   name: 'siteSettings',
@@ -16,6 +17,7 @@ export const siteSettings = defineType({
   options: { canvasApp: { exclude: true } },
   groups: [
     { name: 'identity', title: 'Identity & contact' },
+    { name: 'navigation', title: 'Navigation (top menu)' },
     { name: 'worship', title: 'Worship times' },
     { name: 'connect', title: 'Connect & integrations' },
     { name: 'social', title: 'Social & footer' },
@@ -62,6 +64,96 @@ export const siteSettings = defineType({
       type: 'string',
       description: 'Public phone number. Leave blank to hide.',
       group: 'identity',
+    }),
+
+    // ── Navigation (top menu) ─────────────────────────────────────────────────
+    // The website header menu. When this is empty the header renders its
+    // built-in default menu (see src/components/Header.astro). As soon as any
+    // items are added here, this list becomes the ENTIRE menu.
+    defineField({
+      name: 'navItems',
+      title: 'Top menu links',
+      type: 'array',
+      group: 'navigation',
+      description:
+        'The links in the website header. Drag to reorder. Add a "Link" for a single page, or a "Dropdown menu" to group several links under one label. Leave this empty to use the built-in default menu. Once you add items here, they replace the whole menu, so include every link you want.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'navLink',
+          title: 'Link',
+          icon: LinkIcon,
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              description: 'What visitors see, e.g. "Events".',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'href',
+              title: 'Address',
+              type: 'string',
+              description: 'A page on this site like /worship, or a full web address like https://example.com.',
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: { select: { title: 'label', subtitle: 'href' } },
+        }),
+        defineArrayMember({
+          type: 'object',
+          name: 'navGroup',
+          title: 'Dropdown menu',
+          icon: ChevronDownIcon,
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Menu label',
+              type: 'string',
+              description: 'The dropdown heading, e.g. "About Us".',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'links',
+              title: 'Menu links',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'object',
+                  name: 'navSubLink',
+                  title: 'Link',
+                  icon: LinkIcon,
+                  fields: [
+                    defineField({
+                      name: 'label',
+                      title: 'Label',
+                      type: 'string',
+                      validation: (Rule) => Rule.required(),
+                    }),
+                    defineField({
+                      name: 'href',
+                      title: 'Address',
+                      type: 'string',
+                      description: 'A page on this site like /grow, or a full web address.',
+                      validation: (Rule) => Rule.required(),
+                    }),
+                  ],
+                  preview: { select: { title: 'label', subtitle: 'href' } },
+                }),
+              ],
+              validation: (Rule) => Rule.required().min(1),
+            }),
+          ],
+          preview: {
+            select: { title: 'label', links: 'links' },
+            prepare: ({ title, links }) => ({
+              title: title ?? '(no label)',
+              subtitle: `Dropdown · ${Array.isArray(links) ? links.length : 0} link(s)`,
+            }),
+          },
+        }),
+      ],
     }),
 
     // ── Worship times ─────────────────────────────────────────────────────────

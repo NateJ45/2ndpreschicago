@@ -1765,6 +1765,25 @@ export type SiteSettings = {
   mission?: string;
   email?: string;
   phone?: string;
+  navItems?: Array<
+    | {
+        label?: string;
+        href?: string;
+        _type: "navLink";
+        _key: string;
+      }
+    | {
+        label?: string;
+        links?: Array<{
+          label?: string;
+          href?: string;
+          _type: "navSubLink";
+          _key: string;
+        }>;
+        _type: "navGroup";
+        _key: string;
+      }
+  >;
   serviceTimes?: string;
   watchUrl?: string;
   giveUrl?: string;

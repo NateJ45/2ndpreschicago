@@ -23,6 +23,7 @@ import {
   ImageIcon,
   ColorWheelIcon,
   InfoOutlineIcon,
+  MenuIcon,
 } from '@sanity/icons';
 
 // The only church-specific copy. Swap these when reusing the template.
@@ -361,14 +362,61 @@ export const guides: Guide[] = [
       { kind: 'h', text: 'Linking to your new page' },
       {
         kind: 'callout',
-        tone: 'caution',
-        text: `Adding your page to the top menu or the footer is a code change. Send the web address to ${CHURCH.contactName} at ${CHURCH.contactEmail} and they will add the link.`,
+        tone: 'positive',
+        title: 'You can add it to the menu yourself',
+        text: 'To put your new page in the top menu, see the next guide, Edit the top menu. (Footer links are still set in code.)',
       },
-      { kind: 'seealso', items: ['Add & arrange sections'] },
+      { kind: 'seealso', items: ['Edit the top menu', 'Add & arrange sections'] },
     ],
   },
 
-  // 9 ----------------------------------------------------------------------
+  // 9 ---------------------------------------------------------------------- (editable nav)
+  {
+    slug: 'top-menu',
+    title: 'Edit the top menu',
+    icon: MenuIcon,
+    lead: 'Add, rename, reorder, or remove the links in the website header, including dropdown menus.',
+    diy: 'self',
+    body: [
+      { kind: 'path', items: ['Site Settings', 'Navigation'] },
+      { kind: 'h', text: 'Add or change a menu link' },
+      {
+        kind: 'steps',
+        items: [
+          'Open **Site Settings** (top of the menu), then the **Navigation** tab.',
+          'Under **Top menu links**, click **Add item**.',
+          'Choose **Link** for a single page, or **Dropdown menu** to group several links under one label.',
+          'For a link, type the **Label** (what people see) and the **Address** (a page on this site like /worship, or a full web address).',
+          'Drag items by the dots to reorder them. Use the three dots on an item to remove it.',
+          'Click **Publish**. The header updates across the site.',
+        ],
+      },
+      { kind: 'h', text: 'Build a dropdown menu' },
+      {
+        kind: 'steps',
+        items: [
+          'Add a **Dropdown menu** item and give it a **Menu label**, for example "About Us".',
+          'Inside it, add a **Link** for each page in the dropdown.',
+          'Publish.',
+        ],
+      },
+      {
+        kind: 'callout',
+        tone: 'caution',
+        title: 'Your list becomes the whole menu',
+        text: 'While Top menu links is empty, the site shows the built-in menu. As soon as you add any items, they become the entire menu, so include every link you want in the header, not just the new one.',
+      },
+      {
+        kind: 'callout',
+        tone: 'primary',
+        title: 'The footer is separate',
+        text: `Footer links are still set in code. To change those, email ${CHURCH.contactName} at ${CHURCH.contactEmail}.`,
+      },
+      { kind: 'seealso', items: ['Build a brand-new page'] },
+    ],
+  },
+
+  // 10 ---------------------------------------------------------------------
   {
     slug: 'sections',
     title: 'Add & arrange sections',
@@ -531,6 +579,7 @@ export const guides: Guide[] = [
           'Put up and take down announcement banners.',
           'Add, reorder, and remove sections on a page.',
           'Build new Custom Pages.',
+          'Add, rename, and reorder the top menu links.',
           'Change section background tones and images.',
           'Update service times and the seasonal home banner.',
         ],
@@ -545,7 +594,7 @@ export const guides: Guide[] = [
       {
         kind: 'bullets',
         items: [
-          'Changing the top menu or the footer links.',
+          'Changing the footer links (the top menu you can now edit yourself, see Edit the top menu).',
           'Needing a new kind of field, or a new kind of section that does not exist yet.',
           'Web address changes, redirects, the domain, or email and DNS settings.',
           'Adding a new outside tool (a new giving, calendar, or streaming embed).',

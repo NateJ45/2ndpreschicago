@@ -37,6 +37,15 @@ interface Props {
     serviceTimes?: string;   // e.g. "Sundays at 11am"
     giveUrl?: string;        // giving portal; falls back to the /give page
     watchUrl?: string;       // livestream; falls back to the /sermons page
+    // Editor-managed top menu (Site Settings -> Navigation). Each entry is a
+    // navLink {label, href} or a navGroup {label, links:[{label, href}]}.
+    // When absent/empty, the built-in FALLBACK_NAV_ITEMS below renders.
+    navItems?: Array<{
+      _type?: string;
+      label?: string;
+      href?: string;
+      links?: Array<{ label?: string; href?: string }>;
+    }> | null;
   } | null;
 }
 
@@ -87,32 +96,69 @@ const mobileNavSettings = {
 // /quiz, /calculator, /guides, /press, /resources) are opt-in via modules/
 // and are NOT linked from the core nav.
 
-const NAV_ITEMS = [
-  { kind: 'flat' as const, label: "I'm New", href: '/worship' },
-  { kind: 'dropdown' as const, label: 'About Us', items: [
+type NavItem =
+  | { kind: 'flat'; label: string; href: string }
+  | { kind: 'dropdown'; label: string; items: { label: string; href: string }[] };
+
+// Raw shape of an editor-managed nav entry coming from Sanity.
+type SettingsNavItem = {
+  _type?: string;
+  label?: string;
+  href?: string;
+  links?: Array<{ label?: string; href?: string }>;
+};
+
+// Built-in default menu. Used when Site Settings -> Navigation is empty, so the
+// header is never broken or bare and a fresh clone of the template still renders
+// a sensible menu before anyone touches Sanity.
+const FALLBACK_NAV_ITEMS: NavItem[] = [
+  { kind: 'flat', label: "I'm New", href: '/worship' },
+  { kind: 'dropdown', label: 'About Us', items: [
     { label: 'What We Believe', href: '/what-we-believe' },
     { label: 'Music', href: '/music' },
     { label: 'Pastors & Staff', href: '/pastor-staff' },
   ] },
-  { kind: 'dropdown' as const, label: 'Get Involved', items: [
+  { kind: 'dropdown', label: 'Get Involved', items: [
     { label: 'Grow', href: '/grow' },
     { label: 'Serve', href: '/serve' },
     { label: 'Kids', href: '/kids' },
     { label: 'Food Ministry', href: '/food' },
   ] },
-  { kind: 'flat' as const, label: 'Watch', href: '/sermons' },
-  { kind: 'flat' as const, label: 'Events', href: '/events' },
-  { kind: 'dropdown' as const, label: 'Space', items: [
+  { kind: 'flat', label: 'Watch', href: '/sermons' },
+  { kind: 'flat', label: 'Events', href: '/events' },
+  { kind: 'dropdown', label: 'Space', items: [
     { label: 'Use Our Space', href: '/use-our-space' },
     { label: 'Weddings', href: '/weddings' },
     { label: 'Friends of Historic Second Church', href: 'https://www.historicsecondchurch.org/' },
   ] },
-  { kind: 'flat' as const, label: 'Give', href: '/give' },
+  { kind: 'flat', label: 'Give', href: '/give' },
 ];
 
-// Flatten NAV_ITEMS into the shape MobileNav expects (a list of NavLink[]
-// with optional sub-items for the groups). MobileNav already handles both
-// shapes via its updated interface.
+// Map the editor-managed nav (Site Settings -> Navigation) into the {kind} shape
+// the render + MobileNav already consume. navGroup -> dropdown, navLink -> flat.
+// Entries missing a label/href are dropped so a half-filled row can't break the
+// menu. Returns null when nothing usable is set, so we fall back to the default.
+function navFromSettings(items?: SettingsNavItem[] | null): NavItem[] | null {
+  if (!Array.isArray(items) || items.length === 0) return null;
+  const mapped: NavItem[] = [];
+  for (const it of items) {
+    if (it?._type === 'navGroup') {
+      const children = (Array.isArray(it.links) ? it.links : [])
+        .filter((l) => l?.label && l?.href)
+        .map((l) => ({ label: l.label as string, href: l.href as string }));
+      if (it.label && children.length > 0) {
+        mapped.push({ kind: 'dropdown', label: it.label, items: children });
+      }
+    } else if (it?.label && it?.href) {
+      mapped.push({ kind: 'flat', label: it.label, href: it.href });
+    }
+  }
+  return mapped.length > 0 ? mapped : null;
+}
+
+const NAV_ITEMS: NavItem[] = navFromSettings(siteSettings?.navItems) ?? FALLBACK_NAV_ITEMS;
+
+// MobileNav consumes the same {kind} shape (NavLink[] with optional sub-items).
 const NAV_LINKS = NAV_ITEMS;
 
 const pathname = Astro.url.pathname;
