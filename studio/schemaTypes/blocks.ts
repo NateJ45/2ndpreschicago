@@ -383,6 +383,124 @@ export const sectionGallery = defineType({
   preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Photo gallery' }) },
 });
 
+export const sectionSteps = defineType({
+  name: 'sectionSteps',
+  title: 'Steps (numbered)',
+  type: 'object',
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+    defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+    defineField({ name: 'intro', title: 'Intro', type: 'text', rows: 2 }),
+    defineField({
+      name: 'steps',
+      title: 'Steps',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'step',
+          fields: [
+            defineField({ name: 'title', title: 'Title', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'body', title: 'Body', type: 'text', rows: 3 }),
+          ],
+          preview: { select: { title: 'title', subtitle: 'body' } },
+        }),
+      ],
+    }),
+    bgField(),
+  ],
+  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Steps' }) },
+});
+
+export const sectionLogos = defineType({
+  name: 'sectionLogos',
+  title: 'Logos / partners',
+  type: 'object',
+  fields: [
+    defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+    defineField({ name: 'intro', title: 'Intro', type: 'text', rows: 2 }),
+    defineField({ name: 'grayscale', title: 'Grayscale logos', type: 'boolean', initialValue: true, description: 'Show logos in grayscale, full color on hover.' }),
+    defineField({
+      name: 'items',
+      title: 'Logos',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({ name: 'alt', title: 'Name / alt text', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'url', title: 'Link (optional)', type: 'url' }),
+          ],
+        }),
+      ],
+      options: { layout: 'grid' },
+    }),
+    bgField(),
+  ],
+  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Logos / partners' }) },
+});
+
+export const sectionMediaFeature = defineType({
+  name: 'sectionMediaFeature',
+  title: 'Media feature (video / image + text)',
+  type: 'object',
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+    defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+    defineField({ name: 'body', title: 'Body', type: 'text', rows: 4 }),
+    defineField({
+      name: 'mediaSide',
+      title: 'Media side',
+      type: 'string',
+      options: { list: [{ title: 'Left', value: 'left' }, { title: 'Right', value: 'right' }], layout: 'radio' },
+      initialValue: 'left',
+    }),
+    defineField({ name: 'videoUrl', title: 'Video URL (YouTube/Vimeo)', type: 'url', description: 'Shows an embedded player. Takes priority over the image.' }),
+    defineField({
+      name: 'image',
+      title: 'Image (used if no video)',
+      type: 'image',
+      options: { hotspot: true },
+      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+    }),
+    defineField({ name: 'ctaLabel', title: 'Button label', type: 'string' }),
+    defineField({ name: 'ctaUrl', title: 'Button link', type: 'string' }),
+    bgField(),
+  ],
+  preview: { select: { title: 'heading', media: 'image' }, prepare: ({ title, media }) => ({ title: title || 'Media feature', media }) },
+});
+
+export const sectionDynamicList = defineType({
+  name: 'sectionDynamicList',
+  title: 'Dynamic list (latest content)',
+  type: 'object',
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+    defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+    defineField({ name: 'intro', title: 'Intro', type: 'text', rows: 2 }),
+    defineField({
+      name: 'source',
+      title: 'Show',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Latest sermons', value: 'latestSermons' },
+          { title: 'Upcoming events', value: 'upcomingEvents' },
+          { title: 'Ministries', value: 'ministries' },
+          { title: 'Pastors & staff', value: 'staff' },
+          { title: 'Worship resources', value: 'worshipResources' },
+        ],
+      },
+      initialValue: 'upcomingEvents',
+      validation: (R) => R.required(),
+    }),
+    defineField({ name: 'count', title: 'How many', type: 'number', initialValue: 3, validation: (R) => R.min(1).max(12) }),
+    bgField(),
+  ],
+  preview: { select: { title: 'heading', source: 'source' }, prepare: ({ title, source }) => ({ title: title || 'Dynamic list', subtitle: source }) },
+});
+
 // All block types collected for registration in index.ts.
 export const sectionBlocks = [
   sectionRichText,
@@ -395,6 +513,10 @@ export const sectionBlocks = [
   sectionStats,
   sectionAccordion,
   sectionGallery,
+  sectionSteps,
+  sectionLogos,
+  sectionMediaFeature,
+  sectionDynamicList,
 ];
 
 // The array members allowed in a flexibleSections[] field (includes the shared
@@ -407,6 +529,10 @@ export const FLEXIBLE_SECTION_MEMBERS = [
   { type: 'sectionStats' },
   { type: 'sectionGallery' },
   { type: 'sectionAccordion' },
+  { type: 'sectionMediaFeature' },
+  { type: 'sectionSteps' },
+  { type: 'sectionDynamicList' },
+  { type: 'sectionLogos' },
   { type: 'sectionQuote' },
   { type: 'sectionCtaBand' },
   { type: 'sectionForm' },

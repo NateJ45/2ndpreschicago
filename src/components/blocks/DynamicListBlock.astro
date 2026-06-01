@@ -1,0 +1,90 @@
+---
+// Dynamic list: pulls live content (latest sermons, upcoming events, ministries,
+// staff, or worship resources) into any page. Fetches at build time based on the
+// chosen source. Cards are light surfaces; section heading inherits the tone color.
+import {
+  getRecentSermons,
+  getUpcomingEvents,
+  getMinistries,
+  getStaffMembers,
+  getWorshipResources,
+} from '@/lib/queries';
+
+const { block } = Astro.props as { block: any };
+const count = Math.min(12, Math.max(1, Number(block?.count ?? 3)));
+const source = block?.source ?? 'upcomingEvents';
+
+const fmt = (d: string) =>
+  d ? new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+
+type Item = { title: string; meta?: string; summary?: string; href?: string | null };
+let items: Item[] = [];
+
+if (source === 'latestSermons') {
+  const s = await getRecentSermons().catch(() => []);
+  items = s.slice(0, count).map((x: any) => ({
+    title: x.title,
+    meta: [x.speaker, x.date ? fmt(x.date) : null].filter(Boolean).join(' · '),
+    summary: x.scripture,
+    href: x.slug?.current ? `/sermons/${x.slug.current}` : null,
+  }));
+} else if (source === 'upcomingEvents') {
+  const e = await getUpcomingEvents().catch(() => []);
+  items = e.slice(0, count).map((x: any) => ({
+    title: x.title,
+    meta: x.scheduleLabel || (x.start ? fmt(x.start) : ''),
+    summary: x.summary,
+    href: x.slug?.current ? `/events/${x.slug.current}` : null,
+  }));
+} else if (source === 'ministries') {
+  const m = await getMinistries().catch(() => []);
+  items = m.slice(0, count).map((x: any) => ({ title: x.title, meta: x.audience, summary: x.summary, href: x.link || null }));
+} else if (source === 'staff') {
+  const st = await getStaffMembers().catch(() => []);
+  items = st.slice(0, count).map((x: any) => ({ title: x.name, meta: x.role, href: '/pastor-staff' }));
+} else if (source === 'worshipResources') {
+  const w = await getWorshipResources(count).catch(() => []);
+  items = w.slice(0, count).map((x: any) => ({
+    title: x.title,
+    meta: [x.type, x.date ? fmt(x.date) : null].filter(Boolean).join(' · '),
+    summary: x.description,
+    href: x.fileUrl || x.externalUrl || null,
+  }));
+}
+---
+
+{
+  items.length > 0 && (
+    <div class="mx-auto max-w-content px-m">
+      {(block.eyebrow || block.heading || block.intro) && (
+        <div class="max-w-2xl mb-l">
+          {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
+          {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
+          {block.intro && <p class="mt-s opacity-80 leading-relaxed">{block.intro}</p>}
+        </div>
+      )}
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-m list-none p-0" data-stagger-grid>
+        {items.map((it) => {
+          const inner = (
+            <Fragment>
+              <h3 class="font-display text-h4 text-foreground">{it.title}</h3>
+              {it.meta && <p class="mt-xs text-sm text-foreground/70">{it.meta}</p>}
+              {it.summary && <p class="mt-s text-foreground/80 leading-relaxed">{it.summary}</p>}
+            </Fragment>
+          );
+          return (
+            <li>
+              {it.href ? (
+                <a href={it.href} class="card-lift group block h-full rounded-lg border border-border-soft bg-card p-l no-underline">
+                  {inner}
+                </a>
+              ) : (
+                <div class="rounded-lg border border-border-soft bg-card p-l">{inner}</div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  )
+}

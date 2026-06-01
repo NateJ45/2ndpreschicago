@@ -1,0 +1,36 @@
+---
+// Numbered steps ("plan a visit" 1-2-3). Tone-adaptive: text inherits the
+// SectionShell color; the number badge uses the gold accent.
+const { block } = Astro.props as { block: any };
+const steps = block?.steps ?? [];
+---
+
+{
+  block && steps.length > 0 && (
+    <div class="mx-auto max-w-content px-m">
+      {(block.eyebrow || block.heading || block.intro) && (
+        <div class="max-w-2xl mb-l">
+          {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
+          {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
+          {block.intro && <p class="mt-s opacity-80 leading-relaxed">{block.intro}</p>}
+        </div>
+      )}
+      <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-l list-none p-0 counter-reset" data-stagger-grid>
+        {steps.map((s: any, i: number) => (
+          <li class="flex gap-m">
+            <span
+              class="shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold/60 text-gold font-display text-h4"
+              aria-hidden="true"
+            >
+              {i + 1}
+            </span>
+            <div>
+              <h3 class="font-display text-h4">{s.title}</h3>
+              {s.body && <p class="mt-xs opacity-80 leading-relaxed">{s.body}</p>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  )
+}

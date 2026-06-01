@@ -99,6 +99,74 @@ export type SectionAccordionBackgroundImage = {
   _type: "image";
 };
 
+export type SectionMediaFeatureBackground = {
+  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  image?: SectionMediaFeatureBackgroundImage;
+  videoUrl?: string;
+  overlay?: number;
+  padding?: "compact" | "normal" | "spacious";
+};
+
+export type SectionMediaFeatureBackgroundImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "sectionMediaFeature.background.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type SectionStepsBackground = {
+  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  image?: SectionStepsBackgroundImage;
+  videoUrl?: string;
+  overlay?: number;
+  padding?: "compact" | "normal" | "spacious";
+};
+
+export type SectionStepsBackgroundImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "sectionSteps.background.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type SectionDynamicListBackground = {
+  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  image?: SectionDynamicListBackgroundImage;
+  videoUrl?: string;
+  overlay?: number;
+  padding?: "compact" | "normal" | "spacious";
+};
+
+export type SectionDynamicListBackgroundImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "sectionDynamicList.background.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type SectionLogosBackground = {
+  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  image?: SectionLogosBackgroundImage;
+  videoUrl?: string;
+  overlay?: number;
+  padding?: "compact" | "normal" | "spacious";
+};
+
+export type SectionLogosBackgroundImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "sectionLogos.background.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
 export type Page = {
   _id: string;
   _type: "page";
@@ -140,6 +208,18 @@ export type Page = {
     | ({
         _key: string;
       } & SectionAccordion)
+    | ({
+        _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
     | ({
         _key: string;
       } & SectionQuote)
@@ -544,6 +624,18 @@ export type GivePage = {
       } & SectionAccordion)
     | ({
         _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
       } & SectionQuote)
     | ({
         _key: string;
@@ -623,6 +715,18 @@ export type WeddingsPage = {
       } & SectionAccordion)
     | ({
         _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
       } & SectionQuote)
     | ({
         _key: string;
@@ -696,6 +800,18 @@ export type UseOurSpacePage = {
       } & SectionAccordion)
     | ({
         _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
       } & SectionQuote)
     | ({
         _key: string;
@@ -765,6 +881,18 @@ export type FoodPage = {
     | ({
         _key: string;
       } & SectionAccordion)
+    | ({
+        _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
     | ({
         _key: string;
       } & SectionQuote)
@@ -837,6 +965,18 @@ export type KidsPage = {
       } & SectionAccordion)
     | ({
         _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
       } & SectionQuote)
     | ({
         _key: string;
@@ -906,6 +1046,18 @@ export type ServePage = {
       } & SectionAccordion)
     | ({
         _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
       } & SectionQuote)
     | ({
         _key: string;
@@ -971,6 +1123,18 @@ export type GrowPage = {
     | ({
         _key: string;
       } & SectionAccordion)
+    | ({
+        _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
     | ({
         _key: string;
       } & SectionQuote)
@@ -1040,6 +1204,18 @@ export type StaffPage = {
       } & SectionAccordion)
     | ({
         _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
       } & SectionQuote)
     | ({
         _key: string;
@@ -1102,6 +1278,18 @@ export type MusicPage = {
     | ({
         _key: string;
       } & SectionAccordion)
+    | ({
+        _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
     | ({
         _key: string;
       } & SectionQuote)
@@ -1177,6 +1365,18 @@ export type BeliefsPage = {
     | ({
         _key: string;
       } & SectionAccordion)
+    | ({
+        _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
     | ({
         _key: string;
       } & SectionQuote)
@@ -1271,6 +1471,18 @@ export type WorshipPage = {
     | ({
         _key: string;
       } & SectionAccordion)
+    | ({
+        _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
     | ({
         _key: string;
       } & SectionQuote)
@@ -1379,6 +1591,18 @@ export type PrivacyPage = {
       } & SectionAccordion)
     | ({
         _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
       } & SectionQuote)
     | ({
         _key: string;
@@ -1462,6 +1686,73 @@ export type SiteSettings = {
     successMessage?: string;
     consentNote?: string;
   };
+};
+
+export type SectionDynamicList = {
+  _type: "sectionDynamicList";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  source?:
+    | "latestSermons"
+    | "upcomingEvents"
+    | "ministries"
+    | "staff"
+    | "worshipResources";
+  count?: number;
+  background?: SectionDynamicListBackground;
+};
+
+export type SectionMediaFeature = {
+  _type: "sectionMediaFeature";
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
+  mediaSide?: "left" | "right";
+  videoUrl?: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  ctaLabel?: string;
+  ctaUrl?: string;
+  background?: SectionMediaFeatureBackground;
+};
+
+export type SectionLogos = {
+  _type: "sectionLogos";
+  heading?: string;
+  intro?: string;
+  grayscale?: boolean;
+  items?: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    url?: string;
+    _type: "image";
+    _key: string;
+  }>;
+  background?: SectionLogosBackground;
+};
+
+export type SectionSteps = {
+  _type: "sectionSteps";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  steps?: Array<{
+    title?: string;
+    body?: string;
+    _type: "step";
+    _key: string;
+  }>;
+  background?: SectionStepsBackground;
 };
 
 export type SectionGallery = {
@@ -1750,6 +2041,18 @@ export type SermonsPage = {
       } & SectionAccordion)
     | ({
         _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
       } & SectionQuote)
     | ({
         _key: string;
@@ -1819,6 +2122,18 @@ export type EventsPage = {
     | ({
         _key: string;
       } & SectionAccordion)
+    | ({
+        _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
     | ({
         _key: string;
       } & SectionQuote)
@@ -1907,6 +2222,18 @@ export type ContactPage = {
     | ({
         _key: string;
       } & SectionAccordion)
+    | ({
+        _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
     | ({
         _key: string;
       } & SectionQuote)
@@ -2031,6 +2358,18 @@ export type FaqPage = {
       } & SectionAccordion)
     | ({
         _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
       } & SectionQuote)
     | ({
         _key: string;
@@ -2131,6 +2470,18 @@ export type AboutPage = {
     | ({
         _key: string;
       } & SectionAccordion)
+    | ({
+        _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
     | ({
         _key: string;
       } & SectionQuote)
@@ -2263,6 +2614,18 @@ export type HomePage = {
       } & SectionAccordion)
     | ({
         _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
       } & SectionQuote)
     | ({
         _key: string;
@@ -2393,6 +2756,14 @@ export type AllSanitySchemaTypes =
   | SectionGalleryBackgroundImage
   | SectionAccordionBackground
   | SectionAccordionBackgroundImage
+  | SectionMediaFeatureBackground
+  | SectionMediaFeatureBackgroundImage
+  | SectionStepsBackground
+  | SectionStepsBackgroundImage
+  | SectionDynamicListBackground
+  | SectionDynamicListBackgroundImage
+  | SectionLogosBackground
+  | SectionLogosBackgroundImage
   | Page
   | SanityImageCrop
   | SanityImageHotspot
@@ -2421,6 +2792,10 @@ export type AllSanitySchemaTypes =
   | PrivacyPage
   | NotFoundPage
   | SiteSettings
+  | SectionDynamicList
+  | SectionMediaFeature
+  | SectionLogos
+  | SectionSteps
   | SectionGallery
   | SectionAccordion
   | SectionStats

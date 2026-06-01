@@ -18,6 +18,10 @@ import FeatureCardsBlock from '@/components/blocks/FeatureCardsBlock.astro';
 import StatsBlock from '@/components/blocks/StatsBlock.astro';
 import AccordionBlock from '@/components/blocks/AccordionBlock.astro';
 import GalleryBlock from '@/components/blocks/GalleryBlock.astro';
+import StepsBlock from '@/components/blocks/StepsBlock.astro';
+import LogosBlock from '@/components/blocks/LogosBlock.astro';
+import MediaFeatureBlock from '@/components/blocks/MediaFeatureBlock.astro';
+import DynamicListBlock from '@/components/blocks/DynamicListBlock.astro';
 import EmbedBlock from '@/components/EmbedBlock.astro';
 
 interface Props {
@@ -38,11 +42,18 @@ const MAP: Record<string, any> = {
   sectionStats: StatsBlock,
   sectionAccordion: AccordionBlock,
   sectionGallery: GalleryBlock,
+  sectionSteps: StepsBlock,
+  sectionLogos: LogosBlock,
+  sectionMediaFeature: MediaFeatureBlock,
+  sectionDynamicList: DynamicListBlock,
   embed: EmbedBlock,
 };
 
 // Blocks that render inner content only and take their background from SectionShell.
-const SHELL_AWARE = new Set(['sectionFeatureCards', 'sectionStats', 'sectionAccordion', 'sectionGallery']);
+const SHELL_AWARE = new Set([
+  'sectionFeatureCards', 'sectionStats', 'sectionAccordion', 'sectionGallery',
+  'sectionSteps', 'sectionLogos', 'sectionMediaFeature', 'sectionDynamicList',
+]);
 ---
 
 {
