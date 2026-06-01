@@ -740,6 +740,9 @@ export type GivePage = {
   foodHeadline?: string;
   foodBodyP1?: string;
   foodLinkLabel?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
 };
 
 export type FormReference = {
@@ -832,6 +835,9 @@ export type WeddingsPage = {
   inquireEyebrow?: string;
   inquireHeadline?: string;
   inquireIntro?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
 };
 
 export type UseOurSpacePage = {
@@ -915,6 +921,9 @@ export type UseOurSpacePage = {
   introBodyP2?: string;
   inquireHeadline?: string;
   inquireIntro?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
 };
 
 export type FoodPage = {
@@ -997,6 +1006,9 @@ export type FoodPage = {
   tableHeadline?: string;
   tableSchedule?: string;
   tableBodyP1?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
 };
 
 export type KidsPage = {
@@ -1078,6 +1090,9 @@ export type KidsPage = {
   worshipBodyP1?: string;
   worshipBodyP2?: string;
   worshipBodyP3?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
 };
 
 export type ServePage = {
@@ -1312,6 +1327,9 @@ export type StaffPage = {
         _key: string;
       } & Embed)
   >;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
 };
 
 export type MusicPage = {
@@ -1399,6 +1417,9 @@ export type MusicPage = {
   organBodyP1?: string;
   organBodyP2?: string;
   organCreditLead?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
 };
 
 export type BeliefsPage = {
@@ -1602,6 +1623,9 @@ export type WorshipPage = {
   kidsBodyP2?: string;
   quoteText?: string;
   quoteAttribution?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
 };
 
 export type PrivacyPage = {
@@ -2107,6 +2131,9 @@ export type SermonsPage = {
   watchEyebrow?: string;
   watchHeadline?: string;
   watchBody?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
   flexibleSections?: Array<
     | ({
         _key: string;
@@ -2190,6 +2217,9 @@ export type EventsPage = {
   upcomingEmpty?: string;
   rhythmsEyebrow?: string;
   rhythmsHeadline?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
   flexibleSections?: Array<
     | ({
         _key: string;
@@ -2290,6 +2320,9 @@ export type ContactPage = {
   gettingHereLabel?: string;
   gettingHereBody?: string;
   formSectionHeadline?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
   flexibleSections?: Array<
     | ({
         _key: string;

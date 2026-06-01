@@ -104,9 +104,9 @@ const schemas = [
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Come and Hear"
-    headline="Hear it for yourself on Sunday"
-    subhead="Worship with us at 11am, or watch the livestream online."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and Hear"}
+    headline={page?.finalCtaHeadline ?? "Hear it for yourself on Sunday"}
+    subhead={page?.finalCtaSubhead ?? "Worship with us at 11am, or watch the livestream online."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

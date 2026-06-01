@@ -114,9 +114,9 @@ const pricing = [
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Say Hello"
-    headline="Let's talk about your wedding"
-    subhead="Reach out to the office to check availability and start planning your day at Second."
+    eyebrow={page?.finalCtaEyebrow ?? "Say Hello"}
+    headline={page?.finalCtaHeadline ?? "Let's talk about your wedding"}
+    subhead={page?.finalCtaSubhead ?? "Reach out to the office to check availability and start planning your day at Second."}
     cta={{ label: 'Contact the Office', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

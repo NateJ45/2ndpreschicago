@@ -347,9 +347,9 @@ const ministryCards =
 
   {/* ===== 8. Welcoming close (Chapel-green) =============================== */}
   <FinalCta
-    eyebrow="Come and See"
-    headline="Whoever you are, you are welcome here."
-    subhead="Plan your first visit, or simply show up on Sunday. We will be glad you came."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
+    headline={page?.finalCtaHeadline ?? "Whoever you are, you are welcome here."}
+    subhead={page?.finalCtaSubhead ?? "Plan your first visit, or simply show up on Sunday. We will be glad you came."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

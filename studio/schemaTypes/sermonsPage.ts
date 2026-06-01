@@ -30,6 +30,9 @@ export const sermonsPage = defineType({
     defineField({ name: 'watchEyebrow', title: 'Watch online eyebrow', type: 'string' }),
     defineField({ name: 'watchHeadline', title: 'Watch online headline', type: 'string' }),
     defineField({ name: 'watchBody', title: 'Watch online body', type: 'text', rows: 3 }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2 }),
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

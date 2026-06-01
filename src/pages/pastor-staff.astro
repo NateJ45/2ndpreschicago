@@ -196,9 +196,9 @@ const people = useSanityStaff
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Come and See"
-    headline="We would love to meet you"
-    subhead="Join us for worship on Sunday, or reach out to the office any time."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
+    headline={page?.finalCtaHeadline ?? "We would love to meet you"}
+    subhead={page?.finalCtaSubhead ?? "Join us for worship on Sunday, or reach out to the office any time."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

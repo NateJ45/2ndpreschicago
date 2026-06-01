@@ -137,6 +137,9 @@ export const contactPage = defineType({
     defineField({ name: 'gettingHereLabel', title: 'Getting here label', type: 'string', group: 'content' }),
     defineField({ name: 'gettingHereBody', title: 'Getting here body', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'formSectionHeadline', title: 'Form section headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

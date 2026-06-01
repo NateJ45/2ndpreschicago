@@ -72,9 +72,9 @@ const pillPrimary =
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Lend a Hand"
-    headline="Everyone is welcome at the table"
-    subhead="Come to eat, come to serve, or help keep the door open with a gift. All are needed."
+    eyebrow={page?.finalCtaEyebrow ?? "Lend a Hand"}
+    headline={page?.finalCtaHeadline ?? "Everyone is welcome at the table"}
+    subhead={page?.finalCtaSubhead ?? "Come to eat, come to serve, or help keep the door open with a gift. All are needed."}
     cta={{ label: 'Get Involved', linkType: 'external', externalUrl: '/serve' }}
   />
 </BaseLayout>

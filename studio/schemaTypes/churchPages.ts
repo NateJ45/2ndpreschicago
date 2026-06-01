@@ -145,6 +145,9 @@ export const worshipPage = definePageSingleton('worshipPage', "Worship (I'm New)
     defineField({ name: 'kidsBodyP2', title: 'Children paragraph 2', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'quoteText', title: 'Reflection quote', type: 'text', rows: 2, group: 'content' }),
     defineField({ name: 'quoteAttribution', title: 'Reflection attribution', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
   ],
 });
 
@@ -206,6 +209,9 @@ export const musicPage = definePageSingleton('musicPage', 'Music', {
     defineField({ name: 'organBodyP1', title: 'Organ paragraph 1', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'organBodyP2', title: 'Organ paragraph 2', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'organCreditLead', title: 'Organ credit lead-in', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
   ],
 });
 
@@ -213,6 +219,13 @@ export const staffPage = definePageSingleton('staffPage', 'Pastors & Staff', {
   heroEyebrow: 'Pastors & Staff',
   heroHeadline: "The people you'll meet at Second",
   heroSubhead: 'A small, dedicated team serving a historic congregation in the South Loop.',
+}, {
+  groups: [{ name: 'content', title: 'Page copy' }],
+  fields: [
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
+  ],
 });
 
 export const growPage = definePageSingleton('growPage', 'Grow', {
@@ -255,6 +268,9 @@ export const kidsPage = definePageSingleton('kidsPage', 'Kids', {
     defineField({ name: 'worshipBodyP1', title: 'Worship paragraph 1', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'worshipBodyP2', title: 'Worship paragraph 2', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'worshipBodyP3', title: 'Worship paragraph 3', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
   ],
 });
 
@@ -271,6 +287,9 @@ export const foodPage = definePageSingleton('foodPage', 'Food Ministry', {
     defineField({ name: 'tableHeadline', title: 'Community Table heading', type: 'string', group: 'content' }),
     defineField({ name: 'tableSchedule', title: 'Community Table schedule', type: 'string', group: 'content' }),
     defineField({ name: 'tableBodyP1', title: 'Community Table description', type: 'text', rows: 4, group: 'content' }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
   ],
 });
 
@@ -303,6 +322,9 @@ export const useOurSpacePage = definePageSingleton(
       defineField({ name: 'introBodyP2', title: 'Intro paragraph 2', type: 'text', rows: 3, group: 'content' }),
       defineField({ name: 'inquireHeadline', title: 'Inquiry headline', type: 'string', group: 'content' }),
       defineField({ name: 'inquireIntro', title: 'Inquiry intro', type: 'text', rows: 2, group: 'content' }),
+      defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+      defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+      defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
     ],
   },
 );
@@ -338,6 +360,9 @@ export const weddingsPage = definePageSingleton(
       defineField({ name: 'inquireEyebrow', title: 'Inquiry eyebrow', type: 'string', group: 'content' }),
       defineField({ name: 'inquireHeadline', title: 'Inquiry headline', type: 'string', group: 'content' }),
       defineField({ name: 'inquireIntro', title: 'Inquiry intro', type: 'text', rows: 2, group: 'content' }),
+      defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+      defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+      defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
     ],
   },
 );
@@ -358,6 +383,9 @@ export const givePage = definePageSingleton('givePage', 'Give', {
     defineField({ name: 'foodHeadline', title: 'Food ministry heading', type: 'string', group: 'content' }),
     defineField({ name: 'foodBodyP1', title: 'Food ministry paragraph', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'foodLinkLabel', title: 'Food ministry link label', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
   ],
 });
 

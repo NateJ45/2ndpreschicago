@@ -84,9 +84,9 @@ const pillPrimary =
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="With Gratitude"
-    headline="Every gift is a part of the work"
-    subhead="Thank you for helping Second serve and celebrate Jesus for the good of the world."
+    eyebrow={page?.finalCtaEyebrow ?? "With Gratitude"}
+    headline={page?.finalCtaHeadline ?? "Every gift is a part of the work"}
+    subhead={page?.finalCtaSubhead ?? "Thank you for helping Second serve and celebrate Jesus for the good of the world."}
     cta={{ label: 'Give Now', linkType: 'external', externalUrl: giveUrl, openInNewTab: true }}
   />
 </BaseLayout>

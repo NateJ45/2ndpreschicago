@@ -63,9 +63,9 @@ const schemas = [
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Bring the Whole Family"
-    headline="We would love to meet your family"
-    subhead="Join us Sundays at 11am, or reach out with any question about visiting with children."
+    eyebrow={page?.finalCtaEyebrow ?? "Bring the Whole Family"}
+    headline={page?.finalCtaHeadline ?? "We would love to meet your family"}
+    subhead={page?.finalCtaSubhead ?? "Join us Sundays at 11am, or reach out with any question about visiting with children."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

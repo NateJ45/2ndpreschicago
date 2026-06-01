@@ -34,6 +34,9 @@ export const eventsPage = defineType({
     defineField({ name: 'upcomingEmpty', title: 'Upcoming empty-state text', type: 'text', rows: 2 }),
     defineField({ name: 'rhythmsEyebrow', title: 'Weekly rhythms eyebrow', type: 'string' }),
     defineField({ name: 'rhythmsHeadline', title: 'Weekly rhythms headline', type: 'string' }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2 }),
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

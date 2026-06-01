@@ -146,6 +146,7 @@ export async function getHomePage() {
     inclusiveStatement, inclusiveBody,
     involvedEyebrow, involvedHeadline, involvedSubhead,
     recordEyebrow, recordHeadline, recordBody, recordCtaLabel,
+    finalCtaEyebrow, finalCtaHeadline, finalCtaSubhead,
     flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }

@@ -133,9 +133,9 @@ function meta(s: any): string {
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Come and See"
-    headline="Worship with us in person"
-    subhead="There is nothing like being in the room. Join us Sundays at 11am at the Church of the Angels."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
+    headline={page?.finalCtaHeadline ?? "Worship with us in person"}
+    subhead={page?.finalCtaSubhead ?? "There is nothing like being in the room. Join us Sundays at 11am at the Church of the Angels."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

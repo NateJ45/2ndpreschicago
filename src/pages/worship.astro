@@ -185,9 +185,9 @@ const pillOutline =
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Come and See"
-    headline="Plan your first visit"
-    subhead="Have a question before Sunday? We would love to help you feel at home before you arrive."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
+    headline={page?.finalCtaHeadline ?? "Plan your first visit"}
+    subhead={page?.finalCtaSubhead ?? "Have a question before Sunday? We would love to help you feel at home before you arrive."}
     cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

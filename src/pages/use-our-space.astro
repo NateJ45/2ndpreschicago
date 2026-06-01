@@ -92,9 +92,9 @@ const uses = [
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Visit First"
-    headline="Come see the space in person"
-    subhead="The best way to picture your event here is to experience the building. Join us for worship, or reach out to arrange a visit."
+    eyebrow={page?.finalCtaEyebrow ?? "Visit First"}
+    headline={page?.finalCtaHeadline ?? "Come see the space in person"}
+    subhead={page?.finalCtaSubhead ?? "The best way to picture your event here is to experience the building. Join us for worship, or reach out to arrange a visit."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

@@ -159,9 +159,9 @@ function whenLabel(ev: any): string {
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Come and See"
-    headline="Join us this week"
-    subhead="Worship is at 11am every Sunday, and everyone is welcome at every gathering."
+    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
+    headline={page?.finalCtaHeadline ?? "Join us this week"}
+    subhead={page?.finalCtaSubhead ?? "Worship is at 11am every Sunday, and everyone is welcome at every gathering."}
     cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>
