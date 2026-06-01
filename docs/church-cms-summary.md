@@ -55,6 +55,14 @@ Goal: let a non-technical pastor + secretary run the site from Sanity for a year
   singletons; standalone fields for events/sermons/contact). The page getters spread
   (`...`) so new body fields flow through without per-field getter edits.
 
+### Phase 5 — Page-builder expansion + background system (complete, visually verified)
+- **Background / media system** (`SectionShell.astro` + a shared `background` control on every block): token color tone (default / warm / chapel / chapel deep, text auto-adapts), OR a background image/video with an adjustable darkening overlay so text stays readable. Vertical spacing control.
+- **13 page-builder blocks**, all add/remove/reorder in Sanity, all tone-adaptive:
+  richText, imageText, cardGrid, quote, ctaBand, formRef, embed (original; now background-capable),
+  plus **featureCards, stats, FAQ accordion, photo gallery, steps, logos, media feature (video/image), dynamic list** (latest sermons/events/ministries/staff/worship resources).
+- Portable Text bodies made tone-adaptive on dark backgrounds via descendant overrides (no change to the shared renderer).
+- Verified live with a sample page: every section tone resolved correctly, chapel-green Portable Text rendered cream, dynamic list pulled live events. Spec: `docs/superpowers/specs/2026-06-01-page-builder-expansion-design.md`.
+
 ## Remaining work
 1. **Closing CTA copy (`<FinalCta>`)** is still hardcoded on most pages (grow, serve, and
    what-we-believe were converted; the rest use inline eyebrow/headline/subhead). Uniform,

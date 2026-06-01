@@ -57,8 +57,21 @@ await client.createOrReplace({
   heroSubhead: 'Every block type, rendered from Sanity.',
   sections: [
     {
-      _type: 'sectionRichText', ...k('a'), eyebrow: 'About', heading: 'A text section', align: 'left',
-      body: [{ _type: 'block', _key: 'b1', style: 'normal', markDefs: [], children: [{ _type: 'span', _key: 's1', text: 'This is a rich text block with a paragraph of body copy.', marks: [] }] }],
+      _type: 'sectionRichText', ...k('a'), eyebrow: 'About', heading: 'A text section on chapel green', align: 'left',
+      background: { tone: 'chapel', padding: 'normal' },
+      body: [{ _type: 'block', _key: 'b1', style: 'normal', markDefs: [], children: [{ _type: 'span', _key: 's1', text: 'This rich text block sits on a chapel-green background; the Portable Text body should render in cream so it stays readable.', marks: [] }] }],
+    },
+    {
+      _type: 'sectionSteps', ...k('h'), heading: 'Plan your visit', intro: 'Three simple steps.',
+      steps: [
+        { _type: 'step', _key: 'p1', title: 'Park', body: 'Free parking on Michigan Avenue.' },
+        { _type: 'step', _key: 'p2', title: 'Arrive', body: 'Come a few minutes early; greeters will help.' },
+        { _type: 'step', _key: 'p3', title: 'Worship', body: 'Join us at 11am. No experience required.' },
+      ],
+    },
+    {
+      _type: 'sectionDynamicList', ...k('i'), heading: 'Upcoming events', source: 'upcomingEvents', count: 3,
+      background: { tone: 'warm' },
     },
     {
       _type: 'sectionCardGrid', ...k('b'), heading: 'Three cards', columns: '3',
