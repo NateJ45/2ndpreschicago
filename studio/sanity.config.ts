@@ -10,7 +10,6 @@ import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { media } from 'sanity-plugin-media';
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash';
-import { Iframe } from 'sanity-plugin-iframe-pane';
 import { schemaTypes } from './schemaTypes';
 import { deskStructure } from './structure';
 import StudioLogo from './components/StudioLogo';
@@ -86,8 +85,6 @@ const studioTheme = {
     : baseTheme.fonts,
 };
 
-// Re-export so structure.ts can attach the iframe view to every singleton.
-export { Iframe };
 // Set this to your deployed Workers URL (e.g. 'https://my-project.workers.dev') after deploy.
 export const SITE_URL_FOR_PREVIEW = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:4321';
 
@@ -167,32 +164,12 @@ export default defineConfig({
   plugins: [
     structureTool({
       structure: deskStructure,
-      // Inject an iframe "Preview" tab alongside the form on every document
-      // type that has a viewable page. Editing /about? You see the editor on
-      // the left, the live About page on the right. Saves the context-switch
-      // of opening another tab. Hidden for types like siteSettings that don't
-      // map to a page.
-      //
-      // Note: this only fires for documents opened via paths in the structure
-      // that DON'T pre-define their own views. Singletons in structure.ts that
-      // use S.document().views([...]) get explicit per-doc views attached
-      // there; this default handles everything else (orderable lists, journal
-      // entries, the generic document-type lists, etc.).
-      defaultDocumentNode: (S, { schemaType }) => {
-        const url = urlForDoc(schemaType, {});
-        if (!url) return S.document().views([S.view.form()]);
-        return S.document().views([
-          S.view.form(),
-          S.view
-            .component(Iframe)
-            .options({
-              url: (doc: any) => urlForDoc(schemaType, doc) ?? `${SITE_URL_FOR_PREVIEW}/`,
-              reload: { button: true },
-              defaultSize: 'desktop',
-            })
-            .title('Preview'),
-        ]);
-      },
+      // No defaultDocumentNode override: documents show the form only. This is a
+      // static site with no live draft preview, so an iframe "Preview" tab would
+      // load the last PUBLISHED build (not the editor's current draft) and
+      // mislead editors. Changes go live after Publish + the site rebuild; see
+      // the "How This Works" guide. (urlForDoc / SITE_URL_FOR_PREVIEW are kept
+      // above for reference if a real preview environment is added later.)
     }),
     // Unsplash plugin — adds an "Unsplash" tab to every image picker. The
     // package's correct registration is via the plugins array (not

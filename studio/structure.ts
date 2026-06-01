@@ -15,7 +15,6 @@
 // in sanity.config.ts.
 
 import type { StructureBuilder, StructureResolverContext } from 'sanity/structure';
-import { Iframe, urlForDoc } from './sanity.config';
 import GuideView from './components/GuideView';
 import { guides } from './guides/content';
 import {
@@ -81,45 +80,20 @@ const HIDDEN_FROM_DEFAULT = new Set<string>([
 ]);
 
 /**
- * Build a singleton list item whose editor pane includes both the form view
- * and an iframe preview view (when the doc type has a viewable page).
- *
- * S.editor() and S.document().views([S.view.form()]) both pre-set views and
- * thereby bypass the defaultDocumentNode in sanity.config.ts. So we attach
- * views explicitly here for the singletons that need them.
+ * A singleton desk item: one document, form view only. The static site has no
+ * live draft preview, so we do NOT attach an iframe "Preview" view (it would
+ * load the last published build, not the editor's draft, and mislead editors).
  */
-function singletonWithPreview(
+function singleton(
   S: StructureBuilder,
   schemaType: string,
   title: string,
   icon: any,
 ) {
-  const hasPreview = urlForDoc(schemaType, {}) !== null;
-  const views = [
-    S.view.form(),
-    ...(hasPreview
-      ? [
-          S.view
-            .component(Iframe)
-            .options({
-              url: (doc: any) => urlForDoc(schemaType, doc) ?? '',
-              reload: { button: true },
-              defaultSize: 'desktop',
-            })
-            .title('Preview'),
-        ]
-      : []),
-  ];
-
   return S.listItem()
     .title(title)
     .icon(icon)
-    .child(
-      S.document()
-        .schemaType(schemaType)
-        .documentId(schemaType)
-        .views(views),
-    );
+    .child(S.document().schemaType(schemaType).documentId(schemaType));
 }
 
 /**
@@ -164,7 +138,7 @@ export const deskStructure = (S: StructureBuilder, _context: StructureResolverCo
       S.divider(),
 
       // Site Settings — pinned singleton (no preview; not a page)
-      singletonWithPreview(S, 'siteSettings', 'Site Settings', CogIcon),
+      singleton(S, 'siteSettings', 'Site Settings', CogIcon),
 
       S.divider(),
 
@@ -176,37 +150,37 @@ export const deskStructure = (S: StructureBuilder, _context: StructureResolverCo
           S.list()
             .title('Pages')
             .items([
-              singletonWithPreview(S, 'homePage', 'Home', HomeIcon),
-              singletonWithPreview(S, 'worshipPage', "I'm New / Worship", StarIcon),
-              singletonWithPreview(S, 'aboutPage', 'About', UserIcon),
-              singletonWithPreview(S, 'beliefsPage', 'What We Believe', BookIcon),
-              singletonWithPreview(S, 'musicPage', 'Music', PlayIcon),
-              singletonWithPreview(S, 'staffPage', 'Pastors & Staff', UsersIcon),
+              singleton(S, 'homePage', 'Home', HomeIcon),
+              singleton(S, 'worshipPage', "I'm New / Worship", StarIcon),
+              singleton(S, 'aboutPage', 'About', UserIcon),
+              singleton(S, 'beliefsPage', 'What We Believe', BookIcon),
+              singleton(S, 'musicPage', 'Music', PlayIcon),
+              singleton(S, 'staffPage', 'Pastors & Staff', UsersIcon),
 
               S.divider(),
 
-              singletonWithPreview(S, 'growPage', 'Grow', HeartIcon),
-              singletonWithPreview(S, 'servePage', 'Serve', HeartIcon),
-              singletonWithPreview(S, 'kidsPage', 'Kids', HeartIcon),
-              singletonWithPreview(S, 'foodPage', 'Food Ministry', HeartIcon),
+              singleton(S, 'growPage', 'Grow', HeartIcon),
+              singleton(S, 'servePage', 'Serve', HeartIcon),
+              singleton(S, 'kidsPage', 'Kids', HeartIcon),
+              singleton(S, 'foodPage', 'Food Ministry', HeartIcon),
 
               S.divider(),
 
-              singletonWithPreview(S, 'eventsPage', 'Events (index page)', CalendarIcon),
-              singletonWithPreview(S, 'sermonsPage', 'Sermons (index page)', PlayIcon),
+              singleton(S, 'eventsPage', 'Events (index page)', CalendarIcon),
+              singleton(S, 'sermonsPage', 'Sermons (index page)', PlayIcon),
 
               S.divider(),
 
-              singletonWithPreview(S, 'useOurSpacePage', 'Use Our Space', PresentationIcon),
-              singletonWithPreview(S, 'weddingsPage', 'Weddings', StarIcon),
-              singletonWithPreview(S, 'givePage', 'Give', HeartIcon),
+              singleton(S, 'useOurSpacePage', 'Use Our Space', PresentationIcon),
+              singleton(S, 'weddingsPage', 'Weddings', StarIcon),
+              singleton(S, 'givePage', 'Give', HeartIcon),
 
               S.divider(),
 
-              singletonWithPreview(S, 'faqPage', 'FAQ', HelpCircleIcon),
-              singletonWithPreview(S, 'contactPage', 'Contact', EnvelopeIcon),
-              singletonWithPreview(S, 'notFoundPage', '404 Page', DocumentTextIcon),
-              singletonWithPreview(S, 'privacyPage', 'Privacy Policy Page', LockIcon),
+              singleton(S, 'faqPage', 'FAQ', HelpCircleIcon),
+              singleton(S, 'contactPage', 'Contact', EnvelopeIcon),
+              singleton(S, 'notFoundPage', '404 Page', DocumentTextIcon),
+              singleton(S, 'privacyPage', 'Privacy Policy Page', LockIcon),
 
               S.divider(),
 
