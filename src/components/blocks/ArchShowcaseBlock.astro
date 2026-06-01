@@ -1,0 +1,46 @@
+---
+// Safe to edit by hand
+// Arched showcase block (page builder). Inner content only; SectionShell provides
+// the section background + padding. Renders an optional centered heading, then a
+// single arched frame holding either a cross-fading photo slideshow or a looping
+// video, via the shared ArchMedia component (same look as the home hero).
+import ArchMedia from '@/components/ArchMedia.astro';
+
+const { block } = Astro.props as { block: any; defaultTone?: string };
+
+// The editor's radio picks video vs photos. A video can be an uploaded file or a
+// direct link; photos are a slideshow (2+) or a single static image.
+const isVideo = block?.mediaType === 'video';
+const videoSrc = isVideo ? (block?.video?.asset?.url ?? block?.videoUrl ?? null) : null;
+const videoType = block?.video?.asset?.mimeType ?? null;
+const images = !isVideo ? (block?.images ?? []).filter((i: any) => !!i?.asset) : [];
+
+const hasMedia = !!videoSrc || images.length >= 1;
+// Animated media (video or 2+ image slideshow) fills an absolutely-positioned
+// layer, so the frame must be position:relative; a lone image gets the hover zoom.
+const animated = !!videoSrc || images.length >= 2;
+---
+
+{block && hasMedia && (
+  <div class="mx-auto max-w-content px-m">
+    {(block.eyebrow || block.heading || block.intro) && (
+      <div class="mx-auto max-w-2xl text-center">
+        {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
+        {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
+        {block.intro && <p class="mt-m leading-relaxed opacity-80">{block.intro}</p>}
+      </div>
+    )}
+    <div class="mx-auto mt-l w-full max-w-md sm:max-w-lg">
+      <div class:list={['group arch-top overflow-hidden ring-1 ring-border shadow-sm aspect-[4/5] sm:aspect-[5/6]', animated ? 'relative' : 'img-zoom']}>
+        <ArchMedia
+          images={images}
+          videoSrc={videoSrc}
+          videoType={videoType}
+          poster={block.videoPoster}
+          fallbackAlt={block.heading || ''}
+          sizes="(min-width: 640px) 32rem, 90vw"
+        />
+      </div>
+    </div>
+  </div>
+)}

@@ -98,6 +98,32 @@ export const homePage = defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'heroVideo',
+      title: 'Hero video (optional, plays instead of the photos)',
+      type: 'file',
+      group: 'hero',
+      options: { accept: 'video/mp4,video/webm' },
+      description:
+        'Optional. Upload a short, silent video (MP4 or WebM) for the arched hero. When set, it loops quietly inside the arch INSTEAD of the photo slideshow. Keep it short and small (a few seconds, under ~10 MB) so the page stays fast. Leave empty to use the photos above.',
+    }),
+    defineField({
+      name: 'heroVideoUrl',
+      title: 'Hero video link (alternative to uploading)',
+      type: 'url',
+      group: 'hero',
+      description:
+        'Optional. Instead of uploading, paste a direct link to an MP4 or WebM file (for example one hosted on your own service). Used only when no video is uploaded above. This is not a YouTube or Vimeo link.',
+    }),
+    defineField({
+      name: 'heroVideoPoster',
+      title: 'Hero video still image (optional)',
+      type: 'image',
+      group: 'hero',
+      options: { hotspot: true },
+      description: 'Optional. A still image shown while the video loads. Used only when a hero video is set.',
+      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+    }),
     defineField({ name: 'heroPrimaryCta', title: 'Primary CTA', type: 'ctaBlock', group: 'hero' }),
     defineField({ name: 'heroSecondaryCta', title: 'Secondary CTA', type: 'ctaBlock', group: 'hero' }),
     defineField({

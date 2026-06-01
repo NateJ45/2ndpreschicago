@@ -506,6 +506,79 @@ export const sectionDynamicList = defineType({
   preview: { select: { title: 'heading', source: 'source' }, prepare: ({ title, source }) => ({ title: title || 'Dynamic list', subtitle: source }) },
 });
 
+export const sectionArchShowcase = defineType({
+  name: 'sectionArchShowcase',
+  title: 'Arched showcase (slideshow / video)',
+  type: 'object',
+  description:
+    'One arched photo frame, like the home hero. It either cross-fades through several photos (a slow slideshow with a gentle zoom) or loops a short, silent video. Choose which below.',
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+    defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+    defineField({ name: 'intro', title: 'Intro', type: 'text', rows: 2 }),
+    defineField({
+      name: 'mediaType',
+      title: 'What goes in the arched frame?',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Photo slideshow', value: 'slideshow' },
+          { title: 'Looping video', value: 'video' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'slideshow',
+    }),
+    defineField({
+      name: 'images',
+      title: 'Photos',
+      type: 'array',
+      hidden: ({ parent }) => parent?.mediaType === 'video',
+      description:
+        'Add one photo for a single image, or two or more for a slow cross-fading slideshow with a gentle zoom. Drag to set the order.',
+      of: [
+        defineArrayMember({
+          type: 'image',
+          options: { hotspot: true },
+          fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+        }),
+      ],
+      options: { layout: 'grid' },
+    }),
+    defineField({
+      name: 'video',
+      title: 'Video (upload)',
+      type: 'file',
+      hidden: ({ parent }) => parent?.mediaType !== 'video',
+      options: { accept: 'video/mp4,video/webm' },
+      description:
+        'Upload a short, silent MP4 or WebM. It loops quietly inside the arch. Keep it small (a few seconds, under ~10 MB) so the page stays fast.',
+    }),
+    defineField({
+      name: 'videoUrl',
+      title: 'Video link (alternative to uploading)',
+      type: 'url',
+      hidden: ({ parent }) => parent?.mediaType !== 'video',
+      description:
+        'Optional. A direct link to an MP4 or WebM file, used only when nothing is uploaded above. This is not a YouTube or Vimeo link.',
+    }),
+    defineField({
+      name: 'videoPoster',
+      title: 'Video still image (optional)',
+      type: 'image',
+      hidden: ({ parent }) => parent?.mediaType !== 'video',
+      options: { hotspot: true },
+      description: 'Optional. A still image shown while the video loads.',
+      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+    }),
+    bgField(),
+  ],
+  preview: {
+    select: { title: 'heading', media: 'images.0' },
+    prepare: ({ title, media }) => ({ title: title || 'Arched showcase', media }),
+  },
+});
+
 // All block types collected for registration in index.ts.
 export const sectionBlocks = [
   sectionRichText,
@@ -522,6 +595,7 @@ export const sectionBlocks = [
   sectionLogos,
   sectionMediaFeature,
   sectionDynamicList,
+  sectionArchShowcase,
 ];
 
 // The array members allowed in a flexibleSections[] field (includes the shared
@@ -532,6 +606,7 @@ export const FLEXIBLE_SECTION_MEMBERS = [
   { type: 'sectionFeatureCards' },
   { type: 'sectionCardGrid' },
   { type: 'sectionStats' },
+  { type: 'sectionArchShowcase' },
   { type: 'sectionGallery' },
   { type: 'sectionAccordion' },
   { type: 'sectionMediaFeature' },

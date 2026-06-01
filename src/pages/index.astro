@@ -24,7 +24,7 @@ import { getHomePage, getSiteSettings, getFeaturedMinistries } from '@/lib/queri
 import { site } from '@/data/site';
 import SectionHeading from '@/components/SectionHeading.astro';
 import SanityImage from '@/components/SanityImage.astro';
-import HeroArchSlideshow from '@/components/HeroArchSlideshow.astro';
+import ArchMedia from '@/components/ArchMedia.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 import heroSanctuary from '@/assets/hero-sanctuary.webp';
@@ -78,10 +78,18 @@ const seasonalImg = seasonalActive ? seasonal.image : null;
 const heroImgEffective = (seasonalImg?.asset ? seasonalImg : heroImg) ?? null;
 const hasSanityHero = !!heroImgEffective?.asset;
 
-// When the Home hero has 2+ images (and no seasonal override is active), the arched
-// frame becomes a cross-fading Ken Burns slideshow; otherwise it shows one image.
+// Arched-frame hero media (when no seasonal override is active):
+//   video  > slideshow (2+ images) > single image.
+// A hero video (uploaded file, or a direct .mp4/.webm link) loops quietly in the
+// arch; 2+ images cross-fade with a slow Ken Burns zoom; one image stays static.
 const heroSlides = (page?.heroImages ?? []).filter((img: any) => !!img?.asset);
-const isHeroSlideshow = !seasonalActive && heroSlides.length >= 2;
+const heroVideoSrc = !seasonalActive ? (page?.heroVideo?.asset?.url ?? page?.heroVideoUrl ?? null) : null;
+const heroVideoType = page?.heroVideo?.asset?.mimeType ?? null;
+const isHeroVideo = !!heroVideoSrc;
+const isHeroSlideshow = !seasonalActive && !isHeroVideo && heroSlides.length >= 2;
+// True whenever the arch holds animated media (video or slideshow); the frame
+// then needs position:relative (and skips the single-image hover zoom).
+const isHeroArchMedia = isHeroVideo || isHeroSlideshow;
 
 // Primary pill (seasonal can override label + link); Watch prefers the
 // configured livestream URL, falling back to the YouTube channel.
@@ -201,9 +209,17 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
           The arch + bronze frame is repeated on the Welcome image + staff
           headshots so it reads as the site's signature shape. */}
       <div class="order-1 md:order-2 mx-auto w-full max-w-md md:max-w-none">
-        <div class:list={['group arch-top overflow-hidden ring-1 ring-border shadow-sm aspect-[4/5] sm:aspect-[5/6]', isHeroSlideshow ? 'relative' : 'img-zoom']}>
-          {isHeroSlideshow ? (
-            <HeroArchSlideshow images={heroSlides} />
+        <div class:list={['group arch-top overflow-hidden ring-1 ring-border shadow-sm aspect-[4/5] sm:aspect-[5/6]', isHeroArchMedia ? 'relative' : 'img-zoom']}>
+          {isHeroArchMedia ? (
+            <ArchMedia
+              images={heroSlides}
+              videoSrc={heroVideoSrc}
+              videoType={heroVideoType}
+              poster={page?.heroVideoPoster}
+              eager
+              fallbackAlt="Second Presbyterian Church of Chicago"
+              sizes="(min-width: 768px) 45vw, 90vw"
+            />
           ) : hasSanityHero ? (
             <SanityImage
               source={heroImgEffective}

@@ -1,0 +1,176 @@
+---
+// Safe to edit by hand
+// Arched-frame media: the inner content of a `.arch-top` photo frame. Renders
+// ONE of three things, in priority order:
+//   1. a looping, muted background video (when a video src is given), or
+//   2. a slow cross-fading Ken Burns slideshow (2+ images), or
+//   3. a single static image.
+// It does NOT draw the arch frame itself — the caller supplies the framed,
+// position:relative container (the home hero and the ArchShowcase block both do).
+//
+// Used by the home hero (src/pages/index.astro) and the `sectionArchShowcase`
+// page-builder block (src/components/blocks/ArchShowcaseBlock.astro), so a single
+// component keeps the look identical wherever an editor places it. Supersedes the
+// old HeroArchSlideshow.astro.
+//
+// The slideshow reuses the global `.hero-slideshow` / `.hero-slide` CSS (absolute
+// fill + opacity cross-fade + `hero-kb` Ken Burns zoom) from globals.css. The
+// advance script below is multi-instance safe: it drives EVERY [data-arch-slideshow]
+// on the page with its own timer, so the home hero and a showcase block (or two
+// blocks) can animate independently. It also plays/pauses videos by the same
+// prefers-reduced-motion rule, and re-wires after Astro View Transitions.
+//
+// Images are requested at a generous width (1600) so the constant Ken Burns zoom
+// (which magnifies the photo past 100%) still looks crisp on retina displays.
+
+import SanityImage from '@/components/SanityImage.astro';
+import { urlFor } from '@/lib/sanity';
+
+interface SanityImageObject {
+  asset?: { _ref?: string; _id?: string };
+  alt?: string;
+  hotspot?: { x: number; y: number; height: number; width: number };
+  crop?: { top: number; bottom: number; left: number; right: number };
+}
+
+interface Props {
+  /** Slideshow / single-image source list. Entries without an asset are ignored. */
+  images?: SanityImageObject[] | null;
+  /** Resolved, ready-to-play video URL (Sanity file asset URL or a direct .mp4/.webm). Wins over images. */
+  videoSrc?: string | null;
+  /** MIME type for the <source> (e.g. "video/mp4"). Optional. */
+  videoType?: string | null;
+  /** Still image shown before/behind the video. Optional. */
+  poster?: SanityImageObject | null;
+  /** Default alt for the first image when it has none of its own. */
+  fallbackAlt?: string;
+  /** Mark the first image/video as the LCP (eager + high priority). */
+  eager?: boolean;
+  /** Responsive sizes attribute for the images. */
+  sizes?: string;
+  /** Max requested image width (srcset upper bound). */
+  width?: number;
+  /** Image quality 0-100. */
+  quality?: number;
+}
+
+const {
+  images,
+  videoSrc = null,
+  videoType = null,
+  poster = null,
+  fallbackAlt = '',
+  eager = false,
+  sizes = '(min-width: 768px) 45vw, 90vw',
+  width = 1600,
+  quality = 76,
+} = Astro.props as Props;
+
+const slides = (images ?? []).filter((img) => !!img?.asset);
+const hasVideo = !!videoSrc;
+const isSlideshow = !hasVideo && slides.length >= 2;
+const single = !hasVideo && slides.length === 1 ? slides[0] : null;
+
+// Poster for the video: a still frame so the frame is never empty while the
+// video loads (and what reduced-motion users see, since the video stays paused).
+const posterUrl = poster?.asset
+  ? urlFor(poster).width(1200).quality(70).auto('format').url()
+  : undefined;
+
+// The advance script is only needed when there is motion to drive.
+const needsScript = hasVideo || isSlideshow;
+---
+
+{hasVideo && (
+  <video
+    data-arch-video
+    class="h-full w-full object-cover"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    poster={posterUrl}
+    aria-hidden="true"
+  >
+    <source src={videoSrc} type={videoType ?? undefined} />
+  </video>
+)}
+
+{isSlideshow && (
+  <div class="hero-slideshow" data-arch-slideshow>
+    {slides.map((img, i) => (
+      <SanityImage
+        source={img}
+        width={width}
+        sizes={sizes}
+        loading={i === 0 && eager ? 'eager' : 'lazy'}
+        fetchpriority={i === 0 && eager ? 'high' : 'low'}
+        quality={quality}
+        alt={i === 0 ? (img.alt || fallbackAlt) : (img.alt || '')}
+        class={`hero-slide${i === 0 ? ' is-active' : ''}`}
+      />
+    ))}
+  </div>
+)}
+
+{single && (
+  <SanityImage
+    source={single}
+    width={width}
+    sizes={sizes}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : undefined}
+    quality={quality}
+    alt={single.alt || fallbackAlt}
+    class="h-full w-full object-cover"
+  />
+)}
+
+{needsScript && (
+  <script is:inline>
+    (function () {
+      // Drive every arched media instance on the page. Idempotent: each call
+      // tears down the previous timers first, so re-running (View Transitions,
+      // multiple copies of this inline script) never stacks intervals.
+      function initArchMedia() {
+        if (window.__archMediaTimers) {
+          window.__archMediaTimers.forEach(function (t) { clearInterval(t); });
+        }
+        window.__archMediaTimers = [];
+
+        var reduce = false;
+        try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (_) {}
+
+        // Looping videos: honor reduced motion (hold on the poster frame).
+        document.querySelectorAll('video[data-arch-video]').forEach(function (v) {
+          try { if (reduce) v.pause(); else v.play().catch(function () {}); } catch (_) {}
+        });
+
+        if (reduce) return; // slideshows stay on their first slide, static
+
+        document.querySelectorAll('[data-arch-slideshow]').forEach(function (box) {
+          var slides = box.querySelectorAll('.hero-slide');
+          if (slides.length < 2) return;
+          var current = 0;
+          var STEP_MS = 4500; // ~3s hold + 1.5s cross-fade
+          var timer = setInterval(function () {
+            if (document.hidden) return; // pause while the tab is hidden
+            slides[current].classList.remove('is-active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('is-active');
+          }, STEP_MS);
+          window.__archMediaTimers.push(timer);
+        });
+      }
+
+      initArchMedia();
+      // Bind the View Transitions re-init exactly once, no matter how many
+      // copies of this inline script the page emitted.
+      if (!window.__archMediaBound) {
+        window.__archMediaBound = true;
+        document.addEventListener('astro:page-load', initArchMedia);
+      }
+    })();
+  </script>
+)}

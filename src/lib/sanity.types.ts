@@ -116,6 +116,23 @@ export type SectionStatsBackgroundImage = {
   _type: "image";
 };
 
+export type SectionArchShowcaseBackground = {
+  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  image?: SectionArchShowcaseBackgroundImage;
+  videoUrl?: string;
+  overlay?: number;
+  padding?: "compact" | "normal" | "spacious";
+};
+
+export type SectionArchShowcaseBackgroundImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "sectionArchShowcase.background.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
 export type SectionGalleryBackground = {
   tone?: "default" | "warm" | "chapel" | "chapelDeep";
   image?: SectionGalleryBackgroundImage;
@@ -287,6 +304,9 @@ export type Page = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -704,6 +724,9 @@ export type GivePage = {
       } & SectionStats)
     | ({
         _key: string;
+      } & SectionArchShowcase)
+    | ({
+        _key: string;
       } & SectionGallery)
     | ({
         _key: string;
@@ -796,6 +819,9 @@ export type WeddingsPage = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -898,6 +924,9 @@ export type UseOurSpacePage = {
       } & SectionStats)
     | ({
         _key: string;
+      } & SectionArchShowcase)
+    | ({
+        _key: string;
       } & SectionGallery)
     | ({
         _key: string;
@@ -985,6 +1014,9 @@ export type FoodPage = {
       } & SectionStats)
     | ({
         _key: string;
+      } & SectionArchShowcase)
+    | ({
+        _key: string;
       } & SectionGallery)
     | ({
         _key: string;
@@ -1068,6 +1100,9 @@ export type KidsPage = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -1154,6 +1189,9 @@ export type ServePage = {
       } & SectionStats)
     | ({
         _key: string;
+      } & SectionArchShowcase)
+    | ({
+        _key: string;
       } & SectionGallery)
     | ({
         _key: string;
@@ -1238,6 +1276,9 @@ export type GrowPage = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -1327,6 +1368,9 @@ export type StaffPage = {
       } & SectionStats)
     | ({
         _key: string;
+      } & SectionArchShowcase)
+    | ({
+        _key: string;
       } & SectionGallery)
     | ({
         _key: string;
@@ -1404,6 +1448,9 @@ export type MusicPage = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -1494,6 +1541,9 @@ export type BeliefsPage = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -1607,6 +1657,9 @@ export type WorshipPage = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -1728,6 +1781,9 @@ export type PrivacyPage = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -1870,6 +1926,38 @@ export type SiteSettings = {
     successMessage?: string;
     consentNote?: string;
   };
+};
+
+export type SectionArchShowcase = {
+  _type: "sectionArchShowcase";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  mediaType?: "slideshow" | "video";
+  images?: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }>;
+  video?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  videoUrl?: string;
+  videoPoster?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  background?: SectionArchShowcaseBackground;
 };
 
 export type SectionDynamicList = {
@@ -2227,6 +2315,9 @@ export type SermonsPage = {
       } & SectionStats)
     | ({
         _key: string;
+      } & SectionArchShowcase)
+    | ({
+        _key: string;
       } & SectionGallery)
     | ({
         _key: string;
@@ -2311,6 +2402,9 @@ export type EventsPage = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -2421,6 +2515,9 @@ export type ContactPage = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -2557,6 +2654,9 @@ export type FaqPage = {
       } & SectionStats)
     | ({
         _key: string;
+      } & SectionArchShowcase)
+    | ({
+        _key: string;
       } & SectionGallery)
     | ({
         _key: string;
@@ -2671,6 +2771,9 @@ export type AboutPage = {
       } & SectionStats)
     | ({
         _key: string;
+      } & SectionArchShowcase)
+    | ({
+        _key: string;
       } & SectionGallery)
     | ({
         _key: string;
@@ -2739,6 +2842,20 @@ export type HomePage = {
     _type: "image";
     _key: string;
   }>;
+  heroVideo?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  heroVideoUrl?: string;
+  heroVideoPoster?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   heroPrimaryCta?: CtaBlock;
   heroSecondaryCta?: CtaBlock;
   heroRotatingWords?: Array<string>;
@@ -2824,6 +2941,9 @@ export type HomePage = {
     | ({
         _key: string;
       } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
     | ({
         _key: string;
       } & SectionGallery)
@@ -2976,6 +3096,8 @@ export type AllSanitySchemaTypes =
   | SectionCardGridBackgroundImage
   | SectionStatsBackground
   | SectionStatsBackgroundImage
+  | SectionArchShowcaseBackground
+  | SectionArchShowcaseBackgroundImage
   | SectionGalleryBackground
   | SectionGalleryBackgroundImage
   | SectionAccordionBackground
@@ -3020,6 +3142,7 @@ export type AllSanitySchemaTypes =
   | PrivacyPage
   | NotFoundPage
   | SiteSettings
+  | SectionArchShowcase
   | SectionDynamicList
   | SectionMediaFeature
   | SectionLogos

@@ -41,6 +41,11 @@ const SECTION_MEMBERS = `{
   _type == "sectionImageText" => { image${IMAGE_PROJECTION} },
   _type == "sectionFeatureCards" => { cards[]{ ..., image${IMAGE_PROJECTION} } },
   _type == "sectionGallery" => { images[]${IMAGE_PROJECTION} },
+  _type == "sectionArchShowcase" => {
+    images[]${IMAGE_PROJECTION},
+    video{ asset->{ url, mimeType } },
+    videoPoster${IMAGE_PROJECTION}
+  },
   _type == "sectionForm" => { form->${FORM_PROJECTION} }
 }`;
 
@@ -181,6 +186,9 @@ export async function getHomePage() {
     heroSubhead,
     heroImage${IMAGE_PROJECTION},
     heroImages[]${IMAGE_PROJECTION},
+    heroVideo{ asset->{ url, mimeType } },
+    heroVideoUrl,
+    heroVideoPoster${IMAGE_PROJECTION},
     heroPrimaryCta${CTA_PROJECTION},
     heroSecondaryCta${CTA_PROJECTION},
     heroRotatingWords,
