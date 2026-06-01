@@ -63,8 +63,8 @@ const pillOutline =
         <p class="mt-s text-lg text-foreground/85">{page?.gatherDay ?? 'Every Sunday morning'}</p>
         <p class="mt-m text-foreground/80">{siteSettings?.addressLine ?? site.contact.addressLine}<br />{siteSettings?.cityStateZip ?? site.contact.cityStateZip}</p>
         <div class="mt-l flex flex-wrap gap-s">
-          <a href="/contact" class={pillPrimary}>Get Directions</a>
-          <a href={site.social.youtube} target="_blank" rel="noopener noreferrer" class={pillOutline}>Watch Online</a>
+          <a href={page?.gatherDirectionsCta?.externalUrl || '/contact'} class={pillPrimary}>{page?.gatherDirectionsCta?.label || 'Get Directions'}</a>
+          <a href={page?.gatherWatchCta?.externalUrl || site.social.youtube} target="_blank" rel="noopener noreferrer" class={pillOutline}>{page?.gatherWatchCta?.label || 'Watch Online'}</a>
         </div>
       </div>
       <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
@@ -99,7 +99,7 @@ const pillOutline =
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
           <h3 class="font-display text-h4 text-foreground">{page?.planCard3Title ?? 'For families'}</h3>
-          <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard3Body ?? "Children are welcome in worship, with a children's message and a cry room if you need it."} <a href="/kids" class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">More for kids</a>.</p>
+          <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard3Body ?? "Children are welcome in worship, with a children's message and a cry room if you need it."} <a href={page?.kidsMoreCta?.externalUrl || '/kids'} class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">{page?.kidsMoreCta?.label || 'More for kids'}</a>.</p>
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
           <h3 class="font-display text-h4 text-foreground">{page?.planCard4Title ?? 'Accessibility'}</h3>
@@ -152,8 +152,8 @@ const pillOutline =
     <section class="bg-background" aria-labelledby="worship-resources">
       <div class="mx-auto max-w-content px-m py-section-lg">
         <SectionHeading
-          eyebrow="Worship resources"
-          headline="Bulletins and downloads"
+          eyebrow={page?.resourcesEyebrow ?? 'Worship resources'}
+          headline={page?.resourcesHeadline ?? 'Bulletins and downloads'}
           headingId="worship-resources"
         />
         <ul class="mt-l grid grid-cols-1 sm:grid-cols-2 gap-m list-none p-0">

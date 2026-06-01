@@ -56,7 +56,7 @@ const ways = page?.ways?.length ? page.ways : FALLBACK_WAYS;
         <a href={w.href} class="card-lift group block rounded-md border border-border-soft bg-card p-l no-underline">
           <h2 class="font-display text-h3 text-foreground group-hover:text-link transition-colors">{w.name}</h2>
           <p class="mt-s text-foreground/85 leading-relaxed">{w.body}</p>
-          <span class="mt-m inline-flex items-center gap-xs text-xs uppercase tracking-eyebrow font-semibold text-link">Learn more <span aria-hidden="true">&rarr;</span></span>
+          <span class="mt-m inline-flex items-center gap-xs text-xs uppercase tracking-eyebrow font-semibold text-link">{page?.serveLinkLabel ?? 'Learn more'} <span aria-hidden="true">&rarr;</span></span>
         </a>
       ))}
     </div>

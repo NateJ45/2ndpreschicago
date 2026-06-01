@@ -106,7 +106,7 @@ const schemas = [
           {page?.organBodyP2 ?? "A “thundersheet,” acquired in the 1930s and likely salvaged from a theater, still produces rolls of thunder during our annual performance of Theodore Dubois’ “The Seven Last Words of Christ.”"}
         </p>
         <p class="text-base">
-          {page?.organCreditLead ?? 'Our music is led by'} <a href="/pastor-staff" class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">Michael Shawgo, Director of Music &amp; Organist</a>.
+          {page?.organCreditLead ?? 'Our music is led by'} <a href={page?.organCreditCta?.externalUrl || '/pastor-staff'} class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">{page?.organCreditCta?.label || 'Michael Shawgo, Director of Music & Organist'}</a>.
         </p>
         </div>
       </div>

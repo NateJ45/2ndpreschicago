@@ -286,6 +286,15 @@ export const homePage = defineType({
     defineField({ name: 'recordBody', title: 'The Record — body', type: 'text', rows: 2, group: 'content' }),
     defineField({ name: 'recordCtaLabel', title: 'The Record — button label', type: 'string', group: 'content' }),
 
+    // In-body buttons made editable. Each falls back to the current literal
+    // label/href in index.astro when left empty, so the page is unchanged
+    // until an editor overrides it.
+    defineField({ name: 'welcomeCtaPrimary', title: 'Welcome button 1', type: 'ctaBlock', group: 'content' }),
+    defineField({ name: 'welcomeCtaSecondary', title: 'Welcome button 2', type: 'ctaBlock', group: 'content' }),
+    defineField({ name: 'serviceBandVisitCta', title: 'Service band — Plan a Visit button', type: 'ctaBlock', group: 'content' }),
+    defineField({ name: 'serviceBandWatchCta', title: 'Service band — Watch button', type: 'ctaBlock', group: 'content' }),
+    defineField({ name: 'eventsCalendarCta', title: 'Events teaser — calendar button', type: 'ctaBlock', group: 'content' }),
+
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

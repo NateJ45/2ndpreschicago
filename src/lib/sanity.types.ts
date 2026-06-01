@@ -1112,9 +1112,11 @@ export type FoodPage = {
   lunchBagHeadline?: string;
   lunchBagSchedule?: string;
   lunchBagBodyP1?: string;
+  lunchBagCta?: CtaBlock;
   tableHeadline?: string;
   tableSchedule?: string;
   tableBodyP1?: string;
+  tableCta?: CtaBlock;
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
@@ -1293,6 +1295,7 @@ export type ServePage = {
     _type: "serveWay";
     _key: string;
   }>;
+  serveLinkLabel?: string;
   serveCtaEyebrow?: string;
   serveCtaHeadline?: string;
   serveCtaSubhead?: string;
@@ -1569,6 +1572,7 @@ export type MusicPage = {
     _type: "image";
   };
   organCreditLead?: string;
+  organCreditCta?: CtaBlock;
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
@@ -1798,6 +1802,11 @@ export type WorshipPage = {
   };
   quoteText?: string;
   quoteAttribution?: string;
+  gatherDirectionsCta?: CtaBlock;
+  gatherWatchCta?: CtaBlock;
+  kidsMoreCta?: CtaBlock;
+  resourcesEyebrow?: string;
+  resourcesHeadline?: string;
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
@@ -2318,6 +2327,9 @@ export type SermonsPage = {
   heroHeadline?: string;
   heroSubhead?: string;
   livestreamUrl?: string;
+  watchLiveLabel?: string;
+  watchYoutubeLabel?: string;
+  emptyVisitCta?: CtaBlock;
   latestEyebrow?: string;
   watchEyebrow?: string;
   watchHeadline?: string;
@@ -2326,6 +2338,10 @@ export type SermonsPage = {
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
   finalCta?: CtaBlock;
+  detailFinalCtaEyebrow?: string;
+  detailFinalCtaHeadline?: string;
+  detailFinalCtaSubhead?: string;
+  detailFinalCta?: CtaBlock;
   flexibleSections?: Array<
     | ({
         _key: string;
@@ -2416,6 +2432,10 @@ export type EventsPage = {
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
   finalCta?: CtaBlock;
+  detailFinalCtaEyebrow?: string;
+  detailFinalCtaHeadline?: string;
+  detailFinalCtaSubhead?: string;
+  detailFinalCta?: CtaBlock;
   flexibleSections?: Array<
     | ({
         _key: string;
@@ -2769,6 +2789,9 @@ export type AboutPage = {
   whoHeadline?: string;
   whoBodyP1?: string;
   whoBodyP2?: string;
+  buildingCta?: CtaBlock;
+  whoCtaPrimary?: CtaBlock;
+  whoCtaSecondary?: CtaBlock;
   flexibleSections?: Array<
     | ({
         _key: string;
@@ -2952,6 +2975,11 @@ export type HomePage = {
   recordHeadline?: string;
   recordBody?: string;
   recordCtaLabel?: string;
+  welcomeCtaPrimary?: CtaBlock;
+  welcomeCtaSecondary?: CtaBlock;
+  serviceBandVisitCta?: CtaBlock;
+  serviceBandWatchCta?: CtaBlock;
+  eventsCalendarCta?: CtaBlock;
   flexibleSections?: Array<
     | ({
         _key: string;

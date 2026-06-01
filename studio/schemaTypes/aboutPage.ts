@@ -129,6 +129,13 @@ export const aboutPage = defineType({
     defineField({ name: 'whoBodyP1', title: 'Who we are — paragraph 1', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'whoBodyP2', title: 'Who we are — paragraph 2', type: 'text', rows: 3, group: 'content' }),
 
+    // In-body buttons made editable. Each falls back to the current literal
+    // label/href in about.astro when left empty, so the page is unchanged
+    // until an editor overrides it.
+    defineField({ name: 'buildingCta', title: 'Building — Visit/Use the Space button', type: 'ctaBlock', group: 'content' }),
+    defineField({ name: 'whoCtaPrimary', title: 'Who we are button 1', type: 'ctaBlock', group: 'content' }),
+    defineField({ name: 'whoCtaSecondary', title: 'Who we are button 2', type: 'ctaBlock', group: 'content' }),
+
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

@@ -167,6 +167,14 @@ export const worshipPage = definePageSingleton('worshipPage', "Worship (I'm New)
     }),
     defineField({ name: 'quoteText', title: 'Reflection quote', type: 'text', rows: 2, group: 'content' }),
     defineField({ name: 'quoteAttribution', title: 'Reflection attribution', type: 'string', group: 'content' }),
+    // In-body pill links + the worship-resources section heading. Each falls
+    // back to the page's built-in literal when left empty, so an empty field
+    // renders byte-identical to the original hardcoded copy.
+    defineField({ name: 'gatherDirectionsCta', title: 'Get Directions button', type: 'ctaBlock', group: 'content' }),
+    defineField({ name: 'gatherWatchCta', title: 'Watch Online button', type: 'ctaBlock', group: 'content' }),
+    defineField({ name: 'kidsMoreCta', title: '"More for kids" link', type: 'ctaBlock', group: 'content' }),
+    defineField({ name: 'resourcesEyebrow', title: 'Worship resources eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'resourcesHeadline', title: 'Worship resources headline', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
@@ -260,6 +268,9 @@ export const musicPage = definePageSingleton('musicPage', 'Music', {
       fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
     }),
     defineField({ name: 'organCreditLead', title: 'Organ credit lead-in', type: 'string', group: 'content' }),
+    // The staff link after the organ-credit lead-in. Falls back to the built-in
+    // "Michael Shawgo..." link to /pastor-staff when empty.
+    defineField({ name: 'organCreditCta', title: 'Organ credit staff link', type: 'ctaBlock', group: 'content' }),
     defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
@@ -341,6 +352,9 @@ export const servePage = definePageSingleton('servePage', 'Serve', {
         }),
       ],
     }),
+    // The repeated affordance label on each serve card. Falls back to the
+    // built-in "Learn more" text when empty.
+    defineField({ name: 'serveLinkLabel', title: 'Serve card link label', type: 'string', group: 'content' }),
     defineField({ name: 'serveCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
     defineField({ name: 'serveCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
     defineField({ name: 'serveCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
@@ -376,9 +390,15 @@ export const foodPage = definePageSingleton('foodPage', 'Food Ministry', {
     defineField({ name: 'lunchBagHeadline', title: 'Lunch Bag heading', type: 'string', group: 'content' }),
     defineField({ name: 'lunchBagSchedule', title: 'Lunch Bag schedule', type: 'string', group: 'content' }),
     defineField({ name: 'lunchBagBodyP1', title: 'Lunch Bag description', type: 'text', rows: 3, group: 'content' }),
+    // The "Support Lunch Bag" button on the Lunch Bag card. Falls back to the
+    // built-in button to /give when empty.
+    defineField({ name: 'lunchBagCta', title: 'Support Lunch Bag button', type: 'ctaBlock', group: 'content' }),
     defineField({ name: 'tableHeadline', title: 'Community Table heading', type: 'string', group: 'content' }),
     defineField({ name: 'tableSchedule', title: 'Community Table schedule', type: 'string', group: 'content' }),
     defineField({ name: 'tableBodyP1', title: 'Community Table description', type: 'text', rows: 4, group: 'content' }),
+    // The "Support the Table" button on the Community Table card. Falls back to
+    // the built-in button to /give when empty.
+    defineField({ name: 'tableCta', title: 'Support the Table button', type: 'ctaBlock', group: 'content' }),
     defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),

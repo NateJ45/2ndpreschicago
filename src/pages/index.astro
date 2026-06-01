@@ -269,8 +269,8 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
         </div>
       </div>
       <div class="flex flex-wrap justify-center md:justify-end gap-s">
-        <a href="/worship" class={pillPrimary}>Plan a Visit</a>
-        <a href={youtube} target="_blank" rel="noopener noreferrer" class={pillOnChapel}>Watch</a>
+        <a href={page?.serviceBandVisitCta?.externalUrl || '/worship'} class={pillPrimary}>{page?.serviceBandVisitCta?.label || 'Plan a Visit'}</a>
+        <a href={page?.serviceBandWatchCta?.externalUrl || youtube} target="_blank" rel="noopener noreferrer" class={pillOnChapel}>{page?.serviceBandWatchCta?.label || 'Watch'}</a>
       </div>
     </div>
   </section>
@@ -294,8 +294,8 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
               'We are a Reformed congregation in the Presbyterian Church (USA), and we welcome everyone: women and men, gay and straight, lifelong believers and the simply curious. Come as you are.'}
           </p>
           <div class="flex flex-wrap gap-s pt-xs">
-            <a href="/what-we-believe" class={pillOutline}>What We Believe</a>
-            <a href="/pastor-staff" class={pillOutline}>Meet Our Pastors</a>
+            <a href={page?.welcomeCtaPrimary?.externalUrl || '/what-we-believe'} class={pillOutline}>{page?.welcomeCtaPrimary?.label || 'What We Believe'}</a>
+            <a href={page?.welcomeCtaSecondary?.externalUrl || '/pastor-staff'} class={pillOutline}>{page?.welcomeCtaSecondary?.label || 'Meet Our Pastors'}</a>
           </div>
         </div>
       </div>
@@ -389,7 +389,7 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
           ))}
         </ul>
         <div class="pt-s">
-          <a href="/events" class={pillOutline}>See the Full Calendar</a>
+          <a href={page?.eventsCalendarCta?.externalUrl || '/events'} class={pillOutline}>{page?.eventsCalendarCta?.label || 'See the Full Calendar'}</a>
         </div>
       </div>
     </div>

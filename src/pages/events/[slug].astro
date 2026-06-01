@@ -5,7 +5,7 @@
 // fallback rhythms render as plain rows instead of links).
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getAllEventSlugs, getEventBySlug, getSiteSettings } from '@/lib/queries';
+import { getAllEventSlugs, getEventBySlug, getEventsPage, getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import SanityImage from '@/components/SanityImage.astro';
@@ -18,9 +18,10 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const [event, siteSettings] = await Promise.all([
+const [event, siteSettings, eventsPage] = await Promise.all([
   getEventBySlug(slug as string),
   getSiteSettings().catch(() => null),
+  getEventsPage().catch(() => null),
 ]);
 
 if (!event) {
@@ -125,9 +126,9 @@ const pillPrimary =
   </article>
 
   <FinalCta
-    eyebrow="Come and See"
-    headline="Join us at Second"
-    subhead="Everyone is welcome. Worship is at 11am every Sunday, and the door is always open."
-    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    eyebrow={eventsPage?.detailFinalCtaEyebrow ?? "Come and See"}
+    headline={eventsPage?.detailFinalCtaHeadline ?? "Join us at Second"}
+    subhead={eventsPage?.detailFinalCtaSubhead ?? "Everyone is welcome. Worship is at 11am every Sunday, and the door is always open."}
+    cta={eventsPage?.detailFinalCta?.label ? eventsPage.detailFinalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

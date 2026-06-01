@@ -98,7 +98,7 @@ const pillOutline =
               'It is one of the great interiors in American church architecture, and it is still, first and last, a room built for worship.'}
           </p>
           <div class="pt-xs">
-            <a href="/use-our-space" class={pillOutline}>Visit or Use the Space</a>
+            <a href={page?.buildingCta?.externalUrl || '/use-our-space'} class={pillOutline}>{page?.buildingCta?.label || 'Visit or Use the Space'}</a>
           </div>
         </div>
       </div>
@@ -140,8 +140,8 @@ const pillOutline =
             'We welcome everyone: women and men, gay and straight, lifelong believers and the simply curious. Whoever you are, you are welcome here.'}
         </p>
         <div class="flex flex-wrap gap-s pt-xs">
-          <a href="/what-we-believe" class={pillOutline}>What We Believe</a>
-          <a href="/pastor-staff" class={pillOutline}>Meet Our Pastors</a>
+          <a href={page?.whoCtaPrimary?.externalUrl || '/what-we-believe'} class={pillOutline}>{page?.whoCtaPrimary?.label || 'What We Believe'}</a>
+          <a href={page?.whoCtaSecondary?.externalUrl || '/pastor-staff'} class={pillOutline}>{page?.whoCtaSecondary?.label || 'Meet Our Pastors'}</a>
         </div>
       </div>
     </div>

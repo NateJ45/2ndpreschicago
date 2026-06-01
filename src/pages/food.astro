@@ -52,7 +52,7 @@ const pillPrimary =
           {page?.lunchBagBodyP1 ?? 'A grab-and-go lunch for anyone who needs one. Pantry staples, produce, clothing, and hygiene items are offered occasionally as they are available.'}
         </p>
         <div class="mt-l">
-          <a href="/give" class={pillPrimary}>Support Lunch Bag</a>
+          <a href={page?.lunchBagCta?.externalUrl || '/give'} class={pillPrimary}>{page?.lunchBagCta?.label || 'Support Lunch Bag'}</a>
         </div>
       </article>
 
@@ -64,7 +64,7 @@ const pillPrimary =
           {page?.tableBodyP1 ?? 'A free, sit-down meal for all. Come play games, listen to music, and share a table with neighbors. Medical and social work services, occupational therapy, and clothing are available, hosted in partnership with Care for Friends. The Table pauses for the summer.'}
         </p>
         <div class="mt-l">
-          <a href="/give" class={pillPrimary}>Support the Table</a>
+          <a href={page?.tableCta?.externalUrl || '/give'} class={pillPrimary}>{page?.tableCta?.label || 'Support the Table'}</a>
         </div>
       </article>
     </div>

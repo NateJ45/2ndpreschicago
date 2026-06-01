@@ -76,7 +76,7 @@ function meta(s: any): string {
         {/* Watch live */}
         <div class="mb-section-md flex flex-wrap items-center justify-between gap-m">
           <p class="text-foreground/80">Worship streams live on Sundays at 11am.</p>
-          <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>Watch Live</a>
+          <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>{page?.watchLiveLabel ?? 'Watch Live'}</a>
         </div>
 
         {/* Featured latest sermon */}
@@ -123,8 +123,8 @@ function meta(s: any): string {
           {page?.watchBody ?? 'We livestream Sunday worship and post recent messages on our YouTube channel. Watch the latest, or join us live on Sunday at 11am.'}
         </p>
         <div class="mt-l flex flex-wrap justify-center gap-s">
-          <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>Watch on YouTube</a>
-          <a href="/worship" class={pillOutline}>Plan a Visit</a>
+          <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>{page?.watchYoutubeLabel ?? 'Watch on YouTube'}</a>
+          <a href={page?.emptyVisitCta?.externalUrl || '/worship'} class={pillOutline}>{page?.emptyVisitCta?.label || 'Plan a Visit'}</a>
         </div>
       </div>
     </section>
