@@ -13,6 +13,8 @@ export const homePage = defineType({
   groups: [
     { name: 'seo', title: 'SEO' },
     { name: 'hero', title: 'Hero' },
+    { name: 'seasonal', title: 'Seasonal hero' },
+    { name: 'sunday', title: 'This Sunday' },
     // removed interior-designer groups (meetFounder, featuredWork, featuredJournal, process, testimonials, services) during church remodel
     { name: 'final', title: 'Final CTA' },
   ],
@@ -57,6 +59,14 @@ export const homePage = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({ name: 'heroSubhead', title: 'Hero subhead', type: 'text', rows: 3, group: 'hero' }),
+    defineField({
+      name: 'heroKeyword',
+      title: 'Headline keyword (set in green)',
+      type: 'string',
+      group: 'hero',
+      description:
+        'One word from the headline to highlight in chapel green (e.g. "Jesus"). Must match a word in the headline exactly (case-sensitive). Leave blank for no highlight.',
+    }),
     defineField({
       name: 'heroImage',
       title: 'Hero image (legacy)',
@@ -105,7 +115,58 @@ export const homePage = defineType({
         'A single word from the headline to render in handwritten Pinyon Script for editorial flourish. Must match the word exactly (case-sensitive). The first occurrence wins. Leave blank to skip. Note: when "rotating words" is also set, the rotation wins and this is ignored.',
     }),
 
-    // removed interior-designer meetFounder, featuredWork, and featuredJournal field blocks during church remodel
+    // Seasonal hero — a dated override of the home hero for Holy Week, Christmas,
+    // etc. When enabled and today falls in the window, the home page swaps the
+    // default hero for this one. Build-time check; a scheduled rebuild refreshes it.
+    defineField({
+      name: 'seasonalHero',
+      title: 'Seasonal hero override',
+      type: 'object',
+      group: 'seasonal',
+      options: { collapsible: true, collapsed: false },
+      description: 'Temporarily replace the home hero for a season (Advent, Christmas, Holy Week, Easter).',
+      fields: [
+        defineField({ name: 'enabled', title: 'Enable seasonal hero', type: 'boolean', initialValue: false }),
+        defineField({ name: 'startDate', title: 'Show from', type: 'datetime' }),
+        defineField({ name: 'endDate', title: 'Hide after', type: 'datetime' }),
+        defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+        defineField({ name: 'headline', title: 'Headline', type: 'string' }),
+        defineField({
+          name: 'keyword',
+          title: 'Headline keyword (set in green)',
+          type: 'string',
+          description: 'One word from the seasonal headline to highlight. Must match exactly.',
+        }),
+        defineField({ name: 'subhead', title: 'Subhead', type: 'text', rows: 3 }),
+        defineField({
+          name: 'image',
+          title: 'Hero image',
+          type: 'image',
+          options: { hotspot: true },
+          fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+        }),
+        defineField({ name: 'primaryCtaLabel', title: 'Primary button label', type: 'string', description: 'Optional. Defaults to "Plan a Visit".' }),
+        defineField({ name: 'primaryCtaUrl', title: 'Primary button link', type: 'string', description: 'Internal path like "/events" or a full URL.' }),
+      ],
+    }),
+
+    // "This Sunday" — an at-a-glance card for the coming service. When enabled it
+    // replaces the small "This Sunday: 11am" line under the hero and shows on /worship.
+    defineField({
+      name: 'thisSunday',
+      title: 'This Sunday',
+      type: 'object',
+      group: 'sunday',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'enabled', title: 'Show "This Sunday"', type: 'boolean', initialValue: false }),
+        defineField({ name: 'dateLabel', title: 'Date label', type: 'string', description: 'Example: "Sunday, June 7" or "This Sunday".' }),
+        defineField({ name: 'sermonTitle', title: 'Sermon / message title', type: 'string' }),
+        defineField({ name: 'scripture', title: 'Scripture', type: 'string', description: 'Example: "John 1:1-14".' }),
+        defineField({ name: 'preacher', title: 'Preacher', type: 'string' }),
+        defineField({ name: 'note', title: 'Note', type: 'string', description: 'Optional extra line (e.g. "Communion Sunday").' }),
+      ],
+    }),
 
     // removed interior-designer process preview, testimonials, and services grid field blocks during church remodel
 

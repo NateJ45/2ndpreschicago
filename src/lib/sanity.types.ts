@@ -1132,6 +1132,7 @@ export type HomePage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   heroImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -1153,6 +1154,33 @@ export type HomePage = {
   heroSecondaryCta?: CtaBlock;
   heroRotatingWords?: Array<string>;
   heroScriptAccent?: string;
+  seasonalHero?: {
+    enabled?: boolean;
+    startDate?: string;
+    endDate?: string;
+    eyebrow?: string;
+    headline?: string;
+    keyword?: string;
+    subhead?: string;
+    image?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+    primaryCtaLabel?: string;
+    primaryCtaUrl?: string;
+  };
+  thisSunday?: {
+    enabled?: boolean;
+    dateLabel?: string;
+    sermonTitle?: string;
+    scripture?: string;
+    preacher?: string;
+    note?: string;
+  };
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaScriptAccent?: string;

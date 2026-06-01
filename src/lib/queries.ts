@@ -117,13 +117,20 @@ export async function getHomePage() {
     seoImage${IMAGE_PROJECTION},
     heroEyebrow,
     heroHeadline,
+    heroKeyword,
     heroSubhead,
     heroImage${IMAGE_PROJECTION},
     heroImages[]${IMAGE_PROJECTION},
     heroPrimaryCta${CTA_PROJECTION},
     heroSecondaryCta${CTA_PROJECTION},
     heroRotatingWords,
-    heroScriptAccent
+    heroScriptAccent,
+    seasonalHero{
+      enabled, startDate, endDate, eyebrow, headline, keyword, subhead,
+      image${IMAGE_PROJECTION},
+      primaryCtaLabel, primaryCtaUrl
+    },
+    thisSunday
   }`, {}, null);
 }
 

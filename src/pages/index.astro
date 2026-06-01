@@ -44,7 +44,56 @@ const youtube = site.social.youtube;
 // Editor-managed hero photo when set in the Home singleton, else the built-in
 // sanctuary photo. Rendered inside the arched frame below.
 const heroImg = (page?.heroImages?.length ? page.heroImages[0] : page?.heroImage) ?? null;
-const hasSanityHero = !!heroImg?.asset;
+
+// ---- Hero content: default (Sanity-overridable) + optional seasonal override ----
+// The current inline copy is the fallback, so the page is identical until an
+// editor changes a field. A dated seasonal hero (Holy Week, Christmas) takes
+// over when enabled and today falls within its window.
+const HERO_DEFAULTS = {
+  eyebrow: 'The Church of the Angels · South Loop, Chicago',
+  headline: 'Serving and celebrating Jesus for the good of the world.',
+  keyword: 'Jesus',
+  subhead:
+    'We gather in the abundant life of Jesus to worship, love, serve, pray, and share the gospel in word and deed. Whoever you are, you are welcome here.',
+};
+
+const seasonal: any = page?.seasonalHero ?? null;
+const nowMs = Date.now();
+const seasonalActive = !!(
+  seasonal?.enabled &&
+  seasonal?.headline &&
+  (!seasonal.startDate || new Date(seasonal.startDate).getTime() <= nowMs) &&
+  (!seasonal.endDate || new Date(seasonal.endDate).getTime() >= nowMs)
+);
+
+const heroEyebrow = (seasonalActive ? seasonal.eyebrow : page?.heroEyebrow) ?? HERO_DEFAULTS.eyebrow;
+const heroHeadline = (seasonalActive ? seasonal.headline : page?.heroHeadline) ?? HERO_DEFAULTS.headline;
+const heroKeyword = seasonalActive ? (seasonal.keyword ?? '') : (page?.heroKeyword ?? HERO_DEFAULTS.keyword);
+const heroSubhead = (seasonalActive ? seasonal.subhead : page?.heroSubhead) ?? HERO_DEFAULTS.subhead;
+
+// Hero image: seasonal image > Home hero image(s) > built-in sanctuary photo.
+const seasonalImg = seasonalActive ? seasonal.image : null;
+const heroImgEffective = (seasonalImg?.asset ? seasonalImg : heroImg) ?? null;
+const hasSanityHero = !!heroImgEffective?.asset;
+
+// Primary pill (seasonal can override label + link); Watch prefers the
+// configured livestream URL, falling back to the YouTube channel.
+const heroPrimaryLabel = (seasonalActive && seasonal.primaryCtaLabel) || 'Plan a Visit';
+const heroPrimaryUrl = (seasonalActive && seasonal.primaryCtaUrl) || '/worship';
+const watchHref = siteSettings?.watchUrl || youtube;
+
+// Split the headline around the keyword so the first occurrence renders in
+// chapel green. Returns null when there's no keyword or no match (plain render).
+function splitHeadline(headline: string, keyword: string) {
+  if (!keyword) return null;
+  const idx = headline.indexOf(keyword);
+  if (idx === -1) return null;
+  return { before: headline.slice(0, idx), word: keyword, after: headline.slice(idx + keyword.length) };
+}
+const headlineParts = splitHeadline(heroHeadline, heroKeyword);
+
+// "This Sunday" at-a-glance card (replaces the small static line when enabled).
+const thisSunday: any = page?.thisSunday?.enabled ? page.thisSunday : null;
 
 // Pill CTAs. On the cream hero/sections, primary is the bronze pill and the
 // outline pill reads in deep bronze. (No on-dark variant needed here anymore;
@@ -79,22 +128,36 @@ const ministryCards =
     <div class="mx-auto max-w-content px-m py-section-md md:py-section-lg grid items-center gap-l md:gap-section-md md:grid-cols-[1.05fr_0.95fr]">
       {/* Left: editorial headline column. */}
       <div class="hero-entry-stagger order-2 md:order-1 text-center md:text-left">
-        <p class="text-xs uppercase tracking-eyebrow text-foreground/70">The Church of the Angels · South Loop, Chicago</p>
+        <p class="text-xs uppercase tracking-eyebrow text-foreground/70">{heroEyebrow}</p>
         <div class="mt-s mb-m h-px w-12 bg-gold/70 mx-auto md:mx-0" aria-hidden="true"></div>
         <h1 id="hero-heading" class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-foreground">
-          Serving and celebrating <span class="text-chapel-ink">Jesus</span> for the good of the world.
+          {headlineParts ? (
+            <Fragment>{headlineParts.before}<span class="text-chapel-ink">{headlineParts.word}</span>{headlineParts.after}</Fragment>
+          ) : (
+            heroHeadline
+          )}
         </h1>
         <p class="mt-m max-w-xl mx-auto md:mx-0 text-lg text-foreground/80 leading-relaxed">
-          We gather in the abundant life of Jesus to worship, love, serve, pray, and share the gospel
-          in word and deed. Whoever you are, you are welcome here.
+          {heroSubhead}
         </p>
         <div class="mt-l flex flex-wrap justify-center md:justify-start gap-s">
-          <a href="/worship" class={pillPrimary}>Plan a Visit</a>
-          <a href={youtube} target="_blank" rel="noopener noreferrer" class={pillOutline}>Watch Online</a>
+          <a href={heroPrimaryUrl} class={pillPrimary}>{heroPrimaryLabel}</a>
+          <a href={watchHref} target="_blank" rel="noopener noreferrer" class={pillOutline}>Watch Online</a>
         </div>
-        <p class="mt-m text-sm text-foreground/60">
-          This Sunday: <span class="font-semibold text-foreground/80">11am</span>, in person and online.
-        </p>
+        {thisSunday ? (
+          <div class="mt-m text-sm text-foreground/70">
+            <span class="text-xs uppercase tracking-eyebrow text-foreground/60">{thisSunday.dateLabel || 'This Sunday'}</span>
+            {thisSunday.sermonTitle && <p class="mt-1 font-display text-h4 text-foreground">{thisSunday.sermonTitle}</p>}
+            {(thisSunday.scripture || thisSunday.preacher) && (
+              <p class="mt-1">{[thisSunday.scripture, thisSunday.preacher].filter(Boolean).join(' · ')}</p>
+            )}
+            {thisSunday.note && <p class="mt-1 text-foreground/60">{thisSunday.note}</p>}
+          </div>
+        ) : (
+          <p class="mt-m text-sm text-foreground/60">
+            This Sunday: <span class="font-semibold text-foreground/80">11am</span>, in person and online.
+          </p>
+        )}
       </div>
 
       {/* Right: arched photo — a quiet nod to the building's Romanesque arches.
@@ -104,12 +167,12 @@ const ministryCards =
         <div class="group arch-top overflow-hidden ring-1 ring-border shadow-sm img-zoom aspect-[4/5] sm:aspect-[5/6]">
           {hasSanityHero ? (
             <SanityImage
-              source={heroImg}
+              source={heroImgEffective}
               width={900}
               sizes="(min-width: 768px) 45vw, 90vw"
               loading="eager"
               fetchpriority="high"
-              alt={heroImg?.alt || 'Second Presbyterian Church of Chicago'}
+              alt={heroImgEffective?.alt || 'Second Presbyterian Church of Chicago'}
               class="h-full w-full object-cover"
             />
           ) : (
