@@ -63,17 +63,26 @@ Goal: let a non-technical pastor + secretary run the site from Sanity for a year
 - Portable Text bodies made tone-adaptive on dark backgrounds via descendant overrides (no change to the shared renderer).
 - Verified live with a sample page: every section tone resolved correctly, chapel-green Portable Text rendered cream, dynamic list pulled live events. Spec: `docs/superpowers/specs/2026-06-01-page-builder-expansion-design.md`.
 
-## Remaining work
-1. **Closing CTA copy (`<FinalCta>`)** is still hardcoded on most pages (grow, serve, and
-   what-we-believe were converted; the rest use inline eyebrow/headline/subhead). Uniform,
-   low-risk sweep: add eyebrow/headline/subhead fields per page and wire the prop.
-2. **FAQ items** (`faq.astro` has a hardcoded `faqs` array) should move to the existing
-   `faqItem` collection (seed the items), and **pastor-staff** body is the `staffMember`
-   collection (already content-driven; only its closing CTA is inline).
-3. Optional: `sermonSeries` collection + reference migration (only if the church starts a
-   structured sermon archive); `gallery` + `dynamicList` + `accordion` blocks;
-   `/sermons/series/[slug]` landing.
-4. Optional polish: a one-time seed that writes the current verbatim copy into the Sanity
+### Phase 6 — Closing CTA copy + FAQ collection (complete)
+- **Closing CTA (`<FinalCta>`) is now editable on every page.** Added
+  `finalCtaEyebrow`/`finalCtaHeadline`/`finalCtaSubhead` to the remaining singletons
+  (worship, music, kids, food, give, weddings, use-our-space, pastor-staff via the factory;
+  events, sermons, contact standalone; home via its getter projection) and wired each
+  template's `<FinalCta>` to `page?.finalCta* ?? "<verbatim>"`. grow/serve/what-we-believe
+  already had theirs. Byte-identical until an editor overrides it.
+- **FAQ page is now collection-driven.** `faq.astro` reads the `faqItem` collection via
+  `getFaqPage()`, grouped by the FAQ Page singleton's `categoryOrder`, so editors add, edit,
+  and reorder questions in Sanity with no developer. Answers render as Portable Text (or a
+  plain string from the built-in fallback), and either form is flattened to plain text for
+  the FAQPage JSON-LD. Added a **Food Ministry** category; seeded the 10 starter questions
+  via `scripts/seed-faq-items.mjs`. The built-in starter set stays as an inline fallback, so
+  the page is never empty. **pastor-staff** body was already content-driven (the
+  `staffMember` collection); only its closing CTA was inline, now covered above.
+
+## Remaining work (all optional)
+1. Optional: `sermonSeries` collection + reference migration (only if the church starts a
+   structured sermon archive); `/sermons/series/[slug]` landing.
+2. Optional polish: a one-time seed that writes the current verbatim copy into the Sanity
    docs so editors see the text pre-filled in Studio (today the fields are empty and fall
    back to the verbatim copy, so the site is correct and the fields are ready to edit).
 
