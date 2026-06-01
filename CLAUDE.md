@@ -108,7 +108,7 @@ These are the files where a project maintainer can make changes without risk of 
   - `src/styles/globals.css` `@theme` block: palette tokens (`--color-primary`, `--color-ink`, `--color-paper`, etc.), the `--tint-rgb` token (controls polish-layer tint color across card-lift, surface-warm, and branded overlays), and font-family tokens
   - Font imports at the top of `src/styles/globals.css` (swap `@fontsource/libre-baskerville` and `@fontsource-variable/inter` for a project's chosen fonts; update `--font-display` and `--font-body` tokens accordingly)
   - `src/data/site.ts` brand color mirrors and identity values
-  - `public/favicon.svg`, `public/og-default.png` (regenerate OG via `npm run og` after changing brand inputs in `scripts/generate-og-default.mjs`)
+  - `public/favicon.png` + `public/apple-touch-icon.png` (the church mark; also overridable per-site via `siteSettings.favicon`), `public/og-default.png` (regenerate OG via `npm run og` after changing brand inputs in `scripts/generate-og-default.mjs`)
   - Logo files in `src/assets/` (imported by `Header.astro` / `Footer.astro` via `getImage()`)
 - Images in `src/assets/` (logo variants, OG image)
 - Copy strings and `href` values in static page components

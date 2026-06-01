@@ -154,7 +154,7 @@ values are used by the OG generator and any scripts that need colors outside CSS
 
 1. Drop `logo-light.*` and `logo-dark.*` into `src/assets/` (the Header and
    Footer import them via Astro's `getImage()`).
-2. Replace `public/favicon.svg`.
+2. Replace `public/favicon.png` + `public/apple-touch-icon.png` (or set `siteSettings.favicon` in Studio to override per-site).
 3. Edit the inputs block in `scripts/generate-og-default.mjs` (brand colors,
    tagline, wordmark).
 4. Regenerate the default OG image:

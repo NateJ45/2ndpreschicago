@@ -26,25 +26,33 @@ Replace all placeholder values in `site.ts` before launch. The domain feeds the 
 
 All publicly-visible content lives in Sanity, not in code or markdown files. Sanity gives non-technical editors a real CMS UI without requiring code changes for routine copy updates.
 
-**Core schema set (always present in the starter):**
+> Church build note: the schema set below is the Second Presbyterian schema, not the
+> generic starter's. The interior-designer schemas (service, testimonial, philosophyPoint,
+> journal*) were removed in the remodel; the opt-in module schemas under `docs/modules/`
+> are not active for this project.
 
-**Settings and globals (1):**
-- `siteSettings` (singleton) — email, phone, social links, service areas, availability status, footer tagline. Most user-visible identity text comes from here. Phone surfaces site-wide as a tap-to-call link and feeds the LocalBusiness JSON-LD schema.
+**Settings and globals:**
+- `siteSettings` (singleton) — church name, tagline, mission, public email + phone, social links, service time; a **Navigation (menus)** group (`navItems` header menu + `footerColumns` footer columns); a **`favicon`** image; a **Connect & integrations** group (watch / give / app / directory / registration / prayer URLs); and a newsletter config. Phone surfaces site-wide as a tap-to-call link and feeds the LocalBusiness JSON-LD.
 
 **Reusable collections:**
-- `service` — service offerings displayed on the Services page and optionally on the home page. Optional `featuredImage` renders a visual on each pricing card; `ServiceCard.astro` falls back gracefully when absent.
-- `testimonial` — quotes with attribution, source, date. Optional `photo` (circular avatar) and `relatedProject` reference (when set, both `TestimonialCard.astro` and `FeaturedTestimonial.astro` render a link to the related case study).
-- `faqItem` — FAQ questions grouped by category, displayed on the FAQ page.
-- `philosophyPoint` — value statements on the About page. Visible numbers (01/02/03) are assigned by render position, not by a stored order field.
+- `event` — calendar + special/seasonal services (audience, cost, registration, contact, `featuredOnHome`, `specialService` + `liturgicalSeason`).
+- `sermon` — messages shown on `/sermons` (date, speaker, scripture, series string, video link).
+- `staffMember` — pastors & staff (drives `/pastor-staff`).
+- `ministry` — programs, with `parentMinistry` for nesting (e.g. Youth → Confirmation/VBS).
+- `faqItem` — FAQ questions (question, Portable Text answer, category, displayOrder); drive the FAQ page, grouped by `faqPage.categoryOrder`.
+- `form` — configurable contact/inquiry forms (native field builder OR external embed); referenced from contact / weddings / use-our-space and droppable as a page block.
+- `announcement` — scheduled site banner (enabled + date window, info/special/urgent style).
+- `worshipResource` — bulletins, orders of worship, The Record, annual reports (PDF upload or external link).
 - `ctaBlock` — reusable object type (label + linkType + target) embedded in other schemas.
 
 **Page singletons:**
-- `homePage`, `aboutPage`, `servicesPage`, `faqPage`, `contactPage`, `journalPage` + `journalEntry` + `journalCategory`, `privacyPage`, `notFoundPage`
-- `studioGuide`, `studioNotes`, `studioPlaybook` — the in-Studio editor handbook singletons (protected, Canvas-excluded, plain text throughout)
+- Core: `homePage`, `aboutPage`, `faqPage`, `contactPage`, `eventsPage`, `sermonsPage`, `privacyPage`, `notFoundPage`.
+- Per-page church singletons (via the `definePageSingleton` factory): `worshipPage` (I'm New), `beliefsPage` (What We Believe), `musicPage`, `staffPage`, `growPage`, `servePage`, `kidsPage`, `foodPage`, `useOurSpacePage`, `weddingsPage`, `givePage`.
+- `page` — generic type for brand-new pages at `/<slug>`, built entirely from the block library.
 
-All page singletons have `seoTitle` and `seoDescription` fields. Every `*Page` singleton also accepts a `heroImage` with alt text and optional caption.
+All page singletons have `seoTitle`/`seoDescription`, a `heroImage` (with alt), editable body-copy fields (with verbatim fallbacks), editable `finalCta*` closing copy, and a `flexibleSections[]` page-builder array. The block library (`studio/schemaTypes/blocks.ts`) and the background/media system are shared across every page; see `page-architecture.md`.
 
-**Module schemas** for opt-in surfaces (portfolio, process, shop, quiz, calculator, etc.) are documented under `docs/modules/`. Do not add module schemas to the core `studio/schemaTypes/` without enabling the corresponding module.
+**In-Studio help** ("How This Works") is NOT a Sanity singleton — it's repo-based, locked code (`studio/guides/content.tsx` + `studio/components/GuideView.tsx`), which replaces the old `studioGuide`/`studioNotes`/`studioPlaybook` singletons.
 
 ### The deploy rule (read this first)
 
@@ -100,12 +108,15 @@ All GROQ queries live in `src/lib/queries.ts`. Each page has a typed query funct
 ### Auto-populated lists
 
 Several pages pull their content from collections automatically:
-- Services on the Services page: all `service` documents in `displayOrder`.
-- Services in the homepage grid: `service` documents where `showOnHomepage` is true.
-- FAQs on the FAQ page: grouped by `category`, in the order defined in `faqPage.categoryOrder`.
-- Philosophy points on About: all `philosophyPoint` documents in `orderRank` (drag order).
+- Events on `/events`: upcoming `event` documents by date; `specialService` ones surface in the Special Services band; `featuredOnHome` ones appear on the home page.
+- Sermons on `/sermons`: recent `sermon` documents, newest first (the latest is featured).
+- FAQs on the FAQ page: `faqItem` documents grouped by `category`, in the order defined in `faqPage.categoryOrder`.
+- Pastors & Staff on `/pastor-staff`: `staffMember` documents.
+- Worship resources on `/worship`: `worshipResource` documents.
+- The "Dynamic list" page-builder block: latest sermons / events / ministries / staff / worship resources, chosen per block.
+- The site banner: the single enabled `announcement` within its date window (resolved at build).
 
-This means adding a service in Sanity with `showOnHomepage: true` makes it appear on both the Services page and the home page without touching any other document.
+This means adding an `event` with `featuredOnHome: true` makes it appear on both `/events` and the home page without touching any other document.
 
 ### Canvas (AI-assisted writing)
 
@@ -114,17 +125,11 @@ This means adding a service in Sanity with `showOnHomepage: true` makes it appea
 Two schema-level controls govern what Canvas sees:
 
 **Excluded from Canvas entirely** (`options.canvasApp.exclude: true`):
-- All page singletons -- marketing copy is structural; edit fields directly in Studio.
+- All page singletons + the generic `page` -- marketing copy is structural; edit fields directly in Studio.
 - `siteSettings` -- configuration, not prose.
-- `studioGuide`, `studioNotes`, `studioPlaybook` -- Studio handbook content.
-- `testimonial` -- verbatim quotes; AI must not "improve" them.
-- `philosophyPoint` -- short, locked structural content.
-- `journalCategory` -- taxonomy, not content.
 
 **Available in Canvas with per-field voice hints** (`options.canvasApp.purpose`):
-- `journalEntry` -- title, excerpt, body, seoTitle, seoDescription
-- `service` -- shortDescription, bestFor, longDescription
-- `faqItem` -- question, answer
+- `faqItem` -- question, answer (the `purpose` strings carry the warm, plain-English church voice).
 
 The `purpose` strings carry compressed voice guidance for each field. These are NOT a hard guardrail -- editors should still apply the project voice in review.
 

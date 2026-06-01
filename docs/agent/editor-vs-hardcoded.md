@@ -4,35 +4,36 @@
 
 ## What's editor-driven vs hardcoded
 
+> Church build note: this project (Second Presbyterian) pushed almost everything to
+> editor-driven via the inline-fallback pattern. The interior-designer template's
+> modules (portfolio, journal, services, testimonials, philosophy, shop, etc.) are
+> not used here; their docs under `docs/modules/` remain for template reuse only.
+
 ### Editor-driven (Sanity)
 
-- **All page copy** -- eyebrows, headlines, subheads, body Portable Text, CTA labels (when the CTA uses a `ctaBlock` reference) on every page singleton.
-- **All page hero images** -- every `*Page` singleton has a `heroImage` field with caption support.
-- **All collection content** -- services, testimonials, FAQs, philosophy points, journal entries, journal categories.
-- **Site-wide identity** -- `siteSettings` (email, phone, socials, service areas, availability status, footer tagline). Phone surfaces site-wide as a tap-to-call link and feeds the LocalBusiness JSON-LD; clearing it hides every instance.
-- **Journal post extras** -- coverImage caption, `sourcedFrom` annotation in body, related project reference (if portfolio module is active).
-- **Testimonial extras** -- photo, optional location label, `relatedProject` reference (links to a portfolio case study when the module is active).
-- **Hero home slideshow** -- `homePage.heroImages` array: one image = static hero, two or more = cross-fading Ken Burns slideshow.
-- **Section heading script accents** -- `scriptAccent` field on each page singleton's section headings. At most one accent word per heading; the word must match the heading text exactly. Leave empty for no accent. See `docs/agent/polish-layer.md`.
-- **`stickyCtaLabel`** -- per-page label for the sticky CTA chip. Clearing it hides the chip on that surface.
-- **Section visibility** -- `siteSettings.sectionVisibility` boolean toggles for each opt-in module section. Toggling any one off removes that section from the nav, footer, homepage, and its own route simultaneously. Core pages are always on. See [Section visibility](page-architecture.md#section-visibility).
-- **404 page** -- `notFoundPage` singleton (eyebrow, headline, body, hero photo, CTA labels + hrefs). Every field has a hardcoded fallback so the page works before the doc exists.
-- **Privacy page** -- `privacyPage` singleton (body Portable Text, lastUpdated). A plain static fallback renders before the doc exists.
-- **Start Here guide** -- `studioGuide` singleton: the "How the website works" handbook panel in Studio. Update the site map, how-tos, and tips without a code change.
-- **Start Here business notes** -- `studioNotes` singleton: the three static positioning sections in the "Your business at a glance" panel.
-- **Grow your studio guides** -- `studioPlaybook` singleton: the professional-development guides in the "Grow your studio" panel. Editable in Studio.
-
-**Module-specific editor fields** are documented per module under `docs/modules/`. Examples: portfolio projects, process steps, press items, lead magnets, shop collections, style quiz questions, budget calculator options.
+- **All page copy** -- every page singleton's eyebrows, headlines, subheads, body, and closing CTA are editable fields. Empty fields fall back to the built-in verbatim copy (the inline-fallback pattern), so the site reads correctly before anything is entered. Exception: the *What We Believe* statement of faith is reproduced verbatim and owned by leadership -- edit with care.
+- **All hero images** -- every `*Page` singleton has a `heroImage` (with alt). The home page also has `heroImages` (one = static, two+ = cross-fading slideshow) and a dated `seasonalHero` override.
+- **Navigation** -- the header menu (`siteSettings.navItems`: Links + Dropdown menus) and the footer link columns (`siteSettings.footerColumns`). Both fall back to the built-in menus when empty; the mobile menu inherits the header. The footer "Get in touch" column is derived from contact fields.
+- **Favicon** -- `siteSettings.favicon` (browser-tab icon); falls back to the bundled church mark in `/public/favicon.png`.
+- **Collections** -- Events, Sermons, Pastors & Staff (`staffMember`), Ministries (`ministry`), FAQ Items (`faqItem`, which drive the FAQ page), Forms (`form`), Announcements (scheduled site banner), Worship Resources (`worshipResource`).
+- **Page sections (the page builder)** -- every page singleton plus the generic `page` type has a `flexibleSections[]` array: add / reorder / remove on-brand blocks (rich text, image+text, cards, quote, CTA band, form, feature cards, stats, FAQ, gallery, steps, logos, media feature, dynamic list), each with a background control (brand tone, or image/video + overlay). See `page-architecture.md`.
+- **Custom pages** -- the `page` type publishes a brand-new page at `/<slug>` with the block library, no developer.
+- **Site-wide identity & integrations** -- `siteSettings`: church name, tagline, mission, email, phone, socials, service time, and a "Connect & integrations" group (watch / give / app / directory / registration / prayer URLs). Phone feeds the LocalBusiness JSON-LD and tap-to-call; clearing it hides every instance.
+- **SEO / social** -- per-page `seoTitle` / `seoDescription` / `seoImage`; a site-default `siteSettings.seoImage`.
+- **Section heading script accents** -- `scriptAccent`-style fields render one word of a heading in the handwritten display font. The word must match the heading text exactly; leave empty for no accent. See `polish-layer.md`.
+- **404 page** (`notFoundPage`) and **Privacy page** (`privacyPage`) -- editable, each with a hardcoded fallback so it works before the doc exists.
 
 ### Hardcoded in code (intentional)
 
 These are stable design and system decisions that don't belong in editorial:
 
-- **Brand colors / typography tokens** -- declared in `src/styles/globals.css` `@theme` block. System-level, not editorial.
-- **Brand color palette display in `BrandKit.tsx`** -- hardcoded to stay in sync with `globals.css` tokens. Putting them in Sanity creates a second source of truth that can drift.
-- **Auto-year copyright** -- computed from `new Date()` at build/render time. No field needed.
-- **Core nav structure** -- the `NAV_ITEMS` array in `Header.astro`. Active module sections are added to nav by their enable step; the base structure is code.
-- **The `value !== false` visibility rule** -- in `src/lib/sectionVisibility.ts`. If you need a new toggleable section, add a field to `siteSettings.sectionVisibility`, add the corresponding check in the helper, and follow the existing off-behavior pattern in the page and nav files.
+- **Brand colors / typography tokens** -- declared in `src/styles/globals.css` `@theme` block; the Studio theme mirrors them in `studio/sanity.config.ts`. System-level, not editorial.
+- **Page layout & section markup** -- the structure of each page and each block component. Editors change words, images, section order, and backgrounds; the layout is code.
+- **Auto-year copyright** -- computed from `new Date()` at render time. No field needed.
+- **The "How This Works" help guides** -- repo-based and locked on purpose (`studio/guides/content.tsx` + `studio/components/GuideView.tsx`), so staff can't edit or delete the instructions. This replaces the old `studioGuide` / `studioNotes` / `studioPlaybook` singletons.
+- **Built-in menu fallbacks** -- `FALLBACK_NAV_ITEMS` in `Header.astro` and the default columns in `Footer.astro`. These render only when the editor's `navItems` / `footerColumns` are empty.
+
+> Note: the **navigation is no longer hardcoded** -- the header (`navItems`) and footer columns (`footerColumns`) are editor-driven, with the built-in arrays above as the fallback.
 
 ### The `// Safe to edit by hand` convention
 

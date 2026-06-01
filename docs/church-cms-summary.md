@@ -79,14 +79,44 @@ Goal: let a non-technical pastor + secretary run the site from Sanity for a year
   the page is never empty. **pastor-staff** body was already content-driven (the
   `staffMember` collection); only its closing CTA was inline, now covered above.
 
+### Phase 7 — Studio experience + branding (complete)
+- **In-Studio "How This Works" help center.** A pinned "How This Works" section at the top of
+  the desk with 12 plain-English guides for non-technical staff (events, special/seasonal
+  service times, announcements, FAQs, sermons, editing a page, building a page, sections +
+  backgrounds, photos, the brand system, editing the top menu & footer, and a do-it-yourself
+  vs. call-Nathan boundary). Repo-based and locked (staff cannot edit or delete it; it travels
+  with the template): `studio/guides/content.tsx` (copy as plain data) + `studio/components/GuideView.tsx`
+  (renderer) + desk wiring in `studio/structure.ts`. No schema change. Spec:
+  `docs/superpowers/specs/2026-06-01-studio-how-this-works-design.md`.
+- **Studio themed to the brand.** `sanity.config.ts` re-pointed from the starter Slate theme to
+  the site's own tokens (Bronze accent + focus, warm Paper surfaces, Espresso Ink text, warm
+  neutrals) and the brand serif fonts (Instrument Serif display, Newsreader body), loaded via a
+  new `StudioLayout` component that injects the web fonts. Wordmark set to "Second Presbyterian."
+- **Header + footer navigation editable.** `siteSettings.navItems` (a Link or a Dropdown menu)
+  drives the header; `siteSettings.footerColumns` (titled columns) drives the footer link columns.
+  `Header.astro` / `Footer.astro` map them to the existing render shape and fall back to the
+  built-in menus when empty, so the live site is unchanged until edited. The mobile menu inherits
+  the header automatically. The footer "Get in touch" column stays derived from contact fields.
+- **Every document opens on "All fields."** Removed `default: true` from the church-page factory,
+  the generic `page`, and `form` group definitions, so Sanity selects the implicit "All fields"
+  tab and editors see the whole form instead of a single group.
+- **Favicon.** Pulled the church's brand mark off the live site to `public/favicon.png` +
+  `public/apple-touch-icon.png` (fixing a `/favicon.svg` 404), and added a `siteSettings.favicon`
+  image field. `BaseLayout` prefers the uploaded favicon (via the Sanity image pipeline) and
+  falls back to the bundled mark.
+
 ## Remaining work (all optional)
 1. Optional: `sermonSeries` collection + reference migration (only if the church starts a
    structured sermon archive); `/sermons/series/[slug]` landing.
 2. Optional polish: a one-time seed that writes the current verbatim copy into the Sanity
    docs so editors see the text pre-filled in Studio (today the fields are empty and fall
    back to the verbatim copy, so the site is correct and the fields are ready to edit).
+3. Optional: make the Studio's own header logo the church mark image (`studio.components.logo`).
+   Note the teal "SP" badge in the sanity.io dashboard is Sanity's project avatar (initials,
+   auto-generated) and is not controlled by our code.
 
 ## Operational notes
 - After ANY schema change the loop was: `npm run typegen` → wire/seed → `npm run build` → `npm run studio:deploy` → commit. Never used the Studio "Remove field" button (used the cleanup script).
-- Seed scripts: `scripts/seed-forms.mjs`, `scripts/seed-operational.mjs` (sample announcement), `scripts/seed-sample-page.mjs` (QA helper for the page builder; `--delete` to remove).
-- Branch `feature/church-cms` is green and ready to review/merge. Site deploy happens on merge to master (Cloudflare); the Studio is already deployed.
+- Seed scripts: `scripts/seed-forms.mjs`, `scripts/seed-operational.mjs` (sample announcement), `scripts/seed-faq-items.mjs` (10 starter FAQ questions), `scripts/seed-sample-page.mjs` (QA helper for the page builder; `--delete` to remove).
+- The Studio is deployed (schema shipped per phase). The **site** deploys to Cloudflare on merge to `master`.
+- Shipped as **PR #2** — https://github.com/NateJ45/2ndpreschicago/pull/2 (`feature/church-cms` → `master`, 33 commits). Green at open.
