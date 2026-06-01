@@ -25,8 +25,11 @@ const schemas = [
   ]),
 ];
 
-// Online giving portal (Vanco / eServicePayments).
+// Online giving portal. Prefer the editor-managed siteSettings.giveUrl (same
+// link Header/Footer use); fall back to the church's current Vanco portal so the
+// page works before the field is set.
 const giveUrl =
+  siteSettings?.giveUrl ??
   'https://www.eservicepayments.com/cgi-bin/Vanco_ver3.vps?appver3=wWsk24ZWJSTZKsGd1RMKlg0BDvsSG3VIWQCPJNNxD8upkiY7JlDavDsozUE7KG0nFx2NSo8LdUKGuGuF396vbQob3Vy7b9Yfe_jNfJWTbVeXHubq5Z7ap5JVmPEpc4ZeYHCKCZhESjGNQmZ5B-6dx5zOQjapagb4-GcDOvSEdsc=&ver=3';
 
 const pillPrimary =
