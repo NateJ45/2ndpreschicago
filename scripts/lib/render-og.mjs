@@ -14,11 +14,11 @@ import sharp from 'sharp';
 const DEFAULTS = {
   width: 1200,
   height: 630,
-  bg: '#FBFBFA',          // Paper
-  primary: '#586577',     // Slate
-  primaryDark: '#3E4A57', // Slate Dark
-  accent: '#2A2D31',      // Ink
-  taupe: '#8E9DAD',       // Slate Mid
+  bg: '#ECE4DA',          // Warm cream
+  primary: '#8A6A43',     // Bronze (accent rule)
+  primaryDark: '#36302A', // Espresso (wordmark)
+  accent: '#36302A',      // Espresso ink (tagline)
+  taupe: '#B9A590',       // Clay (border)
   fontDisplay: 'Libre Baskerville, Georgia, Cambria, Times New Roman, serif',
 };
 
