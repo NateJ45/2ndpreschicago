@@ -132,6 +132,19 @@ to teach the real model: edit → Publish → the site rebuilds in a few minutes
 appears. `urlForDoc` / `SITE_URL_FOR_PREVIEW` kept in `sanity.config.ts` as hooks if a real
 preview environment is ever added (see Remaining work).
 
+### Phase 10 — Security headers (complete)
+Expanded `public/_headers` (it had only `frame-ancestors` + HSTS without preload) into a
+full policy: a **Content-Security-Policy** (`object-src 'none'`, `base-uri 'self'`, a tight
+`script-src` of `'self' 'unsafe-inline'` + Cloudflare analytics, and the site's real
+`img`/`media`/`frame`/`connect` sources for Sanity, YouTube, Vimeo, Google Maps, and
+Web3Forms), **HSTS** with `preload` (max-age 2y + includeSubDomains), and `frame-ancestors
+'self'` (the Studio preview was removed). **Trusted Types intentionally skipped** (would break
+the embeds). These are the unscored Lighthouse security recommendations (Best Practices was
+already 100) — defense-in-depth. Verified locally via `wrangler dev`: headers emit and the
+home + contact (cross-origin map + form) pages load with no CSP errors. Note: HSTS `preload`
+is advertised in the header, but actual preload-list inclusion needs a one-time submission at
+hstspreload.org.
+
 ## Remaining work (all optional)
 1. `sermonSeries` collection + reference migration (only if the church starts a structured
    sermon archive); `/sermons/series/[slug]` landing.
