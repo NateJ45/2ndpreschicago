@@ -3,16 +3,17 @@
 // Use Our Space. Venue rental and space sharing at the church.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getUseOurSpacePage, getSiteSettings } from '@/lib/queries';
 import heroSpace from '@/assets/hero-space.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
+import FormBlock from '@/components/FormBlock.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
-const page = await getPageHero('useOurSpacePage').catch(() => null);
+const page = await getUseOurSpacePage().catch(() => null);
 
 const title = `Use Our Space · ${site.name}`;
 const description =
@@ -30,8 +31,6 @@ const uses = [
   'Speakers', 'Concerts', 'Performance rehearsals', 'Parties', '12-step groups',
 ];
 
-const pillPrimary =
-  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
@@ -75,13 +74,19 @@ const pillPrimary =
     <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
       <h2 id="space-inquire" class="font-display text-h2 text-foreground">Let's talk about your event</h2>
       <p class="mt-m text-lg text-foreground/85 leading-relaxed">
-        Get in touch to ask about fees and availability. Planning something long-term? We would love to
-        talk about sharing the space. Please skip the form and email the Pastor directly.
+        Get in touch to ask about fees and availability, and we will be back in touch soon.
       </p>
-      <div class="mt-l flex flex-wrap justify-center gap-s">
-        <a href={`mailto:${site.contact.email}`} class={pillPrimary}>Inquire About the Space</a>
-        <a href={`mailto:${site.contact.pastorEmail}`} class="press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] border border-primary text-link hover:bg-accent transition-colors">Email the Pastor</a>
+      <div class="mt-l text-left">
+        <FormBlock form={page?.inquiryForm} fallbackEmail={site.contact.email} fallbackLabel="Inquire About the Space" />
       </div>
+      <p class="mt-l text-sm text-foreground/70">
+        Planning something long-term, like a regular meeting or sharing the space?{' '}
+        <a
+          href={`mailto:${site.contact.pastorEmail}`}
+          class="underline underline-offset-2 hover:text-link transition-colors"
+          >Email the Pastor directly</a
+        >.
+      </p>
     </div>
   </section>
 

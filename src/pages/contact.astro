@@ -5,17 +5,19 @@
 // the page surfaces direct contact paths, which is how most visitors reach a church.)
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getContactPage, getSiteSettings } from '@/lib/queries';
 import heroContact from '@/assets/hero-sanctuary.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { telHref } from '@/lib/phone';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import FormBlock from '@/components/FormBlock.astro';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
-const page = await getPageHero('contactPage').catch(() => null);
+const page = await getContactPage().catch(() => null);
 
 const title = `Contact · ${site.name}`;
 const description =
@@ -105,6 +107,23 @@ const reasons = [
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
         ></iframe>
+      </div>
+    </div>
+  </section>
+
+  {/* Contact form (configurable in Sanity; falls back to a mailto when none is set) */}
+  <section class="surface-warm bg-muted" aria-labelledby="contact-form">
+    <div class="mx-auto max-w-3xl px-m py-section-lg">
+      <SectionHeading
+        eyebrow={page?.whatToExpectEyebrow ?? 'Send a Note'}
+        headline="Start the conversation"
+        headingId="contact-form"
+      />
+      {page?.formIntroNote && (
+        <p class="mt-m text-lg text-foreground/85 leading-relaxed">{page.formIntroNote}</p>
+      )}
+      <div class="mt-l">
+        <FormBlock form={page?.contactForm} fallbackEmail={site.contact.email} fallbackLabel="Email the Office" />
       </div>
     </div>
   </section>

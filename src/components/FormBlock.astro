@@ -1,0 +1,28 @@
+---
+// Resolves a referenced `form` doc and mounts FormRenderer (client:visible).
+// When no form is linked (Sanity unconfigured or editor left it blank), renders
+// a fallback pill linking to a mailto, preserving the page's existing contact path.
+import FormRenderer from '@/components/FormRenderer.tsx';
+import type { FormDoc } from '@/components/FormRenderer.tsx';
+
+interface Props {
+  form?: FormDoc | null;
+  fallbackEmail?: string;
+  fallbackLabel?: string;
+}
+const { form = null, fallbackEmail, fallbackLabel = 'Email Us' } = Astro.props;
+const pill =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+---
+
+{
+  form ? (
+    <FormRenderer client:visible form={form} fallbackEmail={fallbackEmail} />
+  ) : (
+    fallbackEmail && (
+      <a href={`mailto:${fallbackEmail}`} class={pill}>
+        {fallbackLabel}
+      </a>
+    )
+  )
+}

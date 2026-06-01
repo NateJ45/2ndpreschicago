@@ -3,16 +3,17 @@
 // Weddings. Overview, FAQ, and pricing for weddings in the historic sanctuary.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getWeddingsPage, getSiteSettings } from '@/lib/queries';
 import heroWeddings from '@/assets/hero-weddings.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
+import FormBlock from '@/components/FormBlock.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
-const page = await getPageHero('weddingsPage').catch(() => null);
+const page = await getWeddingsPage().catch(() => null);
 
 const title = `Weddings · ${site.name}`;
 const description =
@@ -42,8 +43,6 @@ const pricing = [
   { item: 'Live stream of the ceremony', price: '$250' },
 ];
 
-const pillPrimary =
-  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
@@ -89,8 +88,24 @@ const pillPrimary =
         ))}
       </ul>
       <p class="mt-m text-sm text-foreground/70 text-center">The Fellowship Hall is available for receptions at an additional fee.</p>
-      <div class="mt-l flex justify-center">
-        <a href={`mailto:${site.contact.email}`} class={pillPrimary}>Inquire About Your Date</a>
+    </div>
+  </section>
+
+  {/* Inquiry form (configurable in Sanity; falls back to a mailto when none is set) */}
+  <section class="bg-background" aria-labelledby="weddings-inquire">
+    <div class="mx-auto max-w-3xl px-m py-section-lg">
+      <SectionHeading
+        eyebrow="Say Hello"
+        headline="Inquire about your date"
+        headingId="weddings-inquire"
+        align="center"
+        class="mx-auto"
+      />
+      <p class="mt-m text-lg text-foreground/85 leading-relaxed text-center">
+        Tell us a little about your day and we will be in touch to check availability and answer your questions.
+      </p>
+      <div class="mt-l">
+        <FormBlock form={page?.inquiryForm} fallbackEmail={site.contact.email} fallbackLabel="Inquire About Your Date" />
       </div>
     </div>
   </section>

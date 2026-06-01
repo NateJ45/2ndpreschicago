@@ -23,6 +23,16 @@ const CTA_PROJECTION = `{
   internalLink->{ _type, "slug": slug.current }
 }`;
 
+// Configurable form (native fields or external embed). Dereferenced wherever a
+// page references a form.
+const FORM_PROJECTION = `{
+  _id, title, "slug": slug.current, heading, intro, mode,
+  fields[]{ label, name, type, required, placeholder, helpText, options, width },
+  submitLabel, successMessage, consentNote,
+  provider,
+  embedUrl, embedHtml
+}`;
+
 // ---- Site settings (used in BaseLayout / Header / Footer) -----------------
 
 export async function getSiteSettings() {
@@ -133,10 +143,36 @@ export async function getContactPage() {
     heroImage${IMAGE_PROJECTION},
     heroScriptAccent,
     formIntroNote,
+    contactForm->${FORM_PROJECTION},
     whatToExpectEyebrow,
     whatToExpectHeadline,
     whatToExpectContent
   }`, {}, null);
+}
+
+// ---- Weddings + Use Our Space pages (hero + dereferenced inquiry form) -----
+
+export async function getWeddingsPage() {
+  return sanityFetch(`*[_type == "weddingsPage"][0]{
+    heroEyebrow, heroHeadline, heroSubhead,
+    heroImage${IMAGE_PROJECTION},
+    seoTitle, seoDescription, seoImage${IMAGE_PROJECTION},
+    inquiryForm->${FORM_PROJECTION}
+  }`, {}, null);
+}
+
+export async function getUseOurSpacePage() {
+  return sanityFetch(`*[_type == "useOurSpacePage"][0]{
+    heroEyebrow, heroHeadline, heroSubhead,
+    heroImage${IMAGE_PROJECTION},
+    seoTitle, seoDescription, seoImage${IMAGE_PROJECTION},
+    inquiryForm->${FORM_PROJECTION}
+  }`, {}, null);
+}
+
+// Standalone form fetch by slug (page-builder formRef block, ad-hoc embeds).
+export async function getForm(slug: string) {
+  return sanityFetch(`*[_type == "form" && slug.current == $slug][0]${FORM_PROJECTION}`, { slug }, null);
 }
 
 // ---- 404 page -------------------------------------------------------------
