@@ -73,6 +73,21 @@ const globalOg = ogUrlFromImage(siteSettings?.seoImage);
 const resolvedOg = ogImage ?? perPageOg ?? globalOg ?? ogPathForRoute(Astro.url.pathname);
 const absOg = resolvedOg.startsWith('http') ? resolvedOg : new URL(resolvedOg, site.url).toString();
 
+// Favicon. Prefer an editor-uploaded favicon (siteSettings.favicon); otherwise
+// fall back to the bundled church mark in /public (pulled from the church's
+// existing brand favicon). The tab icon keeps the logo's aspect ratio; the
+// Apple touch icon is cropped square (respecting any hotspot).
+function faviconTab(img: any): string | null {
+  if (!img?.asset) return null;
+  try { return urlFor(img).width(128).format('png').url(); } catch { return null; }
+}
+function faviconSquare(img: any): string | null {
+  if (!img?.asset) return null;
+  try { return urlFor(img).width(180).height(180).fit('crop').format('png').url(); } catch { return null; }
+}
+const faviconHref = faviconTab(siteSettings?.favicon) ?? '/favicon.png';
+const appleTouchHref = faviconSquare(siteSettings?.favicon) ?? '/apple-touch-icon.png';
+
 // Build the document title. If the editor-supplied seoTitle already contains
 // the brand name anywhere, use it verbatim. Otherwise append " — {site.name}"
 // so the tab + search-result line carries the brand. Strips a trailing suffix
@@ -124,7 +139,8 @@ const announcementClass = ANNOUNCEMENT_STYLES[announcement?.style ?? 'info'] ?? 
     <meta name="theme-color" content="#ECE4DA" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#1C1813" media="(prefers-color-scheme: dark)" />
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href={faviconHref} />
+    <link rel="apple-touch-icon" href={appleTouchHref} />
     {/* Note: Cormorant Garamond is loaded via @fontsource @import in globals.css.
         Vite hashes the woff2 filename at build time so a static preload here
         would 404. If hero h1 LCP needs faster fonts, switch to font-display: optional

@@ -53,6 +53,7 @@ export async function getSiteSettings() {
     mission,
     email,
     phone,
+    favicon${IMAGE_PROJECTION},
     serviceTimes,
     watchUrl,
     giveUrl,

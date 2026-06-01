@@ -65,6 +65,15 @@ export const siteSettings = defineType({
       description: 'Public phone number. Leave blank to hide.',
       group: 'identity',
     }),
+    defineField({
+      name: 'favicon',
+      title: 'Favicon (browser tab icon)',
+      type: 'image',
+      group: 'identity',
+      description:
+        'The small icon shown in the browser tab and in bookmarks. Use a simple, roughly square logo mark, at least 128 by 128 pixels (fine detail disappears at tiny sizes). Leave blank to use the built-in church mark.',
+      options: { hotspot: true },
+    }),
 
     // ── Navigation (top menu) ─────────────────────────────────────────────────
     // The website header menu. When this is empty the header renders its

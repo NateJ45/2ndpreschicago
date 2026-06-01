@@ -1765,6 +1765,13 @@ export type SiteSettings = {
   mission?: string;
   email?: string;
   phone?: string;
+  favicon?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
   navItems?: Array<
     | {
         label?: string;
