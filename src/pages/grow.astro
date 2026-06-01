@@ -47,7 +47,7 @@ const groups = [
   <section class="bg-background" aria-label="Community groups">
     <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-m" data-stagger-grid>
       {groups.map((g) => (
-        <article class="rounded-md border border-border-soft bg-card p-l">
+        <article class="card-lift rounded-md border border-border-soft bg-card p-l">
           <h2 class="font-display text-h3 text-foreground">{g.name}</h2>
           <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">{g.when} · {g.where}</p>
           <p class="mt-s text-foreground/85 leading-relaxed">{g.body}</p>

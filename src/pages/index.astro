@@ -12,6 +12,7 @@ import { Image } from 'astro:assets';
 import { getHomePage, getSiteSettings } from '@/lib/queries';
 import { site } from '@/data/site';
 import SectionHeading from '@/components/SectionHeading.astro';
+import HeroBackground from '@/components/HeroBackground.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import heroSanctuary from '@/assets/hero-sanctuary.webp';
 import sanctuaryInterior from '@/assets/sanctuary-interior.webp';
@@ -50,20 +51,29 @@ const ministries = [
     class="relative overflow-hidden bg-accent-dark text-bg flex flex-col justify-end min-h-[86svh]"
     aria-labelledby="hero-heading"
   >
-    <Image
-      src={heroSanctuary}
-      alt="The historic stone sanctuary of Second Presbyterian Church on South Michigan Avenue"
-      widths={[768, 1280, 1600, 2000]}
-      sizes="100vw"
-      loading="eager"
-      fetchpriority="high"
-      class="absolute inset-0 h-full w-full object-cover object-center hero-kb-img"
-    />
-    {/* Scrim for headline legibility. */}
-    <div
-      class="absolute inset-0 bg-gradient-to-t from-accent-dark/90 via-accent-dark/45 to-accent-dark/25"
-      aria-hidden="true"
-    ></div>
+    {/* Background: editor-managed Sanity image(s) when set in the Home singleton
+        (a single photo or a cross-fading slideshow), otherwise the built-in
+        sanctuary photo. Both carry a readability scrim + a slow Ken Burns drift. */}
+    {(page?.heroImages?.length || page?.heroImage?.asset) ? (
+      <HeroBackground images={page.heroImages?.length ? page.heroImages : [page.heroImage]} />
+    ) : (
+      <>
+        <Image
+          src={heroSanctuary}
+          alt="The historic stone sanctuary of Second Presbyterian Church on South Michigan Avenue"
+          widths={[768, 1280, 1600, 2000]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="absolute inset-0 h-full w-full object-cover object-center hero-kb-img"
+        />
+        {/* Scrim for headline legibility. */}
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-accent-dark/90 via-accent-dark/45 to-accent-dark/25"
+          aria-hidden="true"
+        ></div>
+      </>
+    )}
 
     <div class="relative mx-auto w-full max-w-content px-m pb-section-lg pt-section-md">
       <div class="hero-entry-stagger max-w-3xl">
