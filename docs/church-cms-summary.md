@@ -42,9 +42,32 @@ Goal: let a non-technical pastor + secretary run the site from Sanity for a year
 ### Phase 4b (cont.) — Page builder on every content page (complete)
 - `flexibleSections[]` + `<Sections>` are now wired on **all 18 page singletons**: the 11 church pages plus home, about, faq, contact, events index, sermons index, and privacy. Every content page can take on-brand blocks below its built-in content, no developer. Empty by default, so nothing changes visually until used. The generic `page` type covers brand-new pages at `/[slug]`.
 
-## Remaining work (next increment toward "nothing hardcoded")
-1. **Convert each existing page's bespoke body copy to fields**, seeded verbatim so the design is unchanged but every string/image is editable. Pages: worship, about, what-we-believe (seed **verbatim** — leadership's text, do not reword), music, grow, serve, kids, food, give, weddings, use-our-space, faq, privacy, plus events/sermons index intros and the remaining home sections (welcome, inclusive-welcome, service band, The Record). This is the larger, per-page effort and is best done with care page by page. (Editors can already *add* sections to any page today via the page builder; this step makes the *existing* copy editable too.)
-2. Optional: `sermonSeries` collection + reference migration (only if the church starts using a structured sermon archive); `gallery` + `dynamicList` + `accordion` blocks; `/sermons/series/[slug]` landing.
+### Phase 4c — Body-copy conversion (main body of every content page: complete)
+- Every content page's built-in body copy is now editable Sanity fields using the
+  fallback pattern `page?.field ?? "<verbatim>"`, so the design is byte-identical until
+  an editor overrides it, and fresh clones still render. Converted: **home** (welcome,
+  inclusive welcome, get involved, The Record), **about** (mural caption, the building,
+  who we are), **worship**, **what-we-believe** (verbatim, leadership's statement of
+  faith preserved exactly), **music**, **grow**, **serve**, **kids**, **food**, **give**,
+  **weddings**, **use-our-space**, **events index**, **sermons index**, **contact**.
+  Privacy already had an editable Portable Text body.
+- Mechanism: per-page "Page copy" field group (factory `extra` fields for the church
+  singletons; standalone fields for events/sermons/contact). The page getters spread
+  (`...`) so new body fields flow through without per-field getter edits.
+
+## Remaining work
+1. **Closing CTA copy (`<FinalCta>`)** is still hardcoded on most pages (grow, serve, and
+   what-we-believe were converted; the rest use inline eyebrow/headline/subhead). Uniform,
+   low-risk sweep: add eyebrow/headline/subhead fields per page and wire the prop.
+2. **FAQ items** (`faq.astro` has a hardcoded `faqs` array) should move to the existing
+   `faqItem` collection (seed the items), and **pastor-staff** body is the `staffMember`
+   collection (already content-driven; only its closing CTA is inline).
+3. Optional: `sermonSeries` collection + reference migration (only if the church starts a
+   structured sermon archive); `gallery` + `dynamicList` + `accordion` blocks;
+   `/sermons/series/[slug]` landing.
+4. Optional polish: a one-time seed that writes the current verbatim copy into the Sanity
+   docs so editors see the text pre-filled in Studio (today the fields are empty and fall
+   back to the verbatim copy, so the site is correct and the fields are ready to edit).
 
 ## Operational notes
 - After ANY schema change the loop was: `npm run typegen` → wire/seed → `npm run build` → `npm run studio:deploy` → commit. Never used the Studio "Remove field" button (used the cleanup script).
