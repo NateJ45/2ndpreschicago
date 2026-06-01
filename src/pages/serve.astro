@@ -59,9 +59,9 @@ const ways = [
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Lend a Hand"
-    headline="Ready to get involved?"
-    subhead="Tell us where you would like to serve and we will help you find a place to plug in."
+    eyebrow={page?.serveCtaEyebrow ?? 'Lend a Hand'}
+    headline={page?.serveCtaHeadline ?? 'Ready to get involved?'}
+    subhead={page?.serveCtaSubhead ?? 'Tell us where you would like to serve and we will help you find a place to plug in.'}
     cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

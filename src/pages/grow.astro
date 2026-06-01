@@ -60,9 +60,9 @@ const groups = [
   <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
-    eyebrow="Join In"
-    headline="Find your people at Second"
-    subhead="Everyone is welcome at every group. Check the calendar for the next gathering, or just show up."
+    eyebrow={page?.finalCtaEyebrow ?? 'Join In'}
+    headline={page?.finalCtaHeadline ?? 'Find your people at Second'}
+    subhead={page?.finalCtaSubhead ?? 'Everyone is welcome at every group. Check the calendar for the next gathering, or just show up.'}
     cta={{ label: 'See the Calendar', linkType: 'external', externalUrl: '/events' }}
   />
 </BaseLayout>

@@ -103,13 +103,12 @@ export async function getWorshipResources(limit = 6) {
 // the document doesn't exist yet, so pages fall back to their inline copy +
 // built-in photo. Pass the singleton's _type, e.g. getPageHero('worshipPage').
 export async function getPageHero(type: string) {
+  // Spread (...) so any body-copy fields added to a page singleton (via the
+  // definePageSingleton factory's extra fields) flow through automatically,
+  // without listing each here. Images + flexibleSections are resolved explicitly.
   return sanityFetch(`*[_type == $type][0]{
-    heroEyebrow,
-    heroHeadline,
-    heroSubhead,
+    ...,
     heroImage${IMAGE_PROJECTION},
-    seoTitle,
-    seoDescription,
     seoImage${IMAGE_PROJECTION},
     flexibleSections[]${SECTION_MEMBERS}
   }`, { type }, null);

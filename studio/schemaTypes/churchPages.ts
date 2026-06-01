@@ -133,6 +133,21 @@ export const musicPage = definePageSingleton('musicPage', 'Music', {
   heroEyebrow: 'Music',
   heroHeadline: 'Our musical life at Second',
   heroSubhead: 'I will sing of your strength, in the morning I will sing of your love. (Psalm 59:16)',
+}, {
+  groups: [{ name: 'content', title: 'Page copy' }],
+  fields: [
+    defineField({ name: 'introHeading', title: 'Intro heading (screen-reader)', type: 'string', group: 'content' }),
+    defineField({ name: 'introBodyP1', title: 'Intro paragraph', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'choirEyebrow', title: 'Choir eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'choirHeadline', title: 'Choir headline', type: 'string', group: 'content' }),
+    defineField({ name: 'choirBodyP1', title: 'Choir paragraph 1', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'choirBodyP2', title: 'Choir paragraph 2', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'organEyebrow', title: 'Organ eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'organHeadline', title: 'Organ headline', type: 'string', group: 'content' }),
+    defineField({ name: 'organBodyP1', title: 'Organ paragraph 1', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'organBodyP2', title: 'Organ paragraph 2', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'organCreditLead', title: 'Organ credit lead-in', type: 'string', group: 'content' }),
+  ],
 });
 
 export const staffPage = definePageSingleton('staffPage', 'Pastors & Staff', {
@@ -145,6 +160,13 @@ export const growPage = definePageSingleton('growPage', 'Grow', {
   heroEyebrow: 'Get Involved',
   heroHeadline: 'Community Groups at Second',
   heroSubhead: 'Drop in and walk with others on the Way of Jesus.',
+}, {
+  groups: [{ name: 'content', title: 'Page copy' }],
+  fields: [
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
+  ],
 });
 
 export const servePage = definePageSingleton('servePage', 'Serve', {
@@ -152,6 +174,13 @@ export const servePage = definePageSingleton('servePage', 'Serve', {
   heroHeadline: 'Love our neighbors',
   heroSubhead:
     'We are called to serve and celebrate Jesus for the good of the world. Much of that happens right here in the South Loop.',
+}, {
+  groups: [{ name: 'content', title: 'Page copy' }],
+  fields: [
+    defineField({ name: 'serveCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'serveCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'serveCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
+  ],
 });
 
 export const kidsPage = definePageSingleton('kidsPage', 'Kids', {
@@ -159,12 +188,31 @@ export const kidsPage = definePageSingleton('kidsPage', 'Kids', {
   heroHeadline: 'Children are welcome here',
   heroSubhead:
     'At Second, little ones are part of the worshipping congregation, and we welcome their noise and their needs.',
+}, {
+  groups: [{ name: 'content', title: 'Page copy' }],
+  fields: [
+    defineField({ name: 'worshipEyebrow', title: 'Worship section eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'worshipHeadline', title: 'Worship section headline', type: 'string', group: 'content' }),
+    defineField({ name: 'worshipBodyP1', title: 'Worship paragraph 1', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'worshipBodyP2', title: 'Worship paragraph 2', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'worshipBodyP3', title: 'Worship paragraph 3', type: 'text', rows: 3, group: 'content' }),
+  ],
 });
 
 export const foodPage = definePageSingleton('foodPage', 'Food Ministry', {
   heroEyebrow: 'Food Ministry',
   heroHeadline: 'Food for all in need, no questions asked',
   heroSubhead: 'Find us at our Cullerton door on Tuesday, Wednesday, Thursday, and Sunday.',
+}, {
+  groups: [{ name: 'content', title: 'Page copy' }],
+  fields: [
+    defineField({ name: 'lunchBagHeadline', title: 'Lunch Bag heading', type: 'string', group: 'content' }),
+    defineField({ name: 'lunchBagSchedule', title: 'Lunch Bag schedule', type: 'string', group: 'content' }),
+    defineField({ name: 'lunchBagBodyP1', title: 'Lunch Bag description', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'tableHeadline', title: 'Community Table heading', type: 'string', group: 'content' }),
+    defineField({ name: 'tableSchedule', title: 'Community Table schedule', type: 'string', group: 'content' }),
+    defineField({ name: 'tableBodyP1', title: 'Community Table description', type: 'text', rows: 4, group: 'content' }),
+  ],
 });
 
 export const useOurSpacePage = definePageSingleton(
@@ -220,6 +268,18 @@ export const givePage = definePageSingleton('givePage', 'Give', {
   heroHeadline: 'Thank you',
   heroSubhead:
     'For entrusting your tithes and offerings to Second. Your generosity sustains worship, music, and a food ministry that feeds our neighbors.',
+}, {
+  groups: [{ name: 'content', title: 'Page copy' }],
+  fields: [
+    defineField({ name: 'onlineHeadline', title: 'Online giving heading', type: 'string', group: 'content' }),
+    defineField({ name: 'onlineBodyP1', title: 'Online giving paragraph', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'waysHeadline', title: 'Other ways heading (screen-reader)', type: 'string', group: 'content' }),
+    defineField({ name: 'mailHeadline', title: 'By mail heading', type: 'string', group: 'content' }),
+    defineField({ name: 'mailBodyP1', title: 'By mail instructions', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'foodHeadline', title: 'Food ministry heading', type: 'string', group: 'content' }),
+    defineField({ name: 'foodBodyP1', title: 'Food ministry paragraph', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'foodLinkLabel', title: 'Food ministry link label', type: 'string', group: 'content' }),
+  ],
 });
 
 // Collected for easy registration in index.ts.

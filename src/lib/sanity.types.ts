@@ -454,6 +454,14 @@ export type GivePage = {
         _key: string;
       } & Embed)
   >;
+  onlineHeadline?: string;
+  onlineBodyP1?: string;
+  waysHeadline?: string;
+  mailHeadline?: string;
+  mailBodyP1?: string;
+  foodHeadline?: string;
+  foodBodyP1?: string;
+  foodLinkLabel?: string;
 };
 
 export type FormReference = {
@@ -619,6 +627,12 @@ export type FoodPage = {
         _key: string;
       } & Embed)
   >;
+  lunchBagHeadline?: string;
+  lunchBagSchedule?: string;
+  lunchBagBodyP1?: string;
+  tableHeadline?: string;
+  tableSchedule?: string;
+  tableBodyP1?: string;
 };
 
 export type KidsPage = {
@@ -671,6 +685,11 @@ export type KidsPage = {
         _key: string;
       } & Embed)
   >;
+  worshipEyebrow?: string;
+  worshipHeadline?: string;
+  worshipBodyP1?: string;
+  worshipBodyP2?: string;
+  worshipBodyP3?: string;
 };
 
 export type ServePage = {
@@ -723,6 +742,9 @@ export type ServePage = {
         _key: string;
       } & Embed)
   >;
+  serveCtaEyebrow?: string;
+  serveCtaHeadline?: string;
+  serveCtaSubhead?: string;
 };
 
 export type GrowPage = {
@@ -775,6 +797,9 @@ export type GrowPage = {
         _key: string;
       } & Embed)
   >;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
 };
 
 export type StaffPage = {
@@ -879,6 +904,17 @@ export type MusicPage = {
         _key: string;
       } & Embed)
   >;
+  introHeading?: string;
+  introBodyP1?: string;
+  choirEyebrow?: string;
+  choirHeadline?: string;
+  choirBodyP1?: string;
+  choirBodyP2?: string;
+  organEyebrow?: string;
+  organHeadline?: string;
+  organBodyP1?: string;
+  organBodyP2?: string;
+  organCreditLead?: string;
 };
 
 export type BeliefsPage = {
