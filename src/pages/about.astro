@@ -64,7 +64,7 @@ const pillOutline =
       class="w-full h-auto rounded-md shadow-sm"
     />
     <figcaption class="mt-s text-sm text-foreground/70 italic text-center">
-      The painted angels of the sanctuary, the namesake of the Church of the Angels.
+      {page?.muralCaption ?? 'The painted angels of the sanctuary, the namesake of the Church of the Angels.'}
     </figcaption>
   </figure>
 
@@ -73,19 +73,18 @@ const pillOutline =
     <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
       <div>
         <SectionHeading
-          eyebrow="A National Historic Landmark"
-          headline="The Church of the Angels"
+          eyebrow={page?.buildingEyebrow ?? 'A National Historic Landmark'}
+          headline={page?.buildingHeadline ?? 'The Church of the Angels'}
           headingId="about-building"
         />
         <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
           <p>
-            Our sanctuary, rebuilt in 1901 in the Arts and Crafts style after fire, is home to nine
-            Tiffany windows and a ceiling of painted angels that gave the church its nickname. Visitors
-            travel from all over the world to see it.
+            {page?.buildingBodyP1 ??
+              'Our sanctuary, rebuilt in 1901 in the Arts and Crafts style after fire, is home to nine Tiffany windows and a ceiling of painted angels that gave the church its nickname. Visitors travel from all over the world to see it.'}
           </p>
           <p>
-            It is one of the great interiors in American church architecture, and it is still, first and
-            last, a room built for worship.
+            {page?.buildingBodyP2 ??
+              'It is one of the great interiors in American church architecture, and it is still, first and last, a room built for worship.'}
           </p>
           <div class="pt-xs">
             <a href="/use-our-space" class={pillOutline}>Visit or Use the Space</a>
@@ -106,18 +105,18 @@ const pillOutline =
   <section class="surface-warm bg-muted" aria-labelledby="about-who">
     <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
       <SectionHeading
-        eyebrow="Who we are"
-        headline="A living congregation in the South Loop"
+        eyebrow={page?.whoEyebrow ?? 'Who we are'}
+        headline={page?.whoHeadline ?? 'A living congregation in the South Loop'}
         headingId="about-who"
       />
       <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
         <p>
-          We are a Reformed congregation in the Presbyterian Church (USA), gathering each week to
-          worship, love, serve, pray, and share the gospel in word and deed.
+          {page?.whoBodyP1 ??
+            'We are a Reformed congregation in the Presbyterian Church (USA), gathering each week to worship, love, serve, pray, and share the gospel in word and deed.'}
         </p>
         <p>
-          We welcome everyone: women and men, gay and straight, lifelong believers and the simply
-          curious. Whoever you are, you are welcome here.
+          {page?.whoBodyP2 ??
+            'We welcome everyone: women and men, gay and straight, lifelong believers and the simply curious. Whoever you are, you are welcome here.'}
         </p>
         <div class="flex flex-wrap gap-s pt-xs">
           <a href="/what-we-believe" class={pillOutline}>What We Believe</a>

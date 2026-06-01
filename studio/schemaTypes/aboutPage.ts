@@ -14,6 +14,7 @@ export const aboutPage = defineType({
     { name: 'seo', title: 'SEO' },
     { name: 'hero', title: 'Hero' },
     { name: 'story', title: 'Story' },
+    { name: 'content', title: 'Page copy' },
     { name: 'sections', title: 'Page sections' },
     // removed interior-designer groups (philosophy, personal, stats) during church remodel
     { name: 'final', title: 'Final CTA' },
@@ -117,6 +118,18 @@ export const aboutPage = defineType({
       description:
         'Optional. A photo behind the closing call-to-action. The site automatically darkens it so the headline and button stay readable. Leave empty to keep the solid charcoal panel.',
     }),
+    // Page copy — the About body sections (mural caption, "The building",
+    // "Who we are"). Each falls back to the current wording in about.astro.
+    defineField({ name: 'muralCaption', title: 'Mural caption', type: 'text', rows: 2, group: 'content' }),
+    defineField({ name: 'buildingEyebrow', title: 'Building — eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'buildingHeadline', title: 'Building — headline', type: 'string', group: 'content' }),
+    defineField({ name: 'buildingBodyP1', title: 'Building — paragraph 1', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'buildingBodyP2', title: 'Building — paragraph 2', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'whoEyebrow', title: 'Who we are — eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'whoHeadline', title: 'Who we are — headline', type: 'string', group: 'content' }),
+    defineField({ name: 'whoBodyP1', title: 'Who we are — paragraph 1', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'whoBodyP2', title: 'Who we are — paragraph 2', type: 'text', rows: 3, group: 'content' }),
+
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

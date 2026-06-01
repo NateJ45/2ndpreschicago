@@ -1633,6 +1633,15 @@ export type AboutPage = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  muralCaption?: string;
+  buildingEyebrow?: string;
+  buildingHeadline?: string;
+  buildingBodyP1?: string;
+  buildingBodyP2?: string;
+  whoEyebrow?: string;
+  whoHeadline?: string;
+  whoBodyP1?: string;
+  whoBodyP2?: string;
   flexibleSections?: Array<
     | ({
         _key: string;
