@@ -1738,6 +1738,19 @@ export type HomePage = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  welcomeEyebrow?: string;
+  welcomeHeadline?: string;
+  welcomeBodyP1?: string;
+  welcomeBodyP2?: string;
+  inclusiveStatement?: string;
+  inclusiveBody?: string;
+  involvedEyebrow?: string;
+  involvedHeadline?: string;
+  involvedSubhead?: string;
+  recordEyebrow?: string;
+  recordHeadline?: string;
+  recordBody?: string;
+  recordCtaLabel?: string;
   flexibleSections?: Array<
     | ({
         _key: string;

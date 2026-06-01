@@ -221,18 +221,18 @@ const ministryCards =
     <div data-reveal class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
       <div>
         <SectionHeading
-          eyebrow="Welcome"
-          headline="A landmark church with an open door"
+          eyebrow={page?.welcomeEyebrow ?? 'Welcome'}
+          headline={page?.welcomeHeadline ?? 'A landmark church with an open door'}
           headingId="welcome-heading"
         />
         <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
           <p>
-            Second Presbyterian is a National Historic Landmark on Michigan Avenue, home to nine Tiffany
-            windows and a sanctuary built for worship. The building is remarkable. The people are the point.
+            {page?.welcomeBodyP1 ??
+              'Second Presbyterian is a National Historic Landmark on Michigan Avenue, home to nine Tiffany windows and a sanctuary built for worship. The building is remarkable. The people are the point.'}
           </p>
           <p>
-            We are a Reformed congregation in the Presbyterian Church (USA), and we welcome everyone:
-            women and men, gay and straight, lifelong believers and the simply curious. Come as you are.
+            {page?.welcomeBodyP2 ??
+              'We are a Reformed congregation in the Presbyterian Church (USA), and we welcome everyone: women and men, gay and straight, lifelong believers and the simply curious. Come as you are.'}
           </p>
           <div class="flex flex-wrap gap-s pt-xs">
             <a href="/what-we-believe" class={pillOutline}>What We Believe</a>
@@ -261,11 +261,12 @@ const ministryCards =
     <div data-reveal class="mx-auto max-w-3xl px-m py-section-lg text-center">
       <div class="mb-m h-px w-12 bg-gold/70 mx-auto" aria-hidden="true"></div>
       <p class="font-display text-h3 leading-snug">
-        Whoever you are, wherever you are on your journey of faith, you are welcome here.
+        {page?.inclusiveStatement ??
+          'Whoever you are, wherever you are on your journey of faith, you are welcome here.'}
       </p>
       <p class="mt-m text-chapel-foreground/80 leading-relaxed">
-        We are an inclusive congregation, and we welcome the full participation of women and LGBTQ people
-        in the life and leadership of the church.
+        {page?.inclusiveBody ??
+          'We are an inclusive congregation, and we welcome the full participation of women and LGBTQ people in the life and leadership of the church.'}
       </p>
     </div>
   </section>
@@ -274,9 +275,9 @@ const ministryCards =
   <section class="bg-background" aria-labelledby="involved-heading">
     <div class="mx-auto max-w-content px-m py-section-lg">
       <SectionHeading
-        eyebrow="Get Involved"
-        headline="We are formed in community"
-        subhead="Join us for worship, fellowship, study, art, and food. There is a place for you here."
+        eyebrow={page?.involvedEyebrow ?? 'Get Involved'}
+        headline={page?.involvedHeadline ?? 'We are formed in community'}
+        subhead={page?.involvedSubhead ?? 'Join us for worship, fellowship, study, art, and food. There is a place for you here.'}
         headingId="involved-heading"
         align="center"
         class="mx-auto"
@@ -329,14 +330,14 @@ const ministryCards =
       NewsletterSignup island once an email provider is configured in Sanity. */}
   <section class="bg-background" aria-labelledby="record-heading">
     <div data-reveal class="mx-auto max-w-2xl px-m py-section-lg text-center">
-      <p class="text-xs uppercase tracking-eyebrow text-foreground/70">The Record</p>
+      <p class="text-xs uppercase tracking-eyebrow text-foreground/70">{page?.recordEyebrow ?? 'The Record'}</p>
       <div class="mt-s mb-m h-px w-12 bg-gold/70 mx-auto" aria-hidden="true"></div>
-      <h2 id="record-heading" class="font-display text-h2 text-foreground">Stay connected</h2>
+      <h2 id="record-heading" class="font-display text-h2 text-foreground">{page?.recordHeadline ?? 'Stay connected'}</h2>
       <p class="mt-m text-lg text-foreground/85 leading-relaxed">
-        News, reflections, and what is coming up at Second, in your inbox.
+        {page?.recordBody ?? 'News, reflections, and what is coming up at Second, in your inbox.'}
       </p>
       <div class="mt-l flex justify-center">
-        <a href="mailto:office@secondpreschicago.org?subject=Subscribe%20to%20The%20Record" class={pillPrimary}>Subscribe to The Record</a>
+        <a href="mailto:office@secondpreschicago.org?subject=Subscribe%20to%20The%20Record" class={pillPrimary}>{page?.recordCtaLabel ?? 'Subscribe to The Record'}</a>
       </div>
     </div>
   </section>

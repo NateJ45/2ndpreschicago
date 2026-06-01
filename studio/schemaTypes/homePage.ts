@@ -16,6 +16,7 @@ export const homePage = defineType({
     { name: 'hero', title: 'Hero' },
     { name: 'seasonal', title: 'Seasonal hero' },
     { name: 'sunday', title: 'This Sunday' },
+    { name: 'content', title: 'Page copy' },
     { name: 'sections', title: 'Page sections' },
     // removed interior-designer groups (meetFounder, featuredWork, featuredJournal, process, testimonials, services) during church remodel
     { name: 'final', title: 'Final CTA' },
@@ -195,6 +196,23 @@ export const homePage = defineType({
       description:
         'Optional. A photo behind the closing call-to-action. The site automatically darkens it so the headline and button stay readable. Leave empty to keep the solid charcoal panel.',
     }),
+    // Page copy — the home page's built-in section text. Each field falls back
+    // to the current wording in index.astro when left empty, so the design is
+    // unchanged until an editor overrides it.
+    defineField({ name: 'welcomeEyebrow', title: 'Welcome — eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'welcomeHeadline', title: 'Welcome — headline', type: 'string', group: 'content' }),
+    defineField({ name: 'welcomeBodyP1', title: 'Welcome — paragraph 1', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'welcomeBodyP2', title: 'Welcome — paragraph 2', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'inclusiveStatement', title: 'Inclusive welcome — statement', type: 'text', rows: 2, group: 'content' }),
+    defineField({ name: 'inclusiveBody', title: 'Inclusive welcome — body', type: 'text', rows: 2, group: 'content' }),
+    defineField({ name: 'involvedEyebrow', title: 'Get involved — eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'involvedHeadline', title: 'Get involved — headline', type: 'string', group: 'content' }),
+    defineField({ name: 'involvedSubhead', title: 'Get involved — subhead', type: 'text', rows: 2, group: 'content' }),
+    defineField({ name: 'recordEyebrow', title: 'The Record — eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'recordHeadline', title: 'The Record — headline', type: 'string', group: 'content' }),
+    defineField({ name: 'recordBody', title: 'The Record — body', type: 'text', rows: 2, group: 'content' }),
+    defineField({ name: 'recordCtaLabel', title: 'The Record — button label', type: 'string', group: 'content' }),
+
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

@@ -140,6 +140,10 @@ export async function getHomePage() {
       primaryCtaLabel, primaryCtaUrl
     },
     thisSunday,
+    welcomeEyebrow, welcomeHeadline, welcomeBodyP1, welcomeBodyP2,
+    inclusiveStatement, inclusiveBody,
+    involvedEyebrow, involvedHeadline, involvedSubhead,
+    recordEyebrow, recordHeadline, recordBody, recordCtaLabel,
     flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
