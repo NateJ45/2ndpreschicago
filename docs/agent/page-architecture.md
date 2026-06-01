@@ -1,84 +1,62 @@
 # Page architecture
 
-> Core page and section architecture, nav structure, and the section-visibility toggle system.
+> Core page and section architecture, the page builder, the nav, and how empty content behaves.
 
 ## Page architecture
 
-### Core routes
+### Routes
 
-The starter ships these routes (always on, not toggleable):
+Second Presbyterian ships these routes. Each is backed by a Sanity page singleton (content editable, structure in code), except the dated detail pages (collection-driven) and the generic `page` type.
 
 | Path | Source | Notes |
 |---|---|---|
-| `/` | `src/pages/index.astro` | Home page singleton from Sanity |
-| `/about` | `src/pages/about.astro` | About page singleton |
-| `/services` | `src/pages/services.astro` | Services page + service collection |
-| `/faq` | `src/pages/faq.astro` | FAQ page + faqItem collection |
-| `/contact` | `src/pages/contact.astro` | Contact page + Web3Forms form + Calendly embed |
-| `/journal` | `src/pages/journal/index.astro` | Post grid with category chips |
-| `/journal/[slug]` | `src/pages/journal/[slug].astro` | Post detail: reading progress + header + cover + body + related |
-| `/privacy` | `src/pages/privacy.astro` | Privacy policy from singleton |
-| `/404` | `src/pages/404.astro` | Custom 404 |
+| `/` | `src/pages/index.astro` | Home singleton; hero + optional dated `seasonalHero` + "This Sunday" |
+| `/about` | `src/pages/about.astro` | About singleton |
+| `/worship` | worship singleton | "I'm New" / plan-a-visit page |
+| `/what-we-believe` | beliefs singleton | Statement of faith is reproduced verbatim (leadership-owned) |
+| `/music` | music singleton | |
+| `/pastor-staff` | staff singleton + `staffMember` | |
+| `/grow`, `/serve`, `/kids`, `/food` | per-page singletons | Get-involved / ministry pages |
+| `/events` | `src/pages/events/index.astro` | Events index + `event` collection (incl. the Special Services band) |
+| `/events/[slug]` | `src/pages/events/[slug].astro` | Event detail |
+| `/sermons` | `src/pages/sermons/index.astro` | Sermons index + `sermon` collection + persistent Watch Live link |
+| `/sermons/[slug]` | `src/pages/sermons/[slug].astro` | Sermon detail |
+| `/use-our-space`, `/weddings` | per-page singletons | + inquiry `form` |
+| `/give` | giving singleton | |
+| `/faq` | `src/pages/faq.astro` | FAQ singleton + `faqItem` collection |
+| `/contact` | `src/pages/contact.astro` | Contact singleton + `form` |
+| `/privacy`, `/404` | privacy singleton; custom 404 | |
+| `/<slug>` | `src/pages/[slug].astro` | Generic `page` type -- editor-built pages from the block library (reserved-slug guard; zero pages = zero routes) |
 
-Additional routes come from opt-in modules staged under `modules/` (off by default). Each module is documented under `docs/modules/`. Current available modules: `portfolio`, `process`, `newsletter`, `lead-magnets`, `style-quiz`, `budget-calculator`, `shop`, `e-design`, `gift-certificates`, `press`, `resources`.
+The interior-designer starter's opt-in modules (portfolio, journal, shop, e-design, etc.) are NOT active in this build; their docs under `docs/modules/` remain for template reuse only.
 
 ### Page structure
 
-Each page is a Sanity singleton document plus auto-populated content from reusable collections (services, testimonials, FAQs, philosophy points). The structure of each page is fixed in code; the content within each section is editable in Sanity.
+Each page is a Sanity singleton whose built-in copy and images are editable fields (with verbatim fallbacks, so the page reads correctly before anything is entered), plus auto-populated content from collections (events, sermons, staff, ministries, FAQ items, worship resources). The layout of each page is fixed in code; the words, images, page-builder section order, and backgrounds are editable.
 
-**Home page section order (in render order):**
-1. Hero (headline, CTAs, optional background image or slideshow)
-2. About intro (photo, intro copy, CTA to About)
-3. Featured Journal (auto-populated from `featured: true` journal entries, then by publish date)
-4. Services (pricing cards)
-5. Testimonials (featured quote + grid)
-6. FAQ preview (optional)
-7. Final CTA (full-bleed)
-8. Footer
+**The page builder.** Every page singleton -- plus the generic `page` type -- has a `flexibleSections[]` array rendered by `Sections.astro`. Editors add / reorder / remove on-brand blocks (rich text, image+text, cards, quote, CTA band, form, feature cards, stats, FAQ, gallery, steps, logos, media feature, dynamic list), each with a background control (brand tone, or image/video + readability overlay) via `SectionShell.astro`. They render below a page's built-in content and are empty by default, so nothing changes until used. Spec: `docs/superpowers/specs/2026-06-01-page-builder-expansion-design.md`.
 
-The order is a starting point; restructure it with a conversion reason. If a section's content isn't ready yet, build a placeholder block in the right slot rather than removing the section -- it is easier to fill a slot than to re-plumb one later.
+**Built-in content + closing CTA.** A page renders its bespoke built-in sections (hero, then the page's content fields), then any `flexibleSections`, then a `<FinalCta>` whose eyebrow / headline / subhead are editable per page. The home page additionally supports the dated `seasonalHero` override and a "This Sunday" block.
 
-**Background cadence**: sections alternate `bg-background` / `bg-muted` so no two adjacent sections share a surface. `SectionDivider` bridges the one unavoidable same-surface seam on the home page. If you reorder sections, re-check the cadence.
+**Background cadence.** Built-in sections alternate `bg-background` / `bg-muted`, with deep chapel-green bands for the utility/CTA surfaces, so adjacent sections don't share a surface. Page-builder sections set their own background via the block's background control.
 
-**About page (in render order):**
-1. Hero
-2. Story
-3. Philosophy cards
-4. Final CTA
+### Empty-content behavior (no module toggles)
 
-**Journal detail (`/journal/[slug]`) structure:** see the Long-read layout section in `docs/agent/components.md`.
+This build does not use the starter's `sectionVisibility` module-toggle system -- there are no opt-in module sections to gate. Instead, content degrades gracefully on its own:
+- **Empty fields fall back** to the built-in verbatim copy (the inline-fallback pattern), so the site is never blank.
+- **Empty collections degrade** (e.g. `/sermons` shows a "watch online" state with the live link when no sermons are posted; an empty FAQ category simply doesn't render; an announcement only shows when enabled and within its date window).
+- **Page-builder sections** are opt-in by nature: a page with no `flexibleSections` just shows its built-in content.
 
-### Section visibility
+(If you later enable a starter module, its `docs/modules/` doc documents the visibility toggle that gates it.)
 
-Optional sections of the site can be turned on or off without touching code. The system is designed so the live site is completely unchanged until a toggle is explicitly set to off.
+### Header + footer nav
 
-**Schema.** `siteSettings` has a `sectionVisibility` object field in a dedicated `'visibility'` field group. It contains boolean flags corresponding to each toggleable section.
+The header menu and the footer link columns are **editor-driven** (`siteSettings.navItems` and `siteSettings.footerColumns`), with the built-in `FALLBACK_NAV_ITEMS` in `Header.astro` and the default columns in `Footer.astro` rendering only when those fields are empty. See `editor-vs-hardcoded.md`.
 
-**Helper.** `src/lib/sectionVisibility.ts` exports `getSectionVisibility(raw)`, which converts the raw Sanity object into a flat `SectionVisibility` map of plain booleans. The critical rule is `value !== false`: undefined, null, or true all produce `true` (visible). Only an explicit `false` produces `false` (hidden). This rule is what makes new sites safe to deploy before content is ready.
+The desktop nav is **server-rendered** in `Header.astro`: flat items are real `<a>` tags, dropdown groups are native `<details>`/`<summary>` disclosures with child links as real `<a>` tags inside. Everything is in the server HTML at build time, so crawlers see every internal link and there is no flash-of-missing-nav (or CLS) before JS runs. A small progressive-enhancement `<script>` layers on open-on-hover, close-on-outside-click, close-on-Escape, and close-on-navigation (re-bound on `astro:page-load`; document-level listeners guarded by `window.__headerNavBound` so they don't stack across View Transitions). The nav works with JS disabled.
 
-**What "off" does.** When a toggle is off, the section disappears everywhere simultaneously:
-- Removed from the desktop nav and mobile drawer
-- Removed from the footer link columns
-- Removed from the homepage: Featured Journal block (journal), PressStrip (press if module is active)
-- The section's own index page redirects home via `return Astro.redirect('/')` at the top of the page
-- Dynamic detail routes return an empty array from `getStaticPaths()` so they build zero pages and 404
+**Do NOT regress the desktop nav to a client-only island.** An earlier pattern hydrated a `NavDropdowns.tsx` React island with `client:only="react"`, which left the ENTIRE desktop nav out of the server HTML -- bad for SEO and CLS. Keep the flat links and the group structure SSR'd; use an island only for the open/close interaction if it is ever needed.
 
-**What stays on always.** Home, About, Services, FAQ, Contact, Journal, Privacy, and 404 are not gated by visibility toggles. They are always built and always accessible.
+**The nav shape.** `Header.astro` maps each Sanity `navItems` entry (a Link or a Dropdown menu) into `{ kind: 'flat' }` / `{ kind: 'dropdown', items: [...] }` and shares that with `MobileNav.tsx`, so desktop and mobile stay in sync (the mobile drawer inherits the same menu). `<summary>` triggers carry `.nav-underline` and get `aria-current="page"` (which locks the underline wide) when one of their children is the active route.
 
-**Draft safety.** Turning a section off does not delete or unpublish any content in Sanity. Drafts and published documents are untouched. Turning it back on makes everything reappear after the next rebuild.
-
-### Header nav
-
-Header nav uses a grouped structure: flat links and optional dropdown groups, left to right. The exact items depend on which modules are active.
-
-The desktop nav is **server-rendered** in `Header.astro` as Astro/SSR markup: flat items are real `<a>` tags, dropdown groups are native `<details>`/`<summary>` disclosures with the child links as real `<a>` tags inside. Everything is present in the server HTML at build time, so search-engine crawlers see every internal link and there is no flash-of-missing-nav (or CLS) before any JS runs. A small progressive-enhancement `<script>` at the bottom of `Header.astro` layers on open-on-hover, close-on-outside-click, close-on-Escape, and close-on-navigation (re-bound on `astro:page-load`, document-level listeners guarded by a `window.__headerNavBound` flag so they don't stack across View Transitions). The nav is fully functional with JS disabled.
-
-**Do NOT regress the desktop nav to a client-only island.** An earlier pattern hydrated a `NavDropdowns.tsx` React island with `client:only="react"`, which left the ENTIRE desktop nav out of the server HTML -- bad for SEO and CLS. If a future change reintroduces a Radix dropdown island here, keep the flat links and the group structure SSR'd and use the island only for the open/close interaction.
-
-The `<summary>` triggers carry `.nav-underline` and get `aria-current="page"` (which locks the underline wide) when one of their children is the active route, matching the flat-link pattern.
-
-**Header breakpoint is `lg:` (1024 px), not `md:` (768 px).** Between md and lg the desktop nav + CTA button cram the nav items against the logo and visibly squish the wordmark. Bumping the breakpoint means tablet/narrow-laptop widths see the centered-logo + hamburger layout, and the desktop layout only appears once there is actual room for it.
-
-**The `NAV_ITEMS` definition.** Each item is `{ kind: 'flat' }` or `{ kind: 'dropdown', items: [...] }`, defined once in `Header.astro` and shared with `MobileNav.tsx` so desktop + mobile stay in sync.
-
-**Availability indicator.** The mobile header carries an availability status pill (pulsing dot + short label, links to `/contact`). Renders only when `siteSettings.availabilityStatus` is set.
+**Header breakpoint is `lg:` (1024 px), not `md:` (768 px).** Between md and lg the nav + CTA cram against the wordmark and visibly squish it; bumping the breakpoint means tablet/narrow-laptop widths use the centered-logo + hamburger layout, and the desktop layout appears only once there is room for it.
