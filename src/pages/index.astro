@@ -300,13 +300,23 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
         </div>
       </div>
       <div class="group arch-top overflow-hidden ring-1 ring-border shadow-sm img-zoom aspect-[5/6] md:aspect-[4/5]">
-        <Image
-          src={sanctuaryInterior}
-          alt="Inside the sanctuary at Second Presbyterian, with its Tiffany windows and Arts and Crafts ceiling"
-          widths={[600, 900, 1197]}
-          sizes="(min-width: 768px) 45vw, 100vw"
-          class="h-full w-full object-cover"
-        />
+        {page?.welcomeImage?.asset ? (
+          <SanityImage
+            source={page.welcomeImage}
+            width={1000}
+            sizes="(min-width: 768px) 45vw, 100vw"
+            alt={page.welcomeImage.alt || 'Inside the sanctuary at Second Presbyterian, with its Tiffany windows and Arts and Crafts ceiling'}
+            class="h-full w-full object-cover"
+          />
+        ) : (
+          <Image
+            src={sanctuaryInterior}
+            alt="Inside the sanctuary at Second Presbyterian, with its Tiffany windows and Arts and Crafts ceiling"
+            widths={[600, 900, 1197]}
+            sizes="(min-width: 768px) 45vw, 100vw"
+            class="h-full w-full object-cover"
+          />
+        )}
       </div>
     </div>
   </section>
@@ -365,12 +375,12 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
   <section class="surface-warm bg-muted" aria-labelledby="events-heading">
     <div data-reveal class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-[1fr_1.1fr] gap-l md:gap-section-md items-center">
       <SectionHeading
-        eyebrow="What's On"
-        headline="There is always something happening at Second"
+        eyebrow={page?.eventsEyebrow ?? "What's On"}
+        headline={page?.eventsHeadline ?? "There is always something happening at Second"}
         headingId="events-heading"
       />
       <div class="text-foreground/85 text-lg leading-relaxed space-y-s">
-        <p>Worship, study, shared meals, music, and fellowship fill the week. A few of our weekly rhythms:</p>
+        <p>{page?.eventsIntro ?? 'Worship, study, shared meals, music, and fellowship fill the week. A few of our weekly rhythms:'}</p>
         <ul class="space-y-2 list-none p-0 text-base">
           {weeklyRhythms.map((r, i) => (
             <li class={`flex justify-between gap-m ${i < weeklyRhythms.length - 1 ? 'border-b border-border-soft pb-2' : ''}`}>

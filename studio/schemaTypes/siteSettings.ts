@@ -66,6 +66,13 @@ export const siteSettings = defineType({
       group: 'identity',
     }),
     defineField({
+      name: 'officeHours',
+      title: 'Office hours (optional)',
+      type: 'string',
+      description: 'Shown on the Contact page. Example: "Tuesday-Friday, 10am-2pm". Leave blank to hide.',
+      group: 'identity',
+    }),
+    defineField({
       name: 'favicon',
       title: 'Favicon (browser tab icon)',
       type: 'image',

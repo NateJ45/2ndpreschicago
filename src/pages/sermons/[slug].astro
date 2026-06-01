@@ -9,6 +9,7 @@ import { getAllSermonSlugs, getSermonBySlug, getSiteSettings } from '@/lib/queri
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import PortableText from '@/components/PortableText';
+import SanityImage from '@/components/SanityImage.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 export async function getStaticPaths() {
@@ -90,6 +91,12 @@ const schemas = [
           ></iframe>
         </div>
       </div>
+    )}
+
+    {!embed && sermon.image?.asset && (
+      <figure class="mx-auto max-w-4xl px-m">
+        <SanityImage source={sermon.image} width={1600} sizes="(min-width: 920px) 896px, 100vw" class="w-full h-auto rounded-md" />
+      </figure>
     )}
 
     <div class="mx-auto max-w-3xl px-m py-section-lg">

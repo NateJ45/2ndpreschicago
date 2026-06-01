@@ -13,6 +13,7 @@ import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
+import SanityImage from '@/components/SanityImage.astro';
 import muralAngels from '@/assets/mural-angels.jpg';
 
 const siteSettings = await getSiteSettings().catch(() => null);
@@ -74,13 +75,23 @@ const schemas = [
   {/* The organ */}
   <section class="bg-background" aria-labelledby="organ-heading">
     <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
-      <Image
-        src={muralAngels}
-        alt="A painted panel of angels with instruments in the sanctuary's Arts and Crafts decoration"
-        widths={[480, 768, 800]}
-        sizes="(min-width: 768px) 45vw, 100vw"
-        class="w-full h-auto rounded-md shadow-sm order-last md:order-first"
-      />
+      {page?.organImage?.asset ? (
+        <SanityImage
+          source={page.organImage}
+          width={1000}
+          sizes="(min-width: 768px) 45vw, 100vw"
+          alt={page.organImage.alt || "A painted panel of angels with instruments in the sanctuary's Arts and Crafts decoration"}
+          class="w-full h-auto rounded-md shadow-sm order-last md:order-first"
+        />
+      ) : (
+        <Image
+          src={muralAngels}
+          alt="A painted panel of angels with instruments in the sanctuary's Arts and Crafts decoration"
+          widths={[480, 768, 800]}
+          sizes="(min-width: 768px) 45vw, 100vw"
+          class="w-full h-auto rounded-md shadow-sm order-last md:order-first"
+        />
+      )}
       <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
         <SectionHeading
           eyebrow={page?.organEyebrow ?? 'The Organ'}

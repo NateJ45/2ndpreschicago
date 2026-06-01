@@ -12,6 +12,7 @@ import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
+import SanityImage from '@/components/SanityImage.astro';
 import angelMurals from '@/assets/angel-murals.jpg';
 import sanctuaryInterior from '@/assets/sanctuary-interior.webp';
 
@@ -56,13 +57,23 @@ const pillOutline =
 
   {/* Feature: the angel murals (the church's namesake) */}
   <figure class="mx-auto max-w-content px-m pt-section-lg">
-    <Image
-      src={angelMurals}
-      alt="The painted choir of angels on the sanctuary ceiling that gives the church its nickname"
-      widths={[768, 1280, 1500]}
-      sizes="(min-width: 1280px) 1216px, 100vw"
-      class="w-full h-auto rounded-md shadow-sm"
-    />
+    {page?.featureImage?.asset ? (
+      <SanityImage
+        source={page.featureImage}
+        width={1000}
+        sizes="(min-width: 1280px) 1216px, 100vw"
+        alt={page.featureImage.alt || 'The painted choir of angels on the sanctuary ceiling that gives the church its nickname'}
+        class="w-full h-auto rounded-md shadow-sm"
+      />
+    ) : (
+      <Image
+        src={angelMurals}
+        alt="The painted choir of angels on the sanctuary ceiling that gives the church its nickname"
+        widths={[768, 1280, 1500]}
+        sizes="(min-width: 1280px) 1216px, 100vw"
+        class="w-full h-auto rounded-md shadow-sm"
+      />
+    )}
     <figcaption class="mt-s text-sm text-foreground/70 italic text-center">
       {page?.muralCaption ?? 'The painted angels of the sanctuary, the namesake of the Church of the Angels.'}
     </figcaption>
@@ -91,13 +102,23 @@ const pillOutline =
           </div>
         </div>
       </div>
-      <Image
-        src={sanctuaryInterior}
-        alt="The nave of Second Presbyterian, lined with Tiffany windows beneath the Arts and Crafts ceiling"
-        widths={[600, 900, 1197]}
-        sizes="(min-width: 768px) 45vw, 100vw"
-        class="w-full h-auto rounded-md shadow-sm"
-      />
+      {page?.buildingImage?.asset ? (
+        <SanityImage
+          source={page.buildingImage}
+          width={1000}
+          sizes="(min-width: 768px) 45vw, 100vw"
+          alt={page.buildingImage.alt || 'The nave of Second Presbyterian, lined with Tiffany windows beneath the Arts and Crafts ceiling'}
+          class="w-full h-auto rounded-md shadow-sm"
+        />
+      ) : (
+        <Image
+          src={sanctuaryInterior}
+          alt="The nave of Second Presbyterian, lined with Tiffany windows beneath the Arts and Crafts ceiling"
+          widths={[600, 900, 1197]}
+          sizes="(min-width: 768px) 45vw, 100vw"
+          class="w-full h-auto rounded-md shadow-sm"
+        />
+      )}
     </div>
   </section>
 

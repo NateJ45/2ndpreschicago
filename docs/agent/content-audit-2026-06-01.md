@@ -1,5 +1,13 @@
 # Content audit: Sanity-editable vs hardcoded (2026-06-01)
 
+> **STATUS: remediated (phases A–D), 2026-06-01.** Everything below was the
+> finding; it has since been fixed. The closing-CTA button, SEO titles, home
+> hero buttons, in-body section images, events-teaser copy, and contact details
+> are now editable; ~185 body-copy fields + the list fields were seeded so the
+> Studio mirrors the live site; orphaned fields were removed and the 404 defaults
+> fixed. See the `docs/agent/changelog.md` entries dated 2026-06-01 for detail.
+> Re-run `node scripts/audit-field-population.mjs` to check current population.
+
 > Comprehensive, per-page audit of what the live site shows versus what an editor
 > can actually change in Sanity Studio. Triggered by: "the home page in Sanity has
 > numerous empty fields while the live site shows content." Method: read every

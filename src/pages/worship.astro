@@ -13,6 +13,7 @@ import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
+import SanityImage from '@/components/SanityImage.astro';
 import tiffanyWindows from '@/assets/tiffany-windows.webp';
 
 const siteSettings = await getSiteSettings().catch(() => null);
@@ -126,13 +127,23 @@ const pillOutline =
           </p>
         </div>
       </div>
-      <Image
-        src={tiffanyWindows}
-        alt="Three Tiffany landscape windows of trees and hills in the sanctuary"
-        widths={[480, 768, 968]}
-        sizes="(min-width: 768px) 45vw, 100vw"
-        class="w-full h-auto rounded-md shadow-sm"
-      />
+      {page?.childrenImage?.asset ? (
+        <SanityImage
+          source={page.childrenImage}
+          width={1000}
+          sizes="(min-width: 768px) 45vw, 100vw"
+          alt={page.childrenImage.alt || 'Three Tiffany landscape windows of trees and hills in the sanctuary'}
+          class="w-full h-auto rounded-md shadow-sm"
+        />
+      ) : (
+        <Image
+          src={tiffanyWindows}
+          alt="Three Tiffany landscape windows of trees and hills in the sanctuary"
+          widths={[480, 768, 968]}
+          sizes="(min-width: 768px) 45vw, 100vw"
+          class="w-full h-auto rounded-md shadow-sm"
+        />
+      )}
     </div>
   </section>
 

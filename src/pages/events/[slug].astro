@@ -95,10 +95,18 @@ const pillPrimary =
         <p class="mt-m text-lg text-foreground/80">{whenLabel(event)}</p>
         {event.location && <p class="mt-xs text-foreground/70">{event.location}</p>}
         {event.summary && <p class="mt-m text-xl text-foreground/85 leading-relaxed">{event.summary}</p>}
+        {(event.cost || event.audience) && (
+          <p class="mt-m text-foreground/70">{event.cost}{event.cost && event.audience ? ' · ' : ''}{event.audience}</p>
+        )}
         {event.registrationUrl && (
           <div class="mt-l">
-            <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>Register</a>
+            <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>{event.registrationLabel ?? 'Register'}</a>
           </div>
+        )}
+        {(event.contactName || event.contactEmail) && (
+          <p class="mt-m text-sm text-foreground/70">
+            Questions? Contact {event.contactName || 'the office'}{event.contactEmail ? ' at ' : ''}{event.contactEmail && <a href={`mailto:${event.contactEmail}`} class="text-link hover:text-primary-dark underline underline-offset-2">{event.contactEmail}</a>}.
+          </p>
         )}
       </div>
     </header>

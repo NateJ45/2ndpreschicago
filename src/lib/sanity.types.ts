@@ -1560,6 +1560,14 @@ export type MusicPage = {
   organHeadline?: string;
   organBodyP1?: string;
   organBodyP2?: string;
+  organImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   organCreditLead?: string;
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
@@ -1780,6 +1788,14 @@ export type WorshipPage = {
   kidsHeadline?: string;
   kidsBodyP1?: string;
   kidsBodyP2?: string;
+  childrenImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   quoteText?: string;
   quoteAttribution?: string;
   finalCtaEyebrow?: string;
@@ -1926,6 +1942,7 @@ export type SiteSettings = {
   mission?: string;
   email?: string;
   phone?: string;
+  officeHours?: string;
   favicon?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -2727,11 +2744,27 @@ export type AboutPage = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  featureImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   muralCaption?: string;
   buildingEyebrow?: string;
   buildingHeadline?: string;
   buildingBodyP1?: string;
   buildingBodyP2?: string;
+  buildingImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   whoEyebrow?: string;
   whoHeadline?: string;
   whoBodyP1?: string;
@@ -2886,6 +2919,14 @@ export type HomePage = {
   welcomeHeadline?: string;
   welcomeBodyP1?: string;
   welcomeBodyP2?: string;
+  welcomeImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   serviceBand?: {
     worshipLabel?: string;
     worshipTime?: string;
@@ -2899,6 +2940,9 @@ export type HomePage = {
     _type: "weeklyRhythm";
     _key: string;
   }>;
+  eventsEyebrow?: string;
+  eventsHeadline?: string;
+  eventsIntro?: string;
   inclusiveStatement?: string;
   inclusiveBody?: string;
   involvedEyebrow?: string;

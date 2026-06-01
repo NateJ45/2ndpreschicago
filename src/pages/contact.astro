@@ -76,15 +76,15 @@ const reasons = page?.contactReasons?.length ? page.contactReasons : FALLBACK_RE
           </li>
           <li class="flex items-start gap-s">
             <Phone size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
-            <a href={telHref(site.contact.phone)} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors">{site.contact.phone}</a>
+            <a href={telHref(siteSettings?.phone ?? site.contact.phone)} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors">{siteSettings?.phone ?? site.contact.phone}</a>
           </li>
           <li class="flex items-start gap-s">
             <Mail size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
-            <a href={`mailto:${site.contact.email}`} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors break-all">{site.contact.email}</a>
+            <a href={`mailto:${siteSettings?.email ?? site.contact.email}`} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors break-all">{siteSettings?.email ?? site.contact.email}</a>
           </li>
           <li class="flex items-start gap-s">
             <Clock size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
-            <span>Office hours: {site.contact.officeHours}</span>
+            <span>Office hours: {siteSettings?.officeHours ?? site.contact.officeHours}</span>
           </li>
         </ul>
 
