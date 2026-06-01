@@ -18,7 +18,15 @@ interface PageDefaults {
   heroSubhead?: string;
 }
 
-export function definePageSingleton(name: string, title: string, defaults: PageDefaults = {}) {
+export function definePageSingleton(
+  name: string,
+  title: string,
+  defaults: PageDefaults = {},
+  // Optional per-page extras: extra field groups + extra fields appended after
+  // the shared hero + SEO set. Lets a specific page (e.g. weddings) gain its own
+  // field (an inquiry-form reference) without changing every other singleton.
+  extra: { groups?: { name: string; title: string }[]; fields?: any[] } = {},
+) {
   return defineType({
     name,
     title,
@@ -28,6 +36,7 @@ export function definePageSingleton(name: string, title: string, defaults: PageD
     groups: [
       { name: 'hero', title: 'Hero', default: true },
       { name: 'seo', title: 'SEO' },
+      ...(extra.groups ?? []),
     ],
     fields: [
       defineField({
@@ -91,6 +100,7 @@ export function definePageSingleton(name: string, title: string, defaults: PageD
         options: { hotspot: true },
         fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
       }),
+      ...(extra.fields ?? []),
     ],
     preview: { prepare: () => ({ title }) },
   });
@@ -147,19 +157,53 @@ export const foodPage = definePageSingleton('foodPage', 'Food Ministry', {
   heroSubhead: 'Find us at our Cullerton door on Tuesday, Wednesday, Thursday, and Sunday.',
 });
 
-export const useOurSpacePage = definePageSingleton('useOurSpacePage', 'Use Our Space', {
-  heroEyebrow: 'Use Our Space',
-  heroHeadline: 'Interested in using space at Second?',
-  heroSubhead:
-    'A historic, welcoming building in the heart of the South Loop, open to the wider community throughout the week.',
-});
+export const useOurSpacePage = definePageSingleton(
+  'useOurSpacePage',
+  'Use Our Space',
+  {
+    heroEyebrow: 'Use Our Space',
+    heroHeadline: 'Interested in using space at Second?',
+    heroSubhead:
+      'A historic, welcoming building in the heart of the South Loop, open to the wider community throughout the week.',
+  },
+  {
+    groups: [{ name: 'form', title: 'Inquiry form' }],
+    fields: [
+      defineField({
+        name: 'inquiryForm',
+        title: 'Inquiry form',
+        type: 'reference',
+        to: [{ type: 'form' }],
+        group: 'form',
+        description: 'The form shown in the inquiry section. Leave empty to show a direct email link instead.',
+      }),
+    ],
+  },
+);
 
-export const weddingsPage = definePageSingleton('weddingsPage', 'Weddings', {
-  heroEyebrow: 'Weddings',
-  heroHeadline: 'Get married in a National Historic Landmark',
-  heroSubhead:
-    'Our 1901 Arts and Crafts sanctuary, home to nine Tiffany windows and extraordinary murals, draws visitors from all over the world. We host weddings of every size.',
-});
+export const weddingsPage = definePageSingleton(
+  'weddingsPage',
+  'Weddings',
+  {
+    heroEyebrow: 'Weddings',
+    heroHeadline: 'Get married in a National Historic Landmark',
+    heroSubhead:
+      'Our 1901 Arts and Crafts sanctuary, home to nine Tiffany windows and extraordinary murals, draws visitors from all over the world. We host weddings of every size.',
+  },
+  {
+    groups: [{ name: 'form', title: 'Inquiry form' }],
+    fields: [
+      defineField({
+        name: 'inquiryForm',
+        title: 'Inquiry form',
+        type: 'reference',
+        to: [{ type: 'form' }],
+        group: 'form',
+        description: 'The wedding inquiry form. Leave empty to show a direct email link instead.',
+      }),
+    ],
+  },
+);
 
 export const givePage = definePageSingleton('givePage', 'Give', {
   heroEyebrow: 'Give',

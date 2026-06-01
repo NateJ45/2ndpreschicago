@@ -295,6 +295,13 @@ export type GivePage = {
   };
 };
 
+export type FormReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "form";
+};
+
 export type WeddingsPage = {
   _id: string;
   _type: "weddingsPage";
@@ -322,6 +329,7 @@ export type WeddingsPage = {
     alt?: string;
     _type: "image";
   };
+  inquiryForm?: FormReference;
 };
 
 export type UseOurSpacePage = {
@@ -351,6 +359,7 @@ export type UseOurSpacePage = {
     alt?: string;
     _type: "image";
   };
+  inquiryForm?: FormReference;
 };
 
 export type FoodPage = {
@@ -848,6 +857,7 @@ export type ContactPage = {
   };
   heroScriptAccent?: string;
   formIntroNote?: string;
+  contactForm?: FormReference;
   whatToExpectEyebrow?: string;
   whatToExpectHeadline?: string;
   whatToExpectContent?: Array<{
@@ -865,6 +875,48 @@ export type ContactPage = {
     _key: string;
   }>;
   note?: string;
+};
+
+export type Form = {
+  _id: string;
+  _type: "form";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  heading?: string;
+  intro?: string;
+  mode?: "native" | "embed";
+  fields?: Array<{
+    label?: string;
+    name?: string;
+    type?:
+      | "text"
+      | "email"
+      | "tel"
+      | "textarea"
+      | "select"
+      | "checkbox"
+      | "date";
+    required?: boolean;
+    placeholder?: string;
+    helpText?: string;
+    options?: Array<string>;
+    width?: "full" | "half";
+    _type: "formField";
+    _key: string;
+  }>;
+  submitLabel?: string;
+  successMessage?: string;
+  consentNote?: string;
+  provider?: {
+    service?: "web3forms" | "formspree" | "email";
+    accessKey?: string;
+    notifyEmail?: string;
+  };
+  embedUrl?: string;
+  embedHtml?: string;
 };
 
 export type FaqPage = {
@@ -1141,6 +1193,7 @@ export type AllSanitySchemaTypes =
   | StaffMember
   | FaqItem
   | GivePage
+  | FormReference
   | WeddingsPage
   | UseOurSpacePage
   | FoodPage
@@ -1164,6 +1217,7 @@ export type AllSanitySchemaTypes =
   | SermonsPage
   | EventsPage
   | ContactPage
+  | Form
   | FaqPage
   | AboutPage
   | HomePage

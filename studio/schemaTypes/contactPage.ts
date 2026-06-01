@@ -76,6 +76,14 @@ export const contactPage = defineType({
       group: 'form',
       description: 'Pre-submit expectation note shown above the form.',
     }),
+    defineField({
+      name: 'contactForm',
+      title: 'Contact form',
+      type: 'reference',
+      to: [{ type: 'form' }],
+      group: 'form',
+      description: 'The form shown on the contact page. Leave empty to show direct contact links only.',
+    }),
     // removed interior-designer contact form dropdown option fields (formProjectTypeOptions, formLocationOptions, formBudgetOptions, formTimelineOptions, formSourceOptions) during church remodel
     defineField({
       name: 'whatToExpectEyebrow',

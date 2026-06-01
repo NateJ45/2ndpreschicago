@@ -67,6 +67,7 @@ const HIDDEN_FROM_DEFAULT = new Set<string>([
   'ministry',
   'event',
   'sermon',
+  'form',
   // sanity-plugin-media registers this tag type; keep it out of the desk root
   // (the "Media" tool in the top sidebar is where tags belong).
   'media.tag',
@@ -178,6 +179,7 @@ export const deskStructure = (S: StructureBuilder, _context: StructureResolverCo
               S.documentTypeListItem('staffMember').title('Pastors & Staff').icon(UsersIcon),
               S.documentTypeListItem('ministry').title('Ministries').icon(HeartIcon),
               S.documentTypeListItem('faqItem').title('FAQ Items').icon(HelpCircleIcon),
+              S.documentTypeListItem('form').title('Forms').icon(EnvelopeIcon),
             ]),
         ),
 

@@ -13,6 +13,7 @@ import { event } from './event';
 import { eventsPage } from './eventsPage';
 import { faqItem } from './faqItem';
 import { faqPage } from './faqPage';
+import { form } from './form';
 import { homePage } from './homePage';
 import { ministry } from './ministry';
 import { notFoundPage } from './notFoundPage';
@@ -25,6 +26,9 @@ import { staffMember } from './staffMember';
 export const schemaTypes = [
   // Object types (embedded) first so they're defined before docs that reference them
   ctaBlock,
+
+  // Reusable documents referenced by pages (define before the singletons that point at them)
+  form,
 
   // Singletons
   siteSettings,
