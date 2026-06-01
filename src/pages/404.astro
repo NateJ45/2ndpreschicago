@@ -8,20 +8,15 @@
 // CDN/transform pipeline as every other photo on the site.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import { getNotFoundPage, getSiteSettings } from '@/lib/queries';
 import SanityImage from '@/components/SanityImage.astro';
+import notFoundPhoto from '@/assets/sanctuary-interior.webp';
 
 const [notFoundPage, siteSettings] = await Promise.all([
   getNotFoundPage().catch(() => null),
   getSiteSettings().catch(() => null),
 ]);
-
-// Fallback photo — Studio dogs on the sofa, in case the singleton hasn't been
-// populated. Sanity singleton always wins if its image field is set.
-const fallbackPhoto = {
-  asset: { _ref: 'image-ce9be41407b946b7453724575c3cfd7aec2f7c4c-3024x4032-jpg' },
-  alt: 'Studio photo.',
-};
 
 const seoTitle       = notFoundPage?.seoTitle       ?? 'Page not found';
 const seoDescription = notFoundPage?.seoDescription ?? 'That page wandered off. Head back to the homepage or get in touch.';
@@ -30,15 +25,18 @@ const eyebrow  = notFoundPage?.eyebrow  ?? '404';
 const headline = notFoundPage?.headline ?? 'That page wandered off.';
 const body     = notFoundPage?.body     ?? "It happens. Maybe a link is old, maybe the URL has a typo. Either way, here's where to head next.";
 
+// Church CTAs (the template's "Browse the portfolio" / /portfolio is gone).
 const primaryLabel    = notFoundPage?.primaryCtaLabel    ?? 'Back home';
 const primaryHref     = notFoundPage?.primaryCtaHref     ?? '/';
-const secondaryLabel  = notFoundPage?.secondaryCtaLabel  ?? 'Browse the portfolio';
-const secondaryHref   = notFoundPage?.secondaryCtaHref   ?? '/portfolio';
+const secondaryLabel  = notFoundPage?.secondaryCtaLabel  ?? 'Plan a visit';
+const secondaryHref   = notFoundPage?.secondaryCtaHref   ?? '/worship';
 const tertiaryLabel   = notFoundPage?.tertiaryCtaLabel   ?? 'Get in touch';
 const tertiaryHref    = notFoundPage?.tertiaryCtaHref    ?? '/contact';
 
-const photo   = notFoundPage?.heroImage ?? fallbackPhoto;
-const caption = notFoundPage?.heroImage?.caption ?? 'From the studio';
+// Sanity image wins when set; otherwise a bundled sanctuary photo (no dead
+// template asset _ref). Rendered in the site's signature arched frame.
+const sanityPhoto = notFoundPage?.heroImage?.asset ? notFoundPage.heroImage : null;
+const caption = notFoundPage?.heroImage?.caption ?? 'Second Presbyterian Church of Chicago';
 ---
 
 <BaseLayout
@@ -89,13 +87,26 @@ const caption = notFoundPage?.heroImage?.caption ?? 'From the studio';
     {/* Photo column. Stacks above the text on mobile (md:order-2 swaps it on
         desktop so the eye lands on text first, photo balances right). */}
     <figure class="order-first md:order-2">
-      <SanityImage
-        source={photo}
-        width={1200}
-        sizes="(min-width: 768px) 50vw, 100vw"
-        quality={75}
-        class="w-full h-auto rounded-md"
-      />
+      <div class="arch-top overflow-hidden ring-1 ring-border shadow-sm aspect-[5/6]">
+        {sanityPhoto ? (
+          <SanityImage
+            source={sanityPhoto}
+            width={1000}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            quality={75}
+            alt={sanityPhoto.alt || 'Second Presbyterian Church of Chicago'}
+            class="w-full h-full object-cover"
+          />
+        ) : (
+          <Image
+            src={notFoundPhoto}
+            alt="Inside the sanctuary at Second Presbyterian, with its Tiffany windows"
+            widths={[480, 768, 1000]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            class="w-full h-full object-cover"
+          />
+        )}
+      </div>
       <figcaption class="mt-s text-xs uppercase tracking-eyebrow text-foreground/80 text-right">
         {caption}
       </figcaption>
