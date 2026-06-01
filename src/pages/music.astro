@@ -12,6 +12,7 @@ import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 import muralAngels from '@/assets/mural-angels.jpg';
 
 const siteSettings = await getSiteSettings().catch(() => null);
@@ -108,6 +109,8 @@ const schemas = [
       </div>
     </div>
   </section>
+
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
     eyebrow="Come and Hear"

@@ -10,6 +10,7 @@ import { site } from '@/data/site';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('kidsPage').catch(() => null);
@@ -61,6 +62,8 @@ const schemas = [
       </div>
     </div>
   </section>
+
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
     eyebrow="Bring the Whole Family"

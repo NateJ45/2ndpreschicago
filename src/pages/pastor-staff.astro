@@ -16,6 +16,7 @@ import Hero from '@/components/Hero.astro';
 import SanityImage from '@/components/SanityImage.astro';
 import PortableText from '@/components/PortableText';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
 import chesnaPhoto from '@/assets/chesna-hinkley.webp';
 import judyPhoto from '@/assets/judy-landt.webp';
@@ -191,6 +192,8 @@ const people = useSanityStaff
       ))}
     </div>
   </section>
+
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
     eyebrow="Come and See"

@@ -12,6 +12,7 @@ import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 import tiffanyWindows from '@/assets/tiffany-windows.webp';
 
 const siteSettings = await getSiteSettings().catch(() => null);
@@ -184,6 +185,8 @@ const pillOutline =
       <p class="mt-m text-xs uppercase tracking-eyebrow text-foreground/70">A.W. Tozer</p>
     </div>
   </section>
+
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
     eyebrow="Come and See"

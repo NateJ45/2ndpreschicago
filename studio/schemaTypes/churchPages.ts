@@ -11,6 +11,7 @@
 // item) and sanity.config.ts (SINGLETON_TYPES set + urlForDoc case).
 
 import { defineType, defineField } from 'sanity';
+import { FLEXIBLE_SECTION_MEMBERS } from './blocks';
 
 interface PageDefaults {
   heroEyebrow?: string;
@@ -35,6 +36,7 @@ export function definePageSingleton(
     options: { canvasApp: { exclude: true } },
     groups: [
       { name: 'hero', title: 'Hero', default: true },
+      { name: 'sections', title: 'Page sections' },
       { name: 'seo', title: 'SEO' },
       ...(extra.groups ?? []),
     ],
@@ -99,6 +101,14 @@ export function definePageSingleton(
         description: 'Optional. Shown when this page is shared. ~1200x630. Overrides the site default.',
         options: { hotspot: true },
         fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+      }),
+      defineField({
+        name: 'flexibleSections',
+        title: 'Page sections',
+        type: 'array',
+        group: 'sections',
+        description: 'Add on-brand sections to this page (text, image + text, cards, quote, CTA band, form, embed). They render below the built-in page content. Drag to reorder.',
+        of: FLEXIBLE_SECTION_MEMBERS,
       }),
       ...(extra.fields ?? []),
     ],

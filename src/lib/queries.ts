@@ -33,6 +33,14 @@ const FORM_PROJECTION = `{
   embedUrl, embedHtml
 }`;
 
+// Page-builder block members (flexibleSections[] / page.sections[]). Resolves
+// image + form references; other blocks carry their fields via the spread.
+const SECTION_MEMBERS = `{
+  ...,
+  _type == "sectionImageText" => { image${IMAGE_PROJECTION} },
+  _type == "sectionForm" => { form->${FORM_PROJECTION} }
+}`;
+
 // ---- Site settings (used in BaseLayout / Header / Footer) -----------------
 
 export async function getSiteSettings() {
@@ -102,7 +110,8 @@ export async function getPageHero(type: string) {
     heroImage${IMAGE_PROJECTION},
     seoTitle,
     seoDescription,
-    seoImage${IMAGE_PROJECTION}
+    seoImage${IMAGE_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, { type }, null);
 }
 
@@ -197,7 +206,8 @@ export async function getWeddingsPage() {
     heroEyebrow, heroHeadline, heroSubhead,
     heroImage${IMAGE_PROJECTION},
     seoTitle, seoDescription, seoImage${IMAGE_PROJECTION},
-    inquiryForm->${FORM_PROJECTION}
+    inquiryForm->${FORM_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -206,7 +216,8 @@ export async function getUseOurSpacePage() {
     heroEyebrow, heroHeadline, heroSubhead,
     heroImage${IMAGE_PROJECTION},
     seoTitle, seoDescription, seoImage${IMAGE_PROJECTION},
-    inquiryForm->${FORM_PROJECTION}
+    inquiryForm->${FORM_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -216,21 +227,13 @@ export async function getForm(slug: string) {
 }
 
 // ---- Generic custom pages (/[slug], page-builder blocks) ------------------
-// Resolves image + form references inside flexibleSections; other blocks carry
-// their fields via the spread.
-const SECTIONS_PROJECTION = `sections[]{
-  ...,
-  _type == "sectionImageText" => { image${IMAGE_PROJECTION} },
-  _type == "sectionForm" => { form->${FORM_PROJECTION} }
-}`;
-
 export async function getPageBySlug(slug: string) {
   return sanityFetch(`*[_type == "page" && slug.current == $slug][0]{
     title, "slug": slug.current,
     heroEyebrow, heroHeadline, heroSubhead,
     heroImage${IMAGE_PROJECTION},
     seoTitle, seoDescription, seoImage${IMAGE_PROJECTION},
-    ${SECTIONS_PROJECTION}
+    sections[]${SECTION_MEMBERS}
   }`, { slug }, null);
 }
 
