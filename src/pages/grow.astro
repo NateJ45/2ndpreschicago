@@ -14,8 +14,9 @@ import Sections from '@/components/Sections.astro';
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getGrowPage().catch(() => null);
 
-const title = `Grow · ${site.name}`;
+const title = page?.seoTitle ?? `Grow · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Community groups at Second: Bible study, Theology on Tap, and reading groups. Drop in and walk with others on the Way of Jesus.';
 
 const schemas = [

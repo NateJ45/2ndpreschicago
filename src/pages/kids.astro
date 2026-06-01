@@ -15,8 +15,9 @@ import Sections from '@/components/Sections.astro';
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('kidsPage').catch(() => null);
 
-const title = `Kids · ${site.name}`;
+const title = page?.seoTitle ?? `Kids · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Children are part of the worshipping congregation at Second Presbyterian Church. How we welcome kids and families on Sunday morning.';
 
 const schemas = [

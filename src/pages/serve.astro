@@ -14,8 +14,9 @@ import Sections from '@/components/Sections.astro';
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getServePage().catch(() => null);
 
-const title = `Serve · ${site.name}`;
+const title = page?.seoTitle ?? `Serve · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Serve alongside Second Presbyterian Church. From our Cullerton-door food ministry to neighborhood gatherings, there are many ways to love our South Loop neighbors.';
 
 const schemas = [

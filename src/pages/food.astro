@@ -14,8 +14,9 @@ import Sections from '@/components/Sections.astro';
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('foodPage').catch(() => null);
 
-const title = `Food Ministry · ${site.name}`;
+const title = page?.seoTitle ?? `Food Ministry · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Free food for all in need, no questions asked, at our Cullerton door. Lunch Bag runs Tuesday through Thursday, and the South Loop Community Table gathers on Sunday evenings.';
 
 const schemas = [

@@ -31,8 +31,9 @@ const page = await getPageHero('staffPage').catch(() => null);
 // never empty before an editor adds people in the Studio).
 const sanityStaff = await getStaffMembers().catch(() => []);
 
-const title = `Pastors & Staff · ${site.name}`;
+const title = page?.seoTitle ?? `Pastors & Staff · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Meet the pastors and staff of Second Presbyterian Church of Chicago: Rev. Chesna Hinkley, Rev. Judy Landt, Michael Shawgo, and Ashley McLean.';
 
 const schemas = [
