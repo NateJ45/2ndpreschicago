@@ -242,7 +242,6 @@ function isGroupActive(items: { href: string }[]) {
       <a
         href="/contact"
         class="lg:hidden absolute left-m top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 h-9 pl-2 pr-2.5 rounded-full bg-muted border border-border-soft text-foreground hover:border-primary hover:text-primary-dark transition-colors"
-        aria-label={`${availability}. Tap to start a conversation.`}
       >
         <span
           class="relative flex w-2 h-2 shrink-0"
@@ -264,6 +263,9 @@ function isGroupActive(items: { href: string }[]) {
         <span class="hidden md:inline text-[0.65rem] uppercase tracking-eyebrow font-semibold whitespace-nowrap">
           {availability}
         </span>
+        {/* Visually-hidden suffix so the link's accessible name contains its
+            visible text (WCAG 2.5.3) while still hinting the destination. */}
+        <span class="sr-only"> · tap to start a conversation</span>
       </a>
     )}
 
