@@ -22,8 +22,9 @@ const worshipResources = await getWorshipResources(6).catch(() => []);
 const fmtDate = (d: string) =>
   d ? new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
 
-const title = `Worship · ${site.name}`;
+const title = page?.seoTitle ?? `Worship · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Join us for worship Sundays at 11am. A traditional, liturgical service with communion on the first Sunday of each month. Whoever you are, you are welcome here.';
 
 const schemas = [
@@ -188,6 +189,6 @@ const pillOutline =
     eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
     headline={page?.finalCtaHeadline ?? "Plan your first visit"}
     subhead={page?.finalCtaSubhead ?? "Have a question before Sunday? We would love to help you feel at home before you arrive."}
-    cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
+    cta={page?.finalCta?.label ? page.finalCta : { label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

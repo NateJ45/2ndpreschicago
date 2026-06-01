@@ -162,6 +162,6 @@ function whenLabel(ev: any): string {
     eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
     headline={page?.finalCtaHeadline ?? "Join us this week"}
     subhead={page?.finalCtaSubhead ?? "Worship is at 11am every Sunday, and everyone is welcome at every gathering."}
-    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

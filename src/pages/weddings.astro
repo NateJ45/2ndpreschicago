@@ -16,8 +16,9 @@ import Sections from '@/components/Sections.astro';
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getWeddingsPage().catch(() => null);
 
-const title = `Weddings · ${site.name}`;
+const title = page?.seoTitle ?? `Weddings · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Get married in a National Historic Landmark. Our 1901 Arts and Crafts sanctuary, home to nine Tiffany windows and extraordinary murals, welcomes weddings of all sizes.';
 
 const schemas = [
@@ -123,6 +124,6 @@ const pricing = page?.weddingPricing?.length ? page.weddingPricing : FALLBACK_PR
     eyebrow={page?.finalCtaEyebrow ?? "Say Hello"}
     headline={page?.finalCtaHeadline ?? "Let's talk about your wedding"}
     subhead={page?.finalCtaSubhead ?? "Reach out to the office to check availability and start planning your day at Second."}
-    cta={{ label: 'Contact the Office', linkType: 'external', externalUrl: '/contact' }}
+    cta={page?.finalCta?.label ? page.finalCta : { label: 'Contact the Office', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

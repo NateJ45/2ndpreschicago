@@ -67,6 +67,6 @@ const ways = page?.ways?.length ? page.ways : FALLBACK_WAYS;
     eyebrow={page?.serveCtaEyebrow ?? 'Lend a Hand'}
     headline={page?.serveCtaHeadline ?? 'Ready to get involved?'}
     subhead={page?.serveCtaSubhead ?? 'Tell us where you would like to serve and we will help you find a place to plug in.'}
-    cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
+    cta={page?.finalCta?.label ? page.finalCta : { label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

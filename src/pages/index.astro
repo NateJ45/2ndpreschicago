@@ -91,11 +91,16 @@ const isHeroSlideshow = !seasonalActive && !isHeroVideo && heroSlides.length >= 
 // then needs position:relative (and skips the single-image hover zoom).
 const isHeroArchMedia = isHeroVideo || isHeroSlideshow;
 
-// Primary pill (seasonal can override label + link); Watch prefers the
-// configured livestream URL, falling back to the YouTube channel.
-const heroPrimaryLabel = (seasonalActive && seasonal.primaryCtaLabel) || 'Plan a Visit';
-const heroPrimaryUrl = (seasonalActive && seasonal.primaryCtaUrl) || '/worship';
+// Hero buttons. Order of preference: seasonal override > the editable
+// heroPrimaryCta / heroSecondaryCta (Home singleton, external link/label) >
+// built-in default. Watch prefers the configured livestream URL.
+const hpc: any = !seasonalActive ? page?.heroPrimaryCta : null;
+const hsc: any = !seasonalActive ? page?.heroSecondaryCta : null;
+const heroPrimaryLabel = (seasonalActive && seasonal.primaryCtaLabel) || hpc?.label || 'Plan a Visit';
+const heroPrimaryUrl = (seasonalActive && seasonal.primaryCtaUrl) || hpc?.externalUrl || '/worship';
 const watchHref = siteSettings?.watchUrl || youtube;
+const heroSecondaryLabel = hsc?.label || 'Watch Online';
+const heroSecondaryUrl = hsc?.externalUrl || watchHref;
 
 // Split the headline around the keyword so the first occurrence renders in
 // chapel green. Returns null when there's no keyword or no match (plain render).
@@ -187,7 +192,7 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
         </p>
         <div class="mt-l flex flex-wrap justify-center md:justify-start gap-s">
           <a href={heroPrimaryUrl} class={pillPrimary}>{heroPrimaryLabel}</a>
-          <a href={watchHref} target="_blank" rel="noopener noreferrer" class={pillOutline}>Watch Online</a>
+          <a href={heroSecondaryUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}>{heroSecondaryLabel}</a>
         </div>
         {thisSunday ? (
           <div class="mt-m text-sm text-foreground/70">
@@ -405,6 +410,7 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
     eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
     headline={page?.finalCtaHeadline ?? "Whoever you are, you are welcome here."}
     subhead={page?.finalCtaSubhead ?? "Plan your first visit, or simply show up on Sunday. We will be glad you came."}
-    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    backgroundImage={page?.finalCtaBackgroundImage}
   />
 </BaseLayout>

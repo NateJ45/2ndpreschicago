@@ -206,6 +206,8 @@ export async function getHomePage() {
     involvedEyebrow, involvedHeadline, involvedSubhead,
     recordEyebrow, recordHeadline, recordBody, recordCtaLabel,
     finalCtaEyebrow, finalCtaHeadline, finalCtaSubhead,
+    finalCta${CTA_PROJECTION},
+    finalCtaBackgroundImage${IMAGE_PROJECTION},
     flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }

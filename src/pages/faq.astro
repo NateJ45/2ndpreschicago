@@ -139,6 +139,7 @@ const schemas = [
     eyebrow={page?.finalCtaEyebrow ?? "Still Wondering?"}
     headline={page?.finalCtaHeadline ?? "Ask us anything"}
     subhead={page?.finalCtaSubhead ?? "The best answer to most questions is a Sunday morning. Reach out and we will help however we can."}
-    cta={{ label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
+    cta={page?.finalCta?.label ? page.finalCta : { label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
+    backgroundImage={page?.finalCtaBackgroundImage}
   />
 </BaseLayout>

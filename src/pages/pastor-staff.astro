@@ -199,6 +199,6 @@ const people = useSanityStaff
     eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
     headline={page?.finalCtaHeadline ?? "We would love to meet you"}
     subhead={page?.finalCtaSubhead ?? "Join us for worship on Sunday, or reach out to the office any time."}
-    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

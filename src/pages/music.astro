@@ -18,8 +18,9 @@ import muralAngels from '@/assets/mural-angels.jpg';
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('musicPage').catch(() => null);
 
-const title = `Music · ${site.name}`;
+const title = page?.seoTitle ?? `Music · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Hymns, spirituals, and anthems led by a professional quartette choir and a historic 1917 Austin pipe organ. The musical life of Second Presbyterian Church of Chicago.';
 
 const schemas = [
@@ -107,6 +108,6 @@ const schemas = [
     eyebrow={page?.finalCtaEyebrow ?? "Come and Hear"}
     headline={page?.finalCtaHeadline ?? "Hear it for yourself on Sunday"}
     subhead={page?.finalCtaSubhead ?? "Worship with us at 11am, or watch the livestream online."}
-    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

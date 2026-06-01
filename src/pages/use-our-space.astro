@@ -16,8 +16,9 @@ import Sections from '@/components/Sections.astro';
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getUseOurSpacePage().catch(() => null);
 
-const title = `Use Our Space · ${site.name}`;
+const title = page?.seoTitle ?? `Use Our Space · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Host your event at a National Historic Landmark in the South Loop. Second Presbyterian offers competitive rates, a premium location near transit, and free parking.';
 
 const schemas = [
@@ -100,6 +101,6 @@ const uses = page?.uses?.length ? page.uses : FALLBACK_USES;
     eyebrow={page?.finalCtaEyebrow ?? "Visit First"}
     headline={page?.finalCtaHeadline ?? "Come see the space in person"}
     subhead={page?.finalCtaSubhead ?? "The best way to picture your event here is to experience the building. Join us for worship, or reach out to arrange a visit."}
-    cta={{ label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

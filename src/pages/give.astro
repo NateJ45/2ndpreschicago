@@ -14,8 +14,9 @@ import Sections from '@/components/Sections.astro';
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('givePage').catch(() => null);
 
-const title = `Give · ${site.name}`;
+const title = page?.seoTitle ?? `Give · ${site.name}`;
 const description =
+  page?.seoDescription ??
   'Support the ministry of Second Presbyterian Church of Chicago. Give online, by mail, or designate your gift to the food ministry. Thank you for your generosity.';
 
 const schemas = [
@@ -90,6 +91,6 @@ const pillPrimary =
     eyebrow={page?.finalCtaEyebrow ?? "With Gratitude"}
     headline={page?.finalCtaHeadline ?? "Every gift is a part of the work"}
     subhead={page?.finalCtaSubhead ?? "Thank you for helping Second serve and celebrate Jesus for the good of the world."}
-    cta={{ label: 'Give Now', linkType: 'external', externalUrl: giveUrl, openInNewTab: true }}
+    cta={page?.finalCta?.label ? page.finalCta : { label: 'Give Now', linkType: 'external', externalUrl: giveUrl, openInNewTab: true }}
   />
 </BaseLayout>
