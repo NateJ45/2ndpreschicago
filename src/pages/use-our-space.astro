@@ -49,18 +49,16 @@ const uses = [
   <section class="bg-background" aria-labelledby="space-intro">
     <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
       <SectionHeading
-        eyebrow="A space for the neighborhood"
-        headline="Throughout the week, our doors are open"
+        eyebrow={page?.introEyebrow ?? 'A space for the neighborhood'}
+        headline={page?.introHeadline ?? 'Throughout the week, our doors are open'}
         headingId="space-intro"
       />
       <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
         <p>
-          We host all sorts of gatherings throughout the week, from youth sports and board meetings to
-          concerts, rehearsals, social services, and 12-step groups.
+          {page?.introBodyP1 ?? 'We host all sorts of gatherings throughout the week, from youth sports and board meetings to concerts, rehearsals, social services, and 12-step groups.'}
         </p>
         <p>
-          You get a premium South Loop location close to public transit, competitive rates, friendly
-          support, and first-come, first-served free parking.
+          {page?.introBodyP2 ?? 'You get a premium South Loop location close to public transit, competitive rates, friendly support, and first-come, first-served free parking.'}
         </p>
         <ul class="flex flex-wrap gap-xs pt-xs list-none p-0">
           {uses.map((u) => (
@@ -73,9 +71,9 @@ const uses = [
 
   <section class="surface-warm bg-muted" aria-labelledby="space-inquire">
     <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
-      <h2 id="space-inquire" class="font-display text-h2 text-foreground">Let's talk about your event</h2>
+      <h2 id="space-inquire" class="font-display text-h2 text-foreground">{page?.inquireHeadline ?? "Let's talk about your event"}</h2>
       <p class="mt-m text-lg text-foreground/85 leading-relaxed">
-        Get in touch to ask about fees and availability, and we will be back in touch soon.
+        {page?.inquireIntro ?? 'Get in touch to ask about fees and availability, and we will be back in touch soon.'}
       </p>
       <div class="mt-l text-left">
         <FormBlock form={page?.inquiryForm} fallbackEmail={site.contact.email} fallbackLabel="Inquire About the Space" />

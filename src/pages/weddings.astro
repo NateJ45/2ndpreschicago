@@ -61,7 +61,7 @@ const pricing = [
   {/* FAQ */}
   <section class="bg-background" aria-labelledby="weddings-faq">
     <div class="mx-auto max-w-3xl px-m py-section-lg">
-      <SectionHeading eyebrow="The details" headline="Common questions" headingId="weddings-faq" />
+      <SectionHeading eyebrow={page?.faqEyebrow ?? 'The details'} headline={page?.faqHeadline ?? 'Common questions'} headingId="weddings-faq" />
       <div class="mt-l divide-y divide-border-soft border-t border-b border-border-soft">
         {faqs.map((f) => (
           <details class="group py-m">
@@ -79,7 +79,7 @@ const pricing = [
   {/* Pricing */}
   <section class="surface-warm bg-muted" aria-labelledby="weddings-pricing">
     <div class="mx-auto max-w-3xl px-m py-section-lg">
-      <SectionHeading eyebrow="Pricing" headline="Clear and upfront" headingId="weddings-pricing" align="center" class="mx-auto" />
+      <SectionHeading eyebrow={page?.pricingEyebrow ?? 'Pricing'} headline={page?.pricingHeadline ?? 'Clear and upfront'} headingId="weddings-pricing" align="center" class="mx-auto" />
       <ul class="mt-l list-none p-0 divide-y divide-border-soft border-t border-b border-border-soft">
         {pricing.map((p) => (
           <li class="flex items-baseline justify-between gap-m py-m">
@@ -88,7 +88,7 @@ const pricing = [
           </li>
         ))}
       </ul>
-      <p class="mt-m text-sm text-foreground/70 text-center">The Fellowship Hall is available for receptions at an additional fee.</p>
+      <p class="mt-m text-sm text-foreground/70 text-center">{page?.pricingFootnote ?? 'The Fellowship Hall is available for receptions at an additional fee.'}</p>
     </div>
   </section>
 
@@ -96,14 +96,14 @@ const pricing = [
   <section class="bg-background" aria-labelledby="weddings-inquire">
     <div class="mx-auto max-w-3xl px-m py-section-lg">
       <SectionHeading
-        eyebrow="Say Hello"
-        headline="Inquire about your date"
+        eyebrow={page?.inquireEyebrow ?? 'Say Hello'}
+        headline={page?.inquireHeadline ?? 'Inquire about your date'}
         headingId="weddings-inquire"
         align="center"
         class="mx-auto"
       />
       <p class="mt-m text-lg text-foreground/85 leading-relaxed text-center">
-        Tell us a little about your day and we will be in touch to check availability and answer your questions.
+        {page?.inquireIntro ?? 'Tell us a little about your day and we will be in touch to check availability and answer your questions.'}
       </p>
       <div class="mt-l">
         <FormBlock form={page?.inquiryForm} fallbackEmail={site.contact.email} fallbackLabel="Inquire About Your Date" />

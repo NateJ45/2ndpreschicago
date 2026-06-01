@@ -77,7 +77,7 @@ const reasons = [
         </ul>
 
         <div class="border-t border-border-soft pt-l">
-          <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">Who to reach</p>
+          <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">{page?.whoToReachLabel ?? 'Who to reach'}</p>
           <ul class="space-y-2 list-none p-0">
             {reasons.map((r) => (
               <li class="flex flex-wrap justify-between gap-m border-b border-border-soft pb-2 last:border-b-0">
@@ -89,10 +89,9 @@ const reasons = [
         </div>
 
         <div class="border-t border-border-soft pt-l text-foreground/80 leading-relaxed">
-          <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">Getting here</p>
+          <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">{page?.gettingHereLabel ?? 'Getting here'}</p>
           <p>
-            We sit on Michigan Avenue in the South Loop, close to public transit, with first-come,
-            first-served free parking. Looking for our food ministry? Find us at the Cullerton door.
+            {page?.gettingHereBody ?? 'We sit on Michigan Avenue in the South Loop, close to public transit, with first-come, first-served free parking. Looking for our food ministry? Find us at the Cullerton door.'}
           </p>
         </div>
       </div>
@@ -117,7 +116,7 @@ const reasons = [
     <div class="mx-auto max-w-3xl px-m py-section-lg">
       <SectionHeading
         eyebrow={page?.whatToExpectEyebrow ?? 'Send a Note'}
-        headline="Start the conversation"
+        headline={page?.formSectionHeadline ?? 'Start the conversation'}
         headingId="contact-form"
       />
       {page?.formIntroNote && (

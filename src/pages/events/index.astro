@@ -82,8 +82,8 @@ function whenLabel(ev: any): string {
   {specialServices.length > 0 && (
     <section class="bg-chapel text-chapel-foreground" aria-labelledby="special-services">
       <div class="mx-auto max-w-content px-m py-section-lg">
-        <p class="text-xs uppercase tracking-eyebrow text-gold">Mark the season</p>
-        <h2 id="special-services" class="mt-s font-display text-h2">Special services</h2>
+        <p class="text-xs uppercase tracking-eyebrow text-gold">{page?.specialEyebrow ?? 'Mark the season'}</p>
+        <h2 id="special-services" class="mt-s font-display text-h2">{page?.specialHeadline ?? 'Special services'}</h2>
         <ul class="mt-l grid grid-cols-1 md:grid-cols-2 gap-m list-none p-0">
           {specialServices.map((ev: any) => (
             <li>
@@ -108,7 +108,7 @@ function whenLabel(ev: any): string {
   {/* Upcoming one-time events */}
   <section class="bg-background" aria-labelledby="upcoming-heading">
     <div class="mx-auto max-w-content px-m py-section-lg">
-      <SectionHeading eyebrow="Mark your calendar" headline="Upcoming events" headingId="upcoming-heading" />
+      <SectionHeading eyebrow={page?.upcomingEyebrow ?? 'Mark your calendar'} headline={page?.upcomingHeadline ?? 'Upcoming events'} headingId="upcoming-heading" />
       {upcoming.length > 0 ? (
         <ul class="mt-l grid grid-cols-1 md:grid-cols-2 gap-m list-none p-0" data-stagger-grid>
           {upcoming.map((ev: any) => (
@@ -124,8 +124,8 @@ function whenLabel(ev: any): string {
         </ul>
       ) : (
         <p class="mt-l text-foreground/80 italic">
-          No special events on the calendar right now. Our weekly rhythms below never stop, and the best
-          place to start is <a href="/worship" class="text-link underline underline-offset-2">Sunday worship</a>.
+          {page?.upcomingEmpty ?? 'No special events on the calendar right now. Our weekly rhythms below never stop, and the best place to start is'}{' '}
+          <a href="/worship" class="text-link underline underline-offset-2">Sunday worship</a>.
         </p>
       )}
     </div>
@@ -134,7 +134,7 @@ function whenLabel(ev: any): string {
   {/* Recurring rhythms */}
   <section class="surface-warm bg-muted" aria-labelledby="recurring-heading">
     <div class="mx-auto max-w-content px-m py-section-lg">
-      <SectionHeading eyebrow="Every week" headline="Our weekly rhythms" headingId="recurring-heading" align="center" class="mx-auto" />
+      <SectionHeading eyebrow={page?.rhythmsEyebrow ?? 'Every week'} headline={page?.rhythmsHeadline ?? 'Our weekly rhythms'} headingId="recurring-heading" align="center" class="mx-auto" />
       <ul class="mt-l max-w-3xl mx-auto list-none p-0 divide-y divide-border-soft border-t border-b border-border-soft">
         {displayRecurring.map((ev: any) => (
           <li class="py-m">
