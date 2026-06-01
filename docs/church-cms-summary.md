@@ -29,6 +29,9 @@ Goal: let a non-technical pastor + secretary run the site from Sanity for a year
 - Block library: `sectionRichText`, `sectionImageText`, `sectionCardGrid`, `sectionQuote`, `sectionCtaBand`, `sectionForm` + shared `embed`. Each renders on-brand (tokens, arch motif, chapel bands) via `src/components/blocks/*` + `Sections.astro`.
 - Generic `page` type at `/[slug]` (reserved-slug guard; 0 pages → no routes). Secretary builds unlimited new pages (campaigns, new ministries) with no developer. Verified end-to-end with a temporary sample page, then removed.
 
+### Phase 4b — Existing pages extensible (complete for the 11 church singletons)
+- `definePageSingleton` factory gained a `flexibleSections[]` field, so **all 11 per-page church singletons** (worship, what-we-believe, music, pastors & staff, grow, serve, kids, food, give, weddings, use-our-space) can now have on-brand blocks added below their built-in content — no developer. Each template renders `<Sections>`; empty by default so pages are visually unchanged until used.
+
 ## Key decisions (autonomous)
 1. **Keyless-form resilience:** added a `mailto:` fallback beyond the spec, so seeded forms work before a Web3Forms key is pasted (preserves the inline-fallback principle).
 2. **Embed without innerHTML:** used DOMParser + node import + script re-creation (cleaner, satisfies the security hook, still runs Subsplash scripts).
@@ -37,8 +40,8 @@ Goal: let a non-technical pastor + secretary run the site from Sanity for a year
 5. **Page builder over a 13-page rewrite:** delivered the generic `page` type + block library (new pages fully editable) rather than rushing the conversion of every existing page's bespoke copy. New-content editability is complete; converting existing page bodies is the documented next step.
 
 ## Remaining work (next increment toward "nothing hardcoded")
-1. **Add `flexibleSections[]` to the existing page singletons** (one field on the `definePageSingleton` factory covers 11 church pages; plus home/about/faq/etc.), and render `<Sections>` near the foot of each page template. Lets editors add on-brand blocks to any existing page. Safe/partial — un-wired pages simply don't render the (empty) field.
-2. **Convert each existing page's bespoke body copy to fields**, seeded verbatim so the design is unchanged but every string/image is editable. Pages: worship, about, what-we-believe (seed **verbatim** — leadership's text, do not reword), music, grow, serve, kids, food, give, weddings, use-our-space, faq, privacy, plus events/sermons index intros and the remaining home sections (welcome, inclusive-welcome, service band, The Record).
+1. **Extend `flexibleSections[]` to the standalone singletons** (home, about, faq, contact, events index, sermons index, privacy) and render `<Sections>` there. The 11 church singletons are already done (Phase 4b); these 7 follow the same pattern (schema field + getter projection with `SECTION_MEMBERS` + `<Sections>` in the template).
+2. **Convert each existing page's bespoke body copy to fields**, seeded verbatim so the design is unchanged but every string/image is editable. Pages: worship, about, what-we-believe (seed **verbatim** — leadership's text, do not reword), music, grow, serve, kids, food, give, weddings, use-our-space, faq, privacy, plus events/sermons index intros and the remaining home sections (welcome, inclusive-welcome, service band, The Record). This is the larger, per-page effort and is best done with care page by page.
 3. Optional: `sermonSeries` collection + reference migration (only if the church starts using a structured sermon archive); `gallery` + `dynamicList` + `accordion` blocks; `/sermons/series/[slug]` landing.
 
 ## Operational notes
