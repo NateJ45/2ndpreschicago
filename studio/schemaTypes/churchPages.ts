@@ -35,7 +35,9 @@ export function definePageSingleton(
     // Structural marketing copy — edit fields directly in the Studio, not Canvas.
     options: { canvasApp: { exclude: true } },
     groups: [
-      { name: 'hero', title: 'Hero', default: true },
+      // No group is marked `default: true`, so the form opens on the implicit
+      // "All fields" tab — editors see the whole page at once, not just the hero.
+      { name: 'hero', title: 'Hero' },
       { name: 'sections', title: 'Page sections' },
       { name: 'seo', title: 'SEO' },
       ...(extra.groups ?? []),

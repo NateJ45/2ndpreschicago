@@ -11,7 +11,8 @@ export const page = defineType({
   title: 'Page',
   type: 'document',
   groups: [
-    { name: 'hero', title: 'Hero', default: true },
+    // No `default: true` → the form opens on the implicit "All fields" tab.
+    { name: 'hero', title: 'Hero' },
     { name: 'content', title: 'Sections' },
     { name: 'seo', title: 'SEO' },
   ],

@@ -10,7 +10,8 @@ export const form = defineType({
   title: 'Form',
   type: 'document',
   groups: [
-    { name: 'content', title: 'Heading + intro', default: true },
+    // No `default: true` → the form opens on the implicit "All fields" tab.
+    { name: 'content', title: 'Heading + intro' },
     { name: 'fields', title: 'Fields' },
     { name: 'provider', title: 'Where submissions go' },
     { name: 'embed', title: 'External embed' },
