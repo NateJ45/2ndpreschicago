@@ -1,24 +1,28 @@
 ---
 // Foundation, edit with care
-// Site footer. Reads as a separate zone from the FinalCta section above it.
+// Site footer, rebuilt for a church on the deep Chapel-green brand surface
+// (the cool liturgical counterpoint to the warm page). Distinct from the base
+// template's light single-strip footer.
 //
 // Structure (top to bottom):
-//   1. Bronze accent stripe (brand signature, matches header + mobile drawer)
+//   1. Bronze accent stripe (brand signature, matches header utility bar)
 //   2. Optional newsletter signup (only when siteSettings.newsletter.enabled)
-//   3. Four-column church link grid: Visit / Get Involved / Connect / Get in touch
-//   4. Text wordmark + tagline, centered
+//   3. Brand + mission + Plan a Visit  |  Sunday Worship card (times, address,
+//      Get directions) — the church "front door" summary
+//   4. Four-column link grid: Visit / Get Involved / Connect / Get in touch
 //   5. Thin bottom bar: auto-year copyright, privacy link, optional credit
 //
-// Contact details fall back to src/data/site.ts constants so the footer shows
-// real information before Sanity siteSettings is wired.
+// STRUCTURE: do not edit layout/markup here to change wording. Editor-facing
+// copy (service times, mission, contact, social, giving link) flows in through
+// Sanity siteSettings, falling back to src/data/site.ts so real info shows
+// before Sanity is wired.
 //
 // Tailwind v4 gotcha: max-w-xs/s/m/l are shadowed by this project's custom
 // --spacing-* tokens. Use max-w-md / max-w-2xl / arbitrary values for text widths.
 
 import { site } from '@/data/site';
 import { IconBrandInstagram, IconBrandFacebook, IconBrandYoutube } from '@tabler/icons-react';
-import { Phone, MapPin } from 'lucide-react';
-import CopyEmailButton from '@/components/CopyEmailButton';
+import { Phone, MapPin, Mail, Clock } from 'lucide-react';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import { telHref } from '@/lib/phone';
 
@@ -42,6 +46,9 @@ interface Props {
     socialFacebook?: string;
     socialYoutube?: string;
     tagline?: string;
+    mission?: string;
+    serviceTimes?: string;
+    giveUrl?: string;
     footerCredit?: string;
     footerCreditUrl?: string;
     newsletter?: NewsletterConfig | null;
@@ -50,6 +57,8 @@ interface Props {
 
 const { siteSettings } = Astro.props as Props;
 
+// SAFE TO EDIT IN SANITY: every value below reads from siteSettings first and
+// falls back to the church's real details in src/data/site.ts.
 const brandName = siteSettings?.title ?? site.name;
 const email = siteSettings?.email ?? site.contact.email;
 const phone = siteSettings?.phone ?? site.contact.phone;
@@ -57,12 +66,20 @@ const ig = siteSettings?.socialInstagram ?? site.social.instagram;
 const fb = siteSettings?.socialFacebook ?? site.social.facebook;
 const yt = siteSettings?.socialYoutube ?? site.social.youtube;
 const tagline = siteSettings?.tagline ?? 'Serving and celebrating Jesus for the good of the world.';
+const mission = siteSettings?.mission ?? tagline;
+const serviceTimes = siteSettings?.serviceTimes ?? 'Sundays at 11am';
+const giveHref = siteSettings?.giveUrl ?? '/give';
+
+// Directions link built from the church's address so "Get directions" opens
+// the right pin in any maps app.
+const fullAddress = `${site.contact.addressLine}, ${site.contact.cityStateZip}`;
+const mapHref = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(fullAddress)}`;
 
 const currentYear = new Date().getFullYear();
 const siteCredit = siteSettings?.footerCredit;
 const siteCreditUrl = siteSettings?.footerCreditUrl;
 
-// Footer navigation, grouped to mirror the header IA.
+// STRUCTURE: footer navigation, grouped to mirror the header IA.
 const VISIT_LINKS = [
   { label: 'Plan a Visit', href: '/worship' },
   { label: 'Watch Sermons', href: '/sermons' },
@@ -82,10 +99,14 @@ const CONNECT_LINKS = [
   { label: 'Weddings', href: '/weddings' },
   { label: 'Give', href: '/give' },
 ];
+
+// Shared link class for the footer columns (cream on green, animated underline).
+const footerLink =
+  'link-underline inline-block text-chapel-foreground/80 hover:text-white transition-colors';
 ---
 
-<footer class="bg-muted text-foreground">
-  {/* Brand accent stripe — matches header + mobile drawer. */}
+<footer class="bg-chapel-deep text-chapel-foreground">
+  {/* Brand accent stripe — matches the header utility bar + mobile drawer. */}
   <div class="h-1 bg-primary" aria-hidden="true"></div>
 
   {/* Newsletter signup — renders only when siteSettings.newsletter.enabled. */}
@@ -101,60 +122,105 @@ const CONNECT_LINKS = [
     </div>
   )}
 
-  {/* Four-column church link grid. Single centered column on mobile. */}
-  <div class="mx-auto max-w-content px-m pt-l pb-m grid gap-l grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 text-center sm:text-left">
+  {/* ---- Brand + mission  |  Sunday Worship card ---------------------------- */}
+  <div class="mx-auto max-w-content px-m pt-section-md pb-l grid gap-l md:grid-cols-2 md:gap-section-md items-start">
+    {/* Brand + mission + Plan a Visit */}
+    <div class="text-center md:text-left">
+      <a href="/" aria-label={`${brandName} home`} class="inline-flex flex-col leading-none hover:opacity-80 transition-opacity">
+        <span class="font-display text-2xl text-chapel-foreground">Second Presbyterian</span>
+        <span class="font-display text-lg text-chapel-foreground/70 mt-0.5">Church of the Angels, Chicago</span>
+      </a>
+      <p class="mt-m text-chapel-foreground/75 italic font-display text-lg leading-snug max-w-[32rem] mx-auto md:mx-0">
+        {mission}
+      </p>
+      <a
+        href="/worship"
+        class="press-tactile mt-m inline-flex items-center px-l py-2.5 rounded-full text-xs uppercase tracking-eyebrow font-semibold bg-primary text-primary-foreground hover:bg-primary-dark transition-colors"
+      >
+        Plan a Visit
+      </a>
+    </div>
+
+    {/* Sunday Worship card — the church "when + where" at a glance. */}
+    <div class="rounded-lg border border-chapel-foreground/15 bg-white/5 p-l text-center md:text-left">
+      <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70">Sunday Worship</p>
+      <div class="mt-s mb-m h-px w-12 bg-gold/60 mx-auto md:mx-0" aria-hidden="true"></div>
+      <p class="flex items-center justify-center md:justify-start gap-xs text-lg font-display text-chapel-foreground">
+        <Clock size={16} aria-hidden="true" className="shrink-0 text-gold" />
+        {serviceTimes}, in person and online
+      </p>
+      <p class="mt-s flex items-start justify-center md:justify-start gap-xs text-chapel-foreground/80">
+        <MapPin size={16} aria-hidden="true" className="mt-1 shrink-0 text-gold" />
+        <span>{site.contact.addressLine}<br />{site.contact.cityStateZip}</span>
+      </p>
+      <a
+        href={mapHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link-underline mt-s inline-block text-sm font-semibold text-chapel-foreground hover:text-white transition-colors"
+      >
+        Get directions
+      </a>
+    </div>
+  </div>
+
+  {/* ---- Four-column link grid. Single centered column on mobile. ----------- */}
+  <div class="mx-auto max-w-content px-m pb-l grid gap-l grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 text-center sm:text-left border-t border-chapel-foreground/15 pt-l">
     <nav aria-labelledby="footer-visit">
-      <p id="footer-visit" class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">Visit</p>
+      <p id="footer-visit" class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70 mb-s">Visit</p>
       <ul class="text-sm space-y-2 list-none p-0">
         {VISIT_LINKS.map((l) => (
-          <li><a href={l.href} class="link-underline inline-block text-foreground/85 hover:text-link transition-colors">{l.label}</a></li>
+          <li><a href={l.href} class={footerLink}>{l.label}</a></li>
         ))}
       </ul>
     </nav>
 
     <nav aria-labelledby="footer-involved">
-      <p id="footer-involved" class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">Get Involved</p>
+      <p id="footer-involved" class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70 mb-s">Get Involved</p>
       <ul class="text-sm space-y-2 list-none p-0">
         {INVOLVED_LINKS.map((l) => (
-          <li><a href={l.href} class="link-underline inline-block text-foreground/85 hover:text-link transition-colors">{l.label}</a></li>
+          <li><a href={l.href} class={footerLink}>{l.label}</a></li>
         ))}
       </ul>
     </nav>
 
     <nav aria-labelledby="footer-connect">
-      <p id="footer-connect" class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">Connect</p>
+      <p id="footer-connect" class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70 mb-s">Connect</p>
       <ul class="text-sm space-y-2 list-none p-0">
         {CONNECT_LINKS.map((l) => (
-          <li><a href={l.href} class="link-underline inline-block text-foreground/85 hover:text-link transition-colors">{l.label}</a></li>
+          <li><a href={l.href} class={footerLink}>{l.label}</a></li>
         ))}
       </ul>
     </nav>
 
-    {/* GET IN TOUCH — address, email, phone, office hours, socials. */}
+    {/* GET IN TOUCH — email, phone, office hours, socials. */}
     <div>
-      <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">Get in touch</p>
+      <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70 mb-s">Get in touch</p>
       <address class="not-italic text-sm space-y-2">
-        <p class="flex items-start justify-center sm:justify-start gap-xs text-foreground/85">
-          <MapPin size={14} aria-hidden="true" className="mt-0.5 shrink-0" />
-          <span>{site.contact.addressLine}<br />{site.contact.cityStateZip}</span>
-        </p>
-        {email && <p><CopyEmailButton client:visible email={email} variant="link" /></p>}
+        {email && (
+          <p>
+            <a href={`mailto:${email}`} class="inline-flex items-center gap-xs text-chapel-foreground/85 hover:text-white transition-colors">
+              <Mail size={14} aria-hidden="true" />
+              {email}
+            </a>
+          </p>
+        )}
         {phone && (
           <p>
-            <a href={telHref(phone)} class="inline-flex items-center gap-xs text-link hover:text-primary-dark transition-colors">
+            <a href={telHref(phone)} class="inline-flex items-center gap-xs text-chapel-foreground/85 hover:text-white transition-colors">
               <Phone size={14} aria-hidden="true" />
               {phone}
             </a>
           </p>
         )}
-        <p class="text-foreground/70">Office hours: {site.contact.officeHours}</p>
+        <p class="text-chapel-foreground/60">Office hours: {site.contact.officeHours}</p>
       </address>
       {(ig || fb || yt) && (
         <ul class="mt-m flex justify-center sm:justify-start gap-s text-sm list-none p-0">
           {ig && (
             <li>
               <a href={ig} target="_blank" rel="noopener noreferrer" aria-label="Instagram"
-                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground transition-colors">
+                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-chapel-foreground/25 text-chapel-foreground hover:bg-white/10 hover:border-white/40 hover:text-white transition-colors">
                 <IconBrandInstagram size={20} stroke={1.5} />
               </a>
             </li>
@@ -162,7 +228,7 @@ const CONNECT_LINKS = [
           {fb && (
             <li>
               <a href={fb} target="_blank" rel="noopener noreferrer" aria-label="Facebook"
-                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground transition-colors">
+                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-chapel-foreground/25 text-chapel-foreground hover:bg-white/10 hover:border-white/40 hover:text-white transition-colors">
                 <IconBrandFacebook size={20} stroke={1.5} />
               </a>
             </li>
@@ -170,7 +236,7 @@ const CONNECT_LINKS = [
           {yt && (
             <li>
               <a href={yt} target="_blank" rel="noopener noreferrer" aria-label="YouTube"
-                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground transition-colors">
+                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-chapel-foreground/25 text-chapel-foreground hover:bg-white/10 hover:border-white/40 hover:text-white transition-colors">
                 <IconBrandYoutube size={20} stroke={1.5} />
               </a>
             </li>
@@ -180,24 +246,16 @@ const CONNECT_LINKS = [
     </div>
   </div>
 
-  {/* Text wordmark + tagline — centered brand signature. */}
-  <div class="mx-auto max-w-content px-m pb-l flex flex-col items-center gap-xs text-center leading-none">
-    <a href="/" aria-label={`${brandName} home`} class="inline-flex flex-col items-center hover:opacity-80 transition-opacity">
-      <span class="font-display text-2xl text-foreground">Second Presbyterian</span>
-      <span class="font-display text-lg text-foreground/70 mt-0.5">Church of Chicago</span>
-    </a>
-    {tagline && <p class="mt-s text-sm text-foreground/60 italic max-w-[30rem]">{tagline}</p>}
-  </div>
-
   {/* Thin bottom bar — copyright, privacy, optional credit. */}
-  <div class="border-t border-border">
-    <div class="mx-auto max-w-content px-m py-m flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-xs text-xs text-foreground/80 text-center">
+  <div class="border-t border-chapel-foreground/15">
+    <div class="mx-auto max-w-content px-m py-m flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-xs text-xs text-chapel-foreground/70 text-center">
       <p>© {currentYear} {brandName}</p>
       <div class="flex items-center gap-m">
-        <a href="/privacy" class="underline underline-offset-2 hover:text-link transition-colors">Privacy policy</a>
+        <a href={giveHref} class="link-underline hover:text-white transition-colors">Give</a>
+        <a href="/privacy" class="underline underline-offset-2 hover:text-white transition-colors">Privacy policy</a>
         {siteCredit && (
           siteCreditUrl ? (
-            <a href={siteCreditUrl} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-link transition-colors">{siteCredit}</a>
+            <a href={siteCreditUrl} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-white transition-colors">{siteCredit}</a>
           ) : (
             <span>{siteCredit}</span>
           )

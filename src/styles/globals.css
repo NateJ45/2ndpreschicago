@@ -30,6 +30,24 @@
   --color-border-soft:  #DED6C8; /* Faint warm dividers */
   --color-white-pure:   #FFFFFF;
 
+  /* Chapel accent — deep Tiffany-glass green drawn from the church's own
+     stained glass (Second is "The Church of the Angels," nine Tiffany windows).
+     The liturgical cool counterpoint to warm bronze; together they read as a
+     historic church rather than the warm-mono template. Static in BOTH themes
+     (like --color-primary) because the utility bar, footer, and closing CTA are
+     intentionally the same deep green on a light or dark page — text on them is
+     always cream (--color-chapel-foreground). Reachable as bg-chapel,
+     bg-chapel-deep, text-chapel-foreground. */
+  --color-chapel:            #1E423B; /* deep fir/Tiffany green — utility bar, footer, CTA */
+  --color-chapel-deep:       #16322C; /* deepest green base */
+  --color-chapel-foreground: #F1EAD9; /* warm cream text on chapel surfaces */
+  --color-gold:              #A07D45; /* liturgical gold — hairline rules, small accents */
+
+  /* Arched-top crown radius — the building's architectural signature, applied to
+     hero / feature / staff images via the .arch-top utility (a Romanesque
+     rounded arch). One token so the curve stays consistent everywhere. */
+  --arch-radius: clamp(3.5rem, 14vw, 9rem);
+
   /* Fonts */
   --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
   --font-body:    "Newsreader Variable", Georgia, "Times New Roman", serif;
@@ -126,6 +144,12 @@
        lifted Bronze in dark mode. Use text-link for inline links and bronze
        link-style buttons that need to read in both modes. */
     --color-link: var(--link);
+    /* Theme-aware Chapel green for KEYWORD EMPHASIS in headlines (the Highland
+       Park "set the key word in a second color" device). Deep green on light
+       cream surfaces, lifted green on dark surfaces. Use text-chapel-ink on a
+       headline span. (bg-chapel above is the static surface green; this ink
+       token is the readable-on-either-background text variant.) */
+    --color-chapel-ink: var(--chapel-ink);
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -181,6 +205,21 @@
   letter-spacing: 0;
 }
 
+/* Arched-top crown — the building's architectural signature (a Romanesque
+   rounded arch). Apply to an image, or to an overflow-hidden wrapper so the
+   image clips to the arch. `arch-top` is the full hero/feature size;
+   `arch-top-sm` is the gentler curve for cards + staff headshots. Pair with
+   `overflow-hidden`. The radius comes from the --arch-radius token so every
+   arch on the site shares one curve. */
+@utility arch-top {
+  border-top-left-radius: var(--arch-radius);
+  border-top-right-radius: var(--arch-radius);
+}
+@utility arch-top-sm {
+  border-top-left-radius: calc(var(--arch-radius) * 0.5);
+  border-top-right-radius: calc(var(--arch-radius) * 0.5);
+}
+
 /* ---------- Light mode (overrides shadcn defaults) -------------------- */
 
 :root {
@@ -212,6 +251,7 @@
     --input: #DED6C8;
     --ring: #8A6A43;
     --link: #6B4F2E;                /* deep bronze on cream — verify AA */
+    --chapel-ink: #1E423B;          /* deep Tiffany green keyword emphasis on cream (~9:1) */
 
     /* Charts (kept neutral, not used at launch) */
     --chart-1: oklch(0.87 0 0);
@@ -266,6 +306,7 @@
     --input: oklch(1 0 0 / 15%);
     --ring: #C7A875;
     --link: #D8BD8C;
+    --chapel-ink: #6FA99A;          /* lifted Tiffany green keyword emphasis on dark */
 
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);

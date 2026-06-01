@@ -41,6 +41,9 @@ export const site = {
     bg: "#ECE4DA",            // Paper (warm cream)
     bgSoft: "#F6F3EC",        // Paper Soft
     border: "#DED6C8",        // Warm Border
+    chapel: "#1E423B",        // Chapel green (Tiffany-glass) — utility bar, footer, CTA
+    chapelDeep: "#16322C",    // Chapel green, deepest base
+    gold: "#A07D45",          // Liturgical gold accent
   },
 
   // Static asset paths under public/

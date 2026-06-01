@@ -15,13 +15,10 @@
 // even before Sanity content is wired up.
 
 import { site } from '@/data/site';
-import { Mail, Phone } from 'lucide-react';
 import { IconBrandInstagram, IconBrandFacebook } from '@tabler/icons-react';
+import { ChevronDown } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import MobileNav from './MobileNav';
-import { ChevronDown } from 'lucide-react';
-import { getSectionVisibility, type SectionVisibility } from '@/lib/sectionVisibility';
-import { telHref } from '@/lib/phone';
 
 // The church brand is a text wordmark (Instrument Serif), not an image logo,
 // so there are no logo assets to pipe through getImage here.
@@ -35,28 +32,28 @@ interface Props {
     phone?: string;
     socialInstagram?: string;
     socialFacebook?: string;
-    availabilityStatus?: string;
-    sectionVisibility?: {
-      showPortfolio?: boolean | null;
-      showJournal?: boolean | null;
-      showShop?: boolean | null;
-      showEDesign?: boolean | null;
-      showGiftCertificates?: boolean | null;
-      showPress?: boolean | null;
-      showResources?: boolean | null;
-      showGuides?: boolean | null;
-      showStyleQuiz?: boolean | null;
-      showBudgetCalculator?: boolean | null;
-    } | null;
+    // Church utility-bar content. All optional with real fallbacks below, so
+    // the bar is never empty before Sanity is wired.
+    serviceTimes?: string;   // e.g. "Sundays at 11am"
+    giveUrl?: string;        // giving portal; falls back to the /give page
+    watchUrl?: string;       // livestream; falls back to the /sermons page
   } | null;
 }
 
 const { siteSettings } = Astro.props as Props;
 
-// Normalize section visibility from siteSettings. Unset => visible.
-const visible: SectionVisibility = getSectionVisibility(siteSettings?.sectionVisibility);
 const brandName = siteSettings?.siteName ?? siteSettings?.title ?? site.name;
-const availability = siteSettings?.availabilityStatus ?? '';
+
+// Utility-bar content. Service time + address read top-left; Watch + Give read
+// top-right. Values come from siteSettings when wired, else the church's real
+// details so the bar always reads as a real front door.
+const serviceTimes = siteSettings?.serviceTimes ?? 'Sundays at 11am';
+const addressShort = site.contact.addressLine; // "1936 South Michigan Ave"
+const giveHref = siteSettings?.giveUrl ?? '/give';
+const watchHref = siteSettings?.watchUrl ?? '/sermons';
+
+const ig = siteSettings?.socialInstagram ?? site.social.instagram;
+const fb = siteSettings?.socialFacebook ?? site.social.facebook;
 
 // Subset of siteSettings the mobile menu needs. Pass as a plain object so the
 // React island doesn't try to serialize the whole Sanity document graph.
@@ -64,14 +61,9 @@ const mobileNavSettings = {
   tagline: siteSettings?.tagline ?? 'Serving and celebrating Jesus for the good of the world.',
   email: siteSettings?.email ?? site.contact.email,
   phone: siteSettings?.phone ?? site.contact.phone,
-  socialInstagram: siteSettings?.socialInstagram ?? site.social.instagram,
-  socialFacebook: siteSettings?.socialFacebook ?? site.social.facebook,
+  socialInstagram: ig,
+  socialFacebook: fb,
 };
-
-const email = siteSettings?.email ?? site.contact.email;
-const phone = siteSettings?.phone ?? site.contact.phone;
-const ig = siteSettings?.socialInstagram ?? site.social.instagram;
-const fb = siteSettings?.socialFacebook ?? site.social.facebook;
 
 // Core nav structure. Flat items render as plain anchor links; dropdown
 // items render as native <details>/<summary> disclosure groups on desktop
@@ -140,66 +132,53 @@ function isGroupActive(items: { href: string }[]) {
       mobile menu drawer. Visible on every viewport. */}
   <div class="h-1 bg-primary" aria-hidden="true"></div>
 
-  {/* Eyebrow strip (desktop only). Carries the locked positioning line and
-      utility controls (email + social icons + theme toggle). Mobile gets
-      the same info through the MobileNav drawer. Breakpoint bumped from
-      md (768 px) to lg (1024 px) so the eyebrow strip + nav row only
-      appear once there's room for the full nav + CTA without squishing
-      the logo. */}
-  <div class="hidden lg:block bg-muted border-b border-border-soft">
-    <div class="mx-auto flex max-w-content items-center justify-between px-l py-2">
-      <div class="flex items-center gap-m">
-        <p class="text-xs uppercase tracking-eyebrow text-foreground/80">
-          {siteSettings?.tagline ?? 'Sundays at 11am · South Loop, Chicago'}
-        </p>
-        {/* Availability status, mirroring the mobile pill. Same pulsing dot
-            and link to /contact, so the trust signal is consistent at every
-            width (compact "Open" on phones, full status from md up). */}
-        {availability && (
-          <>
-            <span class="h-3 w-px bg-border-soft" aria-hidden="true"></span>
-            <a
-              href="/contact"
-              class="inline-flex items-center gap-1.5 text-xs uppercase tracking-eyebrow font-semibold text-foreground hover:text-link transition-colors"
-              aria-label={`${availability}. Get in touch.`}
-            >
-              <span class="relative flex w-2 h-2 shrink-0" aria-hidden="true">
-                <span class="absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-60 animate-ping"></span>
-                <span class="relative inline-flex w-2 h-2 rounded-full bg-tertiary"></span>
-              </span>
-              {availability}
-            </a>
-          </>
-        )}
-      </div>
-      <div class="flex items-center gap-m">
-        {email && (
-          <a
-            href={`mailto:${email}`}
-            class="inline-flex items-center gap-xs text-xs text-foreground hover:text-link transition-colors"
-          >
-            <Mail size={12} aria-hidden="true" />
-            {email}
-          </a>
-        )}
-        {phone && (
-          <a
-            href={telHref(phone)}
-            class="inline-flex items-center gap-xs text-xs text-foreground hover:text-link transition-colors"
-          >
-            <Phone size={12} aria-hidden="true" />
-            {phone}
-          </a>
-        )}
+  {/* Utility bar (all viewports). A deep Chapel-green strip carrying the
+      church's front-door logistics: service time + address on the left,
+      Watch Live + Give + social + theme on the right. This colored bar is the
+      clearest "purpose-built church" signal and replaces the template's muted
+      designer eyebrow. Cream text on deep green (~9:1 contrast). On phones the
+      address + social icons drop away to keep one tidy line; the service time,
+      Watch, Give, and theme toggle always show. */}
+  <div class="bg-chapel text-chapel-foreground">
+    <div class="mx-auto flex max-w-content items-center justify-between gap-m px-m sm:px-l py-1.5">
+      <p class="flex min-w-0 items-center gap-2 text-[0.7rem] sm:text-xs">
+        <span class="font-semibold uppercase tracking-eyebrow whitespace-nowrap">{serviceTimes}</span>
+        <span class="hidden sm:inline text-chapel-foreground/50" aria-hidden="true">·</span>
+        <span class="hidden sm:inline truncate text-chapel-foreground/80">{addressShort}</span>
+      </p>
+
+      <div class="flex items-center gap-3 sm:gap-m">
+        {/* Watch Live — a gold pulse dot signals the livestream. */}
+        <a
+          href={watchHref}
+          class="inline-flex items-center gap-1.5 text-[0.7rem] sm:text-xs uppercase tracking-eyebrow font-semibold text-chapel-foreground/90 hover:text-white transition-colors"
+        >
+          <span class="relative flex w-2 h-2 shrink-0" aria-hidden="true">
+            <span class="absolute inline-flex h-full w-full rounded-full bg-gold opacity-70 animate-ping"></span>
+            <span class="relative inline-flex w-2 h-2 rounded-full bg-gold"></span>
+          </span>
+          <span class="hidden min-[400px]:inline">Watch Live</span>
+          <span class="min-[400px]:hidden">Live</span>
+        </a>
+
+        <span class="h-3 w-px bg-chapel-foreground/25" aria-hidden="true"></span>
+
+        <a
+          href={giveHref}
+          class="text-[0.7rem] sm:text-xs uppercase tracking-eyebrow font-semibold text-chapel-foreground/90 hover:text-white transition-colors"
+        >
+          Give
+        </a>
+
         {(ig || fb) && (
-          <div class="flex items-center gap-1">
+          <div class="hidden sm:flex items-center gap-1">
             {ig && (
               <a
                 href={ig}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                class="inline-flex h-7 w-7 items-center justify-center rounded-full text-foreground hover:bg-accent hover:text-link transition-colors"
+                class="inline-flex h-7 w-7 items-center justify-center rounded-full text-chapel-foreground/80 hover:bg-white/10 hover:text-white transition-colors"
               >
                 <IconBrandInstagram size={14} stroke={1.5} />
               </a>
@@ -210,19 +189,21 @@ function isGroupActive(items: { href: string }[]) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                class="inline-flex h-7 w-7 items-center justify-center rounded-full text-foreground hover:bg-accent hover:text-link transition-colors"
+                class="inline-flex h-7 w-7 items-center justify-center rounded-full text-chapel-foreground/80 hover:bg-white/10 hover:text-white transition-colors"
               >
                 <IconBrandFacebook size={14} stroke={1.5} />
               </a>
             )}
           </div>
         )}
-        {/* Hydrate when idle, not on load — the anti-FOUC inline script in
-            BaseLayout already applies the correct theme class before first
-            paint, so this React island only needs to be live by the time the
-            visitor moves to click it. Demoting from client:load shaves real
-            TBT off mobile Lighthouse runs. */}
-        <ThemeToggle client:idle />
+
+        {/* Theme toggle. Its button defaults to text-foreground (dark ink),
+            which would disappear on the green bar, so force cream + a soft white
+            hover via arbitrary variants. The descendant selector reaches through
+            Astro's <astro-island> wrapper. Hydrate on idle to protect TBT. */}
+        <div class="[&_button]:!text-chapel-foreground [&_button:hover]:!bg-white/10 [&_button:hover]:!text-white">
+          <ThemeToggle client:idle />
+        </div>
       </div>
     </div>
   </div>
@@ -232,43 +213,6 @@ function isGroupActive(items: { href: string }[]) {
       eyebrow strip above — at viewports between md and lg the desktop
       layout would squish, so mobile-style header stays in use. */}
   <div class="relative mx-auto flex max-w-content items-center justify-center lg:justify-between px-l py-m border-b border-border">
-    {/* Mobile-only availability pill, mirroring the hamburger menu's
-        absolute-right placement. Gives mobile visitors an at-a-glance trust
-        signal ("Open / accepting new clients") and a single-tap path to
-        /contact — meaningfully conversion-positive in a tiny footprint. Renders
-        nothing when siteSettings.availabilityStatus is empty so the slot just
-        stays empty negative space. */}
-    {availability && (
-      <a
-        href="/contact"
-        class="lg:hidden absolute left-m top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 h-9 pl-2 pr-2.5 rounded-full bg-muted border border-border-soft text-foreground hover:border-primary hover:text-primary-dark transition-colors"
-      >
-        <span
-          class="relative flex w-2 h-2 shrink-0"
-          aria-hidden="true"
-        >
-          {/* Soft pulsing halo — kills under prefers-reduced-motion via the
-              global rule that flattens all animations. */}
-          <span class="absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-60 animate-ping"></span>
-          <span class="relative inline-flex w-2 h-2 rounded-full bg-tertiary"></span>
-        </span>
-        {/* On the narrowest phones the centered logo leaves room only for a
-            compact "Open". From md up, where the pill has space before the
-            logo, show the full availabilityStatus so the roomy header doesn't
-            read as half-empty. The complete status is always in the aria-label
-            and on the Contact page. */}
-        <span class="md:hidden text-[0.65rem] uppercase tracking-eyebrow font-semibold whitespace-nowrap">
-          Open
-        </span>
-        <span class="hidden md:inline text-[0.65rem] uppercase tracking-eyebrow font-semibold whitespace-nowrap">
-          {availability}
-        </span>
-        {/* Visually-hidden suffix so the link's accessible name contains its
-            visible text (WCAG 2.5.3) while still hinting the destination. */}
-        <span class="sr-only"> · tap to start a conversation</span>
-      </a>
-    )}
-
     {/* Text wordmark in the display serif. The church brand is typographic,
         not an image logo, so it renders crisp at any density and needs no
         theme-swap machinery (it inherits the theme-aware foreground color). */}
