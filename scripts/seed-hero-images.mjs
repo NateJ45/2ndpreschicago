@@ -103,13 +103,45 @@ async function run() {
     console.log(`  patched hero  ${p.id}  (${p.file})`);
   }
 
-  // Home hero uses the heroImages array (supports a slideshow).
-  const homeAsset = await uploadImage('hero-sanctuary.webp');
+  // Home hero renders a slideshow from the heroImages array: a slow Ken Burns
+  // cross-fade through these photos inside the arched frame (see
+  // HeroArchSlideshow.astro). Order matters: the first entry is the LCP image
+  // (loaded eager) and carries the page's hero alt text. Alts mirror the ones
+  // already used for these same files on their own pages, above.
+  // NOTE: several hero-*.webp files in src/assets are byte-identical placeholder
+  // copies (hero-weddings == tiffany-windows, hero-grow == sanctuary-interior).
+  // Sanity dedupes by content hash, so listing both would render the same photo
+  // twice. This set is 10 *distinct* images, verified by MD5.
+  const homeHeroFiles = [
+    ['hero-sanctuary.webp', 'Second Presbyterian Church on South Michigan Avenue'],
+    ['hero-exterior.webp', 'The Gothic stone facade of Second Presbyterian Church in the South Loop'],
+    ['sanctuary-interior.webp', 'The welcoming nave of the sanctuary at Second Presbyterian'],
+    ['tiffany-windows.webp', 'A Tiffany stained-glass window at Second Presbyterian'],
+    ['mural-angels.jpg', 'The painted angels on the sanctuary ceiling at Second Presbyterian'],
+    ['hero-worship.webp', 'The sanctuary of Second Presbyterian set for Sunday worship'],
+    ['hero-music.webp', 'The historic Austin pipe organ in the Second Presbyterian sanctuary'],
+    ['hero-food.webp', 'Neighbors gathered for the food ministry at Second Presbyterian'],
+    ['hero-events.webp', 'A gathering inside the historic sanctuary at Second Presbyterian'],
+    ['hero-space.webp', 'The historic sanctuary interior at Second Presbyterian, open to the community'],
+  ];
+  const heroImages = [];
+  for (let i = 0; i < homeHeroFiles.length; i++) {
+    const [file, alt] = homeHeroFiles[i];
+    const assetId = await uploadImage(file);
+    heroImages.push({ ...img(assetId, alt), _key: `home-hero-${i + 1}` });
+  }
   await client.createIfNotExists({ _id: 'homePage', _type: 'homePage' });
-  await client.patch('homePage').set({
-    heroImages: [{ ...img(homeAsset, 'The historic stone sanctuary of Second Presbyterian Church on South Michigan Avenue'), _key: 'home-hero-1' }],
-  }).commit();
-  console.log('  patched hero  homePage  (hero-sanctuary.webp)');
+  await client.patch('homePage').set({ heroImages }).commit();
+  console.log(`  patched hero  homePage  (${heroImages.length}-image slideshow)`);
+
+  // If an unpublished draft of the home page exists, mirror the slideshow into
+  // it too, so the Studio shows the new images whether or not an editor has a
+  // draft open (otherwise a stale draft would mask the published change).
+  const draft = await client.getDocument('drafts.homePage').catch(() => null);
+  if (draft) {
+    await client.patch('drafts.homePage').set({ heroImages }).commit();
+    console.log(`  patched hero  drafts.homePage  (${heroImages.length}-image slideshow)`);
+  }
 
   console.log(`Done. ${churchPages.length + existingPages.length + 1} page heroes set.`);
 }

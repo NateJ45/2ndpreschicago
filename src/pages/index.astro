@@ -24,6 +24,7 @@ import { getHomePage, getSiteSettings, getFeaturedMinistries } from '@/lib/queri
 import { site } from '@/data/site';
 import SectionHeading from '@/components/SectionHeading.astro';
 import SanityImage from '@/components/SanityImage.astro';
+import HeroArchSlideshow from '@/components/HeroArchSlideshow.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 import heroSanctuary from '@/assets/hero-sanctuary.webp';
@@ -76,6 +77,11 @@ const heroSubhead = (seasonalActive ? seasonal.subhead : page?.heroSubhead) ?? H
 const seasonalImg = seasonalActive ? seasonal.image : null;
 const heroImgEffective = (seasonalImg?.asset ? seasonalImg : heroImg) ?? null;
 const hasSanityHero = !!heroImgEffective?.asset;
+
+// When the Home hero has 2+ images (and no seasonal override is active), the arched
+// frame becomes a cross-fading Ken Burns slideshow; otherwise it shows one image.
+const heroSlides = (page?.heroImages ?? []).filter((img: any) => !!img?.asset);
+const isHeroSlideshow = !seasonalActive && heroSlides.length >= 2;
 
 // Primary pill (seasonal can override label + link); Watch prefers the
 // configured livestream URL, falling back to the YouTube channel.
@@ -195,8 +201,10 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
           The arch + bronze frame is repeated on the Welcome image + staff
           headshots so it reads as the site's signature shape. */}
       <div class="order-1 md:order-2 mx-auto w-full max-w-md md:max-w-none">
-        <div class="group arch-top overflow-hidden ring-1 ring-border shadow-sm img-zoom aspect-[4/5] sm:aspect-[5/6]">
-          {hasSanityHero ? (
+        <div class:list={['group arch-top overflow-hidden ring-1 ring-border shadow-sm aspect-[4/5] sm:aspect-[5/6]', isHeroSlideshow ? 'relative' : 'img-zoom']}>
+          {isHeroSlideshow ? (
+            <HeroArchSlideshow images={heroSlides} />
+          ) : hasSanityHero ? (
             <SanityImage
               source={heroImgEffective}
               width={900}
