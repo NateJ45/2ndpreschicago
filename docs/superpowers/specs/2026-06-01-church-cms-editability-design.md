@@ -1,6 +1,11 @@
 # Church CMS: Configurable Forms + Full Editability — Design Spec
 
-Date: 2026-06-01. Builds on the church remodel (`docs/remodel/`). Goal: let a non-technical
+Date: 2026-06-01. Builds on the church remodel (`docs/remodel/`).
+
+> **Status (resumption note):** Spec APPROVED by the user on 2026-06-01. Build on a feature branch
+> `feature/church-cms`, shipping phase by phase (Phase 1 forms first). Next step is the
+> writing-plans skill to produce the implementation plan, then build. master is at the merged
+> remodel; this spec + the cleanup script are already on master. Goal: let a non-technical
 pastor and church secretary run the entire site from Sanity for a year, and keep the project a
 reusable church template. Source of needs: pastor/secretary role analysis (annual rhythms +
 weekly operations) plus the live Squarespace site (e.g. the wedding inquiry form).
@@ -52,8 +57,12 @@ weekly operations) plus the live Squarespace site (e.g. the wedding inquiry form
   - `consentNote` (text, optional; small print, /privacy link appended)
   - `provider` (object): `service` (list: web3forms | formspree | email), `accessKey` (string;
     Web3Forms access key OR Formspree form id), `notifyEmail` (string, informational/label)
-- Embed mode:
-  - `embedHtml` (text; pasted external form embed/iframe) or `embedUrl` (url)
+- Embed mode (covers Subsplash forms/sign-ups, Google Forms, Planning Center, Jotform):
+  - `embedHtml` (text; pasted embed snippet/iframe) or `embedUrl` (url for a plain iframe)
+  - The renderer must support BOTH iframe embeds AND script-based embeds (Subsplash "Smart
+    Embeds", Planning Center sign-ups). A `<script>` injected via innerHTML does NOT execute, so
+    the embed component parses the pasted markup and re-creates each `<script>` element (copying
+    src + attributes + inline content) so it actually loads. iframes pass through unchanged.
 - `preview`: title + mode.
 
 ### Component: `FormRenderer.tsx` (new React island)
@@ -129,6 +138,9 @@ weekly operations) plus the live Squarespace site (e.g. the wedding inquiry form
 ### `embed` (new object block)
 - `{ title?, mode: url|html, url?, html?, aspect? }`. Used in Portable Text and as a page-builder
   block to drop in a Subsplash player, a PCO signup, a Google calendar, or a map.
+- Shares one `Embed` renderer with the Phase 1 form embed mode: iframes pass through; pasted markup
+  containing `<script>` (Subsplash Smart Embeds, etc.) is parsed and each script element is
+  re-created so it executes. Build the renderer once and reuse it in both places.
 
 ---
 
