@@ -30,6 +30,7 @@ interface Props {
     tagline?: string;
     email?: string;
     phone?: string;
+    addressLine?: string;
     socialInstagram?: string;
     socialFacebook?: string;
     // Church utility-bar content. All optional with real fallbacks below, so
@@ -57,7 +58,7 @@ const brandName = siteSettings?.siteName ?? siteSettings?.title ?? site.name;
 // top-right. Values come from siteSettings when wired, else the church's real
 // details so the bar always reads as a real front door.
 const serviceTimes = siteSettings?.serviceTimes ?? 'Sundays at 11am';
-const addressShort = site.contact.addressLine; // "1936 South Michigan Ave"
+const addressShort = siteSettings?.addressLine ?? site.contact.addressLine; // "1936 South Michigan Ave"
 const giveHref = siteSettings?.giveUrl ?? '/give';
 const watchHref = siteSettings?.watchUrl ?? '/sermons';
 

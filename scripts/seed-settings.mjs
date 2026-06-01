@@ -43,6 +43,8 @@ const client = createClient({ projectId, dataset, apiVersion, token, useCdn: fal
 const VALUES = {
   serviceTimes: 'Sundays at 11am',
   mission: 'Serving and celebrating Jesus for the good of the world.',
+  addressLine: '1936 South Michigan Ave',
+  cityStateZip: 'Chicago, IL 60616',
   giveUrl:
     'https://www.eservicepayments.com/cgi-bin/Vanco_ver3.vps?appver3=wWsk24ZWJSTZKsGd1RMKlg0BDvsSG3VIWQCPJNNxD8upkiY7JlDavDsozUE7KG0nFx2NSo8LdUKGuGuF396vbQob3Vy7b9Yfe_jNfJWTbVeXHubq5Z7ap5JVmPEpc4ZeYHCKCZhESjGNQmZ5B-6dx5zOQjapagb4-GcDOvSEdsc=&ver=3',
   watchUrl: 'https://www.youtube.com/@secondpreschicago',

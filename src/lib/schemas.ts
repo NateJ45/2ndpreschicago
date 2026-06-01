@@ -15,6 +15,8 @@ interface SiteSettings {
   title?: string;
   email?: string;
   phone?: string;
+  /** Street line, e.g. "1936 South Michigan Ave" — set in Sanity siteSettings, falls back to site.ts */
+  addressLine?: string;
   serviceAreas?: string[];
   socialInstagram?: string;
   socialFacebook?: string;
@@ -60,7 +62,7 @@ export function churchSchema(settings: SiteSettings | null | undefined): string 
     telephone: s.phone ?? site.contact.phone,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: site.contact.addressLine,
+      streetAddress: s.addressLine ?? site.contact.addressLine,
       addressLocality: 'Chicago',
       addressRegion: 'IL',
       postalCode: '60616',

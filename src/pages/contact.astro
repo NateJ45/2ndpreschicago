@@ -31,7 +31,12 @@ const schemas = [
   ]),
 ];
 
-const mapQuery = encodeURIComponent(`${site.contact.addressLine}, ${site.contact.cityStateZip}`);
+// Address: editable in Sanity (siteSettings), falling back to site.ts. Resolved
+// into consts so the embedded map query and the visible address read the same.
+const addressLine = siteSettings?.addressLine ?? site.contact.addressLine;
+const cityStateZip = siteSettings?.cityStateZip ?? site.contact.cityStateZip;
+
+const mapQuery = encodeURIComponent(`${addressLine}, ${cityStateZip}`);
 
 // Inline fallback. The who-to-reach rows are editable in Sanity
 // (contactPage.contactReasons); this const renders when that field is empty, so
@@ -66,7 +71,7 @@ const reasons = page?.contactReasons?.length ? page.contactReasons : FALLBACK_RE
         <ul class="space-y-m list-none p-0 text-lg">
           <li class="flex items-start gap-s">
             <MapPin size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
-            <span>{site.contact.addressLine}<br />{site.contact.cityStateZip}</span>
+            <span>{addressLine}<br />{cityStateZip}</span>
           </li>
           <li class="flex items-start gap-s">
             <Phone size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />

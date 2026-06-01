@@ -1807,6 +1807,8 @@ export type SiteSettings = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  addressLine?: string;
+  cityStateZip?: string;
   navItems?: Array<
     | {
         label?: string;

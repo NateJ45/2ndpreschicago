@@ -74,6 +74,21 @@ export const siteSettings = defineType({
         'The small icon shown in the browser tab and in bookmarks. Use a simple, roughly square logo mark, at least 128 by 128 pixels (fine detail disappears at tiny sizes). Leave blank to use the built-in church mark.',
       options: { hotspot: true },
     }),
+    defineField({
+      name: 'addressLine',
+      title: 'Street address',
+      type: 'string',
+      group: 'identity',
+      description:
+        'Street line, e.g. "1936 South Michigan Ave". Shown in the header bar, footer, contact + give pages, and the map links.',
+    }),
+    defineField({
+      name: 'cityStateZip',
+      title: 'City, state, ZIP',
+      type: 'string',
+      group: 'identity',
+      description: 'e.g. "Chicago, IL 60616".',
+    }),
 
     // ── Navigation (top menu) ─────────────────────────────────────────────────
     // The website header menu. When this is empty the header renders its

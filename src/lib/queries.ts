@@ -54,6 +54,8 @@ export async function getSiteSettings() {
     email,
     phone,
     favicon${IMAGE_PROJECTION},
+    addressLine,
+    cityStateZip,
     serviceTimes,
     watchUrl,
     giveUrl,

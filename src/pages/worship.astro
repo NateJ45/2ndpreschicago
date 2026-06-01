@@ -59,7 +59,7 @@ const pillOutline =
         <div class="mt-s mb-m h-px w-12 bg-primary/60" aria-hidden="true"></div>
         <p class="font-display text-h1 text-foreground leading-none">{page?.gatherTime ?? '11am'}</p>
         <p class="mt-s text-lg text-foreground/85">{page?.gatherDay ?? 'Every Sunday morning'}</p>
-        <p class="mt-m text-foreground/80">{site.contact.addressLine}<br />{site.contact.cityStateZip}</p>
+        <p class="mt-m text-foreground/80">{siteSettings?.addressLine ?? site.contact.addressLine}<br />{siteSettings?.cityStateZip ?? site.contact.cityStateZip}</p>
         <div class="mt-l flex flex-wrap gap-s">
           <a href="/contact" class={pillPrimary}>Get Directions</a>
           <a href={site.social.youtube} target="_blank" rel="noopener noreferrer" class={pillOutline}>Watch Online</a>

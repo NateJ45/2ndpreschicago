@@ -71,7 +71,7 @@ const pillPrimary =
           <p class="mt-s text-foreground/85 leading-relaxed">
             {page?.mailBodyP1 ?? 'Prefer to send a check? Make it out to Second Presbyterian Church of Chicago and mail it to:'}
           </p>
-          <p class="mt-s text-foreground/80">{site.name}<br />{site.contact.addressLine}<br />{site.contact.cityStateZip}</p>
+          <p class="mt-s text-foreground/80">{site.name}<br />{siteSettings?.addressLine ?? site.contact.addressLine}<br />{siteSettings?.cityStateZip ?? site.contact.cityStateZip}</p>
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
           <h3 class="font-display text-h4 text-foreground">{page?.foodHeadline ?? 'Support the food ministry'}</h3>

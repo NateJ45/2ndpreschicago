@@ -42,6 +42,8 @@ interface Props {
     title?: string;
     email?: string;
     phone?: string;
+    addressLine?: string;
+    cityStateZip?: string;
     socialInstagram?: string;
     socialFacebook?: string;
     socialYoutube?: string;
@@ -79,9 +81,15 @@ const mission = siteSettings?.mission ?? tagline;
 const serviceTimes = siteSettings?.serviceTimes ?? 'Sundays at 11am';
 const giveHref = siteSettings?.giveUrl ?? '/give';
 
+// Address: editable in Sanity, falling back to the church's real details in
+// src/data/site.ts. Resolved into consts first so both the directions link and
+// the visible "where" line below read from the same values.
+const addressLine = siteSettings?.addressLine ?? site.contact.addressLine;
+const cityStateZip = siteSettings?.cityStateZip ?? site.contact.cityStateZip;
+
 // Directions link built from the church's address so "Get directions" opens
 // the right pin in any maps app.
-const fullAddress = `${site.contact.addressLine}, ${site.contact.cityStateZip}`;
+const fullAddress = `${addressLine}, ${cityStateZip}`;
 const mapHref = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(fullAddress)}`;
 
 const currentYear = new Date().getFullYear();
@@ -201,7 +209,7 @@ const footerLink =
       </p>
       <p class="mt-s flex items-start justify-center md:justify-start gap-xs text-chapel-foreground/80">
         <MapPin size={16} aria-hidden="true" className="mt-1 shrink-0 text-gold" />
-        <span>{site.contact.addressLine}<br />{site.contact.cityStateZip}</span>
+        <span>{addressLine}<br />{cityStateZip}</span>
       </p>
       <a
         href={mapHref}
