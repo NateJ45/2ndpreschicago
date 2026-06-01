@@ -7,7 +7,7 @@
 // the module section-visibility toggles) were removed. Church fields replace them.
 
 import { defineType, defineField, defineArrayMember } from 'sanity';
-import { LinkIcon, ChevronDownIcon } from '@sanity/icons';
+import { LinkIcon, ChevronDownIcon, ListIcon } from '@sanity/icons';
 
 export const siteSettings = defineType({
   name: 'siteSettings',
@@ -17,7 +17,7 @@ export const siteSettings = defineType({
   options: { canvasApp: { exclude: true } },
   groups: [
     { name: 'identity', title: 'Identity & contact' },
-    { name: 'navigation', title: 'Navigation (top menu)' },
+    { name: 'navigation', title: 'Navigation (menus)' },
     { name: 'worship', title: 'Worship times' },
     { name: 'connect', title: 'Connect & integrations' },
     { name: 'social', title: 'Social & footer' },
@@ -150,6 +150,72 @@ export const siteSettings = defineType({
             prepare: ({ title, links }) => ({
               title: title ?? '(no label)',
               subtitle: `Dropdown · ${Array.isArray(links) ? links.length : 0} link(s)`,
+            }),
+          },
+        }),
+      ],
+    }),
+
+    // Footer link columns. When empty the footer renders its built-in columns
+    // (see src/components/Footer.astro). The "Get in touch" column (email, phone,
+    // social) is always shown automatically and is not configured here.
+    defineField({
+      name: 'footerColumns',
+      title: 'Footer link columns',
+      type: 'array',
+      group: 'navigation',
+      description:
+        'The titled link columns in the footer, for example "Visit", "Get Involved", "Connect". Drag to reorder. Leave empty to use the built-in default columns. The "Get in touch" column (email, phone, social) always shows automatically. Aim for three columns so the footer grid stays balanced.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'footerColumn',
+          title: 'Column',
+          icon: ListIcon,
+          fields: [
+            defineField({
+              name: 'title',
+              title: 'Column heading',
+              type: 'string',
+              description: 'The small heading above the links, e.g. "Visit".',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'links',
+              title: 'Links',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'object',
+                  name: 'footerLink',
+                  title: 'Link',
+                  icon: LinkIcon,
+                  fields: [
+                    defineField({
+                      name: 'label',
+                      title: 'Label',
+                      type: 'string',
+                      validation: (Rule) => Rule.required(),
+                    }),
+                    defineField({
+                      name: 'href',
+                      title: 'Address',
+                      type: 'string',
+                      description: 'A page on this site like /give, or a full web address.',
+                      validation: (Rule) => Rule.required(),
+                    }),
+                  ],
+                  preview: { select: { title: 'label', subtitle: 'href' } },
+                }),
+              ],
+              validation: (Rule) => Rule.required().min(1),
+            }),
+          ],
+          preview: {
+            select: { title: 'title', links: 'links' },
+            prepare: ({ title, links }) => ({
+              title: title ?? '(no heading)',
+              subtitle: `Column · ${Array.isArray(links) ? links.length : 0} link(s)`,
             }),
           },
         }),

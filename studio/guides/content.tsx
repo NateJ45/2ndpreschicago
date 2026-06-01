@@ -364,18 +364,18 @@ export const guides: Guide[] = [
         kind: 'callout',
         tone: 'positive',
         title: 'You can add it to the menu yourself',
-        text: 'To put your new page in the top menu, see the next guide, Edit the top menu. (Footer links are still set in code.)',
+        text: 'To put your new page in the top menu or the footer, see the next guide, Edit the top menu & footer.',
       },
-      { kind: 'seealso', items: ['Edit the top menu', 'Add & arrange sections'] },
+      { kind: 'seealso', items: ['Edit the top menu & footer', 'Add & arrange sections'] },
     ],
   },
 
   // 9 ---------------------------------------------------------------------- (editable nav)
   {
     slug: 'top-menu',
-    title: 'Edit the top menu',
+    title: 'Edit the top menu & footer',
     icon: MenuIcon,
-    lead: 'Add, rename, reorder, or remove the links in the website header, including dropdown menus.',
+    lead: 'Add, rename, reorder, or remove the links in the website header and footer, including dropdown menus.',
     diy: 'self',
     body: [
       { kind: 'path', items: ['Site Settings', 'Navigation'] },
@@ -406,11 +406,21 @@ export const guides: Guide[] = [
         title: 'Your list becomes the whole menu',
         text: 'While Top menu links is empty, the site shows the built-in menu. As soon as you add any items, they become the entire menu, so include every link you want in the header, not just the new one.',
       },
+      { kind: 'h', text: 'Footer link columns' },
+      {
+        kind: 'steps',
+        items: [
+          'In the same **Navigation** tab, scroll to **Footer link columns**.',
+          'Click **Add item**, choose **Column**, and give it a **Column heading**, for example "Visit".',
+          'Add a **Link** for each item in that column. Add up to three columns.',
+          'Publish. The "Get in touch" column (email, phone, social) is added for you automatically.',
+        ],
+      },
       {
         kind: 'callout',
         tone: 'primary',
-        title: 'The footer is separate',
-        text: `Footer links are still set in code. To change those, email ${CHURCH.contactName} at ${CHURCH.contactEmail}.`,
+        title: 'Empty means the built-in menus',
+        text: 'Both the top menu and the footer columns fall back to the built-in menus while they are empty, so you only change what you fill in.',
       },
       { kind: 'seealso', items: ['Build a brand-new page'] },
     ],
@@ -579,7 +589,7 @@ export const guides: Guide[] = [
           'Put up and take down announcement banners.',
           'Add, reorder, and remove sections on a page.',
           'Build new Custom Pages.',
-          'Add, rename, and reorder the top menu links.',
+          'Add, rename, and reorder the top menu and footer links.',
           'Change section background tones and images.',
           'Update service times and the seasonal home banner.',
         ],
@@ -594,7 +604,6 @@ export const guides: Guide[] = [
       {
         kind: 'bullets',
         items: [
-          'Changing the footer links (the top menu you can now edit yourself, see Edit the top menu).',
           'Needing a new kind of field, or a new kind of section that does not exist yet.',
           'Web address changes, redirects, the domain, or email and DNS settings.',
           'Adding a new outside tool (a new giving, calendar, or streaming embed).',

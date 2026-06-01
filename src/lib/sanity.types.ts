@@ -1784,6 +1784,17 @@ export type SiteSettings = {
         _key: string;
       }
   >;
+  footerColumns?: Array<{
+    title?: string;
+    links?: Array<{
+      label?: string;
+      href?: string;
+      _type: "footerLink";
+      _key: string;
+    }>;
+    _type: "footerColumn";
+    _key: string;
+  }>;
   serviceTimes?: string;
   watchUrl?: string;
   giveUrl?: string;

@@ -73,6 +73,11 @@ export async function getSiteSettings() {
       label,
       href,
       links[]{ _type, _key, label, href }
+    },
+    footerColumns[]{
+      _key,
+      title,
+      links[]{ _key, label, href }
     }
   }`, {}, null);
 }
