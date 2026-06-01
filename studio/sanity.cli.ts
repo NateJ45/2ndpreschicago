@@ -12,6 +12,9 @@ export default defineCliConfig({
   // studioHost must be globally unique across *.sanity.studio; change it if deploy reports a clash.
   studioHost: 'secondpreschicago',
   deployment: {
+    // The deployed studio application (secondpreschicago.sanity.studio).
+    // Pinning the appId keeps `sanity deploy` non-interactive on future runs.
+    appId: 'qnl9wc1nqjzru774j53329yd',
     autoUpdates: true,
   },
   // Typegen reads the extracted schema and writes types into the Astro project's src/lib/.
