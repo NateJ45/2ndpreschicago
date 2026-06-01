@@ -2,12 +2,22 @@
 // Page-builder renderer. Maps each flexibleSections block (_type) to its
 // on-brand component. Unknown types are skipped. Used by the generic `page`
 // type at /[slug] and any page that adds a flexibleSections[] field.
+//
+// Shell-aware blocks (the newer, tone-adaptive ones) render their inner content
+// only and are wrapped in <SectionShell> so a single editor control sets their
+// background (token tone, or image/video with overlay). The original blocks
+// render their own section background and are passed through unwrapped.
+import SectionShell from '@/components/SectionShell.astro';
 import RichTextBlock from '@/components/blocks/RichTextBlock.astro';
 import ImageTextBlock from '@/components/blocks/ImageTextBlock.astro';
 import CardGridBlock from '@/components/blocks/CardGridBlock.astro';
 import QuoteBlock from '@/components/blocks/QuoteBlock.astro';
 import CtaBandBlock from '@/components/blocks/CtaBandBlock.astro';
 import FormRefBlock from '@/components/blocks/FormRefBlock.astro';
+import FeatureCardsBlock from '@/components/blocks/FeatureCardsBlock.astro';
+import StatsBlock from '@/components/blocks/StatsBlock.astro';
+import AccordionBlock from '@/components/blocks/AccordionBlock.astro';
+import GalleryBlock from '@/components/blocks/GalleryBlock.astro';
 import EmbedBlock from '@/components/EmbedBlock.astro';
 
 interface Props {
@@ -24,14 +34,28 @@ const MAP: Record<string, any> = {
   sectionQuote: QuoteBlock,
   sectionCtaBand: CtaBandBlock,
   sectionForm: FormRefBlock,
+  sectionFeatureCards: FeatureCardsBlock,
+  sectionStats: StatsBlock,
+  sectionAccordion: AccordionBlock,
+  sectionGallery: GalleryBlock,
   embed: EmbedBlock,
 };
+
+// Blocks that render inner content only and take their background from SectionShell.
+const SHELL_AWARE = new Set(['sectionFeatureCards', 'sectionStats', 'sectionAccordion', 'sectionGallery']);
 ---
 
 {
   (sections ?? []).map((block: any) => {
     const Cmp = MAP[block?._type];
     if (!Cmp) return null;
+    if (SHELL_AWARE.has(block._type)) {
+      return (
+        <SectionShell background={block.background}>
+          <Cmp block={block} fallbackEmail={fallbackEmail} />
+        </SectionShell>
+      );
+    }
     return <Cmp block={block} fallbackEmail={fallbackEmail} />;
   })
 }

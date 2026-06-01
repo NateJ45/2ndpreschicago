@@ -46,6 +46,72 @@ const richBody = {
   ],
 };
 
+// Shared "section background" control: a design-token tone, OR an image/video
+// behind the section with a darkening overlay so text stays readable. Added to
+// blocks that opt into backgrounds; rendered by SectionShell.astro.
+export function bgField() {
+  return defineField({
+    name: 'background',
+    title: 'Section background',
+    type: 'object',
+    options: { collapsible: true, collapsed: true },
+    description: 'Optional. Set a brand color tone, or drop in a background photo/video with a dark overlay so text stays readable.',
+    fields: [
+      defineField({
+        name: 'tone',
+        title: 'Color tone',
+        type: 'string',
+        options: {
+          list: [
+            { title: 'Default (paper)', value: 'default' },
+            { title: 'Warm', value: 'warm' },
+            { title: 'Chapel green', value: 'chapel' },
+            { title: 'Chapel deep', value: 'chapelDeep' },
+          ],
+          layout: 'radio',
+        },
+        initialValue: 'default',
+      }),
+      defineField({
+        name: 'image',
+        title: 'Background image (optional)',
+        type: 'image',
+        options: { hotspot: true },
+        fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+        description: 'Sits behind the section under a dark overlay. Text is shown in white over it.',
+      }),
+      defineField({
+        name: 'videoUrl',
+        title: 'Background video URL (optional)',
+        type: 'url',
+        description: 'A direct .mp4 or .webm file URL. Plays muted, looped, behind the section. Overrides the image.',
+      }),
+      defineField({
+        name: 'overlay',
+        title: 'Overlay darkness (%)',
+        type: 'number',
+        initialValue: 55,
+        validation: (R) => R.min(0).max(90),
+        description: 'Only applies when an image or video is set. Higher = darker, for better text contrast.',
+      }),
+      defineField({
+        name: 'padding',
+        title: 'Vertical spacing',
+        type: 'string',
+        options: {
+          list: [
+            { title: 'Compact', value: 'compact' },
+            { title: 'Normal', value: 'normal' },
+            { title: 'Spacious', value: 'spacious' },
+          ],
+          layout: 'radio',
+        },
+        initialValue: 'normal',
+      }),
+    ],
+  });
+}
+
 export const sectionRichText = defineType({
   name: 'sectionRichText',
   title: 'Text section',
@@ -167,6 +233,156 @@ export const sectionForm = defineType({
   preview: { select: { title: 'heading', form: 'form.title' }, prepare: ({ title, form }) => ({ title: title || form || 'Form' }) },
 });
 
+export const sectionFeatureCards = defineType({
+  name: 'sectionFeatureCards',
+  title: 'Feature cards (detailed)',
+  type: 'object',
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+    defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+    defineField({ name: 'intro', title: 'Intro', type: 'text', rows: 2 }),
+    defineField({
+      name: 'columns',
+      title: 'Columns',
+      type: 'string',
+      options: { list: ['2', '3', '4'], layout: 'radio' },
+      initialValue: '3',
+    }),
+    defineField({ name: 'arched', title: 'Arched card images (church motif)', type: 'boolean', initialValue: false }),
+    defineField({
+      name: 'cards',
+      title: 'Cards',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'featureCard',
+          fields: [
+            defineField({
+              name: 'image',
+              title: 'Image (optional)',
+              type: 'image',
+              options: { hotspot: true },
+              fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+            }),
+            defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+            defineField({ name: 'title', title: 'Title', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'body', title: 'Body', type: 'text', rows: 3 }),
+            defineField({ name: 'badge', title: 'Badge (optional)', type: 'string', description: 'Small tag, e.g. "New" or "Weekly".' }),
+            defineField({ name: 'ctaLabel', title: 'Link label', type: 'string' }),
+            defineField({ name: 'ctaUrl', title: 'Link URL', type: 'string' }),
+          ],
+          preview: { select: { title: 'title', subtitle: 'eyebrow', media: 'image' } },
+        }),
+      ],
+    }),
+    bgField(),
+  ],
+  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Feature cards' }) },
+});
+
+export const sectionStats = defineType({
+  name: 'sectionStats',
+  title: 'Stats / numbers',
+  type: 'object',
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+    defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+    defineField({ name: 'intro', title: 'Intro', type: 'text', rows: 2 }),
+    defineField({
+      name: 'columns',
+      title: 'Columns',
+      type: 'string',
+      options: { list: ['2', '3', '4'], layout: 'radio' },
+      initialValue: '3',
+    }),
+    defineField({
+      name: 'items',
+      title: 'Stats',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'stat',
+          fields: [
+            defineField({ name: 'value', title: 'Value', type: 'string', description: 'e.g. "1901", "600", "9". Free text so you can write "600+".', validation: (R) => R.required() }),
+            defineField({ name: 'label', title: 'Label', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'note', title: 'Note (optional)', type: 'string' }),
+          ],
+          preview: { select: { title: 'value', subtitle: 'label' } },
+        }),
+      ],
+    }),
+    bgField(),
+  ],
+  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Stats' }) },
+});
+
+export const sectionAccordion = defineType({
+  name: 'sectionAccordion',
+  title: 'FAQ / accordion',
+  type: 'object',
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+    defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+    defineField({ name: 'intro', title: 'Intro', type: 'text', rows: 2 }),
+    defineField({
+      name: 'items',
+      title: 'Questions',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'qa',
+          fields: [
+            defineField({ name: 'question', title: 'Question', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'answer', title: 'Answer', type: 'text', rows: 4, validation: (R) => R.required() }),
+          ],
+          preview: { select: { title: 'question' } },
+        }),
+      ],
+    }),
+    bgField(),
+  ],
+  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'FAQ / accordion' }) },
+});
+
+export const sectionGallery = defineType({
+  name: 'sectionGallery',
+  title: 'Photo gallery',
+  type: 'object',
+  fields: [
+    defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
+    defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+    defineField({ name: 'intro', title: 'Intro', type: 'text', rows: 2 }),
+    defineField({
+      name: 'columns',
+      title: 'Columns',
+      type: 'string',
+      options: { list: ['2', '3', '4'], layout: 'radio' },
+      initialValue: '3',
+    }),
+    defineField({
+      name: 'images',
+      title: 'Photos',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
+            defineField({ name: 'caption', title: 'Caption (optional)', type: 'string' }),
+          ],
+        }),
+      ],
+      options: { layout: 'grid' },
+    }),
+    bgField(),
+  ],
+  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Photo gallery' }) },
+});
+
 // All block types collected for registration in index.ts.
 export const sectionBlocks = [
   sectionRichText,
@@ -175,6 +391,10 @@ export const sectionBlocks = [
   sectionQuote,
   sectionCtaBand,
   sectionForm,
+  sectionFeatureCards,
+  sectionStats,
+  sectionAccordion,
+  sectionGallery,
 ];
 
 // The array members allowed in a flexibleSections[] field (includes the shared
@@ -182,7 +402,11 @@ export const sectionBlocks = [
 export const FLEXIBLE_SECTION_MEMBERS = [
   { type: 'sectionRichText' },
   { type: 'sectionImageText' },
+  { type: 'sectionFeatureCards' },
   { type: 'sectionCardGrid' },
+  { type: 'sectionStats' },
+  { type: 'sectionGallery' },
+  { type: 'sectionAccordion' },
   { type: 'sectionQuote' },
   { type: 'sectionCtaBand' },
   { type: 'sectionForm' },

@@ -37,7 +37,10 @@ const FORM_PROJECTION = `{
 // image + form references; other blocks carry their fields via the spread.
 const SECTION_MEMBERS = `{
   ...,
+  background{ ..., image${IMAGE_PROJECTION} },
   _type == "sectionImageText" => { image${IMAGE_PROJECTION} },
+  _type == "sectionFeatureCards" => { cards[]{ ..., image${IMAGE_PROJECTION} } },
+  _type == "sectionGallery" => { images[]${IMAGE_PROJECTION} },
   _type == "sectionForm" => { form->${FORM_PROJECTION} }
 }`;
 

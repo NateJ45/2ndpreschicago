@@ -70,6 +70,30 @@ await client.createOrReplace({
     },
     { _type: 'sectionQuote', ...k('c'), quote: 'We are called to an everlasting preoccupation with God.', attribution: 'A.W. Tozer' },
     { _type: 'sectionCtaBand', ...k('d'), eyebrow: 'Come and See', headline: 'Join us this Sunday', subhead: 'Worship at 11am.', ctaLabel: 'Plan a Visit', ctaUrl: '/worship' },
+    {
+      _type: 'sectionFeatureCards', ...k('e'), heading: 'Detailed feature cards', columns: '3', arched: false,
+      cards: [
+        { _type: 'featureCard', _key: 'fc1', eyebrow: 'Weekly', title: 'Bible study', body: 'Thursday mornings over coffee.', badge: 'New', ctaLabel: 'Learn more', ctaUrl: '/grow' },
+        { _type: 'featureCard', _key: 'fc2', title: 'Lunch Bag', body: 'Grab-and-go food, no questions asked.' },
+        { _type: 'featureCard', _key: 'fc3', title: 'Music', body: 'A professional quartette and a 1917 organ.' },
+      ],
+    },
+    {
+      _type: 'sectionStats', ...k('f'), heading: 'By the numbers', columns: '3',
+      background: { tone: 'chapel', overlay: 55, padding: 'normal' },
+      items: [
+        { _type: 'stat', _key: 's1', value: '1901', label: 'Sanctuary rebuilt' },
+        { _type: 'stat', _key: 's2', value: '9', label: 'Tiffany windows' },
+        { _type: 'stat', _key: 's3', value: '600', label: 'Seats', note: 'plus balcony' },
+      ],
+    },
+    {
+      _type: 'sectionAccordion', ...k('g'), heading: 'Common questions',
+      items: [
+        { _type: 'qa', _key: 'q1', question: 'What time is worship?', answer: 'Sundays at 11am.' },
+        { _type: 'qa', _key: 'q2', question: 'Is there parking?', answer: 'Yes, free first-come parking.' },
+      ],
+    },
   ],
 });
 console.log('created sample page at /sample-page');
