@@ -654,7 +654,8 @@ export type FaqItem = {
     | "Kids & Family"
     | "Getting Involved"
     | "Giving"
-    | "Weddings & Space";
+    | "Weddings & Space"
+    | "Food Ministry";
   displayOrder?: number;
 };
 

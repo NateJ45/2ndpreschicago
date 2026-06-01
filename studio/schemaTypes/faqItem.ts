@@ -77,6 +77,7 @@ export const faqItem = defineType({
           { title: 'Getting Involved', value: 'Getting Involved' },
           { title: 'Giving', value: 'Giving' },
           { title: 'Weddings & Space', value: 'Weddings & Space' },
+          { title: 'Food Ministry', value: 'Food Ministry' },
         ],
       },
       validation: (Rule) => Rule.required(),

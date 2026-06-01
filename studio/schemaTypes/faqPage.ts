@@ -77,7 +77,7 @@ export const faqPage = defineType({
       group: 'list',
       description: 'Drag to reorder. Must match the option values on faqItem.category.',
       of: [defineArrayMember({ type: 'string' })],
-      initialValue: ['Visiting', 'Worship', 'Kids & Family', 'Getting Involved', 'Giving', 'Weddings & Space'],
+      initialValue: ['Visiting', 'Worship', 'Kids & Family', 'Getting Involved', 'Giving', 'Weddings & Space', 'Food Ministry'],
     }),
 
     defineField({ name: 'finalCtaEyebrow', title: 'Final CTA eyebrow', type: 'string', group: 'final', initialValue: 'Not Finding Your Answer?' }),
