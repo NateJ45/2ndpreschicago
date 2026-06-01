@@ -45,15 +45,48 @@ export async function getSiteSettings() {
     serviceTimes,
     watchUrl,
     giveUrl,
+    appUrl,
+    directoryUrl,
+    registrationBaseUrl,
+    prayerUrl,
     socialInstagram,
     socialFacebook,
     socialYoutube,
     seoImage${IMAGE_PROJECTION},
     footerCredit,
     footerCreditUrl,
-    newsletter,
-    announcement
+    newsletter
   }`, {}, null);
+}
+
+// ---- Announcement (site-wide banner; collection) --------------------------
+// The single active announcement: enabled, started (or no start), not yet
+// ended (or no end). Most urgent first, then soonest to end. "now" resolves at
+// build time; a scheduled rebuild refreshes the active banner.
+export async function getActiveAnnouncement() {
+  const now = new Date().toISOString();
+  return sanityFetch(
+    `*[_type == "announcement" && enabled == true
+      && (!defined(startDate) || startDate <= $now)
+      && (!defined(endDate) || endDate >= $now)]
+      | order(select(style == "urgent" => 0, style == "special" => 1, 2) asc, endDate asc)[0]{
+        message, style, link
+      }`,
+    { now },
+    null,
+  );
+}
+
+// ---- Worship resources (bulletins, orders of worship, The Record) ---------
+export async function getWorshipResources(limit = 6) {
+  return sanityFetch(
+    `*[_type == "worshipResource"] | order(date desc)[0...$limit]{
+      _id, title, date, type, externalUrl, description,
+      "fileUrl": file.asset->url
+    }`,
+    { limit },
+    [],
+  );
 }
 
 // ---- Generic per-page hero (church page singletons) -----------------------
@@ -220,7 +253,9 @@ export async function getStaffMembers() {
 // ---- Ministries collection ------------------------------------------------
 
 const MINISTRY_CARD = `{
-  _id, title, audience, summary, link,
+  _id, title, audience, ageRange, schedule, season, summary, link,
+  registrationUrl, contactName, contactEmail,
+  "parentMinistry": parentMinistry->{ _id, title },
   image${IMAGE_PROJECTION}
 }`;
 
@@ -245,8 +280,10 @@ export async function getFeaturedMinistries() {
 
 // Card projection for the events list (no full description body).
 const EVENT_CARD = `{
-  _id, title, slug, eventType, category, scheduleLabel, start, end, location,
-  summary, registrationUrl, featured,
+  _id, title, slug, eventType, category, audience, specialService, liturgicalSeason,
+  scheduleLabel, start, end, allDay, location,
+  summary, cost, registrationUrl, registrationLabel, contactName, contactEmail,
+  featured, featuredOnHome,
   image${IMAGE_PROJECTION}
 }`;
 
@@ -281,11 +318,37 @@ export async function getUpcomingEvents() {
   );
 }
 
+// Upcoming special services (Christmas Eve, Ash Wednesday, Easter): one-time
+// events flagged specialService that haven't passed. Powers the home + events
+// "Special services" band.
+export async function getSpecialServices() {
+  const now = new Date().toISOString();
+  return sanityFetch(
+    `*[_type == "event" && specialService == true && coalesce(end, start, "9999-12-31T00:00:00Z") >= $now]
+      | order(start asc) ${EVENT_CARD}`,
+    { now },
+    [],
+  );
+}
+
+// Events the editor pinned to the home page (upcoming only).
+export async function getHomeFeaturedEvents() {
+  const now = new Date().toISOString();
+  return sanityFetch(
+    `*[_type == "event" && featuredOnHome == true && coalesce(end, start, "9999-12-31T00:00:00Z") >= $now]
+      | order(start asc) ${EVENT_CARD}`,
+    { now },
+    [],
+  );
+}
+
 export async function getEventBySlug(slug: string) {
   return sanityFetch(
     `*[_type == "event" && slug.current == $slug][0]{
-      _id, title, slug, eventType, category, scheduleLabel, start, end, location,
-      summary, registrationUrl, featured,
+      _id, title, slug, eventType, category, audience, specialService, liturgicalSeason,
+      scheduleLabel, start, end, allDay, location,
+      summary, cost, registrationUrl, registrationLabel, contactName, contactEmail,
+      featured, featuredOnHome,
       image${IMAGE_PROJECTION},
       description
     }`,

@@ -35,6 +35,33 @@ export const ministry = defineType({
       initialValue: 'everyone',
     }),
     defineField({
+      name: 'ageRange',
+      title: 'Age range (optional)',
+      type: 'string',
+      description: 'Example: "Grades 6-12", "Ages 3-5", "All ages".',
+    }),
+    defineField({
+      name: 'schedule',
+      title: 'When it meets (optional)',
+      type: 'string',
+      description: 'Example: "Sundays after worship", "Second Tuesday, 7pm".',
+    }),
+    defineField({
+      name: 'season',
+      title: 'Season',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Year-round', value: 'Year-round' },
+          { title: 'School year', value: 'School year' },
+          { title: 'Summer', value: 'Summer' },
+          { title: 'Seasonal', value: 'Seasonal' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'Year-round',
+    }),
+    defineField({
       name: 'summary',
       title: 'Short summary',
       type: 'text',
@@ -60,6 +87,29 @@ export const ministry = defineType({
       title: 'Full description (optional)',
       type: 'array',
       of: [defineArrayMember({ type: 'block', styles: [{ title: 'Paragraph', value: 'normal' }], lists: [{ title: 'Bullet', value: 'bullet' }] })],
+    }),
+    defineField({
+      name: 'parentMinistry',
+      title: 'Part of (optional)',
+      type: 'reference',
+      to: [{ type: 'ministry' }],
+      description: 'Nest this under a larger ministry (e.g. Middle School Group is part of Youth). Sub-programs can be listed on the parent ministry.',
+    }),
+    defineField({
+      name: 'registrationUrl',
+      title: 'Registration / sign-up link (optional)',
+      type: 'url',
+      description: 'Where to sign up (e.g. a Planning Center or Google Form link).',
+    }),
+    defineField({
+      name: 'contactName',
+      title: 'Contact name (optional)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'contactEmail',
+      title: 'Contact email (optional)',
+      type: 'string',
     }),
     defineField({
       name: 'displayOrder',

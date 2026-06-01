@@ -15,6 +15,56 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type WorshipResource = {
+  _id: string;
+  _type: "worshipResource";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  date?: string;
+  type?:
+    | "Bulletin"
+    | "Order of Worship"
+    | "Liturgy"
+    | "Hymn list"
+    | "Newsletter"
+    | "Annual report"
+    | "Other";
+  file?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  externalUrl?: string;
+  description?: string;
+};
+
+export type Announcement = {
+  _id: string;
+  _type: "announcement";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  message?: string;
+  style?: "info" | "special" | "urgent";
+  link?: {
+    label?: string;
+    url?: string;
+  };
+  startDate?: string;
+  endDate?: string;
+  enabled?: boolean;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -103,10 +153,25 @@ export type Event = {
     | "Music"
     | "Fellowship"
     | "Service"
+    | "Youth"
+    | "Kids"
+    | "Outreach"
     | "Special";
+  audience?: "Everyone" | "Families" | "Kids" | "Youth" | "Adults" | "Seniors";
+  specialService?: boolean;
+  liturgicalSeason?:
+    | "Advent"
+    | "Christmas"
+    | "Epiphany"
+    | "Lent"
+    | "Holy Week"
+    | "Easter"
+    | "Pentecost"
+    | "Ordinary";
   scheduleLabel?: string;
   start?: string;
   end?: string;
+  allDay?: boolean;
   location?: string;
   summary?: string;
   description?: Array<{
@@ -128,6 +193,10 @@ export type Event = {
     _key: string;
   }>;
   registrationUrl?: string;
+  registrationLabel?: string;
+  cost?: string;
+  contactName?: string;
+  contactEmail?: string;
   image?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -137,6 +206,14 @@ export type Event = {
     _type: "image";
   };
   featured?: boolean;
+  featuredOnHome?: boolean;
+};
+
+export type MinistryReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "ministry";
 };
 
 export type Ministry = {
@@ -154,6 +231,9 @@ export type Ministry = {
     | "adults"
     | "seniors"
     | "neighbors";
+  ageRange?: string;
+  schedule?: string;
+  season?: "Year-round" | "School year" | "Summer" | "Seasonal";
   summary?: string;
   image?: {
     asset?: SanityImageAssetReference;
@@ -182,6 +262,10 @@ export type Ministry = {
     _type: "block";
     _key: string;
   }>;
+  parentMinistry?: MinistryReference;
+  registrationUrl?: string;
+  contactName?: string;
+  contactEmail?: string;
   displayOrder?: number;
   featured?: boolean;
 };
@@ -686,6 +770,10 @@ export type SiteSettings = {
   serviceTimes?: string;
   watchUrl?: string;
   giveUrl?: string;
+  appUrl?: string;
+  directoryUrl?: string;
+  registrationBaseUrl?: string;
+  prayerUrl?: string;
   socialInstagram?: string;
   socialFacebook?: string;
   socialYoutube?: string;
@@ -710,12 +798,15 @@ export type SiteSettings = {
     successMessage?: string;
     consentNote?: string;
   };
-  announcement?: {
-    enabled?: boolean;
-    text?: string;
-    linkLabel?: string;
-    linkUrl?: string;
-  };
+};
+
+export type Embed = {
+  _type: "embed";
+  title?: string;
+  mode?: "url" | "html";
+  url?: string;
+  html?: string;
+  aspect?: string;
 };
 
 export type HomePageReference = {
@@ -1183,12 +1274,16 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | SanityFileAssetReference
+  | WorshipResource
+  | Announcement
   | SanityImageAssetReference
   | Sermon
   | SanityImageCrop
   | SanityImageHotspot
   | Slug
   | Event
+  | MinistryReference
   | Ministry
   | StaffMember
   | FaqItem
@@ -1207,6 +1302,7 @@ export type AllSanitySchemaTypes =
   | PrivacyPage
   | NotFoundPage
   | SiteSettings
+  | Embed
   | HomePageReference
   | AboutPageReference
   | FaqPageReference

@@ -6,9 +6,11 @@
 // church collections staffMember + ministry were added.
 
 import { aboutPage } from './aboutPage';
+import { announcement } from './announcement';
 import { churchPageSingletons } from './churchPages';
 import { contactPage } from './contactPage';
 import { ctaBlock } from './ctaBlock';
+import { embed } from './embed';
 import { event } from './event';
 import { eventsPage } from './eventsPage';
 import { faqItem } from './faqItem';
@@ -22,10 +24,12 @@ import { sermon } from './sermon';
 import { sermonsPage } from './sermonsPage';
 import { siteSettings } from './siteSettings';
 import { staffMember } from './staffMember';
+import { worshipResource } from './worshipResource';
 
 export const schemaTypes = [
   // Object types (embedded) first so they're defined before docs that reference them
   ctaBlock,
+  embed,
 
   // Reusable documents referenced by pages (define before the singletons that point at them)
   form,
@@ -50,4 +54,6 @@ export const schemaTypes = [
   ministry,
   event,
   sermon,
+  announcement,
+  worshipResource,
 ];

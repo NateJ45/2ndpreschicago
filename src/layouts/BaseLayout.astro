@@ -13,6 +13,7 @@
 import { ClientRouter } from 'astro:transitions';
 import { site } from '@/data/site';
 import { urlFor } from '@/lib/sanity';
+import { getActiveAnnouncement } from '@/lib/queries';
 import { churchSchema } from '@/lib/schemas';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
@@ -93,11 +94,18 @@ const allSchemas = [churchSchema(siteSettings), ...schemas];
 // Cloudflare Web Analytics token — only render the beacon when present.
 const cfToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
 
-// Optional announcement banner (siteSettings.announcement). Renders above the
-// header when an editor enables it and sets a message, then scrolls away with
-// the page. Nothing renders when disabled or empty.
-const announcement = siteSettings?.announcement ?? null;
-const showAnnouncement = !!(announcement?.enabled && announcement?.text);
+// Optional announcement banner. The active announcement comes from the
+// Announcement collection (enabled + within its date window); fetched here so
+// every page gets it without each page querying. Renders above the header and
+// scrolls away with the page. Nothing renders when there is no active notice.
+const announcement = await getActiveAnnouncement().catch(() => null);
+const showAnnouncement = !!announcement?.message;
+const ANNOUNCEMENT_STYLES: Record<string, string> = {
+  info: 'bg-chapel text-chapel-foreground',
+  special: 'bg-primary text-primary-foreground',
+  urgent: 'bg-destructive text-white',
+};
+const announcementClass = ANNOUNCEMENT_STYLES[announcement?.style ?? 'info'] ?? ANNOUNCEMENT_STYLES.info;
 ---
 
 <!doctype html>
@@ -211,16 +219,16 @@ const showAnnouncement = !!(announcement?.enabled && announcement?.text);
   <body class="min-h-screen flex flex-col">
     <a href="#main" class="skip-link">Skip to main content</a>
 
-    {/* Optional site-wide announcement banner (editor-controlled in Sanity). */}
+    {/* Optional site-wide announcement banner (Announcement collection in Sanity). */}
     {showAnnouncement && (
-      <div class="bg-primary text-primary-foreground text-center text-sm px-m py-2">
-        <span>{announcement.text}</span>
-        {announcement.linkUrl && announcement.linkLabel && (
+      <div class:list={[announcementClass, 'text-center text-sm px-m py-2']}>
+        <span>{announcement.message}</span>
+        {announcement.link?.url && announcement.link?.label && (
           <a
-            href={announcement.linkUrl}
+            href={announcement.link.url}
             class="ml-2 underline underline-offset-2 font-semibold hover:opacity-80 transition-opacity"
           >
-            {announcement.linkLabel}
+            {announcement.link.label}
           </a>
         )}
       </div>

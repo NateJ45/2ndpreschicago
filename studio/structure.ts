@@ -32,6 +32,8 @@ import {
   BookIcon,
   LockIcon,
   PresentationIcon,
+  BellIcon,
+  DocumentsIcon,
 } from '@sanity/icons';
 
 const SINGLETON_TYPES = [
@@ -68,6 +70,8 @@ const HIDDEN_FROM_DEFAULT = new Set<string>([
   'event',
   'sermon',
   'form',
+  'announcement',
+  'worshipResource',
   // sanity-plugin-media registers this tag type; keep it out of the desk root
   // (the "Media" tool in the top sidebar is where tags belong).
   'media.tag',
@@ -180,6 +184,8 @@ export const deskStructure = (S: StructureBuilder, _context: StructureResolverCo
               S.documentTypeListItem('ministry').title('Ministries').icon(HeartIcon),
               S.documentTypeListItem('faqItem').title('FAQ Items').icon(HelpCircleIcon),
               S.documentTypeListItem('form').title('Forms').icon(EnvelopeIcon),
+              S.documentTypeListItem('worshipResource').title('Worship Resources').icon(DocumentsIcon),
+              S.documentTypeListItem('announcement').title('Announcements').icon(BellIcon),
             ]),
         ),
 

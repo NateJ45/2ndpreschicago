@@ -4,7 +4,7 @@
 // and how to watch online.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings, getWorshipResources } from '@/lib/queries';
 import heroWorship from '@/assets/hero-worship.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
@@ -16,6 +16,10 @@ import tiffanyWindows from '@/assets/tiffany-windows.webp';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('worshipPage').catch(() => null);
+const worshipResources = await getWorshipResources(6).catch(() => []);
+
+const fmtDate = (d: string) =>
+  d ? new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
 
 const title = `Worship · ${site.name}`;
 const description =
@@ -133,6 +137,43 @@ const pillOutline =
       />
     </div>
   </section>
+
+  {/* Worship resources — bulletins, orders of worship, The Record (Sanity-driven) */}
+  {worshipResources.length > 0 && (
+    <section class="bg-background" aria-labelledby="worship-resources">
+      <div class="mx-auto max-w-content px-m py-section-lg">
+        <SectionHeading
+          eyebrow="Worship resources"
+          headline="Bulletins and downloads"
+          headingId="worship-resources"
+        />
+        <ul class="mt-l grid grid-cols-1 sm:grid-cols-2 gap-m list-none p-0">
+          {worshipResources.map((r: any) => {
+            const href = r.fileUrl || r.externalUrl;
+            return (
+              <li class="card-lift rounded-md border border-border-soft bg-card p-l">
+                <p class="text-xs uppercase tracking-eyebrow text-foreground/70">
+                  {r.type}{r.date ? ` · ${fmtDate(r.date)}` : ''}
+                </p>
+                <h3 class="mt-s font-display text-h4 text-foreground">{r.title}</h3>
+                {r.description && <p class="mt-xs text-foreground/80 leading-relaxed">{r.description}</p>}
+                {href && (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-s inline-block text-link underline underline-offset-2 hover:text-primary-dark transition-colors"
+                  >
+                    {r.fileUrl ? 'Download PDF' : 'Open'}
+                  </a>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  )}
 
   {/* Quote */}
   <section class="bg-muted" aria-label="Reflection">

@@ -16,10 +16,10 @@ export const siteSettings = defineType({
   options: { canvasApp: { exclude: true } },
   groups: [
     { name: 'identity', title: 'Identity & contact' },
-    { name: 'worship', title: 'Worship & giving' },
+    { name: 'worship', title: 'Worship times' },
+    { name: 'connect', title: 'Connect & integrations' },
     { name: 'social', title: 'Social & footer' },
     { name: 'newsletter', title: 'Newsletter' },
-    { name: 'announcement', title: 'Announcement banner' },
   ],
   fields: [
     defineField({
@@ -64,7 +64,7 @@ export const siteSettings = defineType({
       group: 'identity',
     }),
 
-    // ── Worship & giving ──────────────────────────────────────────────────────
+    // ── Worship times ─────────────────────────────────────────────────────────
     defineField({
       name: 'serviceTimes',
       title: 'Service time line',
@@ -73,19 +73,52 @@ export const siteSettings = defineType({
       initialValue: 'Sundays at 11am',
       group: 'worship',
     }),
+
+    // ── Connect & integrations ────────────────────────────────────────────────
+    // Generic "URL or embed" hooks so any church can point at its own tools
+    // (Vanco, Subsplash, Planning Center, Mailchimp) without code. Each is
+    // optional and only surfaces in the UI when set.
     defineField({
       name: 'watchUrl',
       title: 'Livestream / Watch URL',
       type: 'url',
       description: 'Where "Watch Live" points (YouTube channel or livestream). Leave blank to use the Sermons page.',
-      group: 'worship',
+      group: 'connect',
     }),
     defineField({
       name: 'giveUrl',
       title: 'Giving link',
       type: 'url',
-      description: 'Online giving portal (e.g. Vanco). Leave blank to use the Give page.',
-      group: 'worship',
+      description: 'Online giving portal (e.g. Vanco, Subsplash Giving). Leave blank to use the Give page.',
+      group: 'connect',
+    }),
+    defineField({
+      name: 'appUrl',
+      title: 'Church app link',
+      type: 'url',
+      description: 'Link to your church app (e.g. Subsplash). Surfaces in the footer when set.',
+      group: 'connect',
+    }),
+    defineField({
+      name: 'directoryUrl',
+      title: 'Member directory link',
+      type: 'url',
+      description: 'Link to an online member directory (e.g. Planning Center, Instant Church Directory). Leave blank to hide.',
+      group: 'connect',
+    }),
+    defineField({
+      name: 'registrationBaseUrl',
+      title: 'Registration / sign-up base link',
+      type: 'url',
+      description: 'Default place to register for events when an event has no link of its own (e.g. a Planning Center or Eventbrite organizer page).',
+      group: 'connect',
+    }),
+    defineField({
+      name: 'prayerUrl',
+      title: 'Prayer / connection card link',
+      type: 'url',
+      description: 'Link to a prayer-request or connection-card form. Surfaces as a footer link when set.',
+      group: 'connect',
     }),
 
     // ── Social & footer ───────────────────────────────────────────────────────
@@ -143,22 +176,10 @@ export const siteSettings = defineType({
       ],
     }),
 
-    // ── Announcement banner ───────────────────────────────────────────────────
-    // Optional site-wide banner for time-sensitive notices (special services,
-    // closures). When disabled or empty, nothing renders.
-    defineField({
-      name: 'announcement',
-      title: 'Announcement banner',
-      type: 'object',
-      group: 'announcement',
-      description: 'Optional banner shown at the very top of every page. Use for special services or closures.',
-      fields: [
-        defineField({ name: 'enabled', title: 'Show banner', type: 'boolean', initialValue: false }),
-        defineField({ name: 'text', title: 'Message', type: 'string', description: 'Example: "Join us for Christmas Eve worship at 5pm and 11pm."' }),
-        defineField({ name: 'linkLabel', title: 'Link label (optional)', type: 'string' }),
-        defineField({ name: 'linkUrl', title: 'Link URL (optional)', type: 'string', description: 'Internal path like "/events" or a full https:// URL.' }),
-      ],
-    }),
+    // Note: the announcement banner moved from a single object here to its own
+    // "Announcement" collection (so the secretary can queue several by date).
+    // The old siteSettings.announcement field is cleared by
+    // scripts/cleanup-orphaned-fields.mjs.
   ],
   preview: {
     prepare: () => ({ title: 'Site Settings' }),

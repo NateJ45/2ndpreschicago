@@ -49,6 +49,9 @@ interface Props {
     mission?: string;
     serviceTimes?: string;
     giveUrl?: string;
+    appUrl?: string;
+    directoryUrl?: string;
+    prayerUrl?: string;
     footerCredit?: string;
     footerCreditUrl?: string;
     newsletter?: NewsletterConfig | null;
@@ -98,6 +101,17 @@ const CONNECT_LINKS = [
   { label: 'Use Our Space', href: '/use-our-space' },
   { label: 'Weddings', href: '/weddings' },
   { label: 'Give', href: '/give' },
+];
+
+// Optional external integrations (church app, member directory, prayer card).
+// Appended to the Connect column only when set in siteSettings, so the template
+// can point at Subsplash / Planning Center / etc. without code, and nothing
+// extra shows for a church (like Second) that doesn't use them.
+const connectLinks = [
+  ...CONNECT_LINKS,
+  ...(siteSettings?.appUrl ? [{ label: 'Church App', href: siteSettings.appUrl, external: true }] : []),
+  ...(siteSettings?.directoryUrl ? [{ label: 'Member Directory', href: siteSettings.directoryUrl, external: true }] : []),
+  ...(siteSettings?.prayerUrl ? [{ label: 'Prayer Request', href: siteSettings.prayerUrl, external: true }] : []),
 ];
 
 // Shared link class for the footer columns (cream on green, animated underline).
@@ -187,8 +201,16 @@ const footerLink =
     <nav aria-labelledby="footer-connect">
       <p id="footer-connect" class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70 mb-s">Connect</p>
       <ul class="text-sm space-y-2 list-none p-0">
-        {CONNECT_LINKS.map((l) => (
-          <li><a href={l.href} class={footerLink}>{l.label}</a></li>
+        {connectLinks.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              class={footerLink}
+              {...((l as any).external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              {l.label}
+            </a>
+          </li>
         ))}
       </ul>
     </nav>
