@@ -14,6 +14,7 @@ export const contactPage = defineType({
     { name: 'seo', title: 'SEO' },
     { name: 'hero', title: 'Hero' },
     { name: 'form', title: 'Form intro + expectations' },
+    { name: 'content', title: 'Page copy' },
     { name: 'sections', title: 'Page sections' },
     // removed empty interior-designer scheduling group during church remodel
   ],
@@ -132,6 +133,10 @@ export const contactPage = defineType({
       rows: 3,
       description: 'Internal-only reminder for editors. Anything you write here stays in Studio and never renders on the live page.',
     }),
+    defineField({ name: 'whoToReachLabel', title: 'Who to reach label', type: 'string', group: 'content' }),
+    defineField({ name: 'gettingHereLabel', title: 'Getting here label', type: 'string', group: 'content' }),
+    defineField({ name: 'gettingHereBody', title: 'Getting here body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'formSectionHeadline', title: 'Form section headline', type: 'string', group: 'content' }),
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

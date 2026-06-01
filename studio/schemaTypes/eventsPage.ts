@@ -27,6 +27,13 @@ export const eventsPage = defineType({
       options: { hotspot: true },
       fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
     }),
+    defineField({ name: 'specialEyebrow', title: 'Special services eyebrow', type: 'string' }),
+    defineField({ name: 'specialHeadline', title: 'Special services headline', type: 'string' }),
+    defineField({ name: 'upcomingEyebrow', title: 'Upcoming events eyebrow', type: 'string' }),
+    defineField({ name: 'upcomingHeadline', title: 'Upcoming events headline', type: 'string' }),
+    defineField({ name: 'upcomingEmpty', title: 'Upcoming empty-state text', type: 'text', rows: 2 }),
+    defineField({ name: 'rhythmsEyebrow', title: 'Weekly rhythms eyebrow', type: 'string' }),
+    defineField({ name: 'rhythmsHeadline', title: 'Weekly rhythms headline', type: 'string' }),
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

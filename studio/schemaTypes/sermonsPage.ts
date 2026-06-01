@@ -26,6 +26,10 @@ export const sermonsPage = defineType({
       type: 'url',
       description: 'Where Sunday worship streams (e.g. the church YouTube). Shown as the Watch Live button.',
     }),
+    defineField({ name: 'latestEyebrow', title: 'Latest message label', type: 'string' }),
+    defineField({ name: 'watchEyebrow', title: 'Watch online eyebrow', type: 'string' }),
+    defineField({ name: 'watchHeadline', title: 'Watch online headline', type: 'string' }),
+    defineField({ name: 'watchBody', title: 'Watch online body', type: 'text', rows: 3 }),
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

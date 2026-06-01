@@ -522,6 +522,14 @@ export type WeddingsPage = {
       } & Embed)
   >;
   inquiryForm?: FormReference;
+  faqEyebrow?: string;
+  faqHeadline?: string;
+  pricingEyebrow?: string;
+  pricingHeadline?: string;
+  pricingFootnote?: string;
+  inquireEyebrow?: string;
+  inquireHeadline?: string;
+  inquireIntro?: string;
 };
 
 export type UseOurSpacePage = {
@@ -575,6 +583,12 @@ export type UseOurSpacePage = {
       } & Embed)
   >;
   inquiryForm?: FormReference;
+  introEyebrow?: string;
+  introHeadline?: string;
+  introBodyP1?: string;
+  introBodyP2?: string;
+  inquireHeadline?: string;
+  inquireIntro?: string;
 };
 
 export type FoodPage = {
@@ -967,6 +981,36 @@ export type BeliefsPage = {
         _key: string;
       } & Embed)
   >;
+  scriptureQuote?: string;
+  scriptureCitation?: string;
+  beliefsQ1?: string;
+  beliefsQ1A1?: string;
+  beliefsQ2?: string;
+  beliefsQ2A1?: string;
+  beliefsQ3?: string;
+  beliefsQ3A1?: string;
+  beliefsQ3A2?: string;
+  fitEyebrow?: string;
+  fitHeadline?: string;
+  fitCard1Title?: string;
+  fitCard1Body?: string;
+  fitCard2Title?: string;
+  fitCard2Body?: string;
+  fitCard3Title?: string;
+  fitCard3Body?: string;
+  goingEyebrow?: string;
+  goingHeadline?: string;
+  goingCard1Title?: string;
+  goingCard1Body?: string;
+  goingCard2Title?: string;
+  goingCard2Body?: string;
+  goingCard3Title?: string;
+  goingCard3Body?: string;
+  deeperHeadline?: string;
+  deeperIntro?: string;
+  finalCtaEyebrow?: string;
+  finalCtaHeadline?: string;
+  finalCtaSubhead?: string;
 };
 
 export type WorshipPage = {
@@ -1019,6 +1063,27 @@ export type WorshipPage = {
         _key: string;
       } & Embed)
   >;
+  gatherEyebrow?: string;
+  gatherTime?: string;
+  gatherDay?: string;
+  serviceBodyP1?: string;
+  serviceBodyP2?: string;
+  planEyebrow?: string;
+  planHeadline?: string;
+  planCard1Title?: string;
+  planCard1Body?: string;
+  planCard2Title?: string;
+  planCard2Body?: string;
+  planCard3Title?: string;
+  planCard3Body?: string;
+  planCard4Title?: string;
+  planCard4Body?: string;
+  kidsEyebrow?: string;
+  kidsHeadline?: string;
+  kidsBodyP1?: string;
+  kidsBodyP2?: string;
+  quoteText?: string;
+  quoteAttribution?: string;
 };
 
 export type PrivacyPage = {
@@ -1354,6 +1419,10 @@ export type SermonsPage = {
   heroHeadline?: string;
   heroSubhead?: string;
   livestreamUrl?: string;
+  latestEyebrow?: string;
+  watchEyebrow?: string;
+  watchHeadline?: string;
+  watchBody?: string;
   flexibleSections?: Array<
     | ({
         _key: string;
@@ -1406,6 +1475,13 @@ export type EventsPage = {
     alt?: string;
     _type: "image";
   };
+  specialEyebrow?: string;
+  specialHeadline?: string;
+  upcomingEyebrow?: string;
+  upcomingHeadline?: string;
+  upcomingEmpty?: string;
+  rhythmsEyebrow?: string;
+  rhythmsHeadline?: string;
   flexibleSections?: Array<
     | ({
         _key: string;
@@ -1478,6 +1554,10 @@ export type ContactPage = {
     _key: string;
   }>;
   note?: string;
+  whoToReachLabel?: string;
+  gettingHereLabel?: string;
+  gettingHereBody?: string;
+  formSectionHeadline?: string;
   flexibleSections?: Array<
     | ({
         _key: string;

@@ -121,12 +121,71 @@ export const worshipPage = definePageSingleton('worshipPage', "Worship (I'm New)
   heroHeadline: "There's a place for you here.",
   heroSubhead:
     "Whether you're a weekly churchgoer, haven't been in ages, or don't know anything about Christianity, you are welcome at Second.",
+}, {
+  groups: [{ name: 'content', title: 'Page copy' }],
+  fields: [
+    defineField({ name: 'gatherEyebrow', title: 'When we gather eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'gatherTime', title: 'Service time (large)', type: 'string', group: 'content' }),
+    defineField({ name: 'gatherDay', title: 'Service day line', type: 'string', group: 'content' }),
+    defineField({ name: 'serviceBodyP1', title: 'Service paragraph 1', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'serviceBodyP2', title: 'Service paragraph 2', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'planEyebrow', title: 'Plan-your-visit eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'planHeadline', title: 'Plan-your-visit headline', type: 'string', group: 'content' }),
+    defineField({ name: 'planCard1Title', title: 'Visit card 1 title', type: 'string', group: 'content' }),
+    defineField({ name: 'planCard1Body', title: 'Visit card 1 body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'planCard2Title', title: 'Visit card 2 title', type: 'string', group: 'content' }),
+    defineField({ name: 'planCard2Body', title: 'Visit card 2 body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'planCard3Title', title: 'Visit card 3 title', type: 'string', group: 'content' }),
+    defineField({ name: 'planCard3Body', title: 'Visit card 3 body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'planCard4Title', title: 'Visit card 4 title', type: 'string', group: 'content' }),
+    defineField({ name: 'planCard4Body', title: 'Visit card 4 body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'kidsEyebrow', title: 'Children eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'kidsHeadline', title: 'Children headline', type: 'string', group: 'content' }),
+    defineField({ name: 'kidsBodyP1', title: 'Children paragraph 1', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'kidsBodyP2', title: 'Children paragraph 2', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'quoteText', title: 'Reflection quote', type: 'text', rows: 2, group: 'content' }),
+    defineField({ name: 'quoteAttribution', title: 'Reflection attribution', type: 'string', group: 'content' }),
+  ],
 });
 
 export const beliefsPage = definePageSingleton('beliefsPage', 'What We Believe', {
   heroEyebrow: 'What We Believe',
   heroHeadline: 'The faith we share',
   heroSubhead: 'What we hold to be true about humanity, about God, and about the good news of Jesus Christ.',
+}, {
+  groups: [{ name: 'content', title: 'Page copy' }],
+  fields: [
+    defineField({ name: 'scriptureQuote', title: 'Scripture quote', type: 'text', rows: 2, group: 'content' }),
+    defineField({ name: 'scriptureCitation', title: 'Scripture citation', type: 'string', group: 'content' }),
+    defineField({ name: 'beliefsQ1', title: 'Belief question 1', type: 'string', group: 'content' }),
+    defineField({ name: 'beliefsQ1A1', title: 'Belief 1 answer', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'beliefsQ2', title: 'Belief question 2', type: 'string', group: 'content' }),
+    defineField({ name: 'beliefsQ2A1', title: 'Belief 2 answer', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'beliefsQ3', title: 'Belief question 3', type: 'string', group: 'content' }),
+    defineField({ name: 'beliefsQ3A1', title: 'Belief 3 answer (paragraph 1)', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'beliefsQ3A2', title: 'Belief 3 answer (paragraph 2)', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'fitEyebrow', title: 'Where we fit eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'fitHeadline', title: 'Where we fit headline', type: 'string', group: 'content' }),
+    defineField({ name: 'fitCard1Title', title: 'Fit card 1 title', type: 'string', group: 'content' }),
+    defineField({ name: 'fitCard1Body', title: 'Fit card 1 body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'fitCard2Title', title: 'Fit card 2 title', type: 'string', group: 'content' }),
+    defineField({ name: 'fitCard2Body', title: 'Fit card 2 body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'fitCard3Title', title: 'Fit card 3 title', type: 'string', group: 'content' }),
+    defineField({ name: 'fitCard3Body', title: 'Fit card 3 body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'goingEyebrow', title: 'Where we are going eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'goingHeadline', title: 'Where we are going headline', type: 'string', group: 'content' }),
+    defineField({ name: 'goingCard1Title', title: 'Going card 1 title', type: 'string', group: 'content' }),
+    defineField({ name: 'goingCard1Body', title: 'Going card 1 body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'goingCard2Title', title: 'Going card 2 title', type: 'string', group: 'content' }),
+    defineField({ name: 'goingCard2Body', title: 'Going card 2 body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'goingCard3Title', title: 'Going card 3 title', type: 'string', group: 'content' }),
+    defineField({ name: 'goingCard3Body', title: 'Going card 3 body', type: 'text', rows: 3, group: 'content' }),
+    defineField({ name: 'deeperHeadline', title: 'Dig deeper headline', type: 'string', group: 'content' }),
+    defineField({ name: 'deeperIntro', title: 'Dig deeper intro', type: 'text', rows: 2, group: 'content' }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
+    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
+  ],
 });
 
 export const musicPage = definePageSingleton('musicPage', 'Music', {
@@ -225,7 +284,10 @@ export const useOurSpacePage = definePageSingleton(
       'A historic, welcoming building in the heart of the South Loop, open to the wider community throughout the week.',
   },
   {
-    groups: [{ name: 'form', title: 'Inquiry form' }],
+    groups: [
+      { name: 'form', title: 'Inquiry form' },
+      { name: 'content', title: 'Page copy' },
+    ],
     fields: [
       defineField({
         name: 'inquiryForm',
@@ -235,6 +297,12 @@ export const useOurSpacePage = definePageSingleton(
         group: 'form',
         description: 'The form shown in the inquiry section. Leave empty to show a direct email link instead.',
       }),
+      defineField({ name: 'introEyebrow', title: 'Intro eyebrow', type: 'string', group: 'content' }),
+      defineField({ name: 'introHeadline', title: 'Intro headline', type: 'string', group: 'content' }),
+      defineField({ name: 'introBodyP1', title: 'Intro paragraph 1', type: 'text', rows: 3, group: 'content' }),
+      defineField({ name: 'introBodyP2', title: 'Intro paragraph 2', type: 'text', rows: 3, group: 'content' }),
+      defineField({ name: 'inquireHeadline', title: 'Inquiry headline', type: 'string', group: 'content' }),
+      defineField({ name: 'inquireIntro', title: 'Inquiry intro', type: 'text', rows: 2, group: 'content' }),
     ],
   },
 );
@@ -249,7 +317,10 @@ export const weddingsPage = definePageSingleton(
       'Our 1901 Arts and Crafts sanctuary, home to nine Tiffany windows and extraordinary murals, draws visitors from all over the world. We host weddings of every size.',
   },
   {
-    groups: [{ name: 'form', title: 'Inquiry form' }],
+    groups: [
+      { name: 'form', title: 'Inquiry form' },
+      { name: 'content', title: 'Page copy' },
+    ],
     fields: [
       defineField({
         name: 'inquiryForm',
@@ -259,6 +330,14 @@ export const weddingsPage = definePageSingleton(
         group: 'form',
         description: 'The wedding inquiry form. Leave empty to show a direct email link instead.',
       }),
+      defineField({ name: 'faqEyebrow', title: 'FAQ eyebrow', type: 'string', group: 'content' }),
+      defineField({ name: 'faqHeadline', title: 'FAQ headline', type: 'string', group: 'content' }),
+      defineField({ name: 'pricingEyebrow', title: 'Pricing eyebrow', type: 'string', group: 'content' }),
+      defineField({ name: 'pricingHeadline', title: 'Pricing headline', type: 'string', group: 'content' }),
+      defineField({ name: 'pricingFootnote', title: 'Pricing footnote', type: 'text', rows: 2, group: 'content' }),
+      defineField({ name: 'inquireEyebrow', title: 'Inquiry eyebrow', type: 'string', group: 'content' }),
+      defineField({ name: 'inquireHeadline', title: 'Inquiry headline', type: 'string', group: 'content' }),
+      defineField({ name: 'inquireIntro', title: 'Inquiry intro', type: 'text', rows: 2, group: 'content' }),
     ],
   },
 );

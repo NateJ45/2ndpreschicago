@@ -194,17 +194,10 @@ export async function getFaqPage() {
 
 export async function getContactPage() {
   return sanityFetch(`*[_type == "contactPage"][0]{
-    seoTitle,
-    seoDescription,
+    ...,
     seoImage${IMAGE_PROJECTION},
-    heroEyebrow, heroHeadline, heroSubhead,
     heroImage${IMAGE_PROJECTION},
-    heroScriptAccent,
-    formIntroNote,
     contactForm->${FORM_PROJECTION},
-    whatToExpectEyebrow,
-    whatToExpectHeadline,
-    whatToExpectContent,
     flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
@@ -213,9 +206,9 @@ export async function getContactPage() {
 
 export async function getWeddingsPage() {
   return sanityFetch(`*[_type == "weddingsPage"][0]{
-    heroEyebrow, heroHeadline, heroSubhead,
+    ...,
     heroImage${IMAGE_PROJECTION},
-    seoTitle, seoDescription, seoImage${IMAGE_PROJECTION},
+    seoImage${IMAGE_PROJECTION},
     inquiryForm->${FORM_PROJECTION},
     flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
@@ -223,9 +216,9 @@ export async function getWeddingsPage() {
 
 export async function getUseOurSpacePage() {
   return sanityFetch(`*[_type == "useOurSpacePage"][0]{
-    heroEyebrow, heroHeadline, heroSubhead,
+    ...,
     heroImage${IMAGE_PROJECTION},
-    seoTitle, seoDescription, seoImage${IMAGE_PROJECTION},
+    seoImage${IMAGE_PROJECTION},
     inquiryForm->${FORM_PROJECTION},
     flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
@@ -338,9 +331,8 @@ const EVENT_CARD = `{
 
 export async function getEventsPage() {
   return sanityFetch(`*[_type == "eventsPage"][0]{
-    seoTitle, seoDescription,
+    ...,
     seoImage${IMAGE_PROJECTION},
-    heroEyebrow, heroHeadline, heroSubhead,
     heroImage${IMAGE_PROJECTION},
     flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
@@ -425,9 +417,9 @@ const SERMON_CARD = `{
 
 export async function getSermonsPage() {
   return sanityFetch(`*[_type == "sermonsPage"][0]{
-    seoTitle, seoDescription,
+    ...,
     seoImage${IMAGE_PROJECTION},
-    heroEyebrow, heroHeadline, heroSubhead, livestreamUrl,
+    heroImage${IMAGE_PROJECTION},
     flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
