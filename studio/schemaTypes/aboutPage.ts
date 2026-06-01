@@ -1,7 +1,7 @@
 // About page singleton.
 // removed interior-designer philosophy, personal, and stats sections during church remodel.
 
-import { defineType, defineField, defineArrayMember } from 'sanity';
+import { defineType, defineField } from 'sanity';
 import { FLEXIBLE_SECTION_MEMBERS } from './blocks';
 
 export const aboutPage = defineType({
@@ -13,7 +13,6 @@ export const aboutPage = defineType({
   groups: [
     { name: 'seo', title: 'SEO' },
     { name: 'hero', title: 'Hero' },
-    { name: 'story', title: 'Story' },
     { name: 'content', title: 'Page copy' },
     { name: 'sections', title: 'Page sections' },
     // removed interior-designer groups (philosophy, personal, stats) during church remodel
@@ -72,27 +71,9 @@ export const aboutPage = defineType({
         'A single word from the headline to render in handwritten Pinyon Script. Must match exactly (case-sensitive). Leave blank to skip.',
     }),
 
-    defineField({ name: 'storyEyebrow', title: 'Story eyebrow', type: 'string', group: 'story', initialValue: 'My Story.' }),
-    defineField({ name: 'storyHeadline', title: 'Story headline', type: 'string', group: 'story', initialValue: 'Our Story' }),
-    defineField({
-      name: 'storyContent',
-      title: 'Story content',
-      type: 'array',
-      group: 'story',
-      of: [
-        defineArrayMember({
-          type: 'block',
-          styles: [{ title: 'Paragraph', value: 'normal' }],
-          marks: {
-            decorators: [
-              { title: 'Bold', value: 'strong' },
-              { title: 'Italic', value: 'em' },
-            ],
-            annotations: [],
-          },
-        }),
-      ],
-    }),
+    // removed orphaned storyEyebrow/storyHeadline/storyContent (designer-era
+    // "Our Story" block; about.astro renders the building + who-we-are sections
+    // instead and never used these) during the content-editability audit.
     // removed interior-designer story fields (founderPhoto, founderAttribution, backgroundLine, serviceAreaMention) during church remodel
 
     // removed interior-designer philosophy, personal, and stats field blocks during church remodel

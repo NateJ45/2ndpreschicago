@@ -33,6 +33,7 @@ export const sermonsPage = defineType({
     defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string' }),
     defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string' }),
     defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2 }),
+    defineField({ name: 'finalCta', title: 'Closing CTA button', type: 'ctaBlock', description: 'The button in the closing call-to-action band. Leave empty to use the built-in default button.' }),
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

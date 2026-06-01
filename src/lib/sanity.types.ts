@@ -756,6 +756,7 @@ export type GivePage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   onlineHeadline?: string;
   onlineBodyP1?: string;
   waysHeadline?: string;
@@ -767,6 +768,65 @@ export type GivePage = {
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
+};
+
+export type HomePageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "homePage";
+};
+
+export type AboutPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "aboutPage";
+};
+
+export type FaqPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "faqPage";
+};
+
+export type ContactPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "contactPage";
+};
+
+export type EventsPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "eventsPage";
+};
+
+export type SermonsPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sermonsPage";
+};
+
+export type CtaBlock = {
+  _type: "ctaBlock";
+  label?: string;
+  linkType?: "internal" | "external" | "email" | "phone";
+  internalLink?:
+    | HomePageReference
+    | AboutPageReference
+    | FaqPageReference
+    | ContactPageReference
+    | EventsPageReference
+    | SermonsPageReference;
+  externalUrl?: string;
+  emailAddress?: string;
+  phoneNumber?: string;
+  openInNewTab?: boolean;
 };
 
 export type FormReference = {
@@ -853,6 +913,7 @@ export type WeddingsPage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   inquiryForm?: FormReference;
   faqEyebrow?: string;
   faqHeadline?: string;
@@ -956,6 +1017,7 @@ export type UseOurSpacePage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   inquiryForm?: FormReference;
   introEyebrow?: string;
   introHeadline?: string;
@@ -1046,6 +1108,7 @@ export type FoodPage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   lunchBagHeadline?: string;
   lunchBagSchedule?: string;
   lunchBagBodyP1?: string;
@@ -1134,6 +1197,7 @@ export type KidsPage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   worshipEyebrow?: string;
   worshipHeadline?: string;
   worshipBodyP1?: string;
@@ -1221,6 +1285,7 @@ export type ServePage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   ways?: Array<{
     name?: string;
     href?: string;
@@ -1310,6 +1375,7 @@ export type GrowPage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   groups?: Array<{
     name?: string;
     when?: string;
@@ -1400,6 +1466,7 @@ export type StaffPage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
@@ -1482,6 +1549,7 @@ export type MusicPage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   introHeading?: string;
   introBodyP1?: string;
   choirEyebrow?: string;
@@ -1575,6 +1643,7 @@ export type BeliefsPage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   scriptureQuote?: string;
   scriptureCitation?: string;
   beliefsQ1?: string;
@@ -1691,6 +1760,7 @@ export type WorshipPage = {
         _key: string;
       } & Embed)
   >;
+  finalCta?: CtaBlock;
   gatherEyebrow?: string;
   gatherTime?: string;
   gatherDay?: string;
@@ -2211,65 +2281,6 @@ export type Embed = {
   aspect?: string;
 };
 
-export type HomePageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "homePage";
-};
-
-export type AboutPageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "aboutPage";
-};
-
-export type FaqPageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "faqPage";
-};
-
-export type ContactPageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "contactPage";
-};
-
-export type EventsPageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "eventsPage";
-};
-
-export type SermonsPageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sermonsPage";
-};
-
-export type CtaBlock = {
-  _type: "ctaBlock";
-  label?: string;
-  linkType?: "internal" | "external" | "email" | "phone";
-  internalLink?:
-    | HomePageReference
-    | AboutPageReference
-    | FaqPageReference
-    | ContactPageReference
-    | EventsPageReference
-    | SermonsPageReference;
-  externalUrl?: string;
-  emailAddress?: string;
-  phoneNumber?: string;
-  openInNewTab?: boolean;
-};
-
 export type SermonsPage = {
   _id: string;
   _type: "sermonsPage";
@@ -2297,6 +2308,7 @@ export type SermonsPage = {
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
+  finalCta?: CtaBlock;
   flexibleSections?: Array<
     | ({
         _key: string;
@@ -2386,6 +2398,7 @@ export type EventsPage = {
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
+  finalCta?: CtaBlock;
   flexibleSections?: Array<
     | ({
         _key: string;
@@ -2469,21 +2482,6 @@ export type ContactPage = {
   formIntroNote?: string;
   contactForm?: FormReference;
   whatToExpectEyebrow?: string;
-  whatToExpectHeadline?: string;
-  whatToExpectContent?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: null;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
   note?: string;
   whoToReachLabel?: string;
   contactReasons?: Array<{
@@ -2499,6 +2497,7 @@ export type ContactPage = {
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
+  finalCta?: CtaBlock;
   flexibleSections?: Array<
     | ({
         _key: string;
@@ -2716,22 +2715,6 @@ export type AboutPage = {
     _type: "image";
   };
   heroScriptAccent?: string;
-  storyEyebrow?: string;
-  storyHeadline?: string;
-  storyContent?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: null;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaScriptAccent?: string;
@@ -3128,6 +3111,13 @@ export type AllSanitySchemaTypes =
   | StaffMember
   | FaqItem
   | GivePage
+  | HomePageReference
+  | AboutPageReference
+  | FaqPageReference
+  | ContactPageReference
+  | EventsPageReference
+  | SermonsPageReference
+  | CtaBlock
   | FormReference
   | WeddingsPage
   | UseOurSpacePage
@@ -3158,13 +3148,6 @@ export type AllSanitySchemaTypes =
   | SectionImageText
   | SectionRichText
   | Embed
-  | HomePageReference
-  | AboutPageReference
-  | FaqPageReference
-  | ContactPageReference
-  | EventsPageReference
-  | SermonsPageReference
-  | CtaBlock
   | SermonsPage
   | EventsPage
   | ContactPage

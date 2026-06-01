@@ -95,33 +95,9 @@ export const contactPage = defineType({
       group: 'form',
       initialValue: 'What to Expect.',
     }),
-    defineField({
-      name: 'whatToExpectHeadline',
-      title: '"What to expect" headline',
-      type: 'string',
-      group: 'form',
-      initialValue: 'When you submit this form...',
-    }),
-    defineField({
-      name: 'whatToExpectContent',
-      title: '"What to expect" content',
-      type: 'array',
-      group: 'form',
-      description: 'The "no automated sequence" copy.',
-      of: [
-        defineArrayMember({
-          type: 'block',
-          styles: [{ title: 'Paragraph', value: 'normal' }],
-          marks: {
-            decorators: [
-              { title: 'Bold', value: 'strong' },
-              { title: 'Italic', value: 'em' },
-            ],
-            annotations: [],
-          },
-        }),
-      ],
-    }),
+    // removed orphaned whatToExpectHeadline + whatToExpectContent (designer-era
+    // "what to expect" block; contact.astro never rendered them) during the
+    // content-editability audit. whatToExpectEyebrow IS used (form-section eyebrow).
     // removed interior-designer postInquiryRoadmap field during church remodel
 
     // removed interior-designer scheduling fields (schedulingLink, schedulingLinkLabel, availabilityNote) during church remodel
@@ -160,6 +136,7 @@ export const contactPage = defineType({
     defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
+    defineField({ name: 'finalCta', title: 'Closing CTA button', type: 'ctaBlock', group: 'content', description: 'The button in the closing call-to-action band. Leave empty to use the built-in default button.' }),
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',

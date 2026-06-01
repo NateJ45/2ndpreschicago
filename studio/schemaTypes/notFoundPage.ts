@@ -61,7 +61,7 @@ export const notFoundPage = defineType({
       options: { hotspot: true },
       fields: [
         defineField({ name: 'alt', title: 'Alt text', type: 'string', validation: (R) => R.required() }),
-        defineField({ name: 'caption', title: 'Caption (optional)', type: 'string', initialValue: 'From the studio' }),
+        defineField({ name: 'caption', title: 'Caption (optional)', type: 'string', initialValue: 'Second Presbyterian Church of Chicago' }),
       ],
     }),
 
@@ -85,14 +85,14 @@ export const notFoundPage = defineType({
       title: 'Secondary CTA label',
       type: 'string',
       group: 'ctas',
-      initialValue: 'Browse the portfolio',
+      initialValue: 'Plan a visit',
     }),
     defineField({
       name: 'secondaryCtaHref',
       title: 'Secondary CTA destination',
       type: 'string',
       group: 'ctas',
-      initialValue: '/portfolio',
+      initialValue: '/worship',
     }),
     defineField({
       name: 'tertiaryCtaLabel',

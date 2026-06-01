@@ -112,6 +112,17 @@ export function definePageSingleton(
         description: 'Add on-brand sections to this page (text, image + text, cards, quote, CTA band, form, embed). They render below the built-in page content. Drag to reorder.',
         of: FLEXIBLE_SECTION_MEMBERS,
       }),
+      // The closing call-to-action button at the very bottom of the page. The
+      // eyebrow / headline / subhead above it are the per-page finalCta* (or
+      // serveCta*) text fields; this controls the BUTTON's label + destination.
+      // Leave empty to use the page's built-in default button.
+      defineField({
+        name: 'finalCta',
+        title: 'Closing CTA button',
+        type: 'ctaBlock',
+        group: 'sections',
+        description: 'The button in the closing call-to-action band at the bottom of the page. Set its label and where it links. Leave empty to use the built-in default button for this page.',
+      }),
       ...(extra.fields ?? []),
     ],
     preview: { prepare: () => ({ title }) },
