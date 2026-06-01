@@ -17,11 +17,17 @@
 - **Favicon** -- `siteSettings.favicon` (browser-tab icon); falls back to the bundled church mark in `/public/favicon.png`.
 - **Collections** -- Events, Sermons, Pastors & Staff (`staffMember`), Ministries (`ministry`), FAQ Items (`faqItem`, which drive the FAQ page), Forms (`form`), Announcements (scheduled site banner), Worship Resources (`worshipResource`).
 - **Page sections (the page builder)** -- every page singleton plus the generic `page` type has a `flexibleSections[]` array: add / reorder / remove on-brand blocks (rich text, image+text, cards, quote, CTA band, form, feature cards, stats, FAQ, gallery, steps, logos, media feature, dynamic list), each with a background control (brand tone, or image/video + overlay). See `page-architecture.md`.
+- **Per-page lists** -- the structured lists baked into specific pages are editable too: wedding FAQs + pricing, grow community groups, serve "ways to serve", use-our-space uses, contact "who to reach" rows, what-we-believe resource links, and the home service band + weekly rhythms. Each reads its Sanity field and falls back to the built-in list when empty.
 - **Custom pages** -- the `page` type publishes a brand-new page at `/<slug>` with the block library, no developer.
-- **Site-wide identity & integrations** -- `siteSettings`: church name, tagline, mission, email, phone, socials, service time, and a "Connect & integrations" group (watch / give / app / directory / registration / prayer URLs). Phone feeds the LocalBusiness JSON-LD and tap-to-call; clearing it hides every instance.
+- **Site-wide identity & integrations** -- `siteSettings`: church name, tagline, mission, email, phone, **street address** (`addressLine` + `cityStateZip`), socials, service time, and a "Connect & integrations" group (watch / give / app / directory / registration / prayer URLs). Phone + address feed the LocalBusiness JSON-LD and tap-to-call / map links; clearing a value hides every instance and falls back to `src/data/site.ts`.
 - **SEO / social** -- per-page `seoTitle` / `seoDescription` / `seoImage`; a site-default `siteSettings.seoImage`.
 - **Section heading script accents** -- `scriptAccent`-style fields render one word of a heading in the handwritten display font. The word must match the heading text exactly; leave empty for no accent. See `polish-layer.md`.
 - **404 page** (`notFoundPage`) and **Privacy page** (`privacyPage`) -- editable, each with a hardcoded fallback so it works before the doc exists.
+
+> No live in-Studio preview: the site is a static build, so edits are drafts until you
+> Publish, then the site rebuilds and the change appears a few minutes later. The iframe
+> "Preview" tab was removed (it showed the last published build, not the draft, which
+> misled editors). A true draft preview would need an SSR preview environment.
 
 ### Hardcoded in code (intentional)
 

@@ -93,7 +93,7 @@ The Portable Text renderer (`JournalPortableText.tsx`) detects image orientation
 
 **Sanity Studio components (in `studio/components/`):**
 - `GuideView.tsx` -- renders one "How This Works" help guide as a read-only desk pane. Content is repo-based data in `studio/guides/content.tsx` (12 plain-English guides for church staff); the guide to show is chosen per desk item via `.options({ guideSlug })`. Replaces the interior-designer "Start Here" handbook (the old `StudioGuide` / `BusinessOverview` / `BrandKit` / `StudioPlaybook` panels and their `studioGuide` / `studioNotes` / `studioPlaybook` singletons were removed in the remodel).
-- `StudioLogo.tsx` -- the wordmark in the Studio header ("Second Presbyterian" in the display serif), wired via `studio.components.logo`.
+- `StudioLogo.tsx` -- the Studio header logo: the church building mark (same image as the favicon, `church-mark.png`) on a paper chip next to "Second Presbyterian" in the display serif, wired via `studio.components.logo`.
 - `StudioLayout.tsx` -- wraps the Studio (`studio.components.layout`) to inject the brand web fonts so the themed serif families resolve.
 - `CharacterCountInput.tsx` -- global form input wrapper showing a live character counter under any capped text field (SEO title / description); registered once via `form.components.input`.
 - `documentBadges.tsx` -- at-a-glance status badges shown next to the publish status.

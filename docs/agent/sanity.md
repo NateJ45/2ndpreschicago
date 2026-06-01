@@ -32,7 +32,7 @@ All publicly-visible content lives in Sanity, not in code or markdown files. San
 > are not active for this project.
 
 **Settings and globals:**
-- `siteSettings` (singleton) — church name, tagline, mission, public email + phone, social links, service time; a **Navigation (menus)** group (`navItems` header menu + `footerColumns` footer columns); a **`favicon`** image; a **Connect & integrations** group (watch / give / app / directory / registration / prayer URLs); and a newsletter config. Phone surfaces site-wide as a tap-to-call link and feeds the LocalBusiness JSON-LD.
+- `siteSettings` (singleton) — church name, tagline, mission, public email + phone, **street address** (`addressLine` + `cityStateZip`), social links, service time; a **Navigation (menus)** group (`navItems` header menu + `footerColumns` footer columns); a **`favicon`** image; a **Connect & integrations** group (watch / give / app / directory / registration / prayer URLs); and a newsletter config. Phone + address surface site-wide (tap-to-call, header bar, footer, map links) and feed the LocalBusiness JSON-LD. Every field falls back to `src/data/site.ts` when blank.
 
 **Reusable collections:**
 - `event` — calendar + special/seasonal services (audience, cost, registration, contact, `featuredOnHome`, `specialService` + `liturgicalSeason`).
@@ -50,7 +50,7 @@ All publicly-visible content lives in Sanity, not in code or markdown files. San
 - Per-page church singletons (via the `definePageSingleton` factory): `worshipPage` (I'm New), `beliefsPage` (What We Believe), `musicPage`, `staffPage`, `growPage`, `servePage`, `kidsPage`, `foodPage`, `useOurSpacePage`, `weddingsPage`, `givePage`.
 - `page` — generic type for brand-new pages at `/<slug>`, built entirely from the block library.
 
-All page singletons have `seoTitle`/`seoDescription`, a `heroImage` (with alt), editable body-copy fields (with verbatim fallbacks), editable `finalCta*` closing copy, and a `flexibleSections[]` page-builder array. The block library (`studio/schemaTypes/blocks.ts`) and the background/media system are shared across every page; see `page-architecture.md`.
+All page singletons have `seoTitle`/`seoDescription`, a `heroImage` (with alt), editable body-copy fields (with verbatim fallbacks), editable `finalCta*` closing copy, and a `flexibleSections[]` page-builder array. The block library (`studio/schemaTypes/blocks.ts`) and the background/media system are shared across every page; see `page-architecture.md`. Several pages also carry editable structured lists, each with a built-in fallback: weddings (`weddingFaqs` + `weddingPricing`), grow (`groups`), serve (`ways`), use-our-space (`uses`), contact (`contactReasons`), what-we-believe (`resources`), and home (`serviceBand` + `weeklyRhythms`).
 
 **In-Studio help** ("How This Works") is NOT a Sanity singleton — it's repo-based, locked code (`studio/guides/content.tsx` + `studio/components/GuideView.tsx`), which replaces the old `studioGuide`/`studioNotes`/`studioPlaybook` singletons.
 
@@ -99,7 +99,9 @@ All GROQ queries live in `src/lib/queries.ts`. Each page has a typed query funct
 
 **All-fields default.** The `default: true` property is removed from every schema field group definition. Without it, Studio opens documents on the "All fields" tab instead of a single group, so editors see everything without needing to know which group a field lives in.
 
-**Studio branding.** `studio/sanity.config.ts` configures the Studio title (shown in the browser tab), a custom theme, and a custom logo component wired via `studio.components.logo`. Replace the placeholder title, theme, and logo asset for each project.
+**Studio branding.** `studio/sanity.config.ts` sets the Studio title, the brand theme (Bronze / Paper / Ink + the site's serif fonts), a logo (`studio.components.logo` = the church mark + wordmark), and a layout wrapper (`studio.components.layout` = `StudioLayout`, which injects the brand web fonts). Replace the title / theme / logo for each project.
+
+**No document preview.** This is a static site (`output: 'static'`) with no draft-preview environment, so documents show the **form only** — there is no iframe "Preview" tab. The old one loaded the last PUBLISHED build (not the editor's draft) and only changed after a rebuild, which misled editors. `urlForDoc` / `SITE_URL_FOR_PREVIEW` stay in `sanity.config.ts` as hooks if a real preview (SSR deploy + Sanity's Presentation tool + draft-mode `sanityFetch`) is added later.
 
 **SEO length warnings.** `.warning()` validations on `seoTitle` (warns around 60 characters) and `seoDescription` (warns around 160 characters) across all page singletons and `journalEntry`. Editors see an amber warning if the text is getting too long for Google to show in full. A warning, not an error, so it does not block publishing.
 

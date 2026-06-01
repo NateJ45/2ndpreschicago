@@ -105,18 +105,46 @@ Goal: let a non-technical pastor + secretary run the site from Sanity for a year
   image field. `BaseLayout` prefers the uploaded favicon (via the Sanity image pipeline) and
   falls back to the bundled mark.
 
+### Phase 8 — Content audit + remediation (complete)
+Audited what the live site actually pulls from Sanity vs. hardcoded, and what the dataset
+had loaded. Confirmed the site + Studio share one project (`kz01wb83`). Findings + fixes:
+- **Empty collections loaded.** `staffMember` (4 pastors/staff with bios + favorites; the
+  4 headshots uploaded as Sanity assets) and `ministry` (the 4 pillars, featured for the
+  home Get-Involved row) were both empty — the pages had been rendering hardcoded fallbacks.
+  Seeded via `scripts/seed-staff.mjs` + `scripts/seed-ministries.mjs`.
+- **siteSettings gaps filled** (service time, mission, give/watch/YouTube URLs, and the
+  street address) via `scripts/seed-settings.mjs` (`setIfMissing`).
+- **Hardcoded page lists made editable** (inline-fallback pattern): wedding FAQs + pricing,
+  grow groups, serve ways, use-our-space uses, contact "who to reach" rows, what-we-believe
+  resources, and the home service band + weekly rhythms. New schema fields + dedicated
+  getters; pre-filled in Sanity via `scripts/seed-page-lists.mjs`.
+- **Address editable.** `siteSettings.addressLine` + `cityStateZip` now drive the header
+  bar, footer (display + directions link), home service band, worship, contact (display +
+  embedded map), give, and the LocalBusiness JSON-LD — each with a `site.ts` fallback.
+- **`give.astro`** now reads `siteSettings.giveUrl` (it was ignoring it).
+- Added a re-runnable **`scripts/audit-content.mjs`** (published-vs-draft counts per type).
+
+### Phase 9 — Removed the misleading Studio "Preview" (complete)
+The site is `output: 'static'` with no draft-preview environment, so the iframe "Preview"
+tab showed the last PUBLISHED build (not the editor's draft) and only changed after a
+rebuild. Removed it (documents show the form only) and corrected the "How This Works" guide
+to teach the real model: edit → Publish → the site rebuilds in a few minutes → the change
+appears. `urlForDoc` / `SITE_URL_FOR_PREVIEW` kept in `sanity.config.ts` as hooks if a real
+preview environment is ever added (see Remaining work).
+
 ## Remaining work (all optional)
-1. Optional: `sermonSeries` collection + reference migration (only if the church starts a
-   structured sermon archive); `/sermons/series/[slug]` landing.
-2. Optional polish: a one-time seed that writes the current verbatim copy into the Sanity
-   docs so editors see the text pre-filled in Studio (today the fields are empty and fall
-   back to the verbatim copy, so the site is correct and the fields are ready to edit).
-3. Optional: make the Studio's own header logo the church mark image (`studio.components.logo`).
-   Note the teal "SP" badge in the sanity.io dashboard is Sanity's project avatar (initials,
-   auto-generated) and is not controlled by our code.
+1. `sermonSeries` collection + reference migration (only if the church starts a structured
+   sermon archive); `/sermons/series/[slug]` landing.
+2. **A real draft-preview environment** (true "see it before you publish"). Needs an
+   SSR/hybrid preview deployment + a draft-mode `sanityFetch` path + Sanity's
+   `presentationTool` (+ optional stega click-to-edit). Roughly 1-2 days plus a second
+   environment to maintain; not worth it for occasional editing. Revisit if editing gets
+   frequent.
+3. `worshipResource` is empty (bulletins / The Record / annual reports) — load PDFs when
+   available; the `/worship` resources section stays hidden until then.
 
 ## Operational notes
 - After ANY schema change the loop was: `npm run typegen` → wire/seed → `npm run build` → `npm run studio:deploy` → commit. Never used the Studio "Remove field" button (used the cleanup script).
-- Seed scripts: `scripts/seed-forms.mjs`, `scripts/seed-operational.mjs` (sample announcement), `scripts/seed-faq-items.mjs` (10 starter FAQ questions), `scripts/seed-sample-page.mjs` (QA helper for the page builder; `--delete` to remove).
+- Seed scripts: `seed-forms.mjs`, `seed-operational.mjs` (sample announcement), `seed-faq-items.mjs`, `seed-staff.mjs` (uploads headshots), `seed-ministries.mjs`, `seed-settings.mjs` (siteSettings via setIfMissing), `seed-page-lists.mjs` (the editable page lists), `seed-sample-page.mjs` (page-builder QA; `--delete`). Audit: `audit-content.mjs`.
 - The Studio is deployed (schema shipped per phase). The **site** deploys to Cloudflare on merge to `master`.
-- Shipped as **PR #2** — https://github.com/NateJ45/2ndpreschicago/pull/2 (`feature/church-cms` → `master`, 33 commits). Green at open.
+- The core CMS build shipped via **PR #2** (merged to `master`); the content audit remediation, the preview removal, and the editable address then landed directly on `master`.
