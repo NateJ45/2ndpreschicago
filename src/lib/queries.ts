@@ -130,6 +130,40 @@ export async function getPageHero(type: string) {
   }`, { type }, null);
 }
 
+// Dedicated spread getters for the pages that carry their own editable list
+// fields (grow groups, serve ways, beliefs resources). These mirror
+// getWeddingsPage: the spread (...) lets every page-copy field, including the
+// new arrays, flow through without listing each one, while images +
+// flexibleSections are resolved explicitly. getPageHero would also spread, but
+// these named helpers keep the page-to-getter mapping obvious for maintainers.
+
+export async function getGrowPage() {
+  return sanityFetch(`*[_type == "growPage"][0]{
+    ...,
+    heroImage${IMAGE_PROJECTION},
+    seoImage${IMAGE_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
+  }`, {}, null);
+}
+
+export async function getServePage() {
+  return sanityFetch(`*[_type == "servePage"][0]{
+    ...,
+    heroImage${IMAGE_PROJECTION},
+    seoImage${IMAGE_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
+  }`, {}, null);
+}
+
+export async function getBeliefsPage() {
+  return sanityFetch(`*[_type == "beliefsPage"][0]{
+    ...,
+    heroImage${IMAGE_PROJECTION},
+    seoImage${IMAGE_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
+  }`, {}, null);
+}
+
 // ---- Home page ------------------------------------------------------------
 // Hero + SEO only. The home sections render from inline church copy; the hero
 // image (single or slideshow) is the editor-managed override.
@@ -155,6 +189,8 @@ export async function getHomePage() {
       primaryCtaLabel, primaryCtaUrl
     },
     thisSunday,
+    serviceBand,
+    weeklyRhythms,
     welcomeEyebrow, welcomeHeadline, welcomeBodyP1, welcomeBodyP2,
     inclusiveStatement, inclusiveBody,
     involvedEyebrow, involvedHeadline, involvedSubhead,

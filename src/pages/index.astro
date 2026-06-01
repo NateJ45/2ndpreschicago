@@ -121,6 +121,34 @@ const ministryCards =
   Array.isArray(featuredMinistries) && featuredMinistries.length > 0
     ? featuredMinistries.map((m: any) => ({ title: m.title, href: m.link || '#', body: m.summary || '' }))
     : ministries;
+
+// ---- Service-times band (section 2) -------------------------------------
+// The "when + where" green band. Each label/line is editable in the Home
+// singleton (homePage.serviceBand); these defaults render when a field is
+// empty, so the band is unchanged until an editor overrides it. The "Where"
+// address itself comes from site.ts, not Sanity.
+const sb: any = page?.serviceBand ?? null;
+const serviceBand = {
+  worshipLabel: sb?.worshipLabel ?? 'Sunday Worship',
+  worshipTime: sb?.worshipTime ?? '11am, every Sunday',
+  joinLabel: sb?.joinLabel ?? 'How to join',
+  joinNote: sb?.joinNote ?? 'In person and online. Communion the first Sunday of each month.',
+  whereLabel: sb?.whereLabel ?? 'Where',
+};
+
+// ---- Weekly rhythms teaser list (section 6) -----------------------------
+// Inline fallback. The list is editable in Sanity (homePage.weeklyRhythms);
+// this const renders when that field is empty, so the page is identical until
+// an editor overrides it. (The en dashes below are display punctuation in
+// schedule ranges, not sentence em-dashes.)
+const FALLBACK_RHYTHMS = [
+  { label: 'Sunday Worship', time: 'Sundays, 11am' },
+  { label: 'Lunch Bag', time: 'Tue–Thu, 11am–1pm' },
+  { label: 'South Loop Community Table', time: 'Sundays, 6:45pm' },
+  { label: 'Mid-Morning Bible Study', time: 'Thursdays, 10am' },
+];
+
+const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBACK_RHYTHMS;
 ---
 
 <BaseLayout {title} {description} {siteSettings}>
@@ -197,15 +225,15 @@ const ministryCards =
     <div class="mx-auto max-w-content px-m py-l grid gap-m md:grid-cols-[1fr_auto] items-center">
       <div class="grid gap-m sm:grid-cols-3 text-center sm:text-left">
         <div>
-          <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70">Sunday Worship</p>
-          <p class="mt-1 font-display text-h4 text-chapel-foreground">11am, every Sunday</p>
+          <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70">{serviceBand.worshipLabel}</p>
+          <p class="mt-1 font-display text-h4 text-chapel-foreground">{serviceBand.worshipTime}</p>
         </div>
         <div>
-          <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70">How to join</p>
-          <p class="mt-1 text-chapel-foreground/85">In person and online. Communion the first Sunday of each month.</p>
+          <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70">{serviceBand.joinLabel}</p>
+          <p class="mt-1 text-chapel-foreground/85">{serviceBand.joinNote}</p>
         </div>
         <div>
-          <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70">Where</p>
+          <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70">{serviceBand.whereLabel}</p>
           <p class="mt-1 text-chapel-foreground/85">{site.contact.addressLine}, {site.contact.cityStateZip}</p>
         </div>
       </div>
@@ -313,10 +341,11 @@ const ministryCards =
       <div class="text-foreground/85 text-lg leading-relaxed space-y-s">
         <p>Worship, study, shared meals, music, and fellowship fill the week. A few of our weekly rhythms:</p>
         <ul class="space-y-2 list-none p-0 text-base">
-          <li class="flex justify-between gap-m border-b border-border-soft pb-2"><span>Sunday Worship</span><span class="text-foreground/70">Sundays, 11am</span></li>
-          <li class="flex justify-between gap-m border-b border-border-soft pb-2"><span>Lunch Bag</span><span class="text-foreground/70">Tue&ndash;Thu, 11am&ndash;1pm</span></li>
-          <li class="flex justify-between gap-m border-b border-border-soft pb-2"><span>South Loop Community Table</span><span class="text-foreground/70">Sundays, 6:45pm</span></li>
-          <li class="flex justify-between gap-m"><span>Mid-Morning Bible Study</span><span class="text-foreground/70">Thursdays, 10am</span></li>
+          {weeklyRhythms.map((r, i) => (
+            <li class={`flex justify-between gap-m ${i < weeklyRhythms.length - 1 ? 'border-b border-border-soft pb-2' : ''}`}>
+              <span>{r.label}</span><span class="text-foreground/70">{r.time}</span>
+            </li>
+          ))}
         </ul>
         <div class="pt-s">
           <a href="/events" class={pillOutline}>See the Full Calendar</a>

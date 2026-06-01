@@ -3,7 +3,7 @@
 // Grow. Community groups: Bible study, Theology on Tap, reading groups.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getGrowPage, getSiteSettings } from '@/lib/queries';
 import heroGrow from '@/assets/hero-grow.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
@@ -12,7 +12,7 @@ import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
-const page = await getPageHero('growPage').catch(() => null);
+const page = await getGrowPage().catch(() => null);
 
 const title = `Grow · ${site.name}`;
 const description =
@@ -25,12 +25,17 @@ const schemas = [
   ]),
 ];
 
-const groups = [
+// Inline fallback. The community-group cards are editable in Sanity
+// (growPage.groups); this const renders when that field is empty, so the page
+// is identical until an editor overrides it.
+const FALLBACK_GROUPS = [
   { name: 'Mid-Morning Bible Study', when: 'First and third Thursdays, 10am', where: 'The Pastor\'s Office', body: 'Read through books of the Bible together over coffee.' },
   { name: 'Theology on Tap', when: 'Third Thursdays, 7pm', where: 'Rotating neighborhood pubs', body: 'Read short pieces of theological writing over drinks and good conversation.' },
   { name: 'Alpha to Omega Bible Reading Group', when: 'Thursdays, 5pm to 6pm', where: 'By conference call', body: 'Read through the whole Bible together, a stretch at a time.' },
   { name: 'Second Church Book Group', when: 'Select Sundays, 9:30am', where: 'At the church', body: 'Read and discuss a book together before worship.' },
 ];
+
+const groups = page?.groups?.length ? page.groups : FALLBACK_GROUPS;
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>

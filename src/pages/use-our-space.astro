@@ -27,10 +27,15 @@ const schemas = [
   ]),
 ];
 
-const uses = [
+// Inline fallback. The use tags are editable in Sanity (useOurSpacePage.uses);
+// this const renders when that field is empty, so the page is identical until
+// an editor overrides it.
+const FALLBACK_USES = [
   'Youth sports', 'Board meetings', 'Worship', 'Meal programs', 'Social services',
   'Speakers', 'Concerts', 'Performance rehearsals', 'Parties', '12-step groups',
 ];
+
+const uses = page?.uses?.length ? page.uses : FALLBACK_USES;
 
 ---
 

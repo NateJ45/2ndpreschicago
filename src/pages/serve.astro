@@ -3,7 +3,7 @@
 // Serve. Ways to serve our neighbors through the church.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getServePage, getSiteSettings } from '@/lib/queries';
 import heroServe from '@/assets/hero-exterior.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
@@ -12,7 +12,7 @@ import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
-const page = await getPageHero('servePage').catch(() => null);
+const page = await getServePage().catch(() => null);
 
 const title = `Serve · ${site.name}`;
 const description =
@@ -25,11 +25,16 @@ const schemas = [
   ]),
 ];
 
-const ways = [
+// Inline fallback. The ways-to-serve cards are editable in Sanity
+// (servePage.ways); this const renders when that field is empty, so the page is
+// identical until an editor overrides it.
+const FALLBACK_WAYS = [
   { name: 'Food ministry', href: '/food', body: 'Help pack and hand out Lunch Bags, or host the South Loop Community Table alongside Care for Friends. This is the heart of how we serve our neighbors.' },
   { name: 'Sunday hospitality', href: '/worship', body: 'Welcome visitors, help with coffee and fellowship, and make sure everyone who walks in feels at home.' },
   { name: 'Neighborhood events', href: '/events', body: 'Lend a hand at gatherings like the South Michigan Avenue Block Fest, free and open to all our neighbors.' },
 ];
+
+const ways = page?.ways?.length ? page.ways : FALLBACK_WAYS;
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>

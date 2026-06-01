@@ -830,8 +830,20 @@ export type WeddingsPage = {
   inquiryForm?: FormReference;
   faqEyebrow?: string;
   faqHeadline?: string;
+  weddingFaqs?: Array<{
+    q?: string;
+    a?: string;
+    _type: "weddingFaq";
+    _key: string;
+  }>;
   pricingEyebrow?: string;
   pricingHeadline?: string;
+  weddingPricing?: Array<{
+    item?: string;
+    price?: string;
+    _type: "weddingPriceRow";
+    _key: string;
+  }>;
   pricingFootnote?: string;
   inquireEyebrow?: string;
   inquireHeadline?: string;
@@ -920,6 +932,7 @@ export type UseOurSpacePage = {
   introHeadline?: string;
   introBodyP1?: string;
   introBodyP2?: string;
+  uses?: Array<string>;
   inquireHeadline?: string;
   inquireIntro?: string;
   finalCtaEyebrow?: string;
@@ -1170,6 +1183,13 @@ export type ServePage = {
         _key: string;
       } & Embed)
   >;
+  ways?: Array<{
+    name?: string;
+    href?: string;
+    body?: string;
+    _type: "serveWay";
+    _key: string;
+  }>;
   serveCtaEyebrow?: string;
   serveCtaHeadline?: string;
   serveCtaSubhead?: string;
@@ -1249,6 +1269,14 @@ export type GrowPage = {
         _key: string;
       } & Embed)
   >;
+  groups?: Array<{
+    name?: string;
+    when?: string;
+    where?: string;
+    body?: string;
+    _type: "communityGroup";
+    _key: string;
+  }>;
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
@@ -1524,6 +1552,13 @@ export type BeliefsPage = {
   goingCard3Body?: string;
   deeperHeadline?: string;
   deeperIntro?: string;
+  resources?: Array<{
+    label?: string;
+    href?: string;
+    external?: boolean;
+    _type: "beliefsResource";
+    _key: string;
+  }>;
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaSubhead?: string;
@@ -2355,6 +2390,13 @@ export type ContactPage = {
   }>;
   note?: string;
   whoToReachLabel?: string;
+  contactReasons?: Array<{
+    label?: string;
+    value?: string;
+    href?: string;
+    _type: "contactReason";
+    _key: string;
+  }>;
   gettingHereLabel?: string;
   gettingHereBody?: string;
   formSectionHeadline?: string;
@@ -2742,6 +2784,19 @@ export type HomePage = {
   welcomeHeadline?: string;
   welcomeBodyP1?: string;
   welcomeBodyP2?: string;
+  serviceBand?: {
+    worshipLabel?: string;
+    worshipTime?: string;
+    joinLabel?: string;
+    joinNote?: string;
+    whereLabel?: string;
+  };
+  weeklyRhythms?: Array<{
+    label?: string;
+    time?: string;
+    _type: "weeklyRhythm";
+    _key: string;
+  }>;
   inclusiveStatement?: string;
   inclusiveBody?: string;
   involvedEyebrow?: string;

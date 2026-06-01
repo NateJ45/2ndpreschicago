@@ -203,6 +203,41 @@ export const homePage = defineType({
     defineField({ name: 'welcomeHeadline', title: 'Welcome — headline', type: 'string', group: 'content' }),
     defineField({ name: 'welcomeBodyP1', title: 'Welcome — paragraph 1', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'welcomeBodyP2', title: 'Welcome — paragraph 2', type: 'text', rows: 3, group: 'content' }),
+    defineField({
+      name: 'serviceBand',
+      title: 'Service-times band',
+      type: 'object',
+      group: 'content',
+      options: { collapsible: true, collapsed: false },
+      description:
+        'The green "when and where" band under the hero. Leave any field empty to use the built-in default wording. The "Where" address comes from Site Settings and is not edited here.',
+      fields: [
+        defineField({ name: 'worshipLabel', title: 'Worship label', type: 'string', description: 'Example: "Sunday Worship".' }),
+        defineField({ name: 'worshipTime', title: 'Worship time (large)', type: 'string', description: 'Example: "11am, every Sunday".' }),
+        defineField({ name: 'joinLabel', title: 'How-to-join label', type: 'string', description: 'Example: "How to join".' }),
+        defineField({ name: 'joinNote', title: 'How-to-join note', type: 'text', rows: 2, description: 'Example: "In person and online. Communion the first Sunday of each month."' }),
+        defineField({ name: 'whereLabel', title: 'Where label', type: 'string', description: 'Example: "Where". The address itself comes from Site Settings.' }),
+      ],
+    }),
+    defineField({
+      name: 'weeklyRhythms',
+      title: 'Weekly rhythms list',
+      type: 'array',
+      group: 'content',
+      description:
+        'The short "weekly rhythms" list in the events teaser. Each row is an activity and when it happens. Drag to reorder. Leave empty to use the built-in default list.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'weeklyRhythm',
+          fields: [
+            defineField({ name: 'label', title: 'Activity', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'time', title: 'When', type: 'string', description: 'Example: "Sundays, 11am".', validation: (R) => R.required() }),
+          ],
+          preview: { select: { title: 'label', subtitle: 'time' } },
+        }),
+      ],
+    }),
     defineField({ name: 'inclusiveStatement', title: 'Inclusive welcome — statement', type: 'text', rows: 2, group: 'content' }),
     defineField({ name: 'inclusiveBody', title: 'Inclusive welcome — body', type: 'text', rows: 2, group: 'content' }),
     defineField({ name: 'involvedEyebrow', title: 'Get involved — eyebrow', type: 'string', group: 'content' }),

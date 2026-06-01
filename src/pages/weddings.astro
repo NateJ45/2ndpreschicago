@@ -27,7 +27,10 @@ const schemas = [
   ]),
 ];
 
-const faqs = [
+// Inline fallbacks. The FAQ + pricing lists are editable in Sanity
+// (weddingsPage.weddingFaqs / weddingPricing); these consts render when those
+// fields are empty, so the page is identical until an editor overrides them.
+const FALLBACK_FAQS = [
   { q: 'Who can get married at Second?', a: 'We welcome gay and straight couples. Because the sanctuary is a consecrated space, religious ceremonies must be Christian. Nonreligious ceremonies are welcome as long as they are respectful of the space and its purpose. There is no dress code.' },
   { q: 'What about music?', a: 'Our Music Director\'s services are built into a typical wedding package, which may include our exceptional 1917 Austin organ and a piano. Recorded music is available through a CD player or aux cable. The organ predates standardized pitch, so any instrument played with it must be tuned down to match.' },
   { q: 'Can we use our own officiant?', a: 'Yes. We require premarital counseling for couples married in our sanctuary. Our pastor is glad to officiate Christian weddings, and that fee is waived for members of the congregation.' },
@@ -37,12 +40,15 @@ const faqs = [
   { q: 'Is there space for a reception?', a: 'Our Fellowship Hall may be rented for an additional fee. Please note that it is a carpeted space.' },
 ];
 
-const pricing = [
+const FALLBACK_PRICING = [
   { item: 'Standard package (rehearsal plus 3 hours of wedding-day use)', price: '$1,500' },
   { item: 'Officiant', price: '$500' },
   { item: 'Premarital counseling only', price: '$250' },
   { item: 'Live stream of the ceremony', price: '$250' },
 ];
+
+const faqs = page?.weddingFaqs?.length ? page.weddingFaqs : FALLBACK_FAQS;
+const pricing = page?.weddingPricing?.length ? page.weddingPricing : FALLBACK_PRICING;
 
 ---
 

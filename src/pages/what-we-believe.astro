@@ -5,7 +5,7 @@
 // only adjust formatting/layout.
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getBeliefsPage, getSiteSettings } from '@/lib/queries';
 import heroBeliefs from '@/assets/tiffany-windows.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
@@ -15,7 +15,7 @@ import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
-const page = await getPageHero('beliefsPage').catch(() => null);
+const page = await getBeliefsPage().catch(() => null);
 
 const title = `What We Believe · ${site.name}`;
 const description =
@@ -87,12 +87,17 @@ const whereWeGoing = [
   },
 ];
 
-const resources = [
+// Inline fallback. The dig-deeper resource links are editable in Sanity
+// (beliefsPage.resources); this const renders when that field is empty, so the
+// page is identical until an editor overrides it.
+const FALLBACK_RESOURCES = [
   { label: 'Community groups at Second', href: '/grow', external: false },
   { label: 'Lectio 365', href: 'https://www.24-7prayer.com/resource/lectio-365/', external: true },
   { label: 'BibleProject', href: 'https://bibleproject.com/', external: true },
   { label: 'Practicing the Way', href: 'https://practicingtheway.org/', external: true },
 ];
+
+const resources = page?.resources?.length ? page.resources : FALLBACK_RESOURCES;
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>

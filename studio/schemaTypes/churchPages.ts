@@ -10,7 +10,7 @@
 // export in index.ts (schemaTypes), structure.ts (SINGLETON_TYPES + a Pages
 // item) and sanity.config.ts (SINGLETON_TYPES set + urlForDoc case).
 
-import { defineType, defineField } from 'sanity';
+import { defineType, defineField, defineArrayMember } from 'sanity';
 import { FLEXIBLE_SECTION_MEMBERS } from './blocks';
 
 interface PageDefaults {
@@ -187,6 +187,26 @@ export const beliefsPage = definePageSingleton('beliefsPage', 'What We Believe',
     defineField({ name: 'goingCard3Body', title: 'Going card 3 body', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'deeperHeadline', title: 'Dig deeper headline', type: 'string', group: 'content' }),
     defineField({ name: 'deeperIntro', title: 'Dig deeper intro', type: 'text', rows: 2, group: 'content' }),
+    defineField({
+      name: 'resources',
+      title: 'Dig deeper resources',
+      type: 'array',
+      group: 'content',
+      description:
+        'The links in the "Dig deeper" section. Each link has a label and a destination. Turn on "Opens in a new tab" for links to other websites. Drag to reorder. Leave empty to use the built-in default links.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'beliefsResource',
+          fields: [
+            defineField({ name: 'label', title: 'Label', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'href', title: 'Link', type: 'string', description: 'Internal path like "/grow" or a full URL.', validation: (R) => R.required() }),
+            defineField({ name: 'external', title: 'Opens in a new tab', type: 'boolean', description: 'Turn on for links to other websites.', initialValue: false }),
+          ],
+          preview: { select: { title: 'label', subtitle: 'href' } },
+        }),
+      ],
+    }),
     defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
@@ -237,6 +257,27 @@ export const growPage = definePageSingleton('growPage', 'Grow', {
 }, {
   groups: [{ name: 'content', title: 'Page copy' }],
   fields: [
+    defineField({
+      name: 'groups',
+      title: 'Community groups',
+      type: 'array',
+      group: 'content',
+      description:
+        'The community-group cards. Each card has a name, when it meets, where it meets, and a short description. Drag to reorder. Leave empty to use the built-in default groups.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'communityGroup',
+          fields: [
+            defineField({ name: 'name', title: 'Group name', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'when', title: 'When it meets', type: 'string', description: 'Example: "First and third Thursdays, 10am".' }),
+            defineField({ name: 'where', title: 'Where it meets', type: 'string', description: 'Example: "By conference call".' }),
+            defineField({ name: 'body', title: 'Description', type: 'text', rows: 3 }),
+          ],
+          preview: { select: { title: 'name', subtitle: 'when' } },
+        }),
+      ],
+    }),
     defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
     defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
@@ -251,6 +292,26 @@ export const servePage = definePageSingleton('servePage', 'Serve', {
 }, {
   groups: [{ name: 'content', title: 'Page copy' }],
   fields: [
+    defineField({
+      name: 'ways',
+      title: 'Ways to serve',
+      type: 'array',
+      group: 'content',
+      description:
+        'The "ways to serve" cards. Each card has a name, a link, and a short description. The link can be an internal path like "/food" or a full URL. Drag to reorder. Leave empty to use the built-in default ways.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'serveWay',
+          fields: [
+            defineField({ name: 'name', title: 'Name', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'href', title: 'Link', type: 'string', description: 'Internal path like "/food" or a full URL.', validation: (R) => R.required() }),
+            defineField({ name: 'body', title: 'Description', type: 'text', rows: 3 }),
+          ],
+          preview: { select: { title: 'name', subtitle: 'href' } },
+        }),
+      ],
+    }),
     defineField({ name: 'serveCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
     defineField({ name: 'serveCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
     defineField({ name: 'serveCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
@@ -322,6 +383,15 @@ export const useOurSpacePage = definePageSingleton(
       defineField({ name: 'introHeadline', title: 'Intro headline', type: 'string', group: 'content' }),
       defineField({ name: 'introBodyP1', title: 'Intro paragraph 1', type: 'text', rows: 3, group: 'content' }),
       defineField({ name: 'introBodyP2', title: 'Intro paragraph 2', type: 'text', rows: 3, group: 'content' }),
+      defineField({
+        name: 'uses',
+        title: 'Use tags',
+        type: 'array',
+        group: 'content',
+        description:
+          'The little tag pills under the intro (e.g. "Youth sports", "Concerts"). One short label per tag. Drag to reorder. Leave empty to use the built-in default tags.',
+        of: [defineArrayMember({ type: 'string' })],
+      }),
       defineField({ name: 'inquireHeadline', title: 'Inquiry headline', type: 'string', group: 'content' }),
       defineField({ name: 'inquireIntro', title: 'Inquiry intro', type: 'text', rows: 2, group: 'content' }),
       defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
@@ -356,8 +426,46 @@ export const weddingsPage = definePageSingleton(
       }),
       defineField({ name: 'faqEyebrow', title: 'FAQ eyebrow', type: 'string', group: 'content' }),
       defineField({ name: 'faqHeadline', title: 'FAQ headline', type: 'string', group: 'content' }),
+      defineField({
+        name: 'weddingFaqs',
+        title: 'Wedding FAQ items',
+        type: 'array',
+        group: 'content',
+        description:
+          'The common-questions list in the FAQ section. Each item is a question and its answer. Drag to reorder. Leave empty to use the built-in default questions.',
+        of: [
+          defineArrayMember({
+            type: 'object',
+            name: 'weddingFaq',
+            fields: [
+              defineField({ name: 'q', title: 'Question', type: 'string', validation: (R) => R.required() }),
+              defineField({ name: 'a', title: 'Answer', type: 'text', rows: 4, validation: (R) => R.required() }),
+            ],
+            preview: { select: { title: 'q' } },
+          }),
+        ],
+      }),
       defineField({ name: 'pricingEyebrow', title: 'Pricing eyebrow', type: 'string', group: 'content' }),
       defineField({ name: 'pricingHeadline', title: 'Pricing headline', type: 'string', group: 'content' }),
+      defineField({
+        name: 'weddingPricing',
+        title: 'Wedding pricing rows',
+        type: 'array',
+        group: 'content',
+        description:
+          'The line items in the pricing list. Each row is a service or package and its price (include the dollar sign, e.g. "$1,500"). Drag to reorder. Leave empty to use the built-in default rows.',
+        of: [
+          defineArrayMember({
+            type: 'object',
+            name: 'weddingPriceRow',
+            fields: [
+              defineField({ name: 'item', title: 'Item', type: 'string', validation: (R) => R.required() }),
+              defineField({ name: 'price', title: 'Price', type: 'string', validation: (R) => R.required() }),
+            ],
+            preview: { select: { title: 'item', subtitle: 'price' } },
+          }),
+        ],
+      }),
       defineField({ name: 'pricingFootnote', title: 'Pricing footnote', type: 'text', rows: 2, group: 'content' }),
       defineField({ name: 'inquireEyebrow', title: 'Inquiry eyebrow', type: 'string', group: 'content' }),
       defineField({ name: 'inquireHeadline', title: 'Inquiry headline', type: 'string', group: 'content' }),

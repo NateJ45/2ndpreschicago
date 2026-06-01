@@ -33,12 +33,18 @@ const schemas = [
 
 const mapQuery = encodeURIComponent(`${site.contact.addressLine}, ${site.contact.cityStateZip}`);
 
-const reasons = [
+// Inline fallback. The who-to-reach rows are editable in Sanity
+// (contactPage.contactReasons); this const renders when that field is empty, so
+// the page is identical until an editor overrides it. The default emails still
+// come from site.ts so a fresh build always has working addresses.
+const FALLBACK_REASONS = [
   { label: 'General questions', value: site.contact.email, href: `mailto:${site.contact.email}` },
   { label: 'Pastoral care', value: site.contact.pastorEmail, href: `mailto:${site.contact.pastorEmail}` },
   { label: 'Weddings', value: 'See wedding details', href: '/weddings' },
   { label: 'Use our space', value: 'Inquire about the building', href: '/use-our-space' },
 ];
+
+const reasons = page?.contactReasons?.length ? page.contactReasons : FALLBACK_REASONS;
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>

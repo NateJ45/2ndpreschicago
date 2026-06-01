@@ -134,6 +134,26 @@ export const contactPage = defineType({
       description: 'Internal-only reminder for editors. Anything you write here stays in Studio and never renders on the live page.',
     }),
     defineField({ name: 'whoToReachLabel', title: 'Who to reach label', type: 'string', group: 'content' }),
+    defineField({
+      name: 'contactReasons',
+      title: 'Who to reach rows',
+      type: 'array',
+      group: 'content',
+      description:
+        'The rows under "Who to reach". Each row has a label, the text shown on the right, and where it links. For an email, set the link to "mailto:office@example.org". For a page, use a path like "/weddings". Drag to reorder. Leave empty to use the built-in default rows.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'contactReason',
+          fields: [
+            defineField({ name: 'label', title: 'Label', type: 'string', validation: (R) => R.required() }),
+            defineField({ name: 'value', title: 'Shown text', type: 'string', description: 'The text shown on the right, e.g. an email address or "See wedding details".', validation: (R) => R.required() }),
+            defineField({ name: 'href', title: 'Link', type: 'string', description: 'A "mailto:" email link, an internal path like "/weddings", or a full URL.', validation: (R) => R.required() }),
+          ],
+          preview: { select: { title: 'label', subtitle: 'value' } },
+        }),
+      ],
+    }),
     defineField({ name: 'gettingHereLabel', title: 'Getting here label', type: 'string', group: 'content' }),
     defineField({ name: 'gettingHereBody', title: 'Getting here body', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'formSectionHeadline', title: 'Form section headline', type: 'string', group: 'content' }),
