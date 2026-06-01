@@ -1,0 +1,49 @@
+---
+// Generic custom pages built in Sanity (the `page` type), routed at /<slug>.
+// Static routes (about.astro, contact.astro, etc.) take precedence; this only
+// renders slugs that don't collide with a built-in page. With no custom pages
+// in Sanity, getStaticPaths returns [] and nothing is generated.
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPageBySlug, getAllPageSlugs, getSiteSettings } from '@/lib/queries';
+import Hero from '@/components/Hero.astro';
+import Sections from '@/components/Sections.astro';
+import { site } from '@/data/site';
+import heroFallback from '@/assets/hero-sanctuary.webp';
+
+export async function getStaticPaths() {
+  // Top-level routes that already exist as their own files. A custom page must
+  // not reuse these slugs (Astro would see duplicate routes), so we skip them.
+  // Defined inside getStaticPaths because Astro hoists this function above the
+  // component script (module-scope consts aren't in scope here).
+  const RESERVED = new Set([
+    'about', 'contact', 'worship', 'weddings', 'use-our-space', 'give', 'grow', 'serve',
+    'kids', 'food', 'music', 'pastor-staff', 'what-we-believe', 'faq', 'privacy',
+    'events', 'sermons', '404',
+  ]);
+  const slugs = await getAllPageSlugs().catch(() => []);
+  return slugs.filter((slug) => !RESERVED.has(slug)).map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const [page, siteSettings] = await Promise.all([
+  getPageBySlug(slug!).catch(() => null),
+  getSiteSettings().catch(() => null),
+]);
+
+const title = page?.seoTitle ?? page?.title ?? site.name;
+const description = page?.seoDescription ?? '';
+---
+
+<BaseLayout {title} {description} {siteSettings} seoImage={page?.seoImage}>
+  <Hero
+    eyebrow={page?.heroEyebrow ?? ''}
+    headline={page?.heroHeadline ?? page?.title ?? ''}
+    subhead={page?.heroSubhead ?? ''}
+    backgroundImage={page?.heroImage ?? null}
+    localImage={heroFallback}
+    localImageAlt="Second Presbyterian Church of Chicago"
+    headingId="page-hero"
+    size="short"
+  />
+  <Sections sections={page?.sections} fallbackEmail={site.contact.email} />
+</BaseLayout>

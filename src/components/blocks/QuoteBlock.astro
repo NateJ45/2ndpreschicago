@@ -1,0 +1,18 @@
+---
+// Quote / scripture block on a chapel-green band (the liturgical counterpoint).
+const { block } = Astro.props as { block: any };
+---
+
+{
+  block?.quote && (
+    <section class="bg-chapel text-chapel-foreground" aria-label="Quote">
+      <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
+        <div class="mb-m h-px w-12 bg-gold/70 mx-auto" aria-hidden="true" />
+        <blockquote class="font-display italic text-h3 leading-snug">{block.quote}</blockquote>
+        {block.attribution && (
+          <p class="mt-m text-xs uppercase tracking-eyebrow text-chapel-foreground/70">{block.attribution}</p>
+        )}
+      </div>
+    </section>
+  )
+}

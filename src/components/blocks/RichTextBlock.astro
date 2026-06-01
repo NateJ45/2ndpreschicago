@@ -1,0 +1,27 @@
+---
+// Text section block. Eyebrow + heading + rich body (Portable Text).
+import PortableText from '@/components/PortableText';
+
+const { block } = Astro.props as { block: any };
+const centered = block?.align === 'center';
+---
+
+{
+  block && (
+    <section class="bg-background">
+      <div class={`mx-auto max-w-3xl px-m py-section-md ${centered ? 'text-center' : ''}`}>
+        {block.eyebrow && (
+          <p class="text-xs uppercase tracking-eyebrow text-foreground/70">{block.eyebrow}</p>
+        )}
+        {block.heading && (
+          <h2 class="mt-s font-display text-h2 text-foreground">{block.heading}</h2>
+        )}
+        {block.body && (
+          <div class={`mt-m text-foreground/85 leading-relaxed ${centered ? 'text-left' : ''}`}>
+            <PortableText value={block.body} />
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}

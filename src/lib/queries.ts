@@ -215,6 +215,34 @@ export async function getForm(slug: string) {
   return sanityFetch(`*[_type == "form" && slug.current == $slug][0]${FORM_PROJECTION}`, { slug }, null);
 }
 
+// ---- Generic custom pages (/[slug], page-builder blocks) ------------------
+// Resolves image + form references inside flexibleSections; other blocks carry
+// their fields via the spread.
+const SECTIONS_PROJECTION = `sections[]{
+  ...,
+  _type == "sectionImageText" => { image${IMAGE_PROJECTION} },
+  _type == "sectionForm" => { form->${FORM_PROJECTION} }
+}`;
+
+export async function getPageBySlug(slug: string) {
+  return sanityFetch(`*[_type == "page" && slug.current == $slug][0]{
+    title, "slug": slug.current,
+    heroEyebrow, heroHeadline, heroSubhead,
+    heroImage${IMAGE_PROJECTION},
+    seoTitle, seoDescription, seoImage${IMAGE_PROJECTION},
+    ${SECTIONS_PROJECTION}
+  }`, { slug }, null);
+}
+
+export async function getAllPageSlugs(): Promise<string[]> {
+  const list: Array<{ slug: string }> = await sanityFetch(
+    `*[_type == "page" && defined(slug.current)]{ "slug": slug.current }`,
+    {},
+    [],
+  );
+  return list.map((p) => p.slug).filter(Boolean);
+}
+
 // ---- 404 page -------------------------------------------------------------
 
 export async function getNotFoundPage() {

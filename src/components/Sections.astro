@@ -1,0 +1,37 @@
+---
+// Page-builder renderer. Maps each flexibleSections block (_type) to its
+// on-brand component. Unknown types are skipped. Used by the generic `page`
+// type at /[slug] and any page that adds a flexibleSections[] field.
+import RichTextBlock from '@/components/blocks/RichTextBlock.astro';
+import ImageTextBlock from '@/components/blocks/ImageTextBlock.astro';
+import CardGridBlock from '@/components/blocks/CardGridBlock.astro';
+import QuoteBlock from '@/components/blocks/QuoteBlock.astro';
+import CtaBandBlock from '@/components/blocks/CtaBandBlock.astro';
+import FormRefBlock from '@/components/blocks/FormRefBlock.astro';
+import EmbedBlock from '@/components/EmbedBlock.astro';
+
+interface Props {
+  sections?: any[] | null;
+  /** Passed to form blocks for the keyless mailto fallback. */
+  fallbackEmail?: string;
+}
+const { sections = [], fallbackEmail } = Astro.props;
+
+const MAP: Record<string, any> = {
+  sectionRichText: RichTextBlock,
+  sectionImageText: ImageTextBlock,
+  sectionCardGrid: CardGridBlock,
+  sectionQuote: QuoteBlock,
+  sectionCtaBand: CtaBandBlock,
+  sectionForm: FormRefBlock,
+  embed: EmbedBlock,
+};
+---
+
+{
+  (sections ?? []).map((block: any) => {
+    const Cmp = MAP[block?._type];
+    if (!Cmp) return null;
+    return <Cmp block={block} fallbackEmail={fallbackEmail} />;
+  })
+}

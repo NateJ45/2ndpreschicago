@@ -1,0 +1,32 @@
+---
+// Call-to-action band on a chapel-green surface with a bronze pill button.
+const { block } = Astro.props as { block: any };
+const isExternal = typeof block?.ctaUrl === 'string' && /^https?:\/\//.test(block.ctaUrl);
+const pill =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+---
+
+{
+  block?.headline && (
+    <section class="bg-chapel text-chapel-foreground" aria-label={block.headline}>
+      <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
+        {block.eyebrow && (
+          <p class="text-xs uppercase tracking-eyebrow text-gold">{block.eyebrow}</p>
+        )}
+        <h2 class="mt-s font-display text-h2">{block.headline}</h2>
+        {block.subhead && <p class="mt-m text-chapel-foreground/85 leading-relaxed">{block.subhead}</p>}
+        {block.ctaLabel && block.ctaUrl && (
+          <div class="mt-l">
+            <a
+              href={block.ctaUrl}
+              class={pill}
+              {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              {block.ctaLabel}
+            </a>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}

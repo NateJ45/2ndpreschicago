@@ -1,0 +1,53 @@
+---
+// Image + text block. Two columns; image left or right; optional arched frame
+// (the church motif) and a CTA button.
+import SanityImage from '@/components/SanityImage.astro';
+import PortableText from '@/components/PortableText';
+
+const { block } = Astro.props as { block: any };
+const imageRight = (block?.imageSide ?? 'right') !== 'left';
+const archCls = block?.arched ? 'arch-top-sm' : 'rounded-md';
+const hasImage = !!block?.image?.asset;
+const pill =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-primary text-primary-foreground hover:bg-primary-dark transition-colors';
+---
+
+{
+  block && (
+    <section class="bg-background">
+      <div class="mx-auto max-w-content px-m py-section-md grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
+        <div class={imageRight ? 'md:order-1' : 'md:order-2'}>
+          {block.eyebrow && (
+            <p class="text-xs uppercase tracking-eyebrow text-foreground/70">{block.eyebrow}</p>
+          )}
+          {block.heading && (
+            <h2 class="mt-s font-display text-h2 text-foreground">{block.heading}</h2>
+          )}
+          {block.body && (
+            <div class="mt-m text-foreground/85 leading-relaxed">
+              <PortableText value={block.body} />
+            </div>
+          )}
+          {block.ctaLabel && block.ctaUrl && (
+            <div class="mt-l">
+              <a href={block.ctaUrl} class={pill}>{block.ctaLabel}</a>
+            </div>
+          )}
+        </div>
+        {hasImage && (
+          <div class={imageRight ? 'md:order-2' : 'md:order-1'}>
+            <div class={`group overflow-hidden ring-1 ring-border shadow-sm img-zoom aspect-[4/5] ${archCls}`}>
+              <SanityImage
+                source={block.image}
+                width={900}
+                sizes="(min-width: 768px) 45vw, 90vw"
+                alt={block.image?.alt || block.heading || ''}
+                class="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
