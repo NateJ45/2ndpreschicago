@@ -13,7 +13,7 @@ export const contactPage = defineType({
     { name: 'seo', title: 'SEO' },
     { name: 'hero', title: 'Hero' },
     { name: 'form', title: 'Form intro + expectations' },
-    { name: 'scheduling', title: 'Scheduling' },
+    // removed empty interior-designer scheduling group during church remodel
   ],
   fields: [
     defineField({
@@ -45,7 +45,7 @@ export const contactPage = defineType({
       ],
     }),
 
-    defineField({ name: 'heroEyebrow', title: 'Hero eyebrow', type: 'string', group: 'hero', initialValue: 'Request a Consultation.' }),
+    defineField({ name: 'heroEyebrow', title: 'Hero eyebrow', type: 'string', group: 'hero', initialValue: 'Contact' }),
     defineField({ name: 'heroHeadline', title: 'Hero headline', type: 'string', group: 'hero', initialValue: 'Start the Conversation.' }),
     defineField({ name: 'heroSubhead', title: 'Hero subhead', type: 'text', rows: 2, group: 'hero' }),
     defineField({
@@ -76,50 +76,7 @@ export const contactPage = defineType({
       group: 'form',
       description: 'Pre-submit expectation note shown above the form.',
     }),
-    defineField({
-      name: 'formProjectTypeOptions',
-      title: 'Project type dropdown options',
-      type: 'array',
-      group: 'form',
-      description: 'The options shown in the "Project type" dropdown on the contact form. Order matters. Examples: "Single room", "Whole home", "Builder/realtor partnership".',
-      of: [defineArrayMember({ type: 'string' })],
-    }),
-    defineField({
-      name: 'formLocationOptions',
-      title: 'Location dropdown options',
-      type: 'array',
-      group: 'form',
-      description:
-        'Cities shown in the "Location" dropdown. List in priority order. Leave blank to use the built-in defaults.',
-      of: [defineArrayMember({ type: 'string' })],
-    }),
-    defineField({
-      name: 'formBudgetOptions',
-      title: 'Budget dropdown options',
-      type: 'array',
-      group: 'form',
-      description:
-        'Budget brackets shown on the form. The wording matters — keep the "Not sure yet" option so the form stays approachable. Leave blank to use the built-in defaults.',
-      of: [defineArrayMember({ type: 'string' })],
-    }),
-    defineField({
-      name: 'formTimelineOptions',
-      title: 'Timeline dropdown options',
-      type: 'array',
-      group: 'form',
-      description:
-        'Timeline buckets shown on the form. Leave blank to use the built-in defaults (ASAP, 1–3 months, 3–6 months, 6+ months, Flexible).',
-      of: [defineArrayMember({ type: 'string' })],
-    }),
-    defineField({
-      name: 'formSourceOptions',
-      title: '"How did you hear about us?" dropdown options',
-      type: 'array',
-      group: 'form',
-      description:
-        'Optional lead-source dropdown options. Useful for understanding where good leads come from over time. Leave blank to use the built-in defaults (Google, Instagram, Facebook, Houzz, referrals, journal, project in person, Other).',
-      of: [defineArrayMember({ type: 'string' })],
-    }),
+    // removed interior-designer contact form dropdown option fields (formProjectTypeOptions, formLocationOptions, formBudgetOptions, formTimelineOptions, formSourceOptions) during church remodel
     defineField({
       name: 'whatToExpectEyebrow',
       title: '"What to expect" eyebrow',
@@ -154,70 +111,9 @@ export const contactPage = defineType({
         }),
       ],
     }),
-    defineField({
-      name: 'postInquiryRoadmap',
-      title: 'Post-inquiry roadmap',
-      type: 'array',
-      group: 'form',
-      description:
-        'Numbered "what happens after you reach out" steps — the scannable version of the What to Expect content. Each step shows as a numbered item on the Contact page.',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          name: 'roadmapStep',
-          fields: [
-            defineField({
-              name: 'title',
-              title: 'Step title',
-              type: 'string',
-              description: 'Short heading for this step. Example: "We review your inquiry within 48 hours."',
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: 'body',
-              title: 'Step detail',
-              type: 'text',
-              rows: 3,
-              description: 'A sentence or two with more detail about what happens in this step. Optional.',
-            }),
-            defineField({
-              name: 'timeEstimate',
-              title: 'Time estimate (optional)',
-              type: 'string',
-              description: 'How long this step typically takes. Example: "Within 48 hours" or "1–2 weeks".',
-            }),
-          ],
-          preview: {
-            select: { title: 'title', timeEstimate: 'timeEstimate' },
-            prepare: ({ title, timeEstimate }) => ({
-              title: title ?? '(untitled step)',
-              subtitle: timeEstimate ?? '',
-            }),
-          },
-        }),
-      ],
-    }),
+    // removed interior-designer postInquiryRoadmap field during church remodel
 
-    defineField({
-      name: 'schedulingLink',
-      title: 'Scheduling link (Calendly)',
-      type: 'url',
-      group: 'scheduling',
-    }),
-    defineField({
-      name: 'schedulingLinkLabel',
-      title: 'Scheduling link label',
-      type: 'string',
-      group: 'scheduling',
-      initialValue: 'Schedule a 20-minute discovery call.',
-    }),
-    defineField({
-      name: 'availabilityNote',
-      title: 'Availability note override',
-      type: 'string',
-      group: 'scheduling',
-      description: 'Optional override of siteSettings.availabilityStatus. Usually leave blank.',
-    }),
+    // removed interior-designer scheduling fields (schedulingLink, schedulingLinkLabel, availabilityNote) during church remodel
 
     defineField({
       name: 'note',

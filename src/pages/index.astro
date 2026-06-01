@@ -20,7 +20,7 @@
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
-import { getHomePage, getSiteSettings } from '@/lib/queries';
+import { getHomePage, getSiteSettings, getFeaturedMinistries } from '@/lib/queries';
 import { site } from '@/data/site';
 import SectionHeading from '@/components/SectionHeading.astro';
 import SanityImage from '@/components/SanityImage.astro';
@@ -28,9 +28,10 @@ import FinalCta from '@/components/FinalCta.astro';
 import heroSanctuary from '@/assets/hero-sanctuary.webp';
 import sanctuaryInterior from '@/assets/sanctuary-interior.webp';
 
-const [page, siteSettings] = await Promise.all([
+const [page, siteSettings, featuredMinistries] = await Promise.all([
   getHomePage().catch(() => null),
   getSiteSettings().catch(() => null),
+  getFeaturedMinistries().catch(() => []),
 ]);
 
 const title = page?.seoTitle ?? site.name;
@@ -56,12 +57,20 @@ const pillOutline =
 const pillOnChapel =
   'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] border border-chapel-foreground/60 text-chapel-foreground hover:bg-white/10 hover:border-white transition-colors';
 
+// Inline fallback ministries. Used when no ministry docs are flagged "featured"
+// in Sanity, so the home next-step row is never empty.
 const ministries = [
   { title: 'Grow', href: '/grow', body: 'Walk with others on the Way of Jesus through Bible study and good conversation.' },
   { title: 'Serve', href: '/serve', body: 'Love our South Loop neighbors through hands-on, practical ministry.' },
   { title: 'Kids', href: '/kids', body: 'Children are part of the worshipping congregation, noise and needs and all.' },
   { title: 'Food', href: '/food', body: 'Free food for all in need, no questions asked, at our Cullerton door.' },
 ];
+
+// Prefer featured ministries from Sanity; fall back to the inline list.
+const ministryCards =
+  Array.isArray(featuredMinistries) && featuredMinistries.length > 0
+    ? featuredMinistries.map((m: any) => ({ title: m.title, href: m.link || '#', body: m.summary || '' }))
+    : ministries;
 ---
 
 <BaseLayout {title} {description} {siteSettings}>
@@ -209,7 +218,7 @@ const ministries = [
         class="mx-auto"
       />
       <div class="mt-section-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-m" data-stagger-grid>
-        {ministries.map((m) => (
+        {ministryCards.map((m) => (
           <a
             href={m.href}
             class="card-lift group block rounded-lg border border-border-soft bg-card p-l no-underline"

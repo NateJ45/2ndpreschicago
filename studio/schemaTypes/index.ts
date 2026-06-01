@@ -1,5 +1,9 @@
 // Registers every schema type with the Studio.
-// Order doesn't affect runtime; alphabetical here for readability.
+// Order doesn't affect runtime; grouped here for readability.
+//
+// Remodel note: the interior-designer types (service, servicesPage, testimonial,
+// philosophyPoint, journal*, studio* "Start Here" helpers) were removed. The
+// church collections staffMember + ministry were added.
 
 import { aboutPage } from './aboutPage';
 import { churchPageSingletons } from './churchPages';
@@ -10,19 +14,13 @@ import { eventsPage } from './eventsPage';
 import { faqItem } from './faqItem';
 import { faqPage } from './faqPage';
 import { homePage } from './homePage';
-import { journalCategory } from './journalCategory';
-import { journalEntry } from './journalEntry';
-import { journalPage } from './journalPage';
+import { ministry } from './ministry';
 import { notFoundPage } from './notFoundPage';
-import { philosophyPoint } from './philosophyPoint';
 import { privacyPage } from './privacyPage';
 import { sermon } from './sermon';
 import { sermonsPage } from './sermonsPage';
 import { siteSettings } from './siteSettings';
-import { studioGuide } from './studioGuide';
-import { studioNotes } from './studioNotes';
-import { studioPlaybook } from './studioPlaybook';
-import { testimonial } from './testimonial';
+import { staffMember } from './staffMember';
 
 export const schemaTypes = [
   // Object types (embedded) first so they're defined before docs that reference them
@@ -34,25 +32,18 @@ export const schemaTypes = [
   aboutPage,
   faqPage,
   contactPage,
-  journalPage,
   eventsPage,
   sermonsPage,
   notFoundPage,
   privacyPage,
-  // Per-page church singletons (worship, music, grow, serve, kids, food,
-  // use-our-space, weddings, give, what-we-believe, pastors & staff).
+  // Per-page church singletons (worship, what-we-believe, music, pastors & staff,
+  // grow, serve, kids, food, use-our-space, weddings, give).
   ...churchPageSingletons,
-  // Start Here editable singletons
-  studioGuide,
-  studioNotes,
-  studioPlaybook,
 
   // Reusable content collections
-  testimonial,
   faqItem,
-  philosophyPoint,
-  journalCategory,
-  journalEntry,
+  staffMember,
+  ministry,
   event,
   sermon,
 ];

@@ -33,3 +33,6 @@ studio/dist/
 
 # jetbrains setting folder
 .idea/
+
+# Local Sanity dataset backups (not versioned)
+backups/

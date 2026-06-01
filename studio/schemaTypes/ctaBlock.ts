@@ -38,10 +38,9 @@ export const ctaBlock = defineType({
         { type: 'aboutPage' },
         { type: 'faqPage' },
         { type: 'contactPage' },
-        { type: 'journalPage' },
         { type: 'eventsPage' },
         { type: 'sermonsPage' },
-        { type: 'journalEntry' },
+        // removed journalPage and journalEntry targets during church remodel (those types are being deleted)
       ],
       hidden: ({ parent }) => parent?.linkType !== 'internal',
     }),

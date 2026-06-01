@@ -1,4 +1,5 @@
-// About page singleton. Philosophy values auto-populate from philosophyPoint collection.
+// About page singleton.
+// removed interior-designer philosophy, personal, and stats sections during church remodel.
 
 import { defineType, defineField, defineArrayMember } from 'sanity';
 
@@ -12,9 +13,7 @@ export const aboutPage = defineType({
     { name: 'seo', title: 'SEO' },
     { name: 'hero', title: 'Hero' },
     { name: 'story', title: 'Story' },
-    { name: 'philosophy', title: 'Philosophy' },
-    { name: 'personal', title: 'Personal' },
-    { name: 'stats', title: 'Stats' },
+    // removed interior-designer groups (philosophy, personal, stats) during church remodel
     { name: 'final', title: 'Final CTA' },
   ],
   fields: [
@@ -47,8 +46,8 @@ export const aboutPage = defineType({
       ],
     }),
 
-    defineField({ name: 'heroEyebrow', title: 'Hero eyebrow', type: 'string', group: 'hero', initialValue: 'The Designer.' }),
-    defineField({ name: 'heroHeadline', title: 'Hero headline', type: 'string', group: 'hero', initialValue: 'People Hire People.' }),
+    defineField({ name: 'heroEyebrow', title: 'Hero eyebrow', type: 'string', group: 'hero', initialValue: 'About' }),
+    defineField({ name: 'heroHeadline', title: 'Hero headline', type: 'string', group: 'hero', initialValue: 'A landmark church with an open door' }),
     defineField({ name: 'heroSubhead', title: 'Hero subhead', type: 'text', rows: 2, group: 'hero', initialValue: "Here's who you'd be working with." }),
     defineField({
       name: 'heroImage',
@@ -71,7 +70,7 @@ export const aboutPage = defineType({
     }),
 
     defineField({ name: 'storyEyebrow', title: 'Story eyebrow', type: 'string', group: 'story', initialValue: 'My Story.' }),
-    defineField({ name: 'storyHeadline', title: 'Story headline', type: 'string', group: 'story', initialValue: 'Why I Started This Studio.' }),
+    defineField({ name: 'storyHeadline', title: 'Story headline', type: 'string', group: 'story', initialValue: 'Our Story' }),
     defineField({
       name: 'storyContent',
       title: 'Story content',
@@ -91,168 +90,11 @@ export const aboutPage = defineType({
         }),
       ],
     }),
-    defineField({
-      name: 'founderPhoto',
-      title: 'Founder portrait',
-      type: 'image',
-      group: 'story',
-      options: { hotspot: true },
-      fields: [
-        defineField({ name: 'alt', title: 'Alt text', type: 'string', validation: (R) => R.required() }),
-      ],
-    }),
-    defineField({
-      name: 'founderAttribution',
-      title: 'Attribution',
-      type: 'string',
-      group: 'story',
-      initialValue: 'Your Name · Founder, Studio Name',
-    }),
-    defineField({
-      name: 'backgroundLine',
-      title: 'Background line',
-      type: 'text',
-      rows: 2,
-      group: 'story',
-      description: "Single sentence with real credentials. Must be accurate, not aspirational.",
-    }),
-    defineField({
-      name: 'serviceAreaMention',
-      title: 'Service area mention',
-      type: 'string',
-      group: 'story',
-      description: 'Single line mentioning service area on About.',
-    }),
+    // removed interior-designer story fields (founderPhoto, founderAttribution, backgroundLine, serviceAreaMention) during church remodel
 
-    defineField({ name: 'philosophyEyebrow', title: 'Philosophy eyebrow', type: 'string', group: 'philosophy' }),
-    defineField({ name: 'philosophyHeadline', title: 'Philosophy headline', type: 'string', group: 'philosophy' }),
+    // removed interior-designer philosophy, personal, and stats field blocks during church remodel
 
-    defineField({
-      name: 'personalEyebrow',
-      title: 'Personal section eyebrow',
-      type: 'string',
-      group: 'personal',
-      initialValue: 'Off the Clock.',
-    }),
-    defineField({
-      name: 'personalHeadline',
-      title: 'Personal section headline',
-      type: 'string',
-      group: 'personal',
-      initialValue: 'A little more about me.',
-    }),
-    defineField({
-      name: 'personalIntro',
-      title: 'Personal section intro (optional)',
-      type: 'text',
-      rows: 2,
-      group: 'personal',
-      description: 'One friendly sentence under the headline. Optional.',
-    }),
-    defineField({
-      name: 'currentlyList',
-      title: 'Currently',
-      type: 'array',
-      group: 'personal',
-      description: 'A short "what I am into right now" list. Refresh it anytime. Example label "Reading", value "the book title".',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          name: 'currentlyRow',
-          fields: [
-            defineField({ name: 'label', title: 'Label', type: 'string', description: 'e.g. Reading, Listening to, Loving right now', validation: (R) => R.required() }),
-            defineField({ name: 'value', title: 'Value', type: 'string', validation: (R) => R.required() }),
-          ],
-          preview: { select: { title: 'label', subtitle: 'value' } },
-        }),
-      ],
-    }),
-    defineField({
-      name: 'rapidFire',
-      title: 'Rapid fire',
-      type: 'array',
-      group: 'personal',
-      description: 'Short prompt-and-answer pairs. Example prompt "Coffee order", answer "Oat latte, extra hot".',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          name: 'rapidFireRow',
-          fields: [
-            defineField({ name: 'prompt', title: 'Prompt', type: 'string', validation: (R) => R.required() }),
-            defineField({ name: 'answer', title: 'Answer', type: 'string', validation: (R) => R.required() }),
-          ],
-          preview: { select: { title: 'prompt', subtitle: 'answer' } },
-        }),
-      ],
-    }),
-    defineField({
-      name: 'localSpots',
-      title: 'Favorite local spots',
-      type: 'array',
-      group: 'personal',
-      description: 'Go-to local spots. Name plus an optional short note.',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          name: 'localSpotRow',
-          fields: [
-            defineField({ name: 'name', title: 'Name', type: 'string', validation: (R) => R.required() }),
-            defineField({ name: 'note', title: 'Short note (optional)', type: 'string' }),
-          ],
-          preview: { select: { title: 'name', subtitle: 'note' } },
-        }),
-      ],
-    }),
-    defineField({
-      name: 'beyondDesign',
-      title: 'Beyond design',
-      type: 'text',
-      rows: 4,
-      group: 'personal',
-      description: 'A short, casual paragraph or two about life outside work: family, the dogs, hobbies. Write the way you talk.',
-    }),
-    defineField({
-      name: 'candidPhoto',
-      title: 'Candid photo (optional)',
-      type: 'image',
-      group: 'personal',
-      description: 'A relaxed, non-portrait photo. Skip the polished headshot here; warmth beats polish.',
-      options: { hotspot: true },
-      fields: [
-        defineField({ name: 'alt', title: 'Alt text', type: 'string', validation: (R) => R.required() }),
-      ],
-    }),
-
-    defineField({
-      name: 'stats',
-      title: 'Stats',
-      type: 'array',
-      group: 'stats',
-      description: 'Up to 4 numbers displayed as large display figures on the About page. Leave empty to hide the section.',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          name: 'statItem',
-          fields: [
-            defineField({ name: 'number', title: 'Number', type: 'number', validation: (R) => R.required() }),
-            defineField({
-              name: 'suffix',
-              title: 'Suffix (optional)',
-              type: 'string',
-              description: 'e.g. + or k. Appended directly after the number.',
-            }),
-            defineField({ name: 'label', title: 'Label', type: 'string', description: 'e.g. Years in Business', validation: (R) => R.required() }),
-          ],
-          preview: {
-            select: { title: 'label', subtitle: 'number' },
-            prepare: ({ title, subtitle }) => ({ title, subtitle: subtitle != null ? String(subtitle) : '' }),
-          },
-        }),
-      ],
-      validation: (Rule) => Rule.max(4),
-    }),
-
-    defineField({ name: 'finalCtaEyebrow', title: 'Final CTA eyebrow', type: 'string', group: 'final', initialValue: "Let's Work Together." }),
+    defineField({ name: 'finalCtaEyebrow', title: 'Final CTA eyebrow', type: 'string', group: 'final', initialValue: 'Come and See' }),
     defineField({ name: 'finalCtaHeadline', title: 'Final CTA headline', type: 'string', group: 'final', initialValue: 'Ready to Start?' }),
     defineField({
       name: 'finalCtaScriptAccent',

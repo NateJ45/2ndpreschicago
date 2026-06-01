@@ -75,7 +75,7 @@ export const faqPage = defineType({
       group: 'list',
       description: 'Drag to reorder. Must match the option values on faqItem.category.',
       of: [defineArrayMember({ type: 'string' })],
-      initialValue: ['Pricing & Cost', 'The Process', 'Logistics', 'Service Area', 'Getting Started'],
+      initialValue: ['Visiting', 'Worship', 'Kids & Family', 'Getting Involved', 'Giving', 'Weddings & Space'],
     }),
 
     defineField({ name: 'finalCtaEyebrow', title: 'Final CTA eyebrow', type: 'string', group: 'final', initialValue: 'Not Finding Your Answer?' }),
@@ -104,7 +104,7 @@ export const faqPage = defineType({
       title: 'Secondary CTA (optional)',
       type: 'ctaBlock',
       group: 'final',
-      description: 'Optional second button next to the primary CTA. Use for "see process" / "browse portfolio" style secondary actions.',
+      description: 'Optional second button next to the primary CTA. Use for "plan a visit" / "explore ministries" style secondary actions.',
     }),
 
     defineField({

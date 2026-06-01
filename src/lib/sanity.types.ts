@@ -139,27 +139,95 @@ export type Event = {
   featured?: boolean;
 };
 
-export type JournalCategory = {
+export type Ministry = {
   _id: string;
-  _type: "journalCategory";
+  _type: "ministry";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title?: string;
-  slug?: Slug;
-  description?: string;
+  audience?:
+    | "everyone"
+    | "families"
+    | "kids"
+    | "youth"
+    | "adults"
+    | "seniors"
+    | "neighbors";
+  summary?: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  link?: string;
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  displayOrder?: number;
+  featured?: boolean;
 };
 
-export type PhilosophyPoint = {
+export type StaffMember = {
   _id: string;
-  _type: "philosophyPoint";
+  _type: "staffMember";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title?: string;
-  description?: string;
+  name?: string;
+  role?: string;
+  photo?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  email?: string;
+  bio?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal";
+    listItem?: never;
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  favorites?: Array<{
+    label?: string;
+    value?: string;
+    _type: "favoriteItem";
+    _key: string;
+  }>;
   displayOrder?: number;
-  orderRank?: string;
 };
 
 export type FaqItem = {
@@ -189,84 +257,13 @@ export type FaqItem = {
     _key: string;
   }>;
   category?:
-    | "Pricing & Cost"
-    | "The Process"
-    | "Logistics"
-    | "Service Area"
-    | "Getting Started";
+    | "Visiting"
+    | "Worship"
+    | "Kids & Family"
+    | "Getting Involved"
+    | "Giving"
+    | "Weddings & Space";
   displayOrder?: number;
-  alsoShowOnProcessPage?: boolean;
-};
-
-export type StudioPlaybook = {
-  _id: string;
-  _type: "studioPlaybook";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  intro?: string;
-  guides?: Array<{
-    title?: string;
-    summary?: string;
-    sections?: Array<{
-      heading?: string;
-      tone?: "default" | "primary" | "positive" | "caution";
-      body?: string;
-      bullets?: Array<string>;
-      links?: Array<{
-        label?: string;
-        url?: string;
-        _type: "playbookLink";
-        _key: string;
-      }>;
-      _type: "playbookSection";
-      _key: string;
-    }>;
-    _type: "playbookGuide";
-    _key: string;
-  }>;
-};
-
-export type StudioNotes = {
-  _id: string;
-  _type: "studioNotes";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  businessSummary?: string;
-  idealClient?: string;
-  voiceSummary?: string;
-  wordsToAvoid?: Array<string>;
-};
-
-export type StudioGuide = {
-  _id: string;
-  _type: "studioGuide";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  guideTitle?: string;
-  guideIntro?: string;
-  studioMap?: Array<{
-    area?: string;
-    description?: string;
-    _type: "mapRow";
-    _key: string;
-  }>;
-  howTos?: Array<{
-    title?: string;
-    steps?: Array<string>;
-    _type: "howTo";
-    _key: string;
-  }>;
-  tips?: Array<{
-    heading?: string;
-    tone?: "default" | "primary" | "caution" | "positive";
-    body?: string;
-    _type: "tip";
-    _key: string;
-  }>;
 };
 
 export type GivePage = {
@@ -674,18 +671,15 @@ export type SiteSettings = {
   _rev: string;
   title?: string;
   tagline?: string;
+  mission?: string;
   email?: string;
   phone?: string;
-  availabilityStatus?: string;
-  serviceAreas?: Array<string>;
-  travelFees?: Array<{
-    distanceLabel?: string;
-    fee?: string;
-    _type: "travelFeeTier";
-    _key: string;
-  }>;
+  serviceTimes?: string;
+  watchUrl?: string;
+  giveUrl?: string;
   socialInstagram?: string;
   socialFacebook?: string;
+  socialYoutube?: string;
   seoImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -707,21 +701,12 @@ export type SiteSettings = {
     successMessage?: string;
     consentNote?: string;
   };
-  googleBusinessUrl?: string;
-  reviewsNote?: string;
-  sectionVisibility?: {
-    showPortfolio?: boolean;
-    showJournal?: boolean;
-    showShop?: boolean;
-    showEDesign?: boolean;
-    showGiftCertificates?: boolean;
-    showPress?: boolean;
-    showResources?: boolean;
-    showGuides?: boolean;
-    showStyleQuiz?: boolean;
-    showBudgetCalculator?: boolean;
+  announcement?: {
+    enabled?: boolean;
+    text?: string;
+    linkLabel?: string;
+    linkUrl?: string;
   };
-  satisfactionGuarantee?: string;
 };
 
 export type HomePageReference = {
@@ -752,13 +737,6 @@ export type ContactPageReference = {
   [internalGroqTypeReferenceTo]?: "contactPage";
 };
 
-export type JournalPageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "journalPage";
-};
-
 export type EventsPageReference = {
   _ref: string;
   _type: "reference";
@@ -773,13 +751,6 @@ export type SermonsPageReference = {
   [internalGroqTypeReferenceTo]?: "sermonsPage";
 };
 
-export type JournalEntryReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "journalEntry";
-};
-
 export type CtaBlock = {
   _type: "ctaBlock";
   label?: string;
@@ -789,192 +760,12 @@ export type CtaBlock = {
     | AboutPageReference
     | FaqPageReference
     | ContactPageReference
-    | JournalPageReference
     | EventsPageReference
-    | SermonsPageReference
-    | JournalEntryReference;
+    | SermonsPageReference;
   externalUrl?: string;
   emailAddress?: string;
   phoneNumber?: string;
   openInNewTab?: boolean;
-};
-
-export type JournalCategoryReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "journalCategory";
-};
-
-export type JournalEntry = {
-  _id: string;
-  _type: "journalEntry";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  excerpt?: string;
-  coverImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    caption?: string;
-    _type: "image";
-  };
-  categories?: Array<
-    {
-      _key: string;
-    } & JournalCategoryReference
-  >;
-  author?: string;
-  publishedAt?: string;
-  updatedAt?: string;
-  featured?: boolean;
-  body?: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "lead" | "h2" | "h3" | "h4" | "blockquote";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<
-          | {
-              href?: string;
-              openInNewTab?: boolean;
-              _type: "link";
-              _key: string;
-            }
-          | {
-              vendor?: string;
-              url?: string;
-              _type: "sourcedFrom";
-              _key: string;
-            }
-        >;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        size?: "standard" | "wide" | "full";
-        _type: "inlineImage";
-        _key: string;
-      }
-    | {
-        quote?: string;
-        attribution?: string;
-        _type: "pullQuote";
-        _key: string;
-      }
-    | {
-        beforeImage?: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt?: string;
-          _type: "image";
-        };
-        afterImage?: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt?: string;
-          _type: "image";
-        };
-        caption?: string;
-        _type: "beforeAfter";
-        _key: string;
-      }
-    | {
-        image?: {
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt?: string;
-          _type: "image";
-        };
-        itemName?: string;
-        vendor?: string;
-        price?: string;
-        url?: string;
-        notes?: string;
-        _type: "sourceCard";
-        _key: string;
-      }
-    | {
-        label?: string;
-        content?: Array<{
-          children?: Array<{
-            marks?: Array<string>;
-            text?: string;
-            _type: "span";
-            _key: string;
-          }>;
-          style?: "normal";
-          listItem?: "bullet";
-          markDefs?: Array<{
-            href?: string;
-            openInNewTab?: boolean;
-            _type: "link";
-            _key: string;
-          }>;
-          level?: number;
-          _type: "block";
-          _key: string;
-        }>;
-        _type: "tipCallout";
-        _key: string;
-      }
-    | {
-        images?: Array<{
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt?: string;
-          caption?: string;
-          _type: "image";
-          _key: string;
-        }>;
-        layout?: "grid2" | "grid3" | "row";
-        caption?: string;
-        _type: "imageGallery";
-        _key: string;
-      }
-    | {
-        style?: "line" | "ornament" | "space";
-        _type: "divider";
-        _key: string;
-      }
-    | {
-        url?: string;
-        caption?: string;
-        _type: "videoEmbed";
-        _key: string;
-      }
-  >;
-  seoTitle?: string;
-  seoDescription?: string;
-  relatedPosts?: Array<
-    {
-      _key: string;
-    } & JournalEntryReference
-  >;
 };
 
 export type SermonsPage = {
@@ -1028,48 +819,6 @@ export type EventsPage = {
   };
 };
 
-export type JournalPage = {
-  _id: string;
-  _type: "journalPage";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  heroEyebrow?: string;
-  heroHeadline?: string;
-  heroSubhead?: string;
-  heroImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  heroScriptAccent?: string;
-  stickyCtaLabel?: string;
-  finalCtaHeadline?: string;
-  finalCtaScriptAccent?: string;
-  finalCtaSubhead?: string;
-  finalCta?: CtaBlock;
-  finalCtaBackgroundImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-};
-
 export type ContactPage = {
   _id: string;
   _type: "contactPage";
@@ -1099,11 +848,6 @@ export type ContactPage = {
   };
   heroScriptAccent?: string;
   formIntroNote?: string;
-  formProjectTypeOptions?: Array<string>;
-  formLocationOptions?: Array<string>;
-  formBudgetOptions?: Array<string>;
-  formTimelineOptions?: Array<string>;
-  formSourceOptions?: Array<string>;
   whatToExpectEyebrow?: string;
   whatToExpectHeadline?: string;
   whatToExpectContent?: Array<{
@@ -1120,16 +864,6 @@ export type ContactPage = {
     _type: "block";
     _key: string;
   }>;
-  postInquiryRoadmap?: Array<{
-    title?: string;
-    body?: string;
-    timeEstimate?: string;
-    _type: "roadmapStep";
-    _key: string;
-  }>;
-  schedulingLink?: string;
-  schedulingLinkLabel?: string;
-  availabilityNote?: string;
   note?: string;
 };
 
@@ -1222,56 +956,6 @@ export type AboutPage = {
     _type: "block";
     _key: string;
   }>;
-  founderPhoto?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  founderAttribution?: string;
-  backgroundLine?: string;
-  serviceAreaMention?: string;
-  philosophyEyebrow?: string;
-  philosophyHeadline?: string;
-  personalEyebrow?: string;
-  personalHeadline?: string;
-  personalIntro?: string;
-  currentlyList?: Array<{
-    label?: string;
-    value?: string;
-    _type: "currentlyRow";
-    _key: string;
-  }>;
-  rapidFire?: Array<{
-    prompt?: string;
-    answer?: string;
-    _type: "rapidFireRow";
-    _key: string;
-  }>;
-  localSpots?: Array<{
-    name?: string;
-    note?: string;
-    _type: "localSpotRow";
-    _key: string;
-  }>;
-  beyondDesign?: string;
-  candidPhoto?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  stats?: Array<{
-    number?: number;
-    suffix?: string;
-    label?: string;
-    _type: "statItem";
-    _key: string;
-  }>;
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaScriptAccent?: string;
@@ -1284,13 +968,6 @@ export type AboutPage = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-};
-
-export type TestimonialReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "testimonial";
 };
 
 export type HomePage = {
@@ -1333,61 +1010,6 @@ export type HomePage = {
   heroSecondaryCta?: CtaBlock;
   heroRotatingWords?: Array<string>;
   heroScriptAccent?: string;
-  meetFounderPhoto?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  meetFounderEyebrow?: string;
-  meetFounderHeadline?: string;
-  meetFounderContent?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: null;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-  meetFounderCta?: CtaBlock;
-  featuredWorkEyebrow?: string;
-  featuredWorkHeadline?: string;
-  featuredWorkSubhead?: string;
-  featuredWorkCta?: CtaBlock;
-  featuredJournalEyebrow?: string;
-  featuredJournalHeadline?: string;
-  featuredJournalSubhead?: string;
-  featuredJournalCta?: CtaBlock;
-  processPreviewEyebrow?: string;
-  processPreviewHeadline?: string;
-  processPreviewSubhead?: string;
-  processPreviewCta?: CtaBlock;
-  featuredTestimonial?: TestimonialReference;
-  testimonialsEyebrow?: string;
-  testimonialsHeadline?: string;
-  testimonialsScriptAccent?: string;
-  testimonialsSubhead?: string;
-  testimonialsToShow?: Array<
-    {
-      _key: string;
-    } & TestimonialReference
-  >;
-  testimonialsAttribution?: string;
-  servicesGridEyebrow?: string;
-  servicesGridHeadline?: string;
-  servicesGridScriptAccent?: string;
-  servicesGridSubhead?: string;
-  servicesGridCta?: CtaBlock;
-  servicesGridFootnote?: string;
-  serviceAreaCue?: string;
   finalCtaEyebrow?: string;
   finalCtaHeadline?: string;
   finalCtaScriptAccent?: string;
@@ -1400,30 +1022,6 @@ export type HomePage = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-};
-
-export type Testimonial = {
-  _id: string;
-  _type: "testimonial";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  quote?: string;
-  attribution?: string;
-  date?: string;
-  source?: "Facebook" | "Google" | "Houzz" | "Direct (email or text)" | "Other";
-  location?: string;
-  photo?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  featured?: boolean;
-  sourceType?: "Google" | "Facebook" | "Houzz" | "Direct";
-  reviewUrl?: string;
 };
 
 export type MediaTag = {
@@ -1539,12 +1137,9 @@ export type AllSanitySchemaTypes =
   | SanityImageHotspot
   | Slug
   | Event
-  | JournalCategory
-  | PhilosophyPoint
+  | Ministry
+  | StaffMember
   | FaqItem
-  | StudioPlaybook
-  | StudioNotes
-  | StudioGuide
   | GivePage
   | WeddingsPage
   | UseOurSpacePage
@@ -1563,22 +1158,15 @@ export type AllSanitySchemaTypes =
   | AboutPageReference
   | FaqPageReference
   | ContactPageReference
-  | JournalPageReference
   | EventsPageReference
   | SermonsPageReference
-  | JournalEntryReference
   | CtaBlock
-  | JournalCategoryReference
-  | JournalEntry
   | SermonsPage
   | EventsPage
-  | JournalPage
   | ContactPage
   | FaqPage
   | AboutPage
-  | TestimonialReference
   | HomePage
-  | Testimonial
   | MediaTag
   | SanityImagePaletteSwatch
   | SanityImagePalette

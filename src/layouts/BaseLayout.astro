@@ -92,6 +92,12 @@ const allSchemas = [churchSchema(siteSettings), ...schemas];
 
 // Cloudflare Web Analytics token — only render the beacon when present.
 const cfToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
+
+// Optional announcement banner (siteSettings.announcement). Renders above the
+// header when an editor enables it and sets a message, then scrolls away with
+// the page. Nothing renders when disabled or empty.
+const announcement = siteSettings?.announcement ?? null;
+const showAnnouncement = !!(announcement?.enabled && announcement?.text);
 ---
 
 <!doctype html>
@@ -204,6 +210,21 @@ const cfToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
   </head>
   <body class="min-h-screen flex flex-col">
     <a href="#main" class="skip-link">Skip to main content</a>
+
+    {/* Optional site-wide announcement banner (editor-controlled in Sanity). */}
+    {showAnnouncement && (
+      <div class="bg-primary text-primary-foreground text-center text-sm px-m py-2">
+        <span>{announcement.text}</span>
+        {announcement.linkUrl && announcement.linkLabel && (
+          <a
+            href={announcement.linkUrl}
+            class="ml-2 underline underline-offset-2 font-semibold hover:opacity-80 transition-opacity"
+          >
+            {announcement.linkLabel}
+          </a>
+        )}
+      </div>
+    )}
 
     <Header siteSettings={siteSettings} />
 

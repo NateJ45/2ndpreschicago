@@ -7,12 +7,14 @@
 // candidate for a Sanity "staffMember" collection later.)
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getPageHero, getSiteSettings } from '@/lib/queries';
+import { getPageHero, getSiteSettings, getStaffMembers } from '@/lib/queries';
 import heroStaff from '@/assets/hero-staff.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
+import SanityImage from '@/components/SanityImage.astro';
+import PortableText from '@/components/PortableText';
 import FinalCta from '@/components/FinalCta.astro';
 
 import chesnaPhoto from '@/assets/chesna-hinkley.webp';
@@ -22,6 +24,11 @@ import ashleyPhoto from '@/assets/ashley-mclean.webp';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('staffPage').catch(() => null);
+
+// Staff render from the Sanity staffMember collection when present; otherwise
+// the hardcoded bios below remain as the built-in fallback (so the page is
+// never empty before an editor adds people in the Studio).
+const sanityStaff = await getStaffMembers().catch(() => []);
 
 const title = `Pastors & Staff · ${site.name}`;
 const description =
@@ -90,6 +97,32 @@ const staff = [
     ],
   },
 ];
+
+// Normalize the Sanity collection and the hardcoded fallback into one render
+// shape so the markup below stays single-source. Sanity bios are Portable Text
+// blocks; fallback bios are plain strings. Favorites use {label, value}.
+const useSanityStaff = Array.isArray(sanityStaff) && sanityStaff.length > 0;
+const people = useSanityStaff
+  ? sanityStaff.map((p: any) => ({
+      name: p.name,
+      role: p.role,
+      email: p.email,
+      sanityPhoto: p.photo?.asset ? p.photo : null,
+      localPhoto: null as null,
+      bioBlocks: p.bio,
+      bioStrings: null as string[] | null,
+      favorites: (p.favorites ?? []).map((f: any) => ({ label: f.label, value: f.value })),
+    }))
+  : staff.map((p) => ({
+      name: p.name,
+      role: p.role,
+      email: (p as any).email as string | undefined,
+      sanityPhoto: null,
+      localPhoto: p.photo,
+      bioBlocks: null,
+      bioStrings: p.bio,
+      favorites: ((p as any).favorites ?? []).map((f: any) => ({ label: f.label, value: f.items })),
+    }));
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
@@ -106,17 +139,28 @@ const staff = [
 
   <section class="bg-background" aria-label="Pastors and staff">
     <div class="mx-auto max-w-content px-m py-section-lg space-y-section-md">
-      {staff.map((person) => (
+      {people.map((person) => (
         <article class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-l md:gap-section-md items-start border-b border-border-soft pb-section-md last:border-b-0 last:pb-0">
-          <div class="md:sticky md:top-24">
-            <div class="w-44 sm:w-52 aspect-[4/5] overflow-hidden rounded-md border border-border-soft bg-muted shadow-sm">
-              <Image
-                src={person.photo}
-                alt={`${person.name}, ${person.role} at Second Presbyterian Church`}
-                widths={[176, 208, 352, 416]}
-                sizes="(min-width: 640px) 208px, 176px"
-                class="h-full w-full object-cover"
-              />
+          <div class="md:sticky md:top-28">
+            {/* Arched headshot — carries the building's arch motif onto the staff. */}
+            <div class="w-44 sm:w-52 aspect-[4/5] overflow-hidden arch-top-sm ring-1 ring-border bg-muted shadow-sm">
+              {person.sanityPhoto ? (
+                <SanityImage
+                  source={person.sanityPhoto}
+                  width={420}
+                  sizes="(min-width: 640px) 208px, 176px"
+                  alt={person.sanityPhoto.alt || `${person.name}, ${person.role} at Second Presbyterian Church`}
+                  class="h-full w-full object-cover"
+                />
+              ) : (
+                <Image
+                  src={person.localPhoto}
+                  alt={`${person.name}, ${person.role} at Second Presbyterian Church`}
+                  widths={[176, 208, 352, 416]}
+                  sizes="(min-width: 640px) 208px, 176px"
+                  class="h-full w-full object-cover"
+                />
+              )}
             </div>
             <h2 class="mt-l font-display text-h3 text-foreground">{person.name}</h2>
             <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">{person.role}</p>
@@ -127,13 +171,17 @@ const staff = [
             )}
           </div>
           <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
-            {person.bio.map((p) => <p>{p}</p>)}
-            {person.favorites && (
+            {person.bioBlocks ? (
+              <PortableText value={person.bioBlocks} />
+            ) : (
+              person.bioStrings?.map((p) => <p>{p}</p>)
+            )}
+            {person.favorites && person.favorites.length > 0 && (
               <dl class="mt-l grid grid-cols-1 gap-y-1 border-t border-border-soft pt-m text-sm text-foreground/70">
                 {person.favorites.map((f) => (
                   <div class="flex gap-2">
                     <dt class="w-20 shrink-0 font-semibold uppercase tracking-eyebrow text-xs pt-0.5 text-foreground/60">{f.label}</dt>
-                    <dd class="flex-1">{f.items}</dd>
+                    <dd class="flex-1">{f.value}</dd>
                   </div>
                 ))}
               </dl>

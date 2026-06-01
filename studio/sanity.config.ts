@@ -80,15 +80,13 @@ export function urlForDoc(schemaType: string, doc: any): string | null {
   const SITE_URL = SITE_URL_FOR_PREVIEW;
   const slug = doc?.slug?.current;
   switch (schemaType) {
+    // Core pages
     case 'homePage':      return `${SITE_URL}/`;
     case 'aboutPage':     return `${SITE_URL}/about`;
-    case 'processPage':   return `${SITE_URL}/process`;
-    case 'servicesPage':  return `${SITE_URL}/services`;
-    case 'portfolioPage': return `${SITE_URL}/portfolio`;
     case 'faqPage':       return `${SITE_URL}/faq`;
     case 'contactPage':   return `${SITE_URL}/contact`;
-    case 'journalPage':   return `${SITE_URL}/journal`;
     case 'notFoundPage':  return `${SITE_URL}/404`;
+    case 'privacyPage':   return `${SITE_URL}/privacy`;
     // Church index pages + per-page singletons
     case 'eventsPage':       return `${SITE_URL}/events`;
     case 'sermonsPage':      return `${SITE_URL}/sermons`;
@@ -103,29 +101,12 @@ export function urlForDoc(schemaType: string, doc: any): string | null {
     case 'useOurSpacePage':  return `${SITE_URL}/use-our-space`;
     case 'weddingsPage':     return `${SITE_URL}/weddings`;
     case 'givePage':         return `${SITE_URL}/give`;
-    case 'journalEntry':  return slug ? `${SITE_URL}/journal/${slug}` : `${SITE_URL}/journal`;
-    case 'project':       return slug ? `${SITE_URL}/portfolio/${slug}` : `${SITE_URL}/portfolio`;
-    // New page singletons (Phase 1)
-    case 'eDesignPage':   return `${SITE_URL}/e-design`;
-    case 'shopPage':      return `${SITE_URL}/shop`;
-    case 'giftPage':      return `${SITE_URL}/gift-certificates`;
-    case 'resourcesPage': return `${SITE_URL}/resources`;
-    case 'privacyPage':   return `${SITE_URL}/privacy`;
-    case 'pressPage':     return `${SITE_URL}/press`;
-    case 'styleQuiz':     return `${SITE_URL}/quiz`;
-    case 'budgetCalculator': return `${SITE_URL}/calculator`;
-    // service/processStep/etc don't have individual pages; preview their parent
-    case 'service':      return `${SITE_URL}/services`;
-    case 'processStep':  return `${SITE_URL}/process`;
-    case 'faqItem':      return `${SITE_URL}/faq`;
-    // Press items list on /press page
-    case 'pressItem':    return `${SITE_URL}/press`;
-    // Shop collections/items list on /shop page
-    case 'shopCollection': return `${SITE_URL}/shop`;
-    case 'shopItem':       return `${SITE_URL}/shop`;
-    // Lead magnets preview at /guides/[slug]
-    case 'leadMagnet':   return slug ? `${SITE_URL}/guides/${slug}` : `${SITE_URL}/guides`;
-    default:             return null;
+    // Collections: dated detail pages by slug; staff list + FAQ list pages.
+    case 'event':       return slug ? `${SITE_URL}/events/${slug}` : `${SITE_URL}/events`;
+    case 'sermon':      return slug ? `${SITE_URL}/sermons/${slug}` : `${SITE_URL}/sermons`;
+    case 'staffMember': return `${SITE_URL}/pastor-staff`;
+    case 'faqItem':     return `${SITE_URL}/faq`;
+    default:            return null;
   }
 }
 
@@ -236,13 +217,10 @@ const SINGLETON_TYPES = new Set<string>([
   'siteSettings',
   'homePage',
   'aboutPage',
-  'processPage',
-  'servicesPage',
-  'portfolioPage',
   'faqPage',
   'contactPage',
-  'journalPage',
   'notFoundPage',
+  'privacyPage',
   // Church index pages + per-page singletons
   'eventsPage',
   'sermonsPage',
@@ -257,16 +235,4 @@ const SINGLETON_TYPES = new Set<string>([
   'useOurSpacePage',
   'weddingsPage',
   'givePage',
-  // New singletons (Phase 1)
-  'eDesignPage',
-  'shopPage',
-  'giftPage',
-  'resourcesPage',
-  'privacyPage',
-  'pressPage',
-  'styleQuiz',
-  'budgetCalculator',
-  'studioGuide',
-  'studioNotes',
-  'studioPlaybook',
 ]);
