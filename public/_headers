@@ -1,16 +1,27 @@
-# Cloudflare applies these headers to every route. Mirrors the NCS portfolio pattern.
-# Content-Security-Policy beyond frame-ancestors is intentionally not set — getting it right
-# requires testing because of the Sanity CDN, Web3Forms POST, Calendly iframe, and the
-# Cloudflare Analytics beacon. Revisit post-launch.
+# Security response headers, served by Cloudflare Workers Static Assets (it honors _headers).
+# Addresses the (unscored) Lighthouse security recommendations: a Content Security Policy,
+# a strong HSTS policy (with preload), and clickjacking / MIME protections.
 #
-# frame-ancestors: replaces the legacy X-Frame-Options so we can selectively allow
-# the deployed Sanity Studio (and local studio dev servers on :3333/:3334) to iframe
-# the live site for the iframe-pane preview plugin. 'self' lets the site embed itself.
-# Modern browsers prefer CSP frame-ancestors over X-Frame-Options when both are present.
+# CSP notes for maintainers:
+#   - script-src is tight: 'self' + the inline anti-FOUC theme script ('unsafe-inline',
+#     unavoidable on a static build with no per-request nonce) + the Cloudflare Web
+#     Analytics beacon. It still blocks externally-loaded scripts.
+#   - img-src / media-src allow https: so Sanity images (cdn.sanity.io) and editor-added
+#     images / background videos load.
+#   - frame-src lists the embeds actually used (YouTube, Vimeo, Google Maps). If a church
+#     later adds a Subsplash / Planning Center script or iframe embed via the page builder,
+#     add its origin to script-src / frame-src.
+#   - connect-src covers the contact forms (Web3Forms) + analytics; add a newsletter or
+#     Formspree origin here if one is enabled.
+#   - frame-ancestors is 'self' (the Studio iframe "Preview" was removed, so the live site
+#     no longer needs to be embedded by the Studio).
+#   - Trusted Types is intentionally NOT enabled: require-trusted-types-for would break the
+#     YouTube / Vimeo / Maps / analytics / embed scripts.
 
 /*
-  Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy: frame-ancestors 'self' https://your-project.sanity.studio https://*.sanity.studio https://www.sanity.io https://*.sanity.io http://localhost:3333 http://localhost:3334
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
   Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; img-src 'self' data: https:; media-src 'self' https:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; connect-src 'self' https://api.web3forms.com https://cloudflareinsights.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://www.google.com https://maps.google.com; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests
