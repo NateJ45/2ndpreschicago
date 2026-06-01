@@ -51,9 +51,17 @@ const MAP: Record<string, any> = {
 
 // Blocks that render inner content only and take their background from SectionShell.
 const SHELL_AWARE = new Set([
+  'sectionRichText', 'sectionImageText', 'sectionCardGrid', 'sectionQuote', 'sectionCtaBand',
   'sectionFeatureCards', 'sectionStats', 'sectionAccordion', 'sectionGallery',
   'sectionSteps', 'sectionLogos', 'sectionMediaFeature', 'sectionDynamicList',
 ]);
+
+// Default background tone when the editor hasn't chosen one (the quote + CTA
+// bands were originally chapel green, so they keep that look by default).
+const DEFAULT_TONE: Record<string, string> = {
+  sectionQuote: 'chapel',
+  sectionCtaBand: 'chapel',
+};
 ---
 
 {
@@ -61,9 +69,10 @@ const SHELL_AWARE = new Set([
     const Cmp = MAP[block?._type];
     if (!Cmp) return null;
     if (SHELL_AWARE.has(block._type)) {
+      const dt = DEFAULT_TONE[block._type] ?? 'default';
       return (
-        <SectionShell background={block.background}>
-          <Cmp block={block} fallbackEmail={fallbackEmail} />
+        <SectionShell background={block.background} defaultTone={dt}>
+          <Cmp block={block} defaultTone={dt} fallbackEmail={fallbackEmail} />
         </SectionShell>
       );
     }

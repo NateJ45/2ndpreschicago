@@ -127,6 +127,7 @@ export const sectionRichText = defineType({
       options: { list: [{ title: 'Left', value: 'left' }, { title: 'Center', value: 'center' }], layout: 'radio' },
       initialValue: 'left',
     }),
+    bgField(),
   ],
   preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Text section' }) },
 });
@@ -156,6 +157,7 @@ export const sectionImageText = defineType({
     defineField({ name: 'body', title: 'Body', ...richBody }),
     defineField({ name: 'ctaLabel', title: 'Button label', type: 'string' }),
     defineField({ name: 'ctaUrl', title: 'Button link', type: 'string', description: 'Internal path like "/give" or a full URL.' }),
+    bgField(),
   ],
   preview: { select: { title: 'heading', media: 'image' }, prepare: ({ title, media }) => ({ title: title || 'Image + text', media }) },
 });
@@ -192,6 +194,7 @@ export const sectionCardGrid = defineType({
         }),
       ],
     }),
+    bgField(),
   ],
   preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Card grid' }) },
 });
@@ -203,6 +206,7 @@ export const sectionQuote = defineType({
   fields: [
     defineField({ name: 'quote', title: 'Quote', type: 'text', rows: 3, validation: (R) => R.required() }),
     defineField({ name: 'attribution', title: 'Attribution', type: 'string', description: 'e.g. a person or a scripture reference.' }),
+    bgField(),
   ],
   preview: { select: { title: 'quote', subtitle: 'attribution' } },
 });
@@ -217,6 +221,7 @@ export const sectionCtaBand = defineType({
     defineField({ name: 'subhead', title: 'Subhead', type: 'text', rows: 2 }),
     defineField({ name: 'ctaLabel', title: 'Button label', type: 'string' }),
     defineField({ name: 'ctaUrl', title: 'Button link', type: 'string', description: 'Internal path like "/worship" or a full URL.' }),
+    bgField(),
   ],
   preview: { select: { title: 'headline' }, prepare: ({ title }) => ({ title: title || 'CTA band' }) },
 });

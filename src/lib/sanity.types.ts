@@ -15,22 +15,6 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
-export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-};
-
-export type FeatureCardImage = {
-  asset?: SanityImageAssetReference;
-  media?: unknown; // Unable to locate the referenced type "image.media" in schema
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  alt?: string;
-  _type: "image";
-};
-
 export type Background = {
   tone?: "default" | "warm" | "chapel" | "chapelDeep";
   image?: BackgroundImage;
@@ -39,9 +23,76 @@ export type Background = {
   padding?: "compact" | "normal" | "spacious";
 };
 
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
 export type BackgroundImage = {
   asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type SectionImageTextBackground = {
+  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  image?: SectionImageTextBackgroundImage;
+  videoUrl?: string;
+  overlay?: number;
+  padding?: "compact" | "normal" | "spacious";
+};
+
+export type SectionImageTextBackgroundImage = {
+  asset?: SanityImageAssetReference;
   media?: unknown; // Unable to locate the referenced type "background.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type FeatureCardImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "featureCard.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type SectionFeatureCardsBackground = {
+  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  image?: SectionFeatureCardsBackgroundImage;
+  videoUrl?: string;
+  overlay?: number;
+  padding?: "compact" | "normal" | "spacious";
+};
+
+export type SectionFeatureCardsBackgroundImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "sectionFeatureCards.background.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type SectionCardGridBackground = {
+  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  image?: SectionCardGridBackgroundImage;
+  videoUrl?: string;
+  overlay?: number;
+  padding?: "compact" | "normal" | "spacious";
+};
+
+export type SectionCardGridBackgroundImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "sectionCardGrid.background.image.media" in schema
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
@@ -161,6 +212,40 @@ export type SectionLogosBackground = {
 export type SectionLogosBackgroundImage = {
   asset?: SanityImageAssetReference;
   media?: unknown; // Unable to locate the referenced type "sectionLogos.background.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type SectionQuoteBackground = {
+  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  image?: SectionQuoteBackgroundImage;
+  videoUrl?: string;
+  overlay?: number;
+  padding?: "compact" | "normal" | "spacious";
+};
+
+export type SectionQuoteBackgroundImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "sectionQuote.background.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type SectionCtaBandBackground = {
+  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  image?: SectionCtaBandBackgroundImage;
+  videoUrl?: string;
+  overlay?: number;
+  padding?: "compact" | "normal" | "spacious";
+};
+
+export type SectionCtaBandBackgroundImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "sectionCtaBand.background.image.media" in schema
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
@@ -1822,7 +1907,7 @@ export type SectionFeatureCards = {
     _type: "featureCard";
     _key: string;
   }>;
-  background?: Background;
+  background?: SectionFeatureCardsBackground;
 };
 
 export type SectionForm = {
@@ -1839,12 +1924,14 @@ export type SectionCtaBand = {
   subhead?: string;
   ctaLabel?: string;
   ctaUrl?: string;
+  background?: SectionCtaBandBackground;
 };
 
 export type SectionQuote = {
   _type: "sectionQuote";
   quote?: string;
   attribution?: string;
+  background?: SectionQuoteBackground;
 };
 
 export type SectionCardGrid = {
@@ -1860,6 +1947,7 @@ export type SectionCardGrid = {
     _type: "card";
     _key: string;
   }>;
+  background?: SectionCardGridBackground;
 };
 
 export type SectionImageText = {
@@ -1897,6 +1985,7 @@ export type SectionImageText = {
   }>;
   ctaLabel?: string;
   ctaUrl?: string;
+  background?: SectionImageTextBackground;
 };
 
 export type SectionRichText = {
@@ -1923,6 +2012,7 @@ export type SectionRichText = {
     _key: string;
   }>;
   align?: "left" | "center";
+  background?: Background;
 };
 
 export type Embed = {
@@ -2746,10 +2836,16 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
-  | SanityImageAssetReference
-  | FeatureCardImage
   | Background
+  | SanityImageAssetReference
   | BackgroundImage
+  | SectionImageTextBackground
+  | SectionImageTextBackgroundImage
+  | FeatureCardImage
+  | SectionFeatureCardsBackground
+  | SectionFeatureCardsBackgroundImage
+  | SectionCardGridBackground
+  | SectionCardGridBackgroundImage
   | SectionStatsBackground
   | SectionStatsBackgroundImage
   | SectionGalleryBackground
@@ -2764,6 +2860,10 @@ export type AllSanitySchemaTypes =
   | SectionDynamicListBackgroundImage
   | SectionLogosBackground
   | SectionLogosBackgroundImage
+  | SectionQuoteBackground
+  | SectionQuoteBackgroundImage
+  | SectionCtaBandBackground
+  | SectionCtaBandBackgroundImage
   | Page
   | SanityImageCrop
   | SanityImageHotspot
