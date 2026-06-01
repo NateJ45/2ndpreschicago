@@ -15,6 +15,7 @@ import SectionHeading from '@/components/SectionHeading.astro';
 import FormBlock from '@/components/FormBlock.astro';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getContactPage().catch(() => null);
@@ -127,6 +128,8 @@ const reasons = [
       </div>
     </div>
   </section>
+
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
     eyebrow="Come and See"

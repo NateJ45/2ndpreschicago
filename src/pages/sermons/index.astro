@@ -14,6 +14,7 @@ import Hero from '@/components/Hero.astro';
 import heroSermons from '@/assets/hero-worship.webp';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
 const [page, sermons, siteSettings] = await Promise.all([
   getSermonsPage().catch(() => null),
@@ -129,6 +130,8 @@ function meta(s: any): string {
       </div>
     </section>
   )}
+
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
     eyebrow="Come and See"

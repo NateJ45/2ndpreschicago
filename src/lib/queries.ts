@@ -139,7 +139,8 @@ export async function getHomePage() {
       image${IMAGE_PROJECTION},
       primaryCtaLabel, primaryCtaUrl
     },
-    thisSunday
+    thisSunday,
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -156,7 +157,8 @@ export async function getAboutPage() {
     storyEyebrow, storyHeadline, storyContent,
     finalCtaEyebrow, finalCtaHeadline, finalCtaScriptAccent, finalCtaSubhead,
     finalCtaBackgroundImage${IMAGE_PROJECTION},
-    finalCta${CTA_PROJECTION}
+    finalCta${CTA_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -177,7 +179,8 @@ export async function getFaqPage() {
     finalCtaEyebrow, finalCtaHeadline, finalCtaScriptAccent, finalCtaSubhead,
     finalCtaBackgroundImage${IMAGE_PROJECTION},
     finalCta${CTA_PROJECTION},
-    secondaryCta${CTA_PROJECTION}
+    secondaryCta${CTA_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -195,7 +198,8 @@ export async function getContactPage() {
     contactForm->${FORM_PROJECTION},
     whatToExpectEyebrow,
     whatToExpectHeadline,
-    whatToExpectContent
+    whatToExpectContent,
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -273,7 +277,8 @@ export async function getPrivacyPage() {
     heroImage${IMAGE_PROJECTION},
     heroScriptAccent,
     lastUpdated,
-    body
+    body,
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -330,7 +335,8 @@ export async function getEventsPage() {
     seoTitle, seoDescription,
     seoImage${IMAGE_PROJECTION},
     heroEyebrow, heroHeadline, heroSubhead,
-    heroImage${IMAGE_PROJECTION}
+    heroImage${IMAGE_PROJECTION},
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 
@@ -415,7 +421,8 @@ export async function getSermonsPage() {
   return sanityFetch(`*[_type == "sermonsPage"][0]{
     seoTitle, seoDescription,
     seoImage${IMAGE_PROJECTION},
-    heroEyebrow, heroHeadline, heroSubhead, livestreamUrl
+    heroEyebrow, heroHeadline, heroSubhead, livestreamUrl,
+    flexibleSections[]${SECTION_MEMBERS}
   }`, {}, null);
 }
 

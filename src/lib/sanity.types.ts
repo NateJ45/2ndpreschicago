@@ -1033,6 +1033,29 @@ export type PrivacyPage = {
     _type: "block";
     _key: string;
   }>;
+  flexibleSections?: Array<
+    | ({
+        _key: string;
+      } & SectionRichText)
+    | ({
+        _key: string;
+      } & SectionImageText)
+    | ({
+        _key: string;
+      } & SectionCardGrid)
+    | ({
+        _key: string;
+      } & SectionQuote)
+    | ({
+        _key: string;
+      } & SectionCtaBand)
+    | ({
+        _key: string;
+      } & SectionForm)
+    | ({
+        _key: string;
+      } & Embed)
+  >;
 };
 
 export type NotFoundPage = {
@@ -1295,6 +1318,29 @@ export type SermonsPage = {
   heroHeadline?: string;
   heroSubhead?: string;
   livestreamUrl?: string;
+  flexibleSections?: Array<
+    | ({
+        _key: string;
+      } & SectionRichText)
+    | ({
+        _key: string;
+      } & SectionImageText)
+    | ({
+        _key: string;
+      } & SectionCardGrid)
+    | ({
+        _key: string;
+      } & SectionQuote)
+    | ({
+        _key: string;
+      } & SectionCtaBand)
+    | ({
+        _key: string;
+      } & SectionForm)
+    | ({
+        _key: string;
+      } & Embed)
+  >;
 };
 
 export type EventsPage = {
@@ -1324,6 +1370,29 @@ export type EventsPage = {
     alt?: string;
     _type: "image";
   };
+  flexibleSections?: Array<
+    | ({
+        _key: string;
+      } & SectionRichText)
+    | ({
+        _key: string;
+      } & SectionImageText)
+    | ({
+        _key: string;
+      } & SectionCardGrid)
+    | ({
+        _key: string;
+      } & SectionQuote)
+    | ({
+        _key: string;
+      } & SectionCtaBand)
+    | ({
+        _key: string;
+      } & SectionForm)
+    | ({
+        _key: string;
+      } & Embed)
+  >;
 };
 
 export type ContactPage = {
@@ -1373,6 +1442,29 @@ export type ContactPage = {
     _key: string;
   }>;
   note?: string;
+  flexibleSections?: Array<
+    | ({
+        _key: string;
+      } & SectionRichText)
+    | ({
+        _key: string;
+      } & SectionImageText)
+    | ({
+        _key: string;
+      } & SectionCardGrid)
+    | ({
+        _key: string;
+      } & SectionQuote)
+    | ({
+        _key: string;
+      } & SectionCtaBand)
+    | ({
+        _key: string;
+      } & SectionForm)
+    | ({
+        _key: string;
+      } & Embed)
+  >;
 };
 
 export type Form = {
@@ -1460,6 +1552,29 @@ export type FaqPage = {
   };
   secondaryCta?: CtaBlock;
   note?: string;
+  flexibleSections?: Array<
+    | ({
+        _key: string;
+      } & SectionRichText)
+    | ({
+        _key: string;
+      } & SectionImageText)
+    | ({
+        _key: string;
+      } & SectionCardGrid)
+    | ({
+        _key: string;
+      } & SectionQuote)
+    | ({
+        _key: string;
+      } & SectionCtaBand)
+    | ({
+        _key: string;
+      } & SectionForm)
+    | ({
+        _key: string;
+      } & Embed)
+  >;
 };
 
 export type AboutPage = {
@@ -1518,6 +1633,29 @@ export type AboutPage = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  flexibleSections?: Array<
+    | ({
+        _key: string;
+      } & SectionRichText)
+    | ({
+        _key: string;
+      } & SectionImageText)
+    | ({
+        _key: string;
+      } & SectionCardGrid)
+    | ({
+        _key: string;
+      } & SectionQuote)
+    | ({
+        _key: string;
+      } & SectionCtaBand)
+    | ({
+        _key: string;
+      } & SectionForm)
+    | ({
+        _key: string;
+      } & Embed)
+  >;
 };
 
 export type HomePage = {
@@ -1600,6 +1738,29 @@ export type HomePage = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  flexibleSections?: Array<
+    | ({
+        _key: string;
+      } & SectionRichText)
+    | ({
+        _key: string;
+      } & SectionImageText)
+    | ({
+        _key: string;
+      } & SectionCardGrid)
+    | ({
+        _key: string;
+      } & SectionQuote)
+    | ({
+        _key: string;
+      } & SectionCtaBand)
+    | ({
+        _key: string;
+      } & SectionForm)
+    | ({
+        _key: string;
+      } & Embed)
+  >;
 };
 
 export type MediaTag = {

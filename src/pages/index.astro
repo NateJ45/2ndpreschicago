@@ -25,6 +25,7 @@ import { site } from '@/data/site';
 import SectionHeading from '@/components/SectionHeading.astro';
 import SanityImage from '@/components/SanityImage.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 import heroSanctuary from '@/assets/hero-sanctuary.webp';
 import sanctuaryInterior from '@/assets/sanctuary-interior.webp';
 
@@ -339,6 +340,9 @@ const ministryCards =
       </div>
     </div>
   </section>
+
+  {/* Editor-added sections (page builder) */}
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   {/* ===== 8. Welcoming close (Chapel-green) =============================== */}
   <FinalCta

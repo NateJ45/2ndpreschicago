@@ -11,6 +11,7 @@ import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 import angelMurals from '@/assets/angel-murals.jpg';
 import sanctuaryInterior from '@/assets/sanctuary-interior.webp';
 
@@ -125,6 +126,8 @@ const pillOutline =
       </div>
     </div>
   </section>
+
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
     eyebrow="Come and See"

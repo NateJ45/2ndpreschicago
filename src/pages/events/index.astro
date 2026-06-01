@@ -14,6 +14,7 @@ import Hero from '@/components/Hero.astro';
 import heroEvents from '@/assets/hero-events.webp';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
+import Sections from '@/components/Sections.astro';
 
 const [page, recurring, upcoming, specialServices, siteSettings] = await Promise.all([
   getEventsPage().catch(() => null),
@@ -154,6 +155,8 @@ function whenLabel(ev: any): string {
       </ul>
     </div>
   </section>
+
+  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
 
   <FinalCta
     eyebrow="Come and See"

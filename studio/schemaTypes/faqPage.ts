@@ -2,6 +2,7 @@
 // grouped by category in the order specified by categoryOrder.
 
 import { defineType, defineField, defineArrayMember } from 'sanity';
+import { FLEXIBLE_SECTION_MEMBERS } from './blocks';
 
 export const faqPage = defineType({
   name: 'faqPage',
@@ -13,6 +14,7 @@ export const faqPage = defineType({
     { name: 'seo', title: 'SEO' },
     { name: 'hero', title: 'Hero' },
     { name: 'list', title: 'Category order' },
+    { name: 'sections', title: 'Page sections' },
     { name: 'final', title: 'Final CTA' },
   ],
   fields: [
@@ -113,6 +115,14 @@ export const faqPage = defineType({
       type: 'text',
       rows: 3,
       description: 'Internal-only reminder for editors. Anything you write here stays in Studio and never renders on the live page.',
+    }),
+    defineField({
+      name: 'flexibleSections',
+      title: 'Page sections',
+      type: 'array',
+      group: 'sections',
+      description: 'Add on-brand sections to this page (text, image + text, cards, quote, CTA band, form, embed). They render below the built-in content. Drag to reorder.',
+      of: FLEXIBLE_SECTION_MEMBERS,
     }),
   ],
   preview: { prepare: () => ({ title: 'FAQ Page' }) },
