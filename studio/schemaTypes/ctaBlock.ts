@@ -46,8 +46,14 @@ export const ctaBlock = defineType({
     }),
     defineField({
       name: 'externalUrl',
-      title: 'Full URL',
+      title: 'Link (full URL or site path)',
       type: 'url',
+      description:
+        'A full URL like https://example.com, or an internal site path starting with "/" (e.g. /worship, /events). Paths stay in the same tab; full URLs open in a new tab.',
+      // allowRelative lets this double as an internal-link field (paths like
+      // "/worship"). CtaLink.astro is built to accept relative external hrefs;
+      // the default url type would reject them as "Not a valid URL".
+      validation: (Rule) => Rule.uri({ allowRelative: true }),
       hidden: ({ parent }) => parent?.linkType !== 'external',
     }),
     defineField({
