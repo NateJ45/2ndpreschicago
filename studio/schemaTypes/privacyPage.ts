@@ -122,7 +122,7 @@ export const privacyPage = defineType({
                 type: 'object',
                 title: 'Link',
                 fields: [
-                  { name: 'href', type: 'url', title: 'URL' },
+                  { name: 'href', type: 'url', title: 'URL', validation: (R: any) => R.uri({ allowRelative: true }) },
                   { name: 'openInNewTab', type: 'boolean', title: 'Open in new tab', initialValue: false },
                 ],
               },
