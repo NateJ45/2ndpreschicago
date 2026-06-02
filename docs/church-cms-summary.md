@@ -4,6 +4,10 @@ Date: 2026-06-01. Branch: `feature/church-cms`. Spec: `docs/superpowers/specs/20
 
 Goal: let a non-technical pastor + secretary run the site from Sanity for a year, and keep it a reusable church template. Built autonomously, phase by phase; site stayed green and shippable after each phase. Studio deployed after each phase.
 
+## Content model — Sanity is the single source of truth
+
+**All content on the site is editor-driven through Sanity, and every content field is populated, so the Studio mirrors the live site exactly.** Page copy, headings, buttons and links, images, the navigation menus, SEO titles/descriptions, the worship service time, and contact details all live in Sanity. The literal strings in `src/pages/*.astro` are safety-net fallbacks that render only if a field is ever cleared (so a section never goes blank); they are not the live content, and a populated field always overrides them. To change anything a visitor sees, edit it in Studio and the static site rebuilds. Values that repeat are single-sourced so a change is one edit: the worship time is `siteSettings.worshipService` (derived everywhere via `src/lib/serviceTime.ts`), and address / phone / email / office hours come from `siteSettings`. This was reached via a content-editability audit + remediation (see `docs/agent/content-audit-2026-06-01.md`, `docs/agent/editor-vs-hardcoded.md`, and the 2026-06-01 entries in `docs/agent/changelog.md`); the reusable audit tool is `scripts/audit-field-population.mjs`.
+
 ## What shipped
 
 ### Phase 1 — Configurable forms (complete)

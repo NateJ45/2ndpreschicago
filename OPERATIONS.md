@@ -4,7 +4,9 @@ Tactical reference for common tasks. `CLAUDE.md` is the architecture and design 
 
 If you are a future Claude session and you can only read one doc, read `CLAUDE.md`. This file is the second one to open when you need to do something specific (deploy, patch, audit, regenerate).
 
-> **Project:** this repo is the Second Presbyterian Church of Chicago site. It commits to `master` (Cloudflare auto-deploy is not wired up yet, so deploy with `npm run deploy`). Services was removed; an Events module is enabled. Most pages render from inline content, so Sanity is optional until the church wants editor-managed content.
+> **Project:** this repo is the Second Presbyterian Church of Chicago site. It commits to `master` (Cloudflare auto-deploy is not wired up yet, so deploy with `npm run deploy`). Services was removed; an Events module is enabled.
+>
+> **Sanity is the single source of truth for all site content.** Every content field (page copy, headings, buttons/links, images, nav menus, SEO, the worship service time, contact details) is populated, so the Studio mirrors the live site. The inline strings in `src/pages/*.astro` are safety-net fallbacks, not the live content. To change anything a visitor sees, edit it in Sanity Studio and rebuild — do not edit the `.astro` copy expecting it to change the site. Repeated values are single-sourced: worship time = `siteSettings.worshipService`, address/phone/email = `siteSettings`. Field-by-field map: `docs/agent/editor-vs-hardcoded.md`.
 
 ---
 

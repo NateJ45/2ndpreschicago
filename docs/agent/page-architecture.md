@@ -42,8 +42,8 @@ Each page is a Sanity singleton whose built-in copy and images are editable fiel
 
 ### Empty-content behavior (no module toggles)
 
-This build does not use the starter's `sectionVisibility` module-toggle system -- there are no opt-in module sections to gate. Instead, content degrades gracefully on its own:
-- **Empty fields fall back** to the built-in verbatim copy (the inline-fallback pattern), so the site is never blank.
+**Sanity is the single source of truth for all content** (see `editor-vs-hardcoded.md`): every content field is populated, so the Studio mirrors the live site, and the inline strings in the templates are only a safety net. This build also does not use the starter's `sectionVisibility` module-toggle system -- there are no opt-in module sections to gate. Content degrades gracefully on its own:
+- **Empty fields fall back** to the built-in verbatim copy (the inline-fallback safety net), so a section can never go blank if a field is cleared. Fields are populated by default, so the Studio shows the live copy rather than a blank input.
 - **Empty collections degrade** (e.g. `/sermons` shows a "watch online" state with the live link when no sermons are posted; an empty FAQ category simply doesn't render; an announcement only shows when enabled and within its date window).
 - **Page-builder sections** are opt-in by nature: a page with no `flexibleSections` just shows its built-in content.
 

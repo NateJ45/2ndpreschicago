@@ -22,9 +22,11 @@ export const site = {
 
 Replace all placeholder values in `site.ts` before launch. The domain feeds the canonical URL, OG tags, and the sitemap reference in `robots.txt`.
 
-### Sanity — all editable content
+### Sanity — the single source of truth for all content
 
-All publicly-visible content lives in Sanity, not in code or markdown files. Sanity gives non-technical editors a real CMS UI without requiring code changes for routine copy updates.
+**All publicly-visible content lives in Sanity, and every content field is populated, so the Studio mirrors the live site exactly.** Page copy, headings, buttons/links, images, the nav menus, SEO, the worship service time, and contact details are all Sanity fields. Editors change content in Studio (the static site rebuilds and the change goes live); they never touch code for routine copy updates.
+
+The inline strings in `src/pages/*.astro` are **safety-net fallbacks** (the inline-fallback pattern) that render only if a field is ever left empty, so a section can never go blank. They are not the live content — a populated Sanity field always overrides them. Repeated values are single-sourced (worship time via `siteSettings.worshipService` + `src/lib/serviceTime.ts`; address/phone/email via `siteSettings`), so a change is one edit. The audit + field-by-field map is in `docs/agent/editor-vs-hardcoded.md` and `docs/agent/content-audit-2026-06-01.md`.
 
 > Church build note: the schema set below is the Second Presbyterian schema, not the
 > generic starter's. The interior-designer schemas (service, testimonial, philosophyPoint,

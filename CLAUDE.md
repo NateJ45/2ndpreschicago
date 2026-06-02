@@ -2,7 +2,9 @@
 
 This is the always-loaded reference for the `ncs-astro-sanity-starter` codebase: the conventions and landmines an agent needs on every task. Deep detail for specific areas (theme, components, SEO, performance, Sanity, deployment) lives under `docs/agent/` and is read on demand. The topic index at the bottom is the map.
 
-> **This repository is the live site for Second Presbyterian Church of Chicago**, built on the NCS starter and migrated from Squarespace. The architecture and conventions below still apply. Project specifics: the Services page is removed, an **Events** module is enabled, and pages render from inline fallbacks with Sanity as an optional upgrade. See `README.md`, `docs/migration/content-inventory.md`, and the build plan under `docs/superpowers/plans/`.
+> **This repository is the live site for Second Presbyterian Church of Chicago**, built on the NCS starter and migrated from Squarespace. The architecture and conventions below still apply. Project specifics: the Services page is removed, an **Events** module is enabled, and **Sanity is the single source of truth for all site content** (see the callout below). See `README.md`, `docs/migration/content-inventory.md`, and the build plan under `docs/superpowers/plans/`.
+>
+> **Content model — Sanity is the single source of truth.** Every piece of visible content (page copy, headings, buttons/links, images, the nav menus, SEO titles/descriptions, the worship service time, contact details) is a Sanity field, and every field is populated, so Sanity Studio mirrors the live site exactly. The literal strings in `src/pages/*.astro` are **safety-net fallbacks** that render only if a field is ever cleared; they are NOT the live content. **Change content in Studio (the site rebuilds), not in the `.astro` files** — a populated Sanity field overrides the inline string. Values that repeat are single-sourced: the worship time is `siteSettings.worshipService` (derived everywhere via `src/lib/serviceTime.ts`); address / phone / email / office hours come from `siteSettings`. Full map: `docs/agent/editor-vs-hardcoded.md`.
 
 Companion tactical runbook: `OPERATIONS.md`. New-project setup entry point: `docs/bootstrap/NEW-PROJECT.md` (authored in a later phase — that runbook is the intended start for any team adapting this starter for a new client).
 
@@ -102,7 +104,7 @@ Additional routes come from opt-in modules staged under `modules/`. Each module 
 
 These are the files where a project maintainer can make changes without risk of breaking the underlying architecture:
 
-- Text content inside `src/pages/*.astro` (everything outside the frontmatter and Sanity-fetched content)
+- Inline **fallback** copy inside `src/pages/*.astro` — but note this is the safety-net default, NOT the live content. The live content is the (populated) Sanity field, which overrides it. Edit live copy in Studio; editing a fallback here only changes what shows if that field is ever cleared.
 - `src/data/site.ts` — static identity constants (site name, domain, brand color mirrors for scripts, asset paths). Replace all placeholder values before launch.
 - The design seam — files that define the visual identity of the project:
   - `src/styles/globals.css` `@theme` block: palette tokens (`--color-primary`, `--color-ink`, `--color-paper`, etc.), the `--tint-rgb` token (controls polish-layer tint color across card-lift, surface-warm, and branded overlays), and font-family tokens

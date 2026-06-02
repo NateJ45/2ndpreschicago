@@ -2,16 +2,26 @@
 
 > Reference for what an editor can change in Studio versus what needs a code edit. Mark component files accordingly.
 
-## What's editor-driven vs hardcoded
+## Sanity is the single source of truth
 
-> Church build note: this project (Second Presbyterian) pushed almost everything to
-> editor-driven via the inline-fallback pattern. The interior-designer template's
-> modules (portfolio, journal, services, testimonials, philosophy, shop, etc.) are
-> not used here; their docs under `docs/modules/` remain for template reuse only.
+**All content on the site is editor-driven through Sanity, and every content field is populated, so the Studio mirrors the live site exactly.** Page copy, headings, body text, buttons and links, images, the navigation menus, SEO titles/descriptions, the worship service time, and contact details all live in Sanity. To change anything a visitor reads, sees, or clicks, edit it in Sanity Studio; the site rebuilds and the change appears a few minutes later.
+
+The literal strings in `src/pages/*.astro` are **not the content** -- they are safety-net fallbacks that render only if a field is ever left empty, so a section can never go blank. **Do not edit copy in the `.astro` files expecting it to change the live site:** the populated Sanity field overrides it. (To make something brand-new editable, see "The `// Safe to edit by hand` convention" at the bottom.)
+
+**Values that repeat across the site are single-sourced, so changing them is one edit:**
+- **Worship service time** -> `siteSettings.worshipService` ({ time, day, start/end 24h }). Drives the header bar, footer, home service band, the "This Sunday" line, the worship-page time, and the Google/JSON-LD opening hours, all derived via `src/lib/serviceTime.ts`. Prose elsewhere is deliberately time-agnostic so the time is never repeated. (The FAQ "what time" answer and the home weekly-rhythms list intentionally still name it, as editable content.)
+- **Address / phone / email / office hours** -> `siteSettings`. Each drives every on-page display plus the LocalBusiness JSON-LD and the tap-to-call / map links; clearing one falls back to `src/data/site.ts`.
+- **Church name, mission, socials, give / watch URLs** -> `siteSettings`.
+
+> Church build note: this project (Second Presbyterian) pushed everything to
+> editor-driven via the inline-fallback pattern, then seeded every field so the
+> Studio shows the live copy. The interior-designer template's modules (portfolio,
+> journal, services, testimonials, philosophy, shop, etc.) are not used here; their
+> docs under `docs/modules/` remain for template reuse only.
 
 ### Editor-driven (Sanity)
 
-- **All page copy** -- every page singleton's eyebrows, headlines, subheads, body, and closing CTA are editable fields. Empty fields fall back to the built-in verbatim copy (the inline-fallback pattern), so the site reads correctly before anything is entered. Exception: the *What We Believe* statement of faith is reproduced verbatim and owned by leadership -- edit with care.
+- **All page copy** -- every page singleton's eyebrows, headlines, subheads, body, buttons/CTAs, and in-body links are editable fields, and all are populated, so the Studio shows the live copy. An empty field falls back to the built-in verbatim copy (the inline-fallback safety net), so a section can never go blank. Exception: the *What We Believe* statement of faith is reproduced verbatim and owned by leadership -- edit with care.
 - **All hero images** -- every `*Page` singleton has a `heroImage` (with alt). The home page also has `heroImages` (one = static, two+ = cross-fading slideshow) and a dated `seasonalHero` override.
 - **Navigation** -- the header menu (`siteSettings.navItems`: Links + Dropdown menus) and the footer link columns (`siteSettings.footerColumns`). Both fall back to the built-in menus when empty; the mobile menu inherits the header. The footer "Get in touch" column is derived from contact fields.
 - **Favicon** -- `siteSettings.favicon` (browser-tab icon); falls back to the bundled church mark in `/public/favicon.png`.
