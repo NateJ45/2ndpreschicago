@@ -59,6 +59,14 @@ export const siteSettings = defineType({
         Rule.required().regex(/.+@.+\..+/, { name: 'email', invert: false }),
     }),
     defineField({
+      name: 'pastorEmail',
+      title: 'Pastoral care email (optional)',
+      type: 'string',
+      description:
+        'Email for pastoral care, shown on the Contact, Pastors & Staff, and Use Our Space pages. Leave blank to use the public email above.',
+      group: 'identity',
+    }),
+    defineField({
       name: 'phone',
       title: 'Phone (optional)',
       type: 'string',

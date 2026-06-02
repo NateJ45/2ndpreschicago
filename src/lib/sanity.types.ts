@@ -1948,6 +1948,7 @@ export type SiteSettings = {
   tagline?: string;
   mission?: string;
   email?: string;
+  pastorEmail?: string;
   phone?: string;
   officeHours?: string;
   favicon?: {
