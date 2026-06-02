@@ -8,6 +8,7 @@ import { getPageHero, getSiteSettings, getWorshipResources } from '@/lib/queries
 import heroWorship from '@/assets/hero-worship.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
@@ -20,6 +21,7 @@ import { serviceTime } from '@/lib/serviceTime';
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('worshipPage').catch(() => null);
 const worshipResources = await getWorshipResources(6).catch(() => []);
+const settings = resolveSiteSettings(siteSettings);
 // Service time derives from the single canonical source (siteSettings.worshipService).
 const st = serviceTime(siteSettings?.worshipService);
 
@@ -64,10 +66,10 @@ const pillOutline =
         <div class="mt-s mb-m h-px w-12 bg-primary/60" aria-hidden="true"></div>
         <p class="font-display text-h1 text-foreground leading-none">{st.gatherTime}</p>
         <p class="mt-s text-lg text-foreground/85">{st.gatherDay}</p>
-        <p class="mt-m text-foreground/80">{siteSettings?.addressLine ?? site.contact.addressLine}<br />{siteSettings?.cityStateZip ?? site.contact.cityStateZip}</p>
+        <p class="mt-m text-foreground/80">{settings.addressLine}<br />{settings.cityStateZip}</p>
         <div class="mt-l flex flex-wrap gap-s">
           <a href={page?.gatherDirectionsCta?.externalUrl || '/contact'} class={pillPrimary}>{page?.gatherDirectionsCta?.label || 'Get Directions'}</a>
-          <a href={page?.gatherWatchCta?.externalUrl || site.social.youtube} target="_blank" rel="noopener noreferrer" class={pillOutline}>{page?.gatherWatchCta?.label || 'Watch Online'}</a>
+          <a href={page?.gatherWatchCta?.externalUrl || settings.social.youtube} target="_blank" rel="noopener noreferrer" class={pillOutline}>{page?.gatherWatchCta?.label || 'Watch Online'}</a>
         </div>
       </div>
       <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
@@ -197,7 +199,7 @@ const pillOutline =
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "Come and See"}

@@ -20,7 +20,7 @@
 // Tailwind v4 gotcha: max-w-xs/s/m/l are shadowed by this project's custom
 // --spacing-* tokens. Use max-w-md / max-w-2xl / arbitrary values for text widths.
 
-import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import { IconBrandInstagram, IconBrandFacebook, IconBrandYoutube } from '@tabler/icons-react';
 import { Phone, MapPin, Mail, Clock } from 'lucide-react';
 import NewsletterSignup from '@/components/NewsletterSignup';
@@ -69,29 +69,26 @@ interface Props {
 
 const { siteSettings } = Astro.props as Props;
 
-// SAFE TO EDIT IN SANITY: every value below reads from siteSettings first and
-// falls back to the church's real details in src/data/site.ts.
-const brandName = siteSettings?.title ?? site.name;
-const email = siteSettings?.email ?? site.contact.email;
-const phone = siteSettings?.phone ?? site.contact.phone;
-const ig = siteSettings?.socialInstagram ?? site.social.instagram;
-const fb = siteSettings?.socialFacebook ?? site.social.facebook;
-const yt = siteSettings?.socialYoutube ?? site.social.youtube;
-const tagline = siteSettings?.tagline ?? 'Serving and celebrating Jesus for the good of the world.';
-const mission = siteSettings?.mission ?? tagline;
-const serviceTimes = serviceTime(siteSettings?.worshipService).line;
-const giveHref = siteSettings?.giveUrl ?? '/give';
-
-// Address: editable in Sanity, falling back to the church's real details in
-// src/data/site.ts. Resolved into consts first so both the directions link and
-// the visible "where" line below read from the same values.
-const addressLine = siteSettings?.addressLine ?? site.contact.addressLine;
-const cityStateZip = siteSettings?.cityStateZip ?? site.contact.cityStateZip;
-
-// Directions link built from the church's address so "Get directions" opens
-// the right pin in any maps app.
-const fullAddress = `${addressLine}, ${cityStateZip}`;
-const mapHref = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(fullAddress)}`;
+// Every identity / contact / social value resolves through one shared helper
+// (see src/lib/siteSettings.ts) so the footer can't drift from the header, the
+// pages, or the JSON-LD. Empty Sanity fields render blank (or hide) rather than
+// showing a hardcoded stand-in.
+const settings = resolveSiteSettings(siteSettings);
+const brandName = settings.brandName;
+const email = settings.email;
+const phone = settings.phone;
+const officeHours = settings.officeHours; // undefined when unset -> line hides
+const ig = settings.social.instagram;
+const fb = settings.social.facebook;
+const yt = settings.social.youtube;
+const tagline = settings.tagline;
+const mission = settings.mission;
+const serviceTimes = serviceTime(settings.worshipService).line;
+const giveHref = settings.giveHref;
+const addressLine = settings.addressLine;
+const cityStateZip = settings.cityStateZip;
+const fullAddress = settings.fullAddress;
+const mapHref = settings.mapHref;
 
 const currentYear = new Date().getFullYear();
 const siteCredit = siteSettings?.footerCredit;
@@ -265,7 +262,9 @@ const footerLink =
             </a>
           </p>
         )}
-        <p class="text-chapel-foreground/60">Office hours: {site.contact.officeHours}</p>
+        {officeHours && (
+          <p class="text-chapel-foreground/60">Office hours: {officeHours}</p>
+        )}
       </address>
       {(ig || fb || yt) && (
         <ul class="mt-m flex justify-center sm:justify-start gap-s text-sm list-none p-0">

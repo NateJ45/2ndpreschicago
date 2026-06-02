@@ -7,6 +7,7 @@ import { getUseOurSpacePage, getSiteSettings } from '@/lib/queries';
 import heroSpace from '@/assets/hero-space.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FormBlock from '@/components/FormBlock.astro';
@@ -15,6 +16,8 @@ import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getUseOurSpacePage().catch(() => null);
+
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `Use Our Space · ${site.name}`;
 const description =
@@ -82,12 +85,12 @@ const uses = page?.uses?.length ? page.uses : FALLBACK_USES;
         {page?.inquireIntro ?? 'Get in touch to ask about fees and availability, and we will be back in touch soon.'}
       </p>
       <div class="mt-l text-left">
-        <FormBlock form={page?.inquiryForm} fallbackEmail={site.contact.email} fallbackLabel="Inquire About the Space" />
+        <FormBlock form={page?.inquiryForm} fallbackEmail={settings.email} fallbackLabel="Inquire About the Space" />
       </div>
       <p class="mt-l text-sm text-foreground/70">
         Planning something long-term, like a regular meeting or sharing the space?{' '}
         <a
-          href={`mailto:${site.contact.pastorEmail}`}
+          href={`mailto:${settings.pastorEmail}`}
           class="underline underline-offset-2 hover:text-link transition-colors"
           >Email the Pastor directly</a
         >.
@@ -95,7 +98,7 @@ const uses = page?.uses?.length ? page.uses : FALLBACK_USES;
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "Visit First"}

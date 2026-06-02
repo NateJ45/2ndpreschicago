@@ -16,11 +16,13 @@ import Sections from '@/components/Sections.astro';
 import { getPrivacyPage, getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 
 const [page, siteSettings] = await Promise.all([
   getPrivacyPage().catch(() => null),
   getSiteSettings().catch(() => null),
 ]);
+const settings = resolveSiteSettings(siteSettings);
 
 const title       = page?.seoTitle       ?? `Privacy Policy · ${site.name}`;
 const description = page?.seoDescription ?? 'How we handle the information you share when you reach out or subscribe.';
@@ -46,7 +48,7 @@ const schemas = [
 ];
 
 // Contact email for the fallback copy
-const contactEmail = siteSettings?.email ?? site.contact.email;
+const contactEmail = settings.email;
 
 // Whether to use Sanity body content
 const hasSanityBody = Boolean(page?.body);
@@ -141,5 +143,5 @@ const hasSanityBody = Boolean(page?.body);
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 </BaseLayout>

@@ -7,12 +7,14 @@ import { getGrowPage, getSiteSettings } from '@/lib/queries';
 import heroGrow from '@/assets/hero-grow.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getGrowPage().catch(() => null);
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `Grow · ${site.name}`;
 const description =
@@ -63,7 +65,7 @@ const groups = page?.groups?.length ? page.groups : FALLBACK_GROUPS;
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? 'Join In'}

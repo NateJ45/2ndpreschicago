@@ -10,6 +10,7 @@ import heroContact from '@/assets/hero-sanctuary.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { telHref } from '@/lib/phone';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FormBlock from '@/components/FormBlock.astro';
@@ -19,6 +20,10 @@ import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getContactPage().catch(() => null);
+
+// One resolved settings object; every contact value below comes from Sanity via
+// this helper, with no hardcoded site.ts fallbacks.
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `Contact · ${site.name}`;
 const description =
@@ -32,20 +37,20 @@ const schemas = [
   ]),
 ];
 
-// Address: editable in Sanity (siteSettings), falling back to site.ts. Resolved
-// into consts so the embedded map query and the visible address read the same.
-const addressLine = siteSettings?.addressLine ?? site.contact.addressLine;
-const cityStateZip = siteSettings?.cityStateZip ?? site.contact.cityStateZip;
+// Address comes from Sanity (siteSettings), resolved into consts so the embedded
+// map query and the visible address read the same values.
+const addressLine = settings.addressLine;
+const cityStateZip = settings.cityStateZip;
 
 const mapQuery = encodeURIComponent(`${addressLine}, ${cityStateZip}`);
 
 // Inline fallback. The who-to-reach rows are editable in Sanity
 // (contactPage.contactReasons); this const renders when that field is empty, so
-// the page is identical until an editor overrides it. The default emails still
-// come from site.ts so a fresh build always has working addresses.
+// the page is identical until an editor overrides it. The default emails come
+// from Sanity siteSettings (public + pastoral) via the resolver.
 const FALLBACK_REASONS = [
-  { label: 'General questions', value: site.contact.email, href: `mailto:${site.contact.email}` },
-  { label: 'Pastoral care', value: site.contact.pastorEmail, href: `mailto:${site.contact.pastorEmail}` },
+  { label: 'General questions', value: settings.email, href: `mailto:${settings.email}` },
+  { label: 'Pastoral care', value: settings.pastorEmail, href: `mailto:${settings.pastorEmail}` },
   { label: 'Weddings', value: 'See wedding details', href: '/weddings' },
   { label: 'Use our space', value: 'Inquire about the building', href: '/use-our-space' },
 ];
@@ -76,15 +81,15 @@ const reasons = page?.contactReasons?.length ? page.contactReasons : FALLBACK_RE
           </li>
           <li class="flex items-start gap-s">
             <Phone size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
-            <a href={telHref(siteSettings?.phone ?? site.contact.phone)} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors">{siteSettings?.phone ?? site.contact.phone}</a>
+            <a href={telHref(settings.phone)} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors">{settings.phone}</a>
           </li>
           <li class="flex items-start gap-s">
             <Mail size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
-            <a href={`mailto:${siteSettings?.email ?? site.contact.email}`} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors break-all">{siteSettings?.email ?? site.contact.email}</a>
+            <a href={`mailto:${settings.email}`} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors break-all">{settings.email}</a>
           </li>
           <li class="flex items-start gap-s">
             <Clock size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
-            <span>Office hours: {siteSettings?.officeHours ?? site.contact.officeHours}</span>
+            <span>Office hours: {settings.officeHours}</span>
           </li>
         </ul>
 
@@ -135,12 +140,12 @@ const reasons = page?.contactReasons?.length ? page.contactReasons : FALLBACK_RE
         <p class="mt-m text-lg text-foreground/85 leading-relaxed">{page.formIntroNote}</p>
       )}
       <div class="mt-l">
-        <FormBlock form={page?.contactForm} fallbackEmail={site.contact.email} fallbackLabel="Email the Office" />
+        <FormBlock form={page?.contactForm} fallbackEmail={settings.email} fallbackLabel="Email the Office" />
       </div>
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "Come and See"}

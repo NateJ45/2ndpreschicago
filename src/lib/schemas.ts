@@ -9,28 +9,9 @@
 
 import { site } from '@/data/site';
 import { serviceTime } from './serviceTime';
+import { resolveSiteSettings, type RawSiteSettings } from './siteSettings';
 
 // ---------- Types (loose — Sanity provides the actual document shapes) ----
-
-interface SiteSettings {
-  title?: string;
-  email?: string;
-  phone?: string;
-  /** Street line, e.g. "1936 South Michigan Ave" — set in Sanity siteSettings, falls back to site.ts */
-  addressLine?: string;
-  serviceAreas?: string[];
-  socialInstagram?: string;
-  socialFacebook?: string;
-  worshipService?: { time?: string; day?: string; startTime24?: string; endTime24?: string };
-  /** Studio city name — set in Sanity siteSettings or update the default in schemas.ts */
-  city?: string;
-  /** Studio region/state abbreviation */
-  region?: string;
-  /** Studio latitude — update to your studio's coordinates */
-  lat?: number;
-  /** Studio longitude — update to your studio's coordinates */
-  lon?: number;
-}
 
 interface Service {
   name?: string;
@@ -51,21 +32,24 @@ interface Breadcrumb {
 
 // ---------- LocalBusiness (site-wide, BaseLayout injects on every page) ----
 
-export function churchSchema(settings: SiteSettings | null | undefined): string {
-  const s = settings ?? {};
+export function churchSchema(settings: RawSiteSettings | null | undefined): string {
+  // Resolve through the shared helper so the JSON-LD identity matches what the
+  // header and footer render. (This previously hardcoded the YouTube URL and
+  // read email/phone/address from site.ts, so Sanity edits never reached it.)
+  const s = resolveSiteSettings(settings);
   const st = serviceTime(s.worshipService);
   const schema: Record<string, any> = {
     '@context': 'https://schema.org',
     '@type': 'Church',
     '@id': `${site.url}/#church`,
-    name: s.title ?? site.name,
+    name: s.brandName,
     url: site.url,
     image: `${site.url}${site.assets.ogDefault}`,
-    email: s.email ?? site.contact.email,
-    telephone: s.phone ?? site.contact.phone,
+    email: s.email,
+    telephone: s.phone,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: s.addressLine ?? site.contact.addressLine,
+      streetAddress: s.addressLine,
       addressLocality: 'Chicago',
       addressRegion: 'IL',
       postalCode: '60616',
@@ -85,9 +69,9 @@ export function churchSchema(settings: SiteSettings | null | undefined): string 
       closes: st.closes,
     },
     sameAs: [
-      s.socialInstagram ?? site.social.instagram,
-      s.socialFacebook ?? site.social.facebook,
-      site.social.youtube,
+      s.social.instagram,
+      s.social.facebook,
+      s.social.youtube,
     ].filter(Boolean),
   };
   return JSON.stringify(schema);

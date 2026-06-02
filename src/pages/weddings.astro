@@ -7,6 +7,7 @@ import { getWeddingsPage, getSiteSettings } from '@/lib/queries';
 import heroWeddings from '@/assets/hero-weddings.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FormBlock from '@/components/FormBlock.astro';
@@ -15,6 +16,7 @@ import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getWeddingsPage().catch(() => null);
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `Weddings · ${site.name}`;
 const description =
@@ -113,12 +115,12 @@ const pricing = page?.weddingPricing?.length ? page.weddingPricing : FALLBACK_PR
         {page?.inquireIntro ?? 'Tell us a little about your day and we will be in touch to check availability and answer your questions.'}
       </p>
       <div class="mt-l">
-        <FormBlock form={page?.inquiryForm} fallbackEmail={site.contact.email} fallbackLabel="Inquire About Your Date" />
+        <FormBlock form={page?.inquiryForm} fallbackEmail={settings.email} fallbackLabel="Inquire About Your Date" />
       </div>
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "Say Hello"}

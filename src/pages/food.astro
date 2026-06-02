@@ -7,12 +7,14 @@ import { getPageHero, getSiteSettings } from '@/lib/queries';
 import heroFood from '@/assets/hero-food.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('foodPage').catch(() => null);
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `Food Ministry · ${site.name}`;
 const description =
@@ -70,7 +72,7 @@ const pillPrimary =
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "Lend a Hand"}

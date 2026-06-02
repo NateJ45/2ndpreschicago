@@ -7,6 +7,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getAboutPage, getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
@@ -20,6 +21,7 @@ const [page, siteSettings] = await Promise.all([
   getAboutPage().catch(() => null),
   getSiteSettings().catch(() => null),
 ]);
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `About · ${site.name}`;
 const description =
@@ -147,7 +149,7 @@ const pillOutline =
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "Come and See"}

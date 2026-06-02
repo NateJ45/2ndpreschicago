@@ -7,12 +7,15 @@ import { getPageHero, getSiteSettings } from '@/lib/queries';
 import heroGive from '@/assets/mural-angels.jpg';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('givePage').catch(() => null);
+
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `Give · ${site.name}`;
 const description =
@@ -72,7 +75,7 @@ const pillPrimary =
           <p class="mt-s text-foreground/85 leading-relaxed">
             {page?.mailBodyP1 ?? 'Prefer to send a check? Make it out to Second Presbyterian Church of Chicago and mail it to:'}
           </p>
-          <p class="mt-s text-foreground/80">{site.name}<br />{siteSettings?.addressLine ?? site.contact.addressLine}<br />{siteSettings?.cityStateZip ?? site.contact.cityStateZip}</p>
+          <p class="mt-s text-foreground/80">{site.name}<br />{settings.addressLine}<br />{settings.cityStateZip}</p>
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
           <h3 class="font-display text-h4 text-foreground">{page?.foodHeadline ?? 'Support the food ministry'}</h3>
@@ -85,7 +88,7 @@ const pillPrimary =
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "With Gratitude"}

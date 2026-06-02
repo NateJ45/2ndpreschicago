@@ -7,12 +7,14 @@ import { getServePage, getSiteSettings } from '@/lib/queries';
 import heroServe from '@/assets/hero-exterior.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import Hero from '@/components/Hero.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getServePage().catch(() => null);
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `Serve · ${site.name}`;
 const description =
@@ -62,7 +64,7 @@ const ways = page?.ways?.length ? page.ways : FALLBACK_WAYS;
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.serveCtaEyebrow ?? 'Lend a Hand'}

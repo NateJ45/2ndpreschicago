@@ -8,6 +8,7 @@ import { getPageBySlug, getAllPageSlugs, getSiteSettings } from '@/lib/queries';
 import Hero from '@/components/Hero.astro';
 import Sections from '@/components/Sections.astro';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import heroFallback from '@/assets/hero-sanctuary.webp';
 
 export async function getStaticPaths() {
@@ -29,6 +30,7 @@ const [page, siteSettings] = await Promise.all([
   getPageBySlug(slug!).catch(() => null),
   getSiteSettings().catch(() => null),
 ]);
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? page?.title ?? site.name;
 const description = page?.seoDescription ?? '';
@@ -45,5 +47,5 @@ const description = page?.seoDescription ?? '';
     headingId="page-hero"
     size="short"
   />
-  <Sections sections={page?.sections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.sections} fallbackEmail={settings.email} />
 </BaseLayout>

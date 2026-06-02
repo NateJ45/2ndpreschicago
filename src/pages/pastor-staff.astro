@@ -11,6 +11,7 @@ import { getPageHero, getSiteSettings, getStaffMembers } from '@/lib/queries';
 import heroStaff from '@/assets/hero-staff.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SanityImage from '@/components/SanityImage.astro';
@@ -25,6 +26,9 @@ import ashleyPhoto from '@/assets/ashley-mclean.webp';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('staffPage').catch(() => null);
+
+// Pastoral + office emails come from Sanity siteSettings via the resolver.
+const settings = resolveSiteSettings(siteSettings);
 
 // Staff render from the Sanity staffMember collection when present; otherwise
 // the hardcoded bios below remain as the built-in fallback (so the page is
@@ -47,7 +51,7 @@ const staff = [
   {
     name: 'Rev. Chesna Hinkley',
     role: 'Interim Pastor',
-    email: site.contact.pastorEmail,
+    email: settings.pastorEmail,
     photo: chesnaPhoto,
     bio: [
       `The Rev. Chesna Hinkley has been Interim Pastor at Second since the fall of 2024. She holds degrees from Princeton Theological Seminary and the University of Pittsburgh, where she concentrated in neuroscience, and she is pursuing a Doctor of Ministry in Reformed Theology at Pittsburgh Theological Seminary.`,
@@ -86,7 +90,7 @@ const staff = [
   {
     name: 'Ashley McLean',
     role: 'Office Administrator',
-    email: site.contact.email,
+    email: settings.email,
     photo: ashleyPhoto,
     bio: [
       `Ashley McLean is the Office Administrator at Second. She has a background in communications, graphic arts, and office management.`,
@@ -194,7 +198,7 @@ const people = useSanityStaff
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "Come and See"}

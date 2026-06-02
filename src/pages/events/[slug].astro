@@ -8,6 +8,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getAllEventSlugs, getEventBySlug, getEventsPage, getSiteSettings } from '@/lib/queries';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import SanityImage from '@/components/SanityImage.astro';
 import PortableText from '@/components/PortableText';
 import FinalCta from '@/components/FinalCta.astro';
@@ -23,6 +24,8 @@ const [event, siteSettings, eventsPage] = await Promise.all([
   getSiteSettings().catch(() => null),
   getEventsPage().catch(() => null),
 ]);
+
+const settings = resolveSiteSettings(siteSettings);
 
 if (!event) {
   return Astro.redirect('/404');
@@ -67,7 +70,7 @@ if (event.start) {
         name: event.location ?? site.name,
         address: {
           '@type': 'PostalAddress',
-          streetAddress: site.contact.addressLine,
+          streetAddress: settings.addressLine,
           addressLocality: 'Chicago',
           addressRegion: 'IL',
           postalCode: '60616',

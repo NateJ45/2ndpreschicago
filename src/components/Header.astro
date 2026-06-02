@@ -14,7 +14,7 @@
 // siteSettings is optional. Defaults render cleanly so the header works
 // even before Sanity content is wired up.
 
-import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import { IconBrandInstagram, IconBrandFacebook } from '@tabler/icons-react';
 import { ChevronDown } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
@@ -53,25 +53,30 @@ interface Props {
 
 const { siteSettings } = Astro.props as Props;
 
-const brandName = siteSettings?.siteName ?? siteSettings?.title ?? site.name;
+// Identity / contact / social values resolve through one shared helper (see
+// src/lib/siteSettings.ts) so the header, footer, pages, and JSON-LD stay in
+// lockstep. An empty Sanity field renders blank instead of being masked by a
+// hardcoded default.
+const settings = resolveSiteSettings(siteSettings);
+
+const brandName = settings.brandName;
 
 // Utility-bar content. Service time + address read top-left; Watch + Give read
-// top-right. Values come from siteSettings when wired, else the church's real
-// details so the bar always reads as a real front door.
-const serviceTimes = serviceTime(siteSettings?.worshipService).line;
-const addressShort = siteSettings?.addressLine ?? site.contact.addressLine; // "1936 South Michigan Ave"
-const giveHref = siteSettings?.giveUrl ?? '/give';
-const watchHref = siteSettings?.watchUrl ?? '/sermons';
+// top-right.
+const serviceTimes = serviceTime(settings.worshipService).line;
+const addressShort = settings.addressLine; // "1936 South Michigan Ave"
+const giveHref = settings.giveHref;
+const watchHref = settings.watchHref;
 
-const ig = siteSettings?.socialInstagram ?? site.social.instagram;
-const fb = siteSettings?.socialFacebook ?? site.social.facebook;
+const ig = settings.social.instagram;
+const fb = settings.social.facebook;
 
 // Subset of siteSettings the mobile menu needs. Pass as a plain object so the
 // React island doesn't try to serialize the whole Sanity document graph.
 const mobileNavSettings = {
-  tagline: siteSettings?.tagline ?? 'Serving and celebrating Jesus for the good of the world.',
-  email: siteSettings?.email ?? site.contact.email,
-  phone: siteSettings?.phone ?? site.contact.phone,
+  tagline: settings.tagline,
+  email: settings.email,
+  phone: settings.phone,
   socialInstagram: ig,
   socialFacebook: fb,
 };

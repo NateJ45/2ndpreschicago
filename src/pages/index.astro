@@ -22,6 +22,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import { getHomePage, getSiteSettings, getFeaturedMinistries } from '@/lib/queries';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import { serviceTime } from '@/lib/serviceTime';
 import SectionHeading from '@/components/SectionHeading.astro';
 import SanityImage from '@/components/SanityImage.astro';
@@ -37,12 +38,15 @@ const [page, siteSettings, featuredMinistries] = await Promise.all([
   getFeaturedMinistries().catch(() => []),
 ]);
 
+// Resolve identity / contact / social once for the whole page (src/lib/siteSettings.ts).
+const settings = resolveSiteSettings(siteSettings);
+
 const title = page?.seoTitle ?? site.name;
 const description =
   page?.seoDescription ??
   'A historic, welcoming Presbyterian church in Chicago\'s South Loop. Join us for worship this Sunday. Whoever you are, you are welcome here.';
 
-const youtube = site.social.youtube;
+const youtube = settings.social.youtube;
 
 // Editor-managed hero photo when set in the Home singleton, else the built-in
 // sanctuary photo. Rendered inside the arched frame below.
@@ -147,8 +151,8 @@ const ministryCards =
 // singleton (homePage.serviceBand); these defaults render when a field is
 // empty, so the band is unchanged until an editor overrides it. The "Where"
 // address is editable in Sanity (siteSettings), falling back to site.ts.
-const addressLine = siteSettings?.addressLine ?? site.contact.addressLine;
-const cityStateZip = siteSettings?.cityStateZip ?? site.contact.cityStateZip;
+const addressLine = settings.addressLine;
+const cityStateZip = settings.cityStateZip;
 // Service time derives from the single canonical source (siteSettings.worshipService).
 const st = serviceTime(siteSettings?.worshipService);
 const sb: any = page?.serviceBand ?? null;
@@ -416,7 +420,7 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
   </section>
 
   {/* Editor-added sections (page builder) */}
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   {/* ===== 8. Welcoming close (Chapel-green) =============================== */}
   <FinalCta

@@ -8,6 +8,7 @@ import { getPageHero, getSiteSettings } from '@/lib/queries';
 import heroMusic from '@/assets/hero-music.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
@@ -18,6 +19,7 @@ import muralAngels from '@/assets/mural-angels.jpg';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('musicPage').catch(() => null);
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `Music · ${site.name}`;
 const description =
@@ -113,7 +115,7 @@ const schemas = [
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "Come and Hear"}

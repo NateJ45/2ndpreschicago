@@ -11,23 +11,12 @@ export const site = {
   storageKeyPrefix: "secondpres",
   themeStorageKey: "secondpres-theme",
 
-  // Public contact details. Mirrored into Sanity siteSettings by the seed script;
-  // used as fallbacks so the live site shows real contact info before Sanity is wired.
-  contact: {
-    email: "office@secondpreschicago.org",
-    pastorEmail: "pastorchesna@secondpreschicago.org",
-    phone: "312-225-4951",
-    addressLine: "1936 South Michigan Ave",
-    cityStateZip: "Chicago, IL 60616",
-    officeHours: "Tuesday-Friday, 10am-2pm",
-  },
-
-  // Social profiles.
-  social: {
-    instagram: "https://www.instagram.com/2ndpresbyterian",
-    facebook: "https://www.facebook.com/2ndpreschicago",
-    youtube: "https://www.youtube.com/@secondpreschicago",
-  },
+  // NOTE: contact details (email, pastoral email, phone, address, office hours)
+  // and social profile URLs used to live here as hardcoded fallbacks. They were
+  // removed: those values now live ONLY in Sanity siteSettings and are read
+  // through src/lib/siteSettings.ts (resolveSiteSettings). Keeping a second,
+  // hardcoded copy here is exactly what let an empty or changed Sanity field get
+  // silently masked on the live site, so there is no longer a copy to drift from.
 
   // Brand colors are also declared in src/styles/globals.css.
   // Mirrored here for any script that needs them outside CSS (OG generator, structured data, etc.).

@@ -13,6 +13,7 @@ import { getFaqPage, getSiteSettings } from '@/lib/queries';
 import heroFaq from '@/assets/sanctuary-interior.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import Hero from '@/components/Hero.astro';
 import PortableText from '@/components/PortableText';
 import FinalCta from '@/components/FinalCta.astro';
@@ -22,6 +23,7 @@ const [siteSettings, page] = await Promise.all([
   getSiteSettings().catch(() => null),
   getFaqPage().catch(() => null),
 ]);
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `Frequently Asked Questions · ${site.name}`;
 const description =
@@ -133,7 +135,7 @@ const schemas = [
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "Still Wondering?"}

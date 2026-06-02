@@ -9,6 +9,7 @@ import { getBeliefsPage, getSiteSettings } from '@/lib/queries';
 import heroBeliefs from '@/assets/tiffany-windows.webp';
 import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
+import { resolveSiteSettings } from '@/lib/siteSettings';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
@@ -16,6 +17,7 @@ import Sections from '@/components/Sections.astro';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getBeliefsPage().catch(() => null);
+const settings = resolveSiteSettings(siteSettings);
 
 const title = page?.seoTitle ?? `What We Believe · ${site.name}`;
 const description =
@@ -197,7 +199,7 @@ const resources = page?.resources?.length ? page.resources : FALLBACK_RESOURCES;
     </div>
   </section>
 
-  <Sections sections={page?.flexibleSections} fallbackEmail={site.contact.email} />
+  <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? 'Come and See'}
