@@ -1774,8 +1774,6 @@ export type WorshipPage = {
   >;
   finalCta?: CtaBlock;
   gatherEyebrow?: string;
-  gatherTime?: string;
-  gatherDay?: string;
   serviceBodyP1?: string;
   serviceBodyP2?: string;
   planEyebrow?: string;
@@ -1991,7 +1989,12 @@ export type SiteSettings = {
     _type: "footerColumn";
     _key: string;
   }>;
-  serviceTimes?: string;
+  worshipService?: {
+    time?: string;
+    day?: string;
+    startTime24?: string;
+    endTime24?: string;
+  };
   watchUrl?: string;
   giveUrl?: string;
   appUrl?: string;
@@ -2952,7 +2955,6 @@ export type HomePage = {
   };
   serviceBand?: {
     worshipLabel?: string;
-    worshipTime?: string;
     joinLabel?: string;
     joinNote?: string;
     whereLabel?: string;

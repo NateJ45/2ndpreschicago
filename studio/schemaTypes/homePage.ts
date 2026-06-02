@@ -248,7 +248,8 @@ export const homePage = defineType({
         'The green "when and where" band under the hero. Leave any field empty to use the built-in default wording. The "Where" address comes from Site Settings and is not edited here.',
       fields: [
         defineField({ name: 'worshipLabel', title: 'Worship label', type: 'string', description: 'Example: "Sunday Worship".' }),
-        defineField({ name: 'worshipTime', title: 'Worship time (large)', type: 'string', description: 'Example: "11am, every Sunday".' }),
+        // worshipTime removed: the service time now derives from the single
+        // canonical "Worship service time" setting (siteSettings.worshipService).
         defineField({ name: 'joinLabel', title: 'How-to-join label', type: 'string', description: 'Example: "How to join".' }),
         defineField({ name: 'joinNote', title: 'How-to-join note', type: 'text', rows: 2, description: 'Example: "In person and online. Communion the first Sunday of each month."' }),
         defineField({ name: 'whereLabel', title: 'Where label', type: 'string', description: 'Example: "Where". The address itself comes from Site Settings.' }),

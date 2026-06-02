@@ -8,6 +8,7 @@
 // https://search.google.com/test/rich-results
 
 import { site } from '@/data/site';
+import { serviceTime } from './serviceTime';
 
 // ---------- Types (loose — Sanity provides the actual document shapes) ----
 
@@ -20,6 +21,7 @@ interface SiteSettings {
   serviceAreas?: string[];
   socialInstagram?: string;
   socialFacebook?: string;
+  worshipService?: { time?: string; day?: string; startTime24?: string; endTime24?: string };
   /** Studio city name — set in Sanity siteSettings or update the default in schemas.ts */
   city?: string;
   /** Studio region/state abbreviation */
@@ -51,6 +53,7 @@ interface Breadcrumb {
 
 export function churchSchema(settings: SiteSettings | null | undefined): string {
   const s = settings ?? {};
+  const st = serviceTime(s.worshipService);
   const schema: Record<string, any> = {
     '@context': 'https://schema.org',
     '@type': 'Church',
@@ -77,9 +80,9 @@ export function churchSchema(settings: SiteSettings | null | undefined): string 
     // Sunday worship service.
     openingHoursSpecification: {
       '@type': 'OpeningHoursSpecification',
-      dayOfWeek: 'Sunday',
-      opens: '11:00',
-      closes: '12:15',
+      dayOfWeek: st.day,
+      opens: st.opens,
+      closes: st.closes,
     },
     sameAs: [
       s.socialInstagram ?? site.social.instagram,

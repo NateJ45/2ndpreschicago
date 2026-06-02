@@ -254,13 +254,26 @@ export const siteSettings = defineType({
     }),
 
     // ── Worship times ─────────────────────────────────────────────────────────
+    // SINGLE SOURCE OF TRUTH for the service time. Every structured place that
+    // shows it (header bar, footer, home service band, worship "when we gather",
+    // the "This Sunday" line) and the Google/JSON-LD opening hours derive from
+    // these values via src/lib/serviceTime.ts. Change the time here once and it
+    // updates everywhere. Prose sentences elsewhere are kept time-agnostic on
+    // purpose, so the time never has to be repeated.
     defineField({
-      name: 'serviceTimes',
-      title: 'Service time line',
-      type: 'string',
-      description: 'Shown in the header utility bar and home service band. Example: "Sundays at 11am".',
-      initialValue: 'Sundays at 11am',
+      name: 'worshipService',
+      title: 'Worship service time',
+      type: 'object',
       group: 'worship',
+      description:
+        'The one place to set your Sunday service time. It updates the header, footer, home page, worship page, and your Google listing automatically. Leave a field blank to use the built-in default.',
+      options: { collapsible: false },
+      fields: [
+        defineField({ name: 'time', title: 'Time', type: 'string', description: 'How the time reads on the site. Example: "11am".' }),
+        defineField({ name: 'day', title: 'Day', type: 'string', description: 'The day of the week, singular. Example: "Sunday". The site adds "s" or "every" where needed.' }),
+        defineField({ name: 'startTime24', title: 'Start time, 24-hour (for search engines)', type: 'string', description: 'Used in the data Google reads. 24-hour clock. Example: "11:00".' }),
+        defineField({ name: 'endTime24', title: 'End time, 24-hour (for search engines)', type: 'string', description: 'Used in the data Google reads. 24-hour clock. Example: "12:15".' }),
+      ],
     }),
 
     // ── Connect & integrations ────────────────────────────────────────────────

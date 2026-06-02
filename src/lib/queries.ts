@@ -62,7 +62,7 @@ export async function getSiteSettings() {
     favicon${IMAGE_PROJECTION},
     addressLine,
     cityStateZip,
-    serviceTimes,
+    worshipService,
     watchUrl,
     giveUrl,
     appUrl,

@@ -15,10 +15,13 @@ import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 import SanityImage from '@/components/SanityImage.astro';
 import tiffanyWindows from '@/assets/tiffany-windows.webp';
+import { serviceTime } from '@/lib/serviceTime';
 
 const siteSettings = await getSiteSettings().catch(() => null);
 const page = await getPageHero('worshipPage').catch(() => null);
 const worshipResources = await getWorshipResources(6).catch(() => []);
+// Service time derives from the single canonical source (siteSettings.worshipService).
+const st = serviceTime(siteSettings?.worshipService);
 
 const fmtDate = (d: string) =>
   d ? new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
@@ -26,7 +29,7 @@ const fmtDate = (d: string) =>
 const title = page?.seoTitle ?? `Worship · ${site.name}`;
 const description =
   page?.seoDescription ??
-  'Join us for worship Sundays at 11am. A traditional, liturgical service with communion on the first Sunday of each month. Whoever you are, you are welcome here.';
+  'Join us for worship this Sunday. A traditional, liturgical service with communion on the first Sunday of each month. Whoever you are, you are welcome here.';
 
 const schemas = [
   breadcrumbSchema([
@@ -59,8 +62,8 @@ const pillOutline =
       <div>
         <p class="text-xs uppercase tracking-eyebrow text-foreground/80">{page?.gatherEyebrow ?? 'When we gather'}</p>
         <div class="mt-s mb-m h-px w-12 bg-primary/60" aria-hidden="true"></div>
-        <p class="font-display text-h1 text-foreground leading-none">{page?.gatherTime ?? '11am'}</p>
-        <p class="mt-s text-lg text-foreground/85">{page?.gatherDay ?? 'Every Sunday morning'}</p>
+        <p class="font-display text-h1 text-foreground leading-none">{st.gatherTime}</p>
+        <p class="mt-s text-lg text-foreground/85">{st.gatherDay}</p>
         <p class="mt-m text-foreground/80">{siteSettings?.addressLine ?? site.contact.addressLine}<br />{siteSettings?.cityStateZip ?? site.contact.cityStateZip}</p>
         <div class="mt-l flex flex-wrap gap-s">
           <a href={page?.gatherDirectionsCta?.externalUrl || '/contact'} class={pillPrimary}>{page?.gatherDirectionsCta?.label || 'Get Directions'}</a>

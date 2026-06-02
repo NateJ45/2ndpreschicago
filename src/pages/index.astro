@@ -22,6 +22,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import { getHomePage, getSiteSettings, getFeaturedMinistries } from '@/lib/queries';
 import { site } from '@/data/site';
+import { serviceTime } from '@/lib/serviceTime';
 import SectionHeading from '@/components/SectionHeading.astro';
 import SanityImage from '@/components/SanityImage.astro';
 import ArchMedia from '@/components/ArchMedia.astro';
@@ -39,7 +40,7 @@ const [page, siteSettings, featuredMinistries] = await Promise.all([
 const title = page?.seoTitle ?? site.name;
 const description =
   page?.seoDescription ??
-  'A historic, welcoming Presbyterian church in Chicago\'s South Loop. Join us for worship Sundays at 11am. Whoever you are, you are welcome here.';
+  'A historic, welcoming Presbyterian church in Chicago\'s South Loop. Join us for worship this Sunday. Whoever you are, you are welcome here.';
 
 const youtube = site.social.youtube;
 
@@ -148,10 +149,12 @@ const ministryCards =
 // address is editable in Sanity (siteSettings), falling back to site.ts.
 const addressLine = siteSettings?.addressLine ?? site.contact.addressLine;
 const cityStateZip = siteSettings?.cityStateZip ?? site.contact.cityStateZip;
+// Service time derives from the single canonical source (siteSettings.worshipService).
+const st = serviceTime(siteSettings?.worshipService);
 const sb: any = page?.serviceBand ?? null;
 const serviceBand = {
   worshipLabel: sb?.worshipLabel ?? 'Sunday Worship',
-  worshipTime: sb?.worshipTime ?? '11am, every Sunday',
+  worshipTime: st.bandTime,
   joinLabel: sb?.joinLabel ?? 'How to join',
   joinNote: sb?.joinNote ?? 'In person and online. Communion the first Sunday of each month.',
   whereLabel: sb?.whereLabel ?? 'Where',
@@ -205,7 +208,7 @@ const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBAC
           </div>
         ) : (
           <p class="mt-m text-sm text-foreground/60">
-            This Sunday: <span class="font-semibold text-foreground/80">11am</span>, in person and online.
+            This Sunday: <span class="font-semibold text-foreground/80">{st.thisSunday}</span>, in person and online.
           </p>
         )}
       </div>

@@ -25,6 +25,7 @@ import { IconBrandInstagram, IconBrandFacebook, IconBrandYoutube } from '@tabler
 import { Phone, MapPin, Mail, Clock } from 'lucide-react';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import { telHref } from '@/lib/phone';
+import { serviceTime } from '@/lib/serviceTime';
 
 interface NewsletterConfig {
   enabled?: boolean;
@@ -49,7 +50,7 @@ interface Props {
     socialYoutube?: string;
     tagline?: string;
     mission?: string;
-    serviceTimes?: string;
+    worshipService?: { time?: string; day?: string; startTime24?: string; endTime24?: string } | null;
     giveUrl?: string;
     appUrl?: string;
     directoryUrl?: string;
@@ -78,7 +79,7 @@ const fb = siteSettings?.socialFacebook ?? site.social.facebook;
 const yt = siteSettings?.socialYoutube ?? site.social.youtube;
 const tagline = siteSettings?.tagline ?? 'Serving and celebrating Jesus for the good of the world.';
 const mission = siteSettings?.mission ?? tagline;
-const serviceTimes = siteSettings?.serviceTimes ?? 'Sundays at 11am';
+const serviceTimes = serviceTime(siteSettings?.worshipService).line;
 const giveHref = siteSettings?.giveUrl ?? '/give';
 
 // Address: editable in Sanity, falling back to the church's real details in

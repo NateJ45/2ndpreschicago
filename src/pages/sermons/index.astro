@@ -75,7 +75,7 @@ function meta(s: any): string {
       <div class="mx-auto max-w-content px-m py-section-lg">
         {/* Watch live */}
         <div class="mb-section-md flex flex-wrap items-center justify-between gap-m">
-          <p class="text-foreground/80">Worship streams live on Sundays at 11am.</p>
+          <p class="text-foreground/80">Worship streams live every Sunday.</p>
           <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>{page?.watchLiveLabel ?? 'Watch Live'}</a>
         </div>
 
@@ -120,7 +120,7 @@ function meta(s: any): string {
       <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
         <SectionHeading eyebrow={page?.watchEyebrow ?? 'Watch online'} headline={page?.watchHeadline ?? 'Join us for worship, wherever you are'} headingId="sermons-watch" align="center" class="mx-auto" />
         <p class="mt-m text-lg text-foreground/85 leading-relaxed">
-          {page?.watchBody ?? 'We livestream Sunday worship and post recent messages on our YouTube channel. Watch the latest, or join us live on Sunday at 11am.'}
+          {page?.watchBody ?? 'We livestream Sunday worship and post recent messages on our YouTube channel. Watch the latest, or join us live on Sunday.'}
         </p>
         <div class="mt-l flex flex-wrap justify-center gap-s">
           <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>{page?.watchYoutubeLabel ?? 'Watch on YouTube'}</a>
@@ -135,7 +135,7 @@ function meta(s: any): string {
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
     headline={page?.finalCtaHeadline ?? "Worship with us in person"}
-    subhead={page?.finalCtaSubhead ?? "There is nothing like being in the room. Join us Sundays at 11am at the Church of the Angels."}
+    subhead={page?.finalCtaSubhead ?? "There is nothing like being in the room. Join us this Sunday at the Church of the Angels."}
     cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

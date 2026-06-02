@@ -138,8 +138,8 @@ export const worshipPage = definePageSingleton('worshipPage', "Worship (I'm New)
   groups: [{ name: 'content', title: 'Page copy' }],
   fields: [
     defineField({ name: 'gatherEyebrow', title: 'When we gather eyebrow', type: 'string', group: 'content' }),
-    defineField({ name: 'gatherTime', title: 'Service time (large)', type: 'string', group: 'content' }),
-    defineField({ name: 'gatherDay', title: 'Service day line', type: 'string', group: 'content' }),
+    // gatherTime + gatherDay removed: the service time now derives from the
+    // single canonical "Worship service time" setting (siteSettings.worshipService).
     defineField({ name: 'serviceBodyP1', title: 'Service paragraph 1', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'serviceBodyP2', title: 'Service paragraph 2', type: 'text', rows: 3, group: 'content' }),
     defineField({ name: 'planEyebrow', title: 'Plan-your-visit eyebrow', type: 'string', group: 'content' }),

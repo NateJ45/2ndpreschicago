@@ -19,6 +19,7 @@ import { IconBrandInstagram, IconBrandFacebook } from '@tabler/icons-react';
 import { ChevronDown } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import MobileNav from './MobileNav';
+import { serviceTime } from '@/lib/serviceTime';
 
 // The church brand is a text wordmark (Instrument Serif), not an image logo,
 // so there are no logo assets to pipe through getImage here.
@@ -35,7 +36,7 @@ interface Props {
     socialFacebook?: string;
     // Church utility-bar content. All optional with real fallbacks below, so
     // the bar is never empty before Sanity is wired.
-    serviceTimes?: string;   // e.g. "Sundays at 11am"
+    worshipService?: { time?: string; day?: string; startTime24?: string; endTime24?: string } | null; // single source for the service time
     giveUrl?: string;        // giving portal; falls back to the /give page
     watchUrl?: string;       // livestream; falls back to the /sermons page
     // Editor-managed top menu (Site Settings -> Navigation). Each entry is a
@@ -57,7 +58,7 @@ const brandName = siteSettings?.siteName ?? siteSettings?.title ?? site.name;
 // Utility-bar content. Service time + address read top-left; Watch + Give read
 // top-right. Values come from siteSettings when wired, else the church's real
 // details so the bar always reads as a real front door.
-const serviceTimes = siteSettings?.serviceTimes ?? 'Sundays at 11am';
+const serviceTimes = serviceTime(siteSettings?.worshipService).line;
 const addressShort = siteSettings?.addressLine ?? site.contact.addressLine; // "1936 South Michigan Ave"
 const giveHref = siteSettings?.giveUrl ?? '/give';
 const watchHref = siteSettings?.watchUrl ?? '/sermons';
