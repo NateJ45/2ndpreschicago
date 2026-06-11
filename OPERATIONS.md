@@ -221,6 +221,20 @@ The items below apply to any project built on this starter. Replace the angle-br
 
 ---
 
+## Audit Sanity content
+
+Before debugging any "content looks wrong" report, get ground truth on what the dataset actually holds:
+
+```bash
+node scripts/sanity-audit.mjs            # counts by type, missing docs, unpublished drafts
+node scripts/sanity-audit.mjs --fields   # + per-document empty/absent field diff
+node scripts/sanity-audit.mjs --doc siteSettings   # dump one document
+```
+
+Read-only, safe any time. Also exposed as the `/sanity-audit` slash command. The summary distinguishes the three states that get conflated in every content mystery: what's **published** (what a build sees), what's in **drafts** (what Studio shows an editor), and what's **live** (the last build's HTML).
+
+---
+
 ## Patch Sanity content programmatically
 
 For one-off content updates (backfilling new fields, fixing typos across many docs), write a script in `scripts/`. Pattern:
@@ -357,6 +371,7 @@ The PNGs land in `src/assets/` (NOT `public/`) so Astro's `<Image>` / `getImage(
 | TOC sidebar empty on a long-form post | No h2/h3/h4 in the body | Add headings in Sanity. `extractHeadings()` only sees those three levels. |
 | Playwright `fullPage` screenshot is mostly blank | `[data-reveal]` elements start at `opacity: 0` until the IntersectionObserver fires | `page.evaluate(() => document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('is-visible')))` before screenshot. |
 | Build fails on fresh clone with Sanity query errors | `PUBLIC_SANITY_PROJECT_ID` is not set | Expected — `sanityFetch` returns fallbacks when unconfigured. Set the env var to connect a real project. |
+| Studio shows a field empty but the live site shows a value (or vice versa) | Three different layers can disagree: the published doc (what builds read), a draft overlay (what Studio shows), and the last build's HTML (what visitors see). A stale Studio tab is a fourth suspect. | Run `node scripts/sanity-audit.mjs` — it prints drafts vs published. If published has the value: hard-refresh the Studio tab. If published is right but the site is wrong: trigger a rebuild (`/rebuild`). Never "fix" by re-typing content until you know which layer disagrees. |
 | Image optimizer path mismatch after adapter upgrade | `@astrojs/cloudflare` upgraded past `13.5.5` | Revert to exactly `13.5.5`. See CLAUDE.md gotcha #8. |
 | Featured section shows wrong item as the hero | Falling back to date-based default | Toggle `featured: true` on the item to pin. Sections sort `featured desc, publishedAt desc`. |
 
