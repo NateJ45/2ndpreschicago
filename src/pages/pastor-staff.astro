@@ -149,7 +149,7 @@ const people = useSanityStaff
         <article class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-l md:gap-section-md items-start border-b border-border-soft pb-section-md last:border-b-0 last:pb-0">
           <div class="md:sticky md:top-28">
             {/* Arched headshot — carries the building's arch motif onto the staff. */}
-            <div class="w-44 sm:w-52 aspect-[4/5] overflow-hidden arch-top-sm ring-1 ring-border bg-muted shadow-sm">
+            <div class="w-44 sm:w-52 aspect-[4/5] overflow-hidden arch-top-sm ring-1 ring-primary/40 dark:ring-[#C7A875]/40 bg-muted shadow-sm">
               {person.sanityPhoto ? (
                 <SanityImage
                   source={person.sanityPhoto}
@@ -169,7 +169,7 @@ const people = useSanityStaff
               )}
             </div>
             <h2 class="mt-l font-display text-h3 text-foreground">{person.name}</h2>
-            <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">{person.role}</p>
+            <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/80">{person.role}</p>
             {person.email && (
               <a href={`mailto:${person.email}`} class="mt-s inline-block text-sm text-link underline underline-offset-2 hover:text-primary-dark transition-colors break-all">
                 {person.email}
@@ -186,7 +186,7 @@ const people = useSanityStaff
               <dl class="mt-l grid grid-cols-1 gap-y-1 border-t border-border-soft pt-m text-sm text-foreground/70">
                 {person.favorites.map((f) => (
                   <div class="flex gap-2">
-                    <dt class="w-20 shrink-0 font-semibold uppercase tracking-eyebrow text-xs pt-0.5 text-foreground/60">{f.label}</dt>
+                    <dt class="w-20 shrink-0 font-semibold uppercase tracking-eyebrow text-xs pt-0.5 text-muted-foreground">{f.label}</dt>
                     <dd class="flex-1">{f.value}</dd>
                   </div>
                 ))}

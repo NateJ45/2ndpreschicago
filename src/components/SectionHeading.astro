@@ -69,11 +69,12 @@ const toneHeadline = tone === 'inverse' ? 'text-bg' : 'text-foreground';
 const toneEyebrow = tone === 'inverse' ? 'text-bg/75' : 'text-foreground/80';
 const toneSub = tone === 'inverse' ? 'text-bg/80' : 'text-foreground/80';
 
-// Bronze hairline accent beneath the eyebrow. Matches the brand-stripe
-// signature now repeating on every marketing card so section headings read
-// with the same editorial vocabulary. On inverse tone (dark FinalCta panel)
-// the hairline switches to lifted cream so it stays visible.
-const accentColor = tone === 'inverse' ? 'bg-bg/40' : 'bg-primary/60';
+// Gold hairline accent beneath the eyebrow — design-direction.md assigns
+// "rules" to liturgical gold, and the hand-built home sections + footer
+// already use it; the shared component now matches instead of bronze. On
+// inverse tone (dark panels, photo scrims) it lifts to the dark-gold value
+// so it stays visible (decorative, no contrast requirement).
+const accentColor = tone === 'inverse' ? 'bg-[#C7A875]/60' : 'bg-gold/70';
 const accentAlign = align === 'center' ? 'mx-auto' : '';
 ---
 
@@ -109,6 +110,6 @@ const accentAlign = align === 'center' ? 'mx-auto' : '';
     )
   )}
   {subhead && (
-    <p class:list={['mt-m text-lg', toneSub]}>{subhead}</p>
+    <p class:list={['mt-m text-lg text-pretty', toneSub]}>{subhead}</p>
   )}
 </div>

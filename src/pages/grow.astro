@@ -58,7 +58,7 @@ const groups = page?.groups?.length ? page.groups : FALLBACK_GROUPS;
       {groups.map((g) => (
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
           <h2 class="font-display text-h3 text-foreground">{g.name}</h2>
-          <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/70">{g.when} · {g.where}</p>
+          <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/80">{g.when} · {g.where}</p>
           <p class="mt-s text-foreground/85 leading-relaxed">{g.body}</p>
         </article>
       ))}

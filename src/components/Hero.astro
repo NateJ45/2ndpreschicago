@@ -293,7 +293,7 @@ const wrapperHeight =
           <p class="text-xs uppercase tracking-eyebrow text-bg/85">{eyebrow}</p>
         )}
         {eyebrow && (
-          <div class="mt-xs mb-m h-px w-12 bg-bg/40" aria-hidden="true"></div>
+          <div class="mt-xs mb-m h-px w-12 bg-[#C7A875]/60" aria-hidden="true"></div>
         )}
         <h1 id={headingId} class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-bg">
           {rotateEnabled ? (
@@ -311,7 +311,7 @@ const wrapperHeight =
           )}
         </h1>
         {subhead && (
-          <p class="mt-m max-w-2xl text-lg text-bg/90">
+          <p class="mt-m max-w-2xl text-lg text-pretty text-bg/90">
             {subheadParts.map((part) =>
               part.type === 'em'
                 ? <em class="italic font-display text-bg/95">{part.value}</em>

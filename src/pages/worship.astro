@@ -93,7 +93,7 @@ const pillOutline =
         align="center"
         class="mx-auto"
       />
-      <div class="mt-section-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-m" data-stagger-grid>
+      <div class="mt-l grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-m" data-stagger-grid>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
           <h3 class="font-display text-h4 text-foreground">{page?.planCard1Title ?? 'Getting here'}</h3>
           <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard1Body ?? 'We are at 1936 South Michigan Ave in the South Loop, close to public transit, with first-come, first-served free parking.'}</p>
@@ -166,7 +166,7 @@ const pillOutline =
             const href = r.fileUrl || r.externalUrl;
             return (
               <li class="card-lift rounded-md border border-border-soft bg-card p-l">
-                <p class="text-xs uppercase tracking-eyebrow text-foreground/70">
+                <p class="text-xs uppercase tracking-eyebrow text-foreground/80">
                   {r.type}{r.date ? ` · ${fmtDate(r.date)}` : ''}
                 </p>
                 <h3 class="mt-s font-display text-h4 text-foreground">{r.title}</h3>
@@ -195,7 +195,7 @@ const pillOutline =
       <blockquote class="font-display italic text-h3 text-foreground leading-snug">
         &ldquo;{page?.quoteText ?? 'We are called to an everlasting preoccupation with God.'}&rdquo;
       </blockquote>
-      <p class="mt-m text-xs uppercase tracking-eyebrow text-foreground/70">{page?.quoteAttribution ?? 'A.W. Tozer'}</p>
+      <p class="mt-m text-xs uppercase tracking-eyebrow text-foreground/80">{page?.quoteAttribution ?? 'A.W. Tozer'}</p>
     </div>
   </section>
 

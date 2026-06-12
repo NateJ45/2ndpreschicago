@@ -31,7 +31,7 @@ const animated = !!videoSrc || images.length >= 2;
       </div>
     )}
     <div class="mx-auto mt-l w-full max-w-md sm:max-w-lg">
-      <div class:list={['group arch-top overflow-hidden ring-1 ring-border shadow-sm aspect-[4/5] sm:aspect-[5/6]', animated ? 'relative' : 'img-zoom']}>
+      <div class:list={['group arch-top overflow-hidden ring-1 ring-primary/40 dark:ring-[#C7A875]/40 shadow-sm aspect-[4/5] sm:aspect-[5/6]', animated ? 'relative' : 'img-zoom']}>
         <ArchMedia
           images={images}
           videoSrc={videoSrc}

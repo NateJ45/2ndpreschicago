@@ -42,11 +42,11 @@ const archCls = block?.arched ? 'arch-top-sm' : 'rounded-md';
                 </div>
               )}
               {c.badge && (
-                <span class="inline-block mb-xs rounded-full bg-gold/15 text-gold px-2 py-0.5 text-[0.65rem] uppercase tracking-eyebrow font-semibold">
+                <span class="inline-block mb-xs rounded-full bg-gold/15 text-gold-ink px-2 py-0.5 text-[0.65rem] uppercase tracking-eyebrow font-semibold">
                   {c.badge}
                 </span>
               )}
-              {c.eyebrow && <p class="text-xs uppercase tracking-eyebrow text-foreground/60">{c.eyebrow}</p>}
+              {c.eyebrow && <p class="text-xs uppercase tracking-eyebrow text-muted-foreground">{c.eyebrow}</p>}
               <h3 class="font-display text-h4 text-foreground">{c.title}</h3>
               {c.body && <p class="mt-s text-foreground/80 leading-relaxed">{c.body}</p>}
               {c.ctaLabel && c.ctaUrl && (

@@ -27,7 +27,9 @@
   --color-tertiary:     #A89A86; /* Warm Stone — sparingly */
   --color-bg:           #ECE4DA; /* Paper — warm cream surface */
   --color-bg-soft:      #F6F3EC; /* Soft Paper — alternating surface */
-  --color-border-soft:  #DED6C8; /* Faint warm dividers */
+  /* border-soft is theme-aware (declared in the @theme inline map below, with
+     per-theme values in :root / .dark). It used to be a static #DED6C8 here,
+     which made every faint divider GLOW at ~12:1 on the dark page. */
   --color-white-pure:   #FFFFFF;
 
   /* Chapel accent — deep Tiffany-glass green drawn from the church's own
@@ -150,6 +152,15 @@
        headline span. (bg-chapel above is the static surface green; this ink
        token is the readable-on-either-background text variant.) */
     --color-chapel-ink: var(--chapel-ink);
+    /* Theme-aware gold for gold TEXT on theme-flipping surfaces (card badges,
+       step numerals). The static --color-gold above stays for decorative
+       hairlines/rules; as text it fails AA on cream (and on chapel green, where
+       the lifted #C7A875 literal is used instead since chapel never flips). */
+    --color-gold-ink: var(--gold-ink);
+    /* Theme-aware faint divider. Static #DED6C8 in light (pixel-identical to
+       the old token); a soft white veil in dark so hairlines recede instead of
+       glowing. Matches the .dark --border oklch idiom. */
+    --color-border-soft: var(--border-soft);
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -252,6 +263,8 @@
     --ring: #8A6A43;
     --link: #6B4F2E;                /* deep bronze on cream — verify AA */
     --chapel-ink: #1E423B;          /* deep Tiffany green keyword emphasis on cream (~9:1) */
+    --gold-ink: #7A5E33;            /* deepened gold as TEXT on cream (4.8:1, AA) */
+    --border-soft: #DED6C8;         /* faint warm divider (same value the old static token had) */
 
     /* Charts (kept neutral, not used at launch) */
     --chart-1: oklch(0.87 0 0);
@@ -282,9 +295,12 @@
 .dark {
     --background: #1C1813;
     --foreground: #ECE4DA;
-    --card: #262019;
+    /* Card sits one step ABOVE muted (#262019) so the bg -> muted -> card
+       ladder light mode has also exists in dark. They used to share one hex,
+       which collapsed cards on muted bands into a single flat slab. */
+    --card: #2A231B;
     --card-foreground: #ECE4DA;
-    --popover: #262019;
+    --popover: #2A231B;
     --popover-foreground: #ECE4DA;
 
     --primary: #C7A875;
@@ -307,6 +323,8 @@
     --ring: #C7A875;
     --link: #D8BD8C;
     --chapel-ink: #6FA99A;          /* lifted Tiffany green keyword emphasis on dark */
+    --gold-ink: #C7A875;            /* lifted gold as TEXT on dark surfaces (AA) */
+    --border-soft: oklch(1 0 0 / 14%); /* hairlines recede in dark instead of glowing */
 
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
@@ -314,7 +332,7 @@
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0);
 
-    --sidebar: #262019;
+    --sidebar: #2A231B;
     --sidebar-foreground: #ECE4DA;
     --sidebar-primary: #C7A875;
     --sidebar-primary-foreground: #1C1813;
@@ -341,12 +359,31 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Visible keyboard focus everywhere. The shadcn-style `outline-ring/50`
+     reset above is too faint to spot (~1.6:1 on cream); this gives every
+     focusable element a solid 2px ring unless a component sets its own
+     focus-visible style in the utilities layer (CtaLink, nav summary), which
+     wins over @layer base. Cream ring on the static chapel-green surfaces,
+     where bronze would vanish. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .bg-chapel :focus-visible,
+  .bg-chapel-deep :focus-visible,
+  footer :focus-visible {
+    outline-color: var(--color-chapel-foreground);
+  }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     font-weight: 400;
     color: var(--color-accent);
     line-height: 1.1;
     letter-spacing: -0.01em;
+    /* Balance multi-line display type so headlines never strand one word on
+       the last line (the rag shifts with every Sanity copy edit otherwise).
+       Resolves at initial layout (no CLS); inert in older engines. */
+    text-wrap: balance;
   }
   .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
     color: var(--foreground);
@@ -518,6 +555,19 @@
   );
 }
 
+/* Chapel-green band with quiet depth — the structural-green sibling of
+   .surface-warm. A faint cream glow at the top plus a chapel -> chapel-deep
+   vertical fade so the green bands read as lit surfaces instead of flat
+   single-hex slabs. Chapel is static across themes, so one rule serves both;
+   contrast only improves toward the deeper base (cream on #16322C ~11.5:1).
+   Apply ALONGSIDE bg-chapel (which remains the fallback fill). */
+.surface-chapel {
+  background-color: var(--color-chapel);
+  background-image:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(241, 234, 217, 0.05), transparent 70%),
+    linear-gradient(to bottom, var(--color-chapel), var(--color-chapel-deep));
+}
+
 /* Tactile press on primary CTAs. Tap/click depresses ~1px so the press
    registers physically — common Apple-Material trick. */
 .press-tactile {
@@ -595,7 +645,12 @@
 .hero-entry-stagger > *:nth-child(2) { animation-delay: 120ms; }
 .hero-entry-stagger > *:nth-child(3) { animation-delay: 240ms; }
 .hero-entry-stagger > *:nth-child(4) { animation-delay: 360ms; }
-.hero-entry-stagger > *:nth-child(5) { animation-delay: 480ms; }
+/* n+5 (not just 5): the home hero has SIX direct children; a bare :nth-child(5)
+   left the sixth at 0ms delay, so the bottom line popped in BEFORE the
+   headline. Open-ended selector + an explicit 6th step keeps any future extra
+   child landing last instead of first. */
+.hero-entry-stagger > *:nth-child(n+5) { animation-delay: 480ms; }
+.hero-entry-stagger > *:nth-child(n+6) { animation-delay: 600ms; }
 @media (prefers-reduced-motion: reduce) {
   .hero-entry-stagger > * {
     opacity: 1 !important;
@@ -708,6 +763,17 @@
   letter-spacing: var(--tracking-eyebrow);
   color: var(--primary);
   margin-top: 0.5rem;
+}
+
+/* Dark-mode photo treatment. Untreated photos (bright daylight exteriors
+   especially) are the brightest thing on the dark page and fight the warm
+   near-black theme; a gentle dim + desaturate seats them. Scrimmed hero images
+   (.hero-slide, .hero-kb-img) are deliberately excluded — they already carry a
+   dark gradient. Filter composes fine with the transform-based zoom/Ken Burns. */
+.dark .arch-top img,
+.dark .arch-top-sm img,
+.dark .img-zoom img {
+  filter: brightness(0.9) saturate(0.95);
 }
 
 /* ---- Image zoom + warm tint hover treatment.

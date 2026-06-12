@@ -122,10 +122,10 @@ const resources = page?.resources?.length ? page.resources : FALLBACK_RESOURCES;
         <p class="font-display text-h3 leading-snug text-foreground/90">
           {page?.scriptureQuote ?? "“The Word became flesh and dwelt among us, and we have seen his glory, glory as of the only Son from the Father, full of grace and truth.”"}
         </p>
-        <cite class="mt-s block text-sm not-italic uppercase tracking-eyebrow text-foreground/60">{page?.scriptureCitation ?? 'John 1:14'}</cite>
+        <cite class="mt-s block text-sm not-italic uppercase tracking-eyebrow text-muted-foreground">{page?.scriptureCitation ?? 'John 1:14'}</cite>
       </blockquote>
 
-      <div class="mt-section-lg space-y-section-md">
+      <div class="mt-section-md space-y-section-md">
         {beliefs.map((item) => (
           <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-m md:gap-section-md items-start border-b border-border-soft pb-section-md last:border-b-0 last:pb-0">
             <h2 class="font-display text-h3 text-foreground md:sticky md:top-24">{item.q}</h2>
@@ -148,7 +148,7 @@ const resources = page?.resources?.length ? page.resources : FALLBACK_RESOURCES;
         align="center"
         class="mx-auto"
       />
-      <div class="mt-section-lg grid grid-cols-1 md:grid-cols-3 gap-l" data-stagger-grid>
+      <div class="mt-section-md grid grid-cols-1 md:grid-cols-3 gap-l" data-stagger-grid>
         {whereWeFit.map((b) => (
           <article class="card-lift rounded-md border border-border-soft bg-card p-l">
             <h3 class="font-display text-h3 text-foreground">{b.title}</h3>
@@ -169,7 +169,7 @@ const resources = page?.resources?.length ? page.resources : FALLBACK_RESOURCES;
         align="center"
         class="mx-auto"
       />
-      <div class="mt-section-lg grid grid-cols-1 md:grid-cols-3 gap-l" data-stagger-grid>
+      <div class="mt-section-md grid grid-cols-1 md:grid-cols-3 gap-l" data-stagger-grid>
         {whereWeGoing.map((v) => (
           <article class="card-lift rounded-md border border-border-soft bg-card p-l">
             <h3 class="font-display text-h4 text-foreground">{v.title}</h3>

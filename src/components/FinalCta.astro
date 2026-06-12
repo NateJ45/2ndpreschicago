@@ -80,7 +80,7 @@ const { found: scriptFound, before: scriptBefore, word: scriptWord, after: scrip
 ---
 
 <section
-  class:list={['bg-chapel text-bg', hasBackground && 'relative overflow-hidden']}
+  class:list={['bg-chapel surface-chapel text-chapel-foreground', hasBackground && 'relative overflow-hidden']}
   aria-labelledby={headingId}
 >
   {/* Optional background photo + fixed charcoal scrim. Rendered only when an
@@ -110,21 +110,21 @@ const { found: scriptFound, before: scriptBefore, word: scriptWord, after: scrip
 
   <div class:list={['mx-auto max-w-content px-m py-section-lg text-center', hasBackground && 'relative z-10']}>
     {eyebrow && (
-      <p class="text-xs uppercase tracking-[0.22em] text-bg/75">{eyebrow}</p>
+      <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/75">{eyebrow}</p>
     )}
-    {/* Cream hairline accent beneath the eyebrow that matches SectionHeading's
-        inverse-tone treatment so headings carry the same editorial signature
-        on both light and dark surfaces. */}
+    {/* Gold hairline accent beneath the eyebrow — the same liturgical-gold rule
+        the home sections and footer use, so the closing band carries the one
+        shared editorial signature instead of a one-off cream variant. */}
     {eyebrow && (
-      <div class="mt-s mb-m h-px w-12 bg-bg/40 mx-auto" aria-hidden="true"></div>
+      <div class="mt-s mb-m h-px w-12 bg-gold/70 mx-auto" aria-hidden="true"></div>
     )}
-    <h2 id={headingId} class="font-display text-h1 leading-tight text-bg">
+    <h2 id={headingId} class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-chapel-foreground">
       {scriptFound
         ? <>{scriptBefore}<span class="font-script">{scriptWord}</span>{scriptAfter}</>
         : headline}
     </h2>
     {subhead && (
-      <p class="mt-m text-lg text-bg/85 max-w-2xl mx-auto">{subhead}</p>
+      <p class="mt-m text-lg text-pretty text-chapel-foreground/85 max-w-2xl mx-auto">{subhead}</p>
     )}
     <div class="mt-l flex flex-wrap justify-center gap-s">
       <CtaLink

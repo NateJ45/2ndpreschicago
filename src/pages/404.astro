@@ -87,7 +87,7 @@ const caption = notFoundPage?.heroImage?.caption ?? 'Second Presbyterian Church 
     {/* Photo column. Stacks above the text on mobile (md:order-2 swaps it on
         desktop so the eye lands on text first, photo balances right). */}
     <figure class="order-first md:order-2">
-      <div class="arch-top overflow-hidden ring-1 ring-border shadow-sm aspect-[5/6]">
+      <div class="arch-top overflow-hidden ring-1 ring-primary/40 dark:ring-[#C7A875]/40 shadow-sm aspect-[5/6]">
         {sanityPhoto ? (
           <SanityImage
             source={sanityPhoto}

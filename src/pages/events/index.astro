@@ -84,7 +84,7 @@ function whenLabel(ev: any): string {
   {specialServices.length > 0 && (
     <section class="bg-chapel text-chapel-foreground" aria-labelledby="special-services">
       <div class="mx-auto max-w-content px-m py-section-lg">
-        <p class="text-xs uppercase tracking-eyebrow text-gold">{page?.specialEyebrow ?? 'Mark the season'}</p>
+        <p class="text-xs uppercase tracking-eyebrow text-[#C7A875]">{page?.specialEyebrow ?? 'Mark the season'}</p>
         <h2 id="special-services" class="mt-s font-display text-h2">{page?.specialHeadline ?? 'Special services'}</h2>
         <ul class="mt-l grid grid-cols-1 md:grid-cols-2 gap-m list-none p-0">
           {specialServices.map((ev: any) => (
@@ -94,9 +94,9 @@ function whenLabel(ev: any): string {
                 class="group block h-full rounded-md border border-chapel-foreground/20 bg-chapel-deep/40 p-l no-underline"
               >
                 {ev.liturgicalSeason && (
-                  <span class="text-xs uppercase tracking-eyebrow text-gold">{ev.liturgicalSeason}</span>
+                  <span class="text-xs uppercase tracking-eyebrow text-[#C7A875]">{ev.liturgicalSeason}</span>
                 )}
-                <h3 class="mt-xs font-display text-h4 group-hover:text-gold transition-colors">{ev.title}</h3>
+                <h3 class="mt-xs font-display text-h4 group-hover:text-[#C7A875] transition-colors">{ev.title}</h3>
                 <p class="mt-xs text-sm text-chapel-foreground/80">{whenLabel(ev)}</p>
                 {ev.summary && <p class="mt-s text-chapel-foreground/85 leading-relaxed">{ev.summary}</p>}
               </a>
@@ -118,7 +118,7 @@ function whenLabel(ev: any): string {
               <a href={`/events/${ev.slug?.current ?? ''}`} class="card-lift group block h-full rounded-md border border-border-soft bg-card p-l no-underline">
                 {ev.category && <span class="text-xs uppercase tracking-eyebrow text-link">{ev.category}</span>}
                 <h3 class="mt-xs font-display text-h4 text-foreground group-hover:text-link transition-colors">{ev.title}</h3>
-                <p class="mt-xs text-sm text-foreground/70">{whenLabel(ev)}</p>
+                <p class="mt-xs text-sm text-foreground/80">{whenLabel(ev)}</p>
                 {ev.summary && <p class="mt-s text-foreground/80 leading-relaxed">{ev.summary}</p>}
               </a>
             </li>
@@ -143,12 +143,12 @@ function whenLabel(ev: any): string {
             {ev.slug?.current ? (
               <a href={`/events/${ev.slug.current}`} class="group flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-xs no-underline">
                 <span class="font-display text-h4 text-foreground group-hover:text-link transition-colors">{ev.title}</span>
-                <span class="text-sm text-foreground/70 shrink-0">{whenLabel(ev)}</span>
+                <span class="text-sm text-foreground/80 shrink-0">{whenLabel(ev)}</span>
               </a>
             ) : (
               <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-xs">
                 <span class="font-display text-h4 text-foreground">{ev.title}</span>
-                <span class="text-sm text-foreground/70 shrink-0">{whenLabel(ev)}</span>
+                <span class="text-sm text-foreground/80 shrink-0">{whenLabel(ev)}</span>
               </div>
             )}
             {ev.summary && <p class="mt-xs text-foreground/75">{ev.summary}</p>}
