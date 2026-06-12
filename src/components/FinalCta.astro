@@ -12,6 +12,7 @@
 
 import CtaLink from '@/components/CtaLink.astro';
 import SanityImage from '@/components/SanityImage.astro';
+import ArchOrnament from '@/components/ArchOrnament.astro';
 import { splitScriptAccent } from '@/lib/scriptAccent';
 
 interface CtaBlock {
@@ -112,11 +113,12 @@ const { found: scriptFound, before: scriptBefore, word: scriptWord, after: scrip
     {eyebrow && (
       <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/75">{eyebrow}</p>
     )}
-    {/* Gold hairline accent beneath the eyebrow — the same liturgical-gold rule
-        the home sections and footer use, so the closing band carries the one
-        shared editorial signature instead of a one-off cream variant. */}
+    {/* Triple-arch ornament beneath the eyebrow. Section headings carry the
+        gold hairline; the page-closing band gets the arch mark instead, so the
+        close of every page ends on the building's own shape (the HPP
+        ornamental-divider pattern, in our architectural vocabulary). */}
     {eyebrow && (
-      <div class="mt-s mb-m h-px w-12 bg-gold/70 mx-auto" aria-hidden="true"></div>
+      <ArchOrnament class="mt-s mb-m mx-auto text-[#C7A875]/80" />
     )}
     <h2 id={headingId} class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-chapel-foreground">
       {scriptFound

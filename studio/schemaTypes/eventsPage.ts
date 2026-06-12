@@ -21,6 +21,13 @@ export const eventsPage = defineType({
     defineField({ name: 'heroHeadline', title: 'Hero headline', type: 'string' }),
     defineField({ name: 'heroSubhead', title: 'Hero subhead', type: 'text', rows: 2 }),
     defineField({
+      name: 'heroKeyword',
+      title: 'Hero keyword (gold emphasis)',
+      type: 'string',
+      description:
+        'One word or short phrase from the headline to set in liturgical gold. It must match the headline exactly, including capitals. Leave empty for a single-color headline.',
+    }),
+    defineField({
       name: 'heroImage',
       title: 'Hero image',
       type: 'image',

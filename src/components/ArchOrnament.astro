@@ -1,0 +1,34 @@
+---
+// Safe to edit by hand
+// ArchOrnament — a quiet triple-arch motif drawn from the sanctuary's
+// Romanesque arched windows (the same curve as the .arch-top image crown).
+// The church-specific equivalent of the ornamental divider Highland Park
+// Presbyterian uses (their stained-glass candle): a small, repeatable mark
+// that says "church" without words.
+//
+// Usage: <ArchOrnament class="mx-auto text-[#C7A875]/80" /> — the strokes use
+// currentColor, so set the color (usually a gold) via text-* on the class.
+// Decorative only: aria-hidden, never carries meaning. Use sparingly — the
+// closing CTA band and one reflective moment per page at most, so it stays
+// a signature instead of wallpaper.
+
+interface Props {
+  class?: string;
+}
+const { class: extraClass } = Astro.props;
+---
+
+<svg
+  class={extraClass}
+  width="72"
+  height="20"
+  viewBox="0 0 72 20"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+>
+  {/* Three arches, the center crown slightly taller — the nave elevation. */}
+  <path d="M2 20 V12 a10 10 0 0 1 20 0 V20" stroke="currentColor" stroke-width="1.5" />
+  <path d="M26 20 V10 a10 10 0 0 1 20 0 V20" stroke="currentColor" stroke-width="1.5" />
+  <path d="M50 20 V12 a10 10 0 0 1 20 0 V20" stroke="currentColor" stroke-width="1.5" />
+</svg>

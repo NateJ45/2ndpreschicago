@@ -696,6 +696,7 @@ export type GivePage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -853,6 +854,7 @@ export type WeddingsPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -957,6 +959,7 @@ export type UseOurSpacePage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -1048,6 +1051,7 @@ export type FoodPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -1139,6 +1143,7 @@ export type KidsPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -1227,6 +1232,7 @@ export type ServePage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -1318,6 +1324,7 @@ export type GrowPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -1409,6 +1416,7 @@ export type StaffPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -1492,6 +1500,7 @@ export type MusicPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -1595,6 +1604,7 @@ export type BeliefsPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -1712,6 +1722,7 @@ export type WorshipPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: {
@@ -2330,7 +2341,10 @@ export type SermonsPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   livestreamUrl?: string;
+  podcastAppleUrl?: string;
+  podcastSpotifyUrl?: string;
   watchLiveLabel?: string;
   watchYoutubeLabel?: string;
   emptyVisitCta?: CtaBlock;
@@ -2417,6 +2431,7 @@ export type EventsPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   heroImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -2511,6 +2526,7 @@ export type ContactPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   heroImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -2652,6 +2668,7 @@ export type FaqPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   heroImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -2747,6 +2764,7 @@ export type AboutPage = {
   heroEyebrow?: string;
   heroHeadline?: string;
   heroSubhead?: string;
+  heroKeyword?: string;
   heroImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;

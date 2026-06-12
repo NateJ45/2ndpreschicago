@@ -15,6 +15,7 @@ import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 import SanityImage from '@/components/SanityImage.astro';
+import ArchOrnament from '@/components/ArchOrnament.astro';
 import tiffanyWindows from '@/assets/tiffany-windows.webp';
 import { serviceTime } from '@/lib/serviceTime';
 
@@ -51,6 +52,7 @@ const pillOutline =
     eyebrow={page?.heroEyebrow ?? 'Sunday Worship'}
     headline={page?.heroHeadline ?? "There's a place for you here."}
     subhead={page?.heroSubhead ?? "Whether you're a weekly churchgoer, haven't been in ages, or don't know anything about Christianity, you are welcome at Second."}
+    keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroWorship}
     localImageAlt="The sanctuary of Second Presbyterian set for Sunday worship"
@@ -192,6 +194,9 @@ const pillOutline =
   {/* Quote */}
   <section class="bg-muted" aria-label="Reflection">
     <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
+      {/* The arch ornament marks the page's one reflective pause, mirroring the
+          closing-band treatment in FinalCta. Theme-aware gold via gold-ink. */}
+      <ArchOrnament class="mb-m mx-auto text-gold-ink/70" />
       <blockquote class="font-display italic text-h3 text-foreground leading-snug">
         &ldquo;{page?.quoteText ?? 'We are called to an everlasting preoccupation with God.'}&rdquo;
       </blockquote>

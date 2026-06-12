@@ -70,6 +70,15 @@ interface Props {
    * word; pick one effect per hero. If both are passed, rotatingWords wins.
    */
   scriptAccent?: string;
+  /**
+   * Optional single word/phrase in the headline to set in liturgical gold
+   * (the Highland Park "key word in a second color" device the home hero
+   * already uses on cream). On the image hero's dark scrim the keyword
+   * renders in lifted gold (#C7A875), which reads at well above 3:1 for
+   * display-size type. One flourish per hero: rotatingWords and scriptAccent
+   * both take precedence over the keyword if more than one is passed.
+   */
+  keyword?: string;
 }
 
 const {
@@ -86,6 +95,7 @@ const {
   size = 'short',
   rotatingWords,
   scriptAccent,
+  keyword,
 } = Astro.props as Props;
 
 // Split the headline into a first word + the rest, so the rotator can swap
@@ -109,6 +119,16 @@ const {
   word: scriptWord,
   after: scriptAfter,
 } = splitScriptAccent(rotateEnabled ? headline : headline, rotateEnabled ? undefined : scriptAccent);
+
+// Gold keyword emphasis: same split helper, lowest-precedence flourish. Only
+// fires when neither the rotator nor the script accent claimed the headline,
+// so a hero never stacks two treatments.
+const {
+  found: kwFound,
+  before: kwBefore,
+  word: kwWord,
+  after: kwAfter,
+} = splitScriptAccent(headline, rotateEnabled || scriptFound ? undefined : keyword);
 
 // Subhead emphasis: parse markdown-style _word_ markers into <em> spans so
 // editors can italicize a key word in the Sanity subhead without HTML.
@@ -305,6 +325,12 @@ const wrapperHeight =
           ) : scriptFound ? (
             <>
               {scriptBefore}<span class="font-script">{scriptWord}</span>{scriptAfter}
+            </>
+          ) : kwFound ? (
+            <>
+              {/* Lifted gold (the dark-surface gold value): display-size type on
+                  the dark photo scrim, comfortably past the 3:1 large-text bar. */}
+              {kwBefore}<span class="text-[#C7A875]">{kwWord}</span>{kwAfter}
             </>
           ) : (
             headline

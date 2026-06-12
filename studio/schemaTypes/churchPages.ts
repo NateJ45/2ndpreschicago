@@ -79,6 +79,14 @@ export function definePageSingleton(
         initialValue: defaults.heroSubhead,
       }),
       defineField({
+        name: 'heroKeyword',
+        title: 'Hero keyword (gold emphasis)',
+        type: 'string',
+        group: 'hero',
+        description:
+          'One word or short phrase from the headline to set in liturgical gold, like "place" in "There\'s a place for you here." It must match the headline exactly, including capitals. Leave empty for a single-color headline.',
+      }),
+      defineField({
         name: 'seoTitle',
         title: 'SEO title',
         type: 'string',

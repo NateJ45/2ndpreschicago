@@ -21,10 +21,32 @@ export const sermonsPage = defineType({
     defineField({ name: 'heroHeadline', title: 'Hero headline', type: 'string' }),
     defineField({ name: 'heroSubhead', title: 'Hero subhead', type: 'text', rows: 2 }),
     defineField({
+      name: 'heroKeyword',
+      title: 'Hero keyword (gold emphasis)',
+      type: 'string',
+      description:
+        'One word or short phrase from the headline to set in liturgical gold. It must match the headline exactly, including capitals. Leave empty for a single-color headline.',
+    }),
+    defineField({
       name: 'livestreamUrl',
       title: 'Livestream URL',
       type: 'url',
       description: 'Where Sunday worship streams (e.g. the church YouTube). Shown as the Watch Live button.',
+    }),
+    // Podcast links. Optional; when set they render as small outline pills next
+    // to the Watch Live button, so listeners can subscribe where they already
+    // listen. Hidden entirely while empty (the church has no podcast feed yet).
+    defineField({
+      name: 'podcastAppleUrl',
+      title: 'Apple Podcasts URL (optional)',
+      type: 'url',
+      description: 'Link to the sermon podcast on Apple Podcasts. Leave empty to hide the button.',
+    }),
+    defineField({
+      name: 'podcastSpotifyUrl',
+      title: 'Spotify URL (optional)',
+      type: 'url',
+      description: 'Link to the sermon podcast on Spotify. Leave empty to hide the button.',
     }),
     defineField({ name: 'watchLiveLabel', title: 'Watch Live button label', type: 'string', description: 'Label for the Watch Live button. The button link stays the livestream URL above. Leave empty to use the built-in default.' }),
     defineField({ name: 'watchYoutubeLabel', title: 'Watch on YouTube button label', type: 'string', description: 'Label for the Watch on YouTube button in the empty-state. Leave empty to use the built-in default.' }),

@@ -12,6 +12,7 @@ import { site } from '@/data/site';
 import { resolveSiteSettings } from '@/lib/siteSettings';
 import SanityImage from '@/components/SanityImage.astro';
 import Hero from '@/components/Hero.astro';
+import ArchOrnament from '@/components/ArchOrnament.astro';
 import heroSermons from '@/assets/hero-worship.webp';
 import SectionHeading from '@/components/SectionHeading.astro';
 import FinalCta from '@/components/FinalCta.astro';
@@ -66,6 +67,7 @@ function meta(s: any): string {
     eyebrow={heroEyebrow}
     headline={heroHeadline}
     subhead={heroSubhead}
+    keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroSermons}
     localImageAlt="The sanctuary at Second Presbyterian set for worship"
@@ -76,10 +78,21 @@ function meta(s: any): string {
   {sermons.length > 0 ? (
     <section class="bg-background" aria-label="Sermons">
       <div class="mx-auto max-w-content px-m py-section-lg">
-        {/* Watch live */}
+        {/* Watch live + podcast row. The podcast pills only render when the
+            editor sets the URLs in Studio (Sermons index page), so the row is
+            never cluttered with dead links. Mirrors HPP's sermons hub: live
+            stream first, then subscribe-where-you-listen. */}
         <div class="mb-section-md flex flex-wrap items-center justify-between gap-m">
           <p class="text-foreground/80">Worship streams live every Sunday.</p>
-          <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>{page?.watchLiveLabel ?? 'Watch Live'}</a>
+          <div class="flex flex-wrap items-center gap-s">
+            {page?.podcastAppleUrl && (
+              <a href={page.podcastAppleUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}>Apple Podcasts</a>
+            )}
+            {page?.podcastSpotifyUrl && (
+              <a href={page.podcastSpotifyUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}>Spotify</a>
+            )}
+            <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>{page?.watchLiveLabel ?? 'Watch Live'}</a>
+          </div>
         </div>
 
         {/* Featured latest sermon */}
@@ -89,7 +102,18 @@ function meta(s: any): string {
               {featured.image?.asset ? (
                 <SanityImage source={featured.image} width={900} sizes="(min-width:768px) 50vw, 100vw" class="w-full h-full object-cover" />
               ) : (
-                <div class="aspect-[16/9] md:aspect-auto bg-muted" aria-hidden="true"></div>
+                <div class="flex aspect-[16/9] md:aspect-auto items-center justify-center bg-chapel surface-chapel p-l" aria-hidden="true">
+                  {/* No artwork yet: a typographic chapel panel instead of a
+                      blank gray slab. The arch mark + scripture (or series)
+                      keeps the featured card feeling designed until real
+                      sermon artwork is uploaded in Studio. */}
+                  <div class="text-center">
+                    <ArchOrnament class="mx-auto text-[#C7A875]/80" />
+                    <p class="mt-s font-display italic text-h4 text-chapel-foreground/90">
+                      {featured.scripture || featured.series || 'Sunday worship'}
+                    </p>
+                  </div>
+                </div>
               )}
               <div class="p-l">
                 <span class="text-xs uppercase tracking-eyebrow text-link">{page?.latestEyebrow ?? 'Latest message'}</span>

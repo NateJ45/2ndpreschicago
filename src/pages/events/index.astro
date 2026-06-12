@@ -73,6 +73,7 @@ function whenLabel(ev: any): string {
     eyebrow={heroEyebrow}
     headline={heroHeadline}
     subhead={heroSubhead}
+    keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroEvents}
     localImageAlt="A gathering inside the historic sanctuary at Second Presbyterian"
@@ -86,7 +87,13 @@ function whenLabel(ev: any): string {
       <div class="mx-auto max-w-content px-m py-section-lg">
         <p class="text-xs uppercase tracking-eyebrow text-[#C7A875]">{page?.specialEyebrow ?? 'Mark the season'}</p>
         <h2 id="special-services" class="mt-s font-display text-h2">{page?.specialHeadline ?? 'Special services'}</h2>
-        <ul class="mt-l grid grid-cols-1 md:grid-cols-2 gap-m list-none p-0">
+        <ul
+          class:list={[
+            'mt-l grid grid-cols-1 gap-m list-none p-0',
+            // Same single-item treatment as the upcoming grid below.
+            specialServices.length === 1 ? 'max-w-3xl' : 'md:grid-cols-2',
+          ]}
+        >
           {specialServices.map((ev: any) => (
             <li>
               <a
@@ -112,7 +119,15 @@ function whenLabel(ev: any): string {
     <div class="mx-auto max-w-content px-m py-section-lg">
       <SectionHeading eyebrow={page?.upcomingEyebrow ?? 'Mark your calendar'} headline={page?.upcomingHeadline ?? 'Upcoming events'} headingId="upcoming-heading" />
       {upcoming.length > 0 ? (
-        <ul class="mt-l grid grid-cols-1 md:grid-cols-2 gap-m list-none p-0" data-stagger-grid>
+        <ul
+          class:list={[
+            'mt-l grid grid-cols-1 gap-m list-none p-0',
+            // A single event reads as a centered feature at comfortable width
+            // instead of one lonely card in a half-empty two-column grid.
+            upcoming.length === 1 ? 'max-w-3xl mx-auto' : 'md:grid-cols-2',
+          ]}
+          data-stagger-grid
+        >
           {upcoming.map((ev: any) => (
             <li>
               <a href={`/events/${ev.slug?.current ?? ''}`} class="card-lift group block h-full rounded-md border border-border-soft bg-card p-l no-underline">

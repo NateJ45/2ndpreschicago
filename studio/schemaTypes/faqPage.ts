@@ -51,6 +51,14 @@ export const faqPage = defineType({
     defineField({ name: 'heroHeadline', title: 'Hero headline', type: 'string', group: 'hero', initialValue: 'Everything You Want to Know.' }),
     defineField({ name: 'heroSubhead', title: 'Hero subhead', type: 'text', rows: 2, group: 'hero' }),
     defineField({
+      name: 'heroKeyword',
+      title: 'Hero keyword (gold emphasis)',
+      type: 'string',
+      group: 'hero',
+      description:
+        'One word or short phrase from the headline to set in liturgical gold. It must match the headline exactly, including capitals. Leave empty for a single-color headline.',
+    }),
+    defineField({
       name: 'heroImage',
       title: 'Hero background image',
       type: 'image',
