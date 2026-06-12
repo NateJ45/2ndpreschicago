@@ -463,6 +463,36 @@ export type Sermon = {
     _type: "image";
   };
   featured?: boolean;
+  liturgicalDay?: string;
+  bulletin?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  manuscript?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  hymns?: Array<{
+    title?: string;
+    number?: string;
+    _type: "hymn";
+    _key: string;
+  }>;
+  serviceMusic?: Array<{
+    role?: string;
+    title?: string;
+    composer?: string;
+    _type: "musicPiece";
+    _key: string;
+  }>;
+  worshipLeaders?: Array<{
+    role?: string;
+    name?: string;
+    _type: "worshipLeader";
+    _key: string;
+  }>;
 };
 
 export type Event = {

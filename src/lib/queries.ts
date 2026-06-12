@@ -514,7 +514,13 @@ export async function getSermonBySlug(slug: string) {
     `*[_type == "sermon" && slug.current == $slug][0]{
       _id, title, slug, date, speaker, series, scripture, videoUrl, audioUrl, featured,
       image${IMAGE_PROJECTION},
-      description
+      description,
+      liturgicalDay,
+      "bulletinUrl": bulletin.asset->url,
+      "manuscriptUrl": manuscript.asset->url,
+      hymns[]{ _key, title, number },
+      serviceMusic[]{ _key, role, title, composer },
+      worshipLeaders[]{ _key, role, name }
     }`,
     { slug },
     null,

@@ -55,7 +55,23 @@ const embed = embedUrl(sermon.videoUrl);
 const dateLabel = sermon.date
   ? new Date(sermon.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
   : '';
-const metaLine = [dateLabel, sermon.speaker, sermon.series].filter(Boolean).join(' · ');
+// Liturgical day rides with the date in the meta line ("June 7, 2026 · Third
+// Sunday after Pentecost · Rev. ..."), keeping the record visible up top.
+const metaLine = [dateLabel, sermon.liturgicalDay, sermon.speaker, sermon.series].filter(Boolean).join(' · ');
+
+// Service record: the per-service archive (bulletin, manuscript, hymns, music,
+// leaders). The panel below renders only when at least one item exists, so
+// sermons without a record look exactly as before.
+const hymns: Array<{ _key?: string; title?: string; number?: string }> = sermon.hymns ?? [];
+const serviceMusic: Array<{ _key?: string; role?: string; title?: string; composer?: string }> = sermon.serviceMusic ?? [];
+const worshipLeaders: Array<{ _key?: string; role?: string; name?: string }> = sermon.worshipLeaders ?? [];
+const hasServiceRecord = Boolean(
+  sermon.bulletinUrl || sermon.manuscriptUrl || hymns.length || serviceMusic.length || worshipLeaders.length,
+);
+
+// Outline download pill, matching the sermons-index pill vocabulary.
+const pillOutline =
+  'press-tactile inline-flex items-center justify-center min-h-[44px] px-l py-s rounded-full text-xs font-semibold uppercase tracking-[0.18em] border border-primary text-link hover:bg-accent transition-colors';
 
 const schemas = [
   breadcrumbSchema([
@@ -110,6 +126,80 @@ const schemas = [
             Listen to the audio →
           </a>
         </p>
+      )}
+
+      {/* Service record. Renders only when the editor has attached something
+          in the sermon's "Service record" tab: bulletin/manuscript downloads,
+          the hymns the congregation sang, the choir + organ music, and who
+          served. Date, preacher, liturgical day, and scripture already live in
+          the header above, so together the page is a complete record of the
+          service. */}
+      {hasServiceRecord && (
+        <section class="mt-section-md rounded-md border border-border-soft bg-card p-l" aria-labelledby="service-record">
+          <p class="text-xs uppercase tracking-eyebrow text-foreground/80">From this service</p>
+          <div class="mt-s mb-m h-px w-12 bg-gold/70" aria-hidden="true"></div>
+          <h2 id="service-record" class="sr-only">Service record</h2>
+
+          {(sermon.bulletinUrl || sermon.manuscriptUrl) && (
+            <div class="flex flex-wrap gap-s">
+              {sermon.bulletinUrl && (
+                <a href={sermon.bulletinUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}>
+                  Bulletin (PDF)
+                </a>
+              )}
+              {sermon.manuscriptUrl && (
+                <a href={sermon.manuscriptUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}>
+                  Sermon notes (PDF)
+                </a>
+              )}
+            </div>
+          )}
+
+          <div class="mt-l grid grid-cols-1 sm:grid-cols-2 gap-l">
+            {hymns.length > 0 && (
+              <div>
+                <h3 class="font-display text-h5 text-foreground">Hymns</h3>
+                <ul class="mt-s space-y-1 list-none p-0">
+                  {hymns.map((h) => (
+                    <li class="text-foreground/85">
+                      {h.title}
+                      {h.number && <span class="text-muted-foreground"> · {h.number}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {serviceMusic.length > 0 && (
+              <div>
+                <h3 class="font-display text-h5 text-foreground">Music</h3>
+                <ul class="mt-s space-y-1 list-none p-0">
+                  {serviceMusic.map((m) => (
+                    <li class="text-foreground/85">
+                      {m.role && <span class="text-xs uppercase tracking-eyebrow text-muted-foreground">{m.role}: </span>}
+                      {m.title}
+                      {m.composer && <span class="text-muted-foreground"> · {m.composer}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {worshipLeaders.length > 0 && (
+              <div>
+                <h3 class="font-display text-h5 text-foreground">Serving in worship</h3>
+                <ul class="mt-s space-y-1 list-none p-0">
+                  {worshipLeaders.map((w) => (
+                    <li class="text-foreground/85">
+                      <span class="text-xs uppercase tracking-eyebrow text-muted-foreground">{w.role}: </span>
+                      {w.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
       )}
     </div>
   </article>
