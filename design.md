@@ -22,9 +22,15 @@ booklet, not a SaaS template. Polish and elevate this direction; never swap it.
 2. **Chapel-green structural bands** — utility bar, footer, closing CTA, quote
    band. Always `bg-chapel`/`bg-chapel-deep` with cream `text-chapel-foreground`,
    in BOTH themes (static, intentionally not theme-flipped).
-3. **Keyword emphasis** — one word of a display headline set in
-   `text-chapel-ink` (theme-aware green) or gold. Sparingly: one per headline.
+3. **Keyword emphasis** — one word/phrase of a display headline in a second
+   color. On cream: `text-chapel-ink` (home hero). On photo-scrim heroes:
+   lifted gold `#C7A875` via the `heroKeyword` Sanity field + Hero.astro's
+   `keyword` prop. One flourish per headline, never stacked with the script
+   accent or rotator.
 4. **Serif everything** — Instrument Serif display, Newsreader body. No sans.
+5. **Arch ornament** (`ArchOrnament.astro`) — a triple Romanesque arch in gold
+   stroke; the page-close mark in FinalCta and at most one reflective moment
+   per page. Keep it scarce so it stays a signature.
 
 ## Palette
 
