@@ -1,3 +1,4 @@
+import { loadEnv } from './lib/loadEnv.mjs';
 // QA helper: create (or delete) a sample custom `page` exercising every block
 // type, so the /[slug] route + Sections renderer can be verified end to end.
 //
@@ -14,21 +15,8 @@ import { createClient } from '@sanity/client';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-function loadEnv() {
-  const env = { ...process.env };
-  try {
-    const raw = readFileSync(resolve(root, '.env'), 'utf-8');
-    for (const line of raw.split('\n')) {
-      const m = line.match(/^([A-Z0-9_]+)\s*=\s*(.*)$/);
-      if (m && !env[m[1]]) env[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
-    }
-  } catch {
-    /* .env optional */
-  }
-  return env;
-}
 
-const env = loadEnv();
+const env = loadEnv(root);
 const client = createClient({
   projectId: env.PUBLIC_SANITY_PROJECT_ID,
   dataset: env.PUBLIC_SANITY_DATASET ?? 'production',

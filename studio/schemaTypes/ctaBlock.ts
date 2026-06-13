@@ -41,6 +41,9 @@ export const ctaBlock = defineType({
         { type: 'eventsPage' },
         { type: 'sermonsPage' },
         // removed journalPage and journalEntry targets during church remodel (those types are being deleted)
+        // 'page' is the custom page-builder type (slug-based, /[slug] routes).
+        // Re-added so editors can link CTAs to arbitrary pages created in Studio.
+        { type: 'page' },
       ],
       hidden: ({ parent }) => parent?.linkType !== 'internal',
     }),

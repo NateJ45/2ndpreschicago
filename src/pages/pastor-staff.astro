@@ -15,7 +15,7 @@ import { resolveSiteSettings } from '@/lib/siteSettings';
 import { Image } from 'astro:assets';
 import Hero from '@/components/Hero.astro';
 import SanityImage from '@/components/SanityImage.astro';
-import PortableText from '@/components/PortableText';
+import PortableTextStatic from '@/components/PortableTextStatic.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 
@@ -179,7 +179,7 @@ const people = useSanityStaff
           </div>
           <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
             {person.bioBlocks ? (
-              <PortableText value={person.bioBlocks} />
+              <PortableTextStatic value={person.bioBlocks} />
             ) : (
               person.bioStrings?.map((p) => <p>{p}</p>)
             )}

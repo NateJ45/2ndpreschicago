@@ -16,18 +16,18 @@ export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
 export type Background = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: BackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SanityImageAssetReference = {
   _ref: string;
-  _type: "reference";
+  _type: 'reference';
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
 };
 
 export type BackgroundImage = {
@@ -36,15 +36,15 @@ export type BackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionImageTextBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionImageTextBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionImageTextBackgroundImage = {
@@ -53,7 +53,7 @@ export type SectionImageTextBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type FeatureCardImage = {
@@ -62,15 +62,15 @@ export type FeatureCardImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionFeatureCardsBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionFeatureCardsBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionFeatureCardsBackgroundImage = {
@@ -79,15 +79,15 @@ export type SectionFeatureCardsBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionCardGridBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionCardGridBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionCardGridBackgroundImage = {
@@ -96,15 +96,15 @@ export type SectionCardGridBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionStatsBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionStatsBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionStatsBackgroundImage = {
@@ -113,15 +113,15 @@ export type SectionStatsBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionArchShowcaseBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionArchShowcaseBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionArchShowcaseBackgroundImage = {
@@ -130,15 +130,15 @@ export type SectionArchShowcaseBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionGalleryBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionGalleryBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionGalleryBackgroundImage = {
@@ -147,15 +147,15 @@ export type SectionGalleryBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionAccordionBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionAccordionBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionAccordionBackgroundImage = {
@@ -164,15 +164,15 @@ export type SectionAccordionBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionMediaFeatureBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionMediaFeatureBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionMediaFeatureBackgroundImage = {
@@ -181,15 +181,15 @@ export type SectionMediaFeatureBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionStepsBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionStepsBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionStepsBackgroundImage = {
@@ -198,15 +198,15 @@ export type SectionStepsBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionDynamicListBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionDynamicListBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionDynamicListBackgroundImage = {
@@ -215,15 +215,15 @@ export type SectionDynamicListBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionLogosBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionLogosBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionLogosBackgroundImage = {
@@ -232,15 +232,15 @@ export type SectionLogosBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionQuoteBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionQuoteBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionQuoteBackgroundImage = {
@@ -249,15 +249,15 @@ export type SectionQuoteBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
+  _type: 'image';
 };
 
 export type SectionCtaBandBackground = {
-  tone?: "default" | "warm" | "chapel" | "chapelDeep";
+  tone?: 'default' | 'warm' | 'chapel' | 'chapelDeep';
   image?: SectionCtaBandBackgroundImage;
   videoUrl?: string;
   overlay?: number;
-  padding?: "compact" | "normal" | "spacious";
+  padding?: 'compact' | 'normal' | 'spacious';
 };
 
 export type SectionCtaBandBackgroundImage = {
@@ -266,139 +266,36 @@ export type SectionCtaBandBackgroundImage = {
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
-  _type: "image";
-};
-
-export type Page = {
-  _id: string;
-  _type: "page";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  heroEyebrow?: string;
-  heroHeadline?: string;
-  heroSubhead?: string;
-  heroImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  sections?: Array<
-    | ({
-        _key: string;
-      } & SectionRichText)
-    | ({
-        _key: string;
-      } & SectionImageText)
-    | ({
-        _key: string;
-      } & SectionFeatureCards)
-    | ({
-        _key: string;
-      } & SectionCardGrid)
-    | ({
-        _key: string;
-      } & SectionStats)
-    | ({
-        _key: string;
-      } & SectionArchShowcase)
-    | ({
-        _key: string;
-      } & SectionGallery)
-    | ({
-        _key: string;
-      } & SectionAccordion)
-    | ({
-        _key: string;
-      } & SectionMediaFeature)
-    | ({
-        _key: string;
-      } & SectionSteps)
-    | ({
-        _key: string;
-      } & SectionDynamicList)
-    | ({
-        _key: string;
-      } & SectionLogos)
-    | ({
-        _key: string;
-      } & SectionQuote)
-    | ({
-        _key: string;
-      } & SectionCtaBand)
-    | ({
-        _key: string;
-      } & SectionForm)
-    | ({
-        _key: string;
-      } & Embed)
-  >;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
+  _type: 'image';
 };
 
 export type SanityFileAssetReference = {
   _ref: string;
-  _type: "reference";
+  _type: 'reference';
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
 };
 
 export type WorshipResource = {
   _id: string;
-  _type: "worshipResource";
+  _type: 'worshipResource';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title?: string;
   date?: string;
   type?:
-    | "Bulletin"
-    | "Order of Worship"
-    | "Liturgy"
-    | "Hymn list"
-    | "Newsletter"
-    | "Annual report"
-    | "Other";
+    | 'Bulletin'
+    | 'Order of Worship'
+    | 'Liturgy'
+    | 'Hymn list'
+    | 'Newsletter'
+    | 'Annual report'
+    | 'Other';
   file?: {
     asset?: SanityFileAssetReference;
     media?: unknown;
-    _type: "file";
+    _type: 'file';
   };
   externalUrl?: string;
   description?: string;
@@ -406,13 +303,13 @@ export type WorshipResource = {
 
 export type Announcement = {
   _id: string;
-  _type: "announcement";
+  _type: 'announcement';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title?: string;
   message?: string;
-  style?: "info" | "special" | "urgent";
+  style?: 'info' | 'special' | 'urgent';
   link?: {
     label?: string;
     url?: string;
@@ -424,7 +321,7 @@ export type Announcement = {
 
 export type Sermon = {
   _id: string;
-  _type: "sermon";
+  _type: 'sermon';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -440,18 +337,18 @@ export type Sermon = {
     children?: Array<{
       marks?: Array<string>;
       text?: string;
-      _type: "span";
+      _type: 'span';
       _key: string;
     }>;
-    style?: "normal" | "h3";
-    listItem?: "bullet";
+    style?: 'normal' | 'h3';
+    listItem?: 'bullet';
     markDefs?: Array<{
       href?: string;
-      _type: "link";
+      _type: 'link';
       _key: string;
     }>;
     level?: number;
-    _type: "block";
+    _type: 'block';
     _key: string;
   }>;
   image?: {
@@ -460,72 +357,94 @@ export type Sermon = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   featured?: boolean;
   liturgicalDay?: string;
   bulletin?: {
     asset?: SanityFileAssetReference;
     media?: unknown;
-    _type: "file";
+    _type: 'file';
   };
   manuscript?: {
     asset?: SanityFileAssetReference;
     media?: unknown;
-    _type: "file";
+    _type: 'file';
   };
   hymns?: Array<{
     title?: string;
     number?: string;
-    _type: "hymn";
+    _type: 'hymn';
     _key: string;
   }>;
   serviceMusic?: Array<{
     role?: string;
     title?: string;
     composer?: string;
-    _type: "musicPiece";
+    _type: 'musicPiece';
     _key: string;
   }>;
   worshipLeaders?: Array<{
     role?: string;
     name?: string;
-    _type: "worshipLeader";
+    _type: 'worshipLeader';
     _key: string;
   }>;
 };
 
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop';
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot';
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type Slug = {
+  _type: 'slug';
+  current?: string;
+  source?: string;
+};
+
 export type Event = {
   _id: string;
-  _type: "event";
+  _type: 'event';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title?: string;
   slug?: Slug;
-  eventType?: "recurring" | "oneTime";
+  eventType?: 'recurring' | 'oneTime';
   category?:
-    | "Worship"
-    | "Study"
-    | "Meals"
-    | "Music"
-    | "Fellowship"
-    | "Service"
-    | "Youth"
-    | "Kids"
-    | "Outreach"
-    | "Special";
-  audience?: "Everyone" | "Families" | "Kids" | "Youth" | "Adults" | "Seniors";
+    | 'Worship'
+    | 'Study'
+    | 'Meals'
+    | 'Music'
+    | 'Fellowship'
+    | 'Service'
+    | 'Youth'
+    | 'Kids'
+    | 'Outreach'
+    | 'Special';
+  audience?: 'Everyone' | 'Families' | 'Kids' | 'Youth' | 'Adults' | 'Seniors';
   specialService?: boolean;
   liturgicalSeason?:
-    | "Advent"
-    | "Christmas"
-    | "Epiphany"
-    | "Lent"
-    | "Holy Week"
-    | "Easter"
-    | "Pentecost"
-    | "Ordinary";
+    | 'Advent'
+    | 'Christmas'
+    | 'Epiphany'
+    | 'Lent'
+    | 'Holy Week'
+    | 'Easter'
+    | 'Pentecost'
+    | 'Ordinary';
   scheduleLabel?: string;
   start?: string;
   end?: string;
@@ -536,18 +455,18 @@ export type Event = {
     children?: Array<{
       marks?: Array<string>;
       text?: string;
-      _type: "span";
+      _type: 'span';
       _key: string;
     }>;
-    style?: "normal" | "h3";
-    listItem?: "bullet";
+    style?: 'normal' | 'h3';
+    listItem?: 'bullet';
     markDefs?: Array<{
       href?: string;
-      _type: "link";
+      _type: 'link';
       _key: string;
     }>;
     level?: number;
-    _type: "block";
+    _type: 'block';
     _key: string;
   }>;
   registrationUrl?: string;
@@ -561,7 +480,7 @@ export type Event = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   featured?: boolean;
   featuredOnHome?: boolean;
@@ -569,29 +488,22 @@ export type Event = {
 
 export type MinistryReference = {
   _ref: string;
-  _type: "reference";
+  _type: 'reference';
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "ministry";
+  [internalGroqTypeReferenceTo]?: 'ministry';
 };
 
 export type Ministry = {
   _id: string;
-  _type: "ministry";
+  _type: 'ministry';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title?: string;
-  audience?:
-    | "everyone"
-    | "families"
-    | "kids"
-    | "youth"
-    | "adults"
-    | "seniors"
-    | "neighbors";
+  audience?: 'everyone' | 'families' | 'kids' | 'youth' | 'adults' | 'seniors' | 'neighbors';
   ageRange?: string;
   schedule?: string;
-  season?: "Year-round" | "School year" | "Summer" | "Seasonal";
+  season?: 'Year-round' | 'School year' | 'Summer' | 'Seasonal';
   summary?: string;
   image?: {
     asset?: SanityImageAssetReference;
@@ -599,25 +511,25 @@ export type Ministry = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   link?: string;
   description?: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
-      _type: "span";
+      _type: 'span';
       _key: string;
     }>;
-    style?: "normal";
-    listItem?: "bullet";
+    style?: 'normal';
+    listItem?: 'bullet';
     markDefs?: Array<{
       href?: string;
-      _type: "link";
+      _type: 'link';
       _key: string;
     }>;
     level?: number;
-    _type: "block";
+    _type: 'block';
     _key: string;
   }>;
   parentMinistry?: MinistryReference;
@@ -630,7 +542,7 @@ export type Ministry = {
 
 export type StaffMember = {
   _id: string;
-  _type: "staffMember";
+  _type: 'staffMember';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -642,31 +554,31 @@ export type StaffMember = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   email?: string;
   bio?: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
-      _type: "span";
+      _type: 'span';
       _key: string;
     }>;
-    style?: "normal";
+    style?: 'normal';
     listItem?: never;
     markDefs?: Array<{
       href?: string;
-      _type: "link";
+      _type: 'link';
       _key: string;
     }>;
     level?: number;
-    _type: "block";
+    _type: 'block';
     _key: string;
   }>;
   favorites?: Array<{
     label?: string;
     value?: string;
-    _type: "favoriteItem";
+    _type: 'favoriteItem';
     _key: string;
   }>;
   displayOrder?: number;
@@ -674,7 +586,7 @@ export type StaffMember = {
 
 export type FaqItem = {
   _id: string;
-  _type: "faqItem";
+  _type: 'faqItem';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -683,35 +595,35 @@ export type FaqItem = {
     children?: Array<{
       marks?: Array<string>;
       text?: string;
-      _type: "span";
+      _type: 'span';
       _key: string;
     }>;
-    style?: "normal" | "h4";
-    listItem?: "bullet" | "number";
+    style?: 'normal' | 'h4';
+    listItem?: 'bullet' | 'number';
     markDefs?: Array<{
       href?: string;
       openInNewTab?: boolean;
-      _type: "link";
+      _type: 'link';
       _key: string;
     }>;
     level?: number;
-    _type: "block";
+    _type: 'block';
     _key: string;
   }>;
   category?:
-    | "Visiting"
-    | "Worship"
-    | "Kids & Family"
-    | "Getting Involved"
-    | "Giving"
-    | "Weddings & Space"
-    | "Food Ministry";
+    | 'Visiting'
+    | 'Worship'
+    | 'Kids & Family'
+    | 'Getting Involved'
+    | 'Giving'
+    | 'Weddings & Space'
+    | 'Food Ministry';
   displayOrder?: number;
 };
 
 export type GivePage = {
   _id: string;
-  _type: "givePage";
+  _type: 'givePage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -721,7 +633,7 @@ export type GivePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -735,7 +647,7 @@ export type GivePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -803,57 +715,65 @@ export type GivePage = {
 
 export type HomePageReference = {
   _ref: string;
-  _type: "reference";
+  _type: 'reference';
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "homePage";
+  [internalGroqTypeReferenceTo]?: 'homePage';
 };
 
 export type AboutPageReference = {
   _ref: string;
-  _type: "reference";
+  _type: 'reference';
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "aboutPage";
+  [internalGroqTypeReferenceTo]?: 'aboutPage';
 };
 
 export type FaqPageReference = {
   _ref: string;
-  _type: "reference";
+  _type: 'reference';
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "faqPage";
+  [internalGroqTypeReferenceTo]?: 'faqPage';
 };
 
 export type ContactPageReference = {
   _ref: string;
-  _type: "reference";
+  _type: 'reference';
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "contactPage";
+  [internalGroqTypeReferenceTo]?: 'contactPage';
 };
 
 export type EventsPageReference = {
   _ref: string;
-  _type: "reference";
+  _type: 'reference';
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "eventsPage";
+  [internalGroqTypeReferenceTo]?: 'eventsPage';
 };
 
 export type SermonsPageReference = {
   _ref: string;
-  _type: "reference";
+  _type: 'reference';
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sermonsPage";
+  [internalGroqTypeReferenceTo]?: 'sermonsPage';
+};
+
+export type PageReference = {
+  _ref: string;
+  _type: 'reference';
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: 'page';
 };
 
 export type CtaBlock = {
-  _type: "ctaBlock";
+  _type: 'ctaBlock';
   label?: string;
-  linkType?: "internal" | "external" | "email" | "phone";
+  linkType?: 'internal' | 'external' | 'email' | 'phone';
   internalLink?:
     | HomePageReference
     | AboutPageReference
     | FaqPageReference
     | ContactPageReference
     | EventsPageReference
-    | SermonsPageReference;
+    | SermonsPageReference
+    | PageReference;
   externalUrl?: string;
   emailAddress?: string;
   phoneNumber?: string;
@@ -862,14 +782,14 @@ export type CtaBlock = {
 
 export type FormReference = {
   _ref: string;
-  _type: "reference";
+  _type: 'reference';
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "form";
+  [internalGroqTypeReferenceTo]?: 'form';
 };
 
 export type WeddingsPage = {
   _id: string;
-  _type: "weddingsPage";
+  _type: 'weddingsPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -879,7 +799,7 @@ export type WeddingsPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -893,7 +813,7 @@ export type WeddingsPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -952,7 +872,7 @@ export type WeddingsPage = {
   weddingFaqs?: Array<{
     q?: string;
     a?: string;
-    _type: "weddingFaq";
+    _type: 'weddingFaq';
     _key: string;
   }>;
   pricingEyebrow?: string;
@@ -960,7 +880,7 @@ export type WeddingsPage = {
   weddingPricing?: Array<{
     item?: string;
     price?: string;
-    _type: "weddingPriceRow";
+    _type: 'weddingPriceRow';
     _key: string;
   }>;
   pricingFootnote?: string;
@@ -974,7 +894,7 @@ export type WeddingsPage = {
 
 export type UseOurSpacePage = {
   _id: string;
-  _type: "useOurSpacePage";
+  _type: 'useOurSpacePage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -984,7 +904,7 @@ export type UseOurSpacePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -998,7 +918,7 @@ export type UseOurSpacePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -1066,7 +986,7 @@ export type UseOurSpacePage = {
 
 export type FoodPage = {
   _id: string;
-  _type: "foodPage";
+  _type: 'foodPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1076,7 +996,7 @@ export type FoodPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -1090,7 +1010,7 @@ export type FoodPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -1158,7 +1078,7 @@ export type FoodPage = {
 
 export type KidsPage = {
   _id: string;
-  _type: "kidsPage";
+  _type: 'kidsPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1168,7 +1088,7 @@ export type KidsPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -1182,7 +1102,7 @@ export type KidsPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -1247,7 +1167,7 @@ export type KidsPage = {
 
 export type ServePage = {
   _id: string;
-  _type: "servePage";
+  _type: 'servePage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1257,7 +1177,7 @@ export type ServePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -1271,7 +1191,7 @@ export type ServePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -1328,7 +1248,7 @@ export type ServePage = {
     name?: string;
     href?: string;
     body?: string;
-    _type: "serveWay";
+    _type: 'serveWay';
     _key: string;
   }>;
   serveLinkLabel?: string;
@@ -1339,7 +1259,7 @@ export type ServePage = {
 
 export type GrowPage = {
   _id: string;
-  _type: "growPage";
+  _type: 'growPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1349,7 +1269,7 @@ export type GrowPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -1363,7 +1283,7 @@ export type GrowPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -1421,7 +1341,7 @@ export type GrowPage = {
     when?: string;
     where?: string;
     body?: string;
-    _type: "communityGroup";
+    _type: 'communityGroup';
     _key: string;
   }>;
   finalCtaEyebrow?: string;
@@ -1431,7 +1351,7 @@ export type GrowPage = {
 
 export type StaffPage = {
   _id: string;
-  _type: "staffPage";
+  _type: 'staffPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1441,7 +1361,7 @@ export type StaffPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -1455,7 +1375,7 @@ export type StaffPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -1515,7 +1435,7 @@ export type StaffPage = {
 
 export type MusicPage = {
   _id: string;
-  _type: "musicPage";
+  _type: 'musicPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1525,7 +1445,7 @@ export type MusicPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -1539,7 +1459,7 @@ export type MusicPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -1608,7 +1528,7 @@ export type MusicPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   organCreditLead?: string;
   organCreditCta?: CtaBlock;
@@ -1619,7 +1539,7 @@ export type MusicPage = {
 
 export type BeliefsPage = {
   _id: string;
-  _type: "beliefsPage";
+  _type: 'beliefsPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1629,7 +1549,7 @@ export type BeliefsPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -1643,7 +1563,7 @@ export type BeliefsPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -1727,7 +1647,7 @@ export type BeliefsPage = {
     label?: string;
     href?: string;
     external?: boolean;
-    _type: "beliefsResource";
+    _type: 'beliefsResource';
     _key: string;
   }>;
   finalCtaEyebrow?: string;
@@ -1737,7 +1657,7 @@ export type BeliefsPage = {
 
 export type WorshipPage = {
   _id: string;
-  _type: "worshipPage";
+  _type: 'worshipPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1747,7 +1667,7 @@ export type WorshipPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -1761,7 +1681,7 @@ export type WorshipPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   flexibleSections?: Array<
     | ({
@@ -1837,7 +1757,7 @@ export type WorshipPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   quoteText?: string;
   quoteAttribution?: string;
@@ -1853,7 +1773,7 @@ export type WorshipPage = {
 
 export type PrivacyPage = {
   _id: string;
-  _type: "privacyPage";
+  _type: 'privacyPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1865,7 +1785,7 @@ export type PrivacyPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -1876,7 +1796,7 @@ export type PrivacyPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroScriptAccent?: string;
   lastUpdated?: string;
@@ -1884,19 +1804,19 @@ export type PrivacyPage = {
     children?: Array<{
       marks?: Array<string>;
       text?: string;
-      _type: "span";
+      _type: 'span';
       _key: string;
     }>;
-    style?: "normal" | "h2" | "h3";
-    listItem?: "bullet" | "number";
+    style?: 'normal' | 'h2' | 'h3';
+    listItem?: 'bullet' | 'number';
     markDefs?: Array<{
       href?: string;
       openInNewTab?: boolean;
-      _type: "link";
+      _type: 'link';
       _key: string;
     }>;
     level?: number;
-    _type: "block";
+    _type: 'block';
     _key: string;
   }>;
   flexibleSections?: Array<
@@ -1953,7 +1873,7 @@ export type PrivacyPage = {
 
 export type NotFoundPage = {
   _id: string;
-  _type: "notFoundPage";
+  _type: 'notFoundPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1969,7 +1889,7 @@ export type NotFoundPage = {
     crop?: SanityImageCrop;
     alt?: string;
     caption?: string;
-    _type: "image";
+    _type: 'image';
   };
   primaryCtaLabel?: string;
   primaryCtaHref?: string;
@@ -1981,7 +1901,7 @@ export type NotFoundPage = {
 
 export type SiteSettings = {
   _id: string;
-  _type: "siteSettings";
+  _type: 'siteSettings';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1997,7 +1917,7 @@ export type SiteSettings = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    _type: "image";
+    _type: 'image';
   };
   addressLine?: string;
   cityStateZip?: string;
@@ -2005,7 +1925,7 @@ export type SiteSettings = {
     | {
         label?: string;
         href?: string;
-        _type: "navLink";
+        _type: 'navLink';
         _key: string;
       }
     | {
@@ -2013,10 +1933,10 @@ export type SiteSettings = {
         links?: Array<{
           label?: string;
           href?: string;
-          _type: "navSubLink";
+          _type: 'navSubLink';
           _key: string;
         }>;
-        _type: "navGroup";
+        _type: 'navGroup';
         _key: string;
       }
   >;
@@ -2025,10 +1945,10 @@ export type SiteSettings = {
     links?: Array<{
       label?: string;
       href?: string;
-      _type: "footerLink";
+      _type: 'footerLink';
       _key: string;
     }>;
-    _type: "footerColumn";
+    _type: 'footerColumn';
     _key: string;
   }>;
   worshipService?: {
@@ -2052,7 +1972,7 @@ export type SiteSettings = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   footerCredit?: string;
   footerCreditUrl?: string;
@@ -2070,24 +1990,24 @@ export type SiteSettings = {
 };
 
 export type SectionArchShowcase = {
-  _type: "sectionArchShowcase";
+  _type: 'sectionArchShowcase';
   eyebrow?: string;
   heading?: string;
   intro?: string;
-  mediaType?: "slideshow" | "video";
+  mediaType?: 'slideshow' | 'video';
   images?: Array<{
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
     _key: string;
   }>;
   video?: {
     asset?: SanityFileAssetReference;
     media?: unknown;
-    _type: "file";
+    _type: 'file';
   };
   videoUrl?: string;
   videoPoster?: {
@@ -2096,32 +2016,27 @@ export type SectionArchShowcase = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   background?: SectionArchShowcaseBackground;
 };
 
 export type SectionDynamicList = {
-  _type: "sectionDynamicList";
+  _type: 'sectionDynamicList';
   eyebrow?: string;
   heading?: string;
   intro?: string;
-  source?:
-    | "latestSermons"
-    | "upcomingEvents"
-    | "ministries"
-    | "staff"
-    | "worshipResources";
+  source?: 'latestSermons' | 'upcomingEvents' | 'ministries' | 'staff' | 'worshipResources';
   count?: number;
   background?: SectionDynamicListBackground;
 };
 
 export type SectionMediaFeature = {
-  _type: "sectionMediaFeature";
+  _type: 'sectionMediaFeature';
   eyebrow?: string;
   heading?: string;
   body?: string;
-  mediaSide?: "left" | "right";
+  mediaSide?: 'left' | 'right';
   videoUrl?: string;
   image?: {
     asset?: SanityImageAssetReference;
@@ -2129,7 +2044,7 @@ export type SectionMediaFeature = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   ctaLabel?: string;
   ctaUrl?: string;
@@ -2137,7 +2052,7 @@ export type SectionMediaFeature = {
 };
 
 export type SectionLogos = {
-  _type: "sectionLogos";
+  _type: 'sectionLogos';
   heading?: string;
   intro?: string;
   grayscale?: boolean;
@@ -2148,32 +2063,32 @@ export type SectionLogos = {
     crop?: SanityImageCrop;
     alt?: string;
     url?: string;
-    _type: "image";
+    _type: 'image';
     _key: string;
   }>;
   background?: SectionLogosBackground;
 };
 
 export type SectionSteps = {
-  _type: "sectionSteps";
+  _type: 'sectionSteps';
   eyebrow?: string;
   heading?: string;
   intro?: string;
   steps?: Array<{
     title?: string;
     body?: string;
-    _type: "step";
+    _type: 'step';
     _key: string;
   }>;
   background?: SectionStepsBackground;
 };
 
 export type SectionGallery = {
-  _type: "sectionGallery";
+  _type: 'sectionGallery';
   eyebrow?: string;
   heading?: string;
   intro?: string;
-  columns?: "2" | "3" | "4";
+  columns?: '2' | '3' | '4';
   images?: Array<{
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -2181,48 +2096,48 @@ export type SectionGallery = {
     crop?: SanityImageCrop;
     alt?: string;
     caption?: string;
-    _type: "image";
+    _type: 'image';
     _key: string;
   }>;
   background?: SectionGalleryBackground;
 };
 
 export type SectionAccordion = {
-  _type: "sectionAccordion";
+  _type: 'sectionAccordion';
   eyebrow?: string;
   heading?: string;
   intro?: string;
   items?: Array<{
     question?: string;
     answer?: string;
-    _type: "qa";
+    _type: 'qa';
     _key: string;
   }>;
   background?: SectionAccordionBackground;
 };
 
 export type SectionStats = {
-  _type: "sectionStats";
+  _type: 'sectionStats';
   eyebrow?: string;
   heading?: string;
   intro?: string;
-  columns?: "2" | "3" | "4";
+  columns?: '2' | '3' | '4';
   items?: Array<{
     value?: string;
     label?: string;
     note?: string;
-    _type: "stat";
+    _type: 'stat';
     _key: string;
   }>;
   background?: SectionStatsBackground;
 };
 
 export type SectionFeatureCards = {
-  _type: "sectionFeatureCards";
+  _type: 'sectionFeatureCards';
   eyebrow?: string;
   heading?: string;
   intro?: string;
-  columns?: "2" | "3" | "4";
+  columns?: '2' | '3' | '4';
   arched?: boolean;
   cards?: Array<{
     image?: FeatureCardImage;
@@ -2232,21 +2147,21 @@ export type SectionFeatureCards = {
     badge?: string;
     ctaLabel?: string;
     ctaUrl?: string;
-    _type: "featureCard";
+    _type: 'featureCard';
     _key: string;
   }>;
   background?: SectionFeatureCardsBackground;
 };
 
 export type SectionForm = {
-  _type: "sectionForm";
+  _type: 'sectionForm';
   heading?: string;
   intro?: string;
   form?: FormReference;
 };
 
 export type SectionCtaBand = {
-  _type: "sectionCtaBand";
+  _type: 'sectionCtaBand';
   eyebrow?: string;
   headline?: string;
   subhead?: string;
@@ -2256,39 +2171,39 @@ export type SectionCtaBand = {
 };
 
 export type SectionQuote = {
-  _type: "sectionQuote";
+  _type: 'sectionQuote';
   quote?: string;
   attribution?: string;
   background?: SectionQuoteBackground;
 };
 
 export type SectionCardGrid = {
-  _type: "sectionCardGrid";
+  _type: 'sectionCardGrid';
   eyebrow?: string;
   heading?: string;
   subhead?: string;
-  columns?: "2" | "3" | "4";
+  columns?: '2' | '3' | '4';
   cards?: Array<{
     title?: string;
     body?: string;
     link?: string;
-    _type: "card";
+    _type: 'card';
     _key: string;
   }>;
   background?: SectionCardGridBackground;
 };
 
 export type SectionImageText = {
-  _type: "sectionImageText";
+  _type: 'sectionImageText';
   image?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
-  imageSide?: "left" | "right";
+  imageSide?: 'left' | 'right';
   arched?: boolean;
   eyebrow?: string;
   heading?: string;
@@ -2296,19 +2211,19 @@ export type SectionImageText = {
     children?: Array<{
       marks?: Array<string>;
       text?: string;
-      _type: "span";
+      _type: 'span';
       _key: string;
     }>;
-    style?: "normal" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet" | "number";
+    style?: 'normal' | 'h3' | 'h4' | 'blockquote';
+    listItem?: 'bullet' | 'number';
     markDefs?: Array<{
       href?: string;
       openInNewTab?: boolean;
-      _type: "link";
+      _type: 'link';
       _key: string;
     }>;
     level?: number;
-    _type: "block";
+    _type: 'block';
     _key: string;
   }>;
   ctaLabel?: string;
@@ -2317,44 +2232,125 @@ export type SectionImageText = {
 };
 
 export type SectionRichText = {
-  _type: "sectionRichText";
+  _type: 'sectionRichText';
   eyebrow?: string;
   heading?: string;
   body?: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
-      _type: "span";
+      _type: 'span';
       _key: string;
     }>;
-    style?: "normal" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet" | "number";
+    style?: 'normal' | 'h3' | 'h4' | 'blockquote';
+    listItem?: 'bullet' | 'number';
     markDefs?: Array<{
       href?: string;
       openInNewTab?: boolean;
-      _type: "link";
+      _type: 'link';
       _key: string;
     }>;
     level?: number;
-    _type: "block";
+    _type: 'block';
     _key: string;
   }>;
-  align?: "left" | "center";
+  align?: 'left' | 'center';
   background?: Background;
 };
 
 export type Embed = {
-  _type: "embed";
+  _type: 'embed';
   title?: string;
-  mode?: "url" | "html";
+  mode?: 'url' | 'html';
   url?: string;
   html?: string;
   aspect?: string;
 };
 
+export type Page = {
+  _id: string;
+  _type: 'page';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroSubhead?: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: 'image';
+  };
+  sections?: Array<
+    | ({
+        _key: string;
+      } & SectionRichText)
+    | ({
+        _key: string;
+      } & SectionImageText)
+    | ({
+        _key: string;
+      } & SectionFeatureCards)
+    | ({
+        _key: string;
+      } & SectionCardGrid)
+    | ({
+        _key: string;
+      } & SectionStats)
+    | ({
+        _key: string;
+      } & SectionArchShowcase)
+    | ({
+        _key: string;
+      } & SectionGallery)
+    | ({
+        _key: string;
+      } & SectionAccordion)
+    | ({
+        _key: string;
+      } & SectionMediaFeature)
+    | ({
+        _key: string;
+      } & SectionSteps)
+    | ({
+        _key: string;
+      } & SectionDynamicList)
+    | ({
+        _key: string;
+      } & SectionLogos)
+    | ({
+        _key: string;
+      } & SectionQuote)
+    | ({
+        _key: string;
+      } & SectionCtaBand)
+    | ({
+        _key: string;
+      } & SectionForm)
+    | ({
+        _key: string;
+      } & Embed)
+  >;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: 'image';
+  };
+};
+
 export type SermonsPage = {
   _id: string;
-  _type: "sermonsPage";
+  _type: 'sermonsPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -2366,7 +2362,7 @@ export type SermonsPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -2444,7 +2440,7 @@ export type SermonsPage = {
 
 export type EventsPage = {
   _id: string;
-  _type: "eventsPage";
+  _type: 'eventsPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -2456,7 +2452,7 @@ export type EventsPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -2468,7 +2464,7 @@ export type EventsPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   specialEyebrow?: string;
   specialHeadline?: string;
@@ -2539,7 +2535,7 @@ export type EventsPage = {
 
 export type ContactPage = {
   _id: string;
-  _type: "contactPage";
+  _type: 'contactPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -2551,7 +2547,7 @@ export type ContactPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -2563,7 +2559,7 @@ export type ContactPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroScriptAccent?: string;
   formIntroNote?: string;
@@ -2575,7 +2571,7 @@ export type ContactPage = {
     label?: string;
     value?: string;
     href?: string;
-    _type: "contactReason";
+    _type: 'contactReason';
     _key: string;
   }>;
   gettingHereLabel?: string;
@@ -2639,7 +2635,7 @@ export type ContactPage = {
 
 export type Form = {
   _id: string;
-  _type: "form";
+  _type: 'form';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -2647,31 +2643,24 @@ export type Form = {
   slug?: Slug;
   heading?: string;
   intro?: string;
-  mode?: "native" | "embed";
+  mode?: 'native' | 'embed';
   fields?: Array<{
     label?: string;
     name?: string;
-    type?:
-      | "text"
-      | "email"
-      | "tel"
-      | "textarea"
-      | "select"
-      | "checkbox"
-      | "date";
+    type?: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'checkbox' | 'date';
     required?: boolean;
     placeholder?: string;
     helpText?: string;
     options?: Array<string>;
-    width?: "full" | "half";
-    _type: "formField";
+    width?: 'full' | 'half';
+    _type: 'formField';
     _key: string;
   }>;
   submitLabel?: string;
   successMessage?: string;
   consentNote?: string;
   provider?: {
-    service?: "web3forms" | "formspree" | "email";
+    service?: 'web3forms' | 'formspree' | 'email';
     accessKey?: string;
     notifyEmail?: string;
   };
@@ -2681,7 +2670,7 @@ export type Form = {
 
 export type FaqPage = {
   _id: string;
-  _type: "faqPage";
+  _type: 'faqPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -2693,7 +2682,7 @@ export type FaqPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -2705,7 +2694,7 @@ export type FaqPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroScriptAccent?: string;
   categoryOrder?: Array<string>;
@@ -2719,7 +2708,7 @@ export type FaqPage = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    _type: "image";
+    _type: 'image';
   };
   secondaryCta?: CtaBlock;
   note?: string;
@@ -2777,7 +2766,7 @@ export type FaqPage = {
 
 export type AboutPage = {
   _id: string;
-  _type: "aboutPage";
+  _type: 'aboutPage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -2789,7 +2778,7 @@ export type AboutPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -2801,7 +2790,7 @@ export type AboutPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroScriptAccent?: string;
   finalCtaEyebrow?: string;
@@ -2814,7 +2803,7 @@ export type AboutPage = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    _type: "image";
+    _type: 'image';
   };
   featureImage?: {
     asset?: SanityImageAssetReference;
@@ -2822,7 +2811,7 @@ export type AboutPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   muralCaption?: string;
   buildingEyebrow?: string;
@@ -2835,7 +2824,7 @@ export type AboutPage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   whoEyebrow?: string;
   whoHeadline?: string;
@@ -2898,7 +2887,7 @@ export type AboutPage = {
 
 export type HomePage = {
   _id: string;
-  _type: "homePage";
+  _type: 'homePage';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -2910,7 +2899,7 @@ export type HomePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroEyebrow?: string;
   heroHeadline?: string;
@@ -2922,7 +2911,7 @@ export type HomePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroImages?: Array<{
     asset?: SanityImageAssetReference;
@@ -2930,13 +2919,13 @@ export type HomePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
     _key: string;
   }>;
   heroVideo?: {
     asset?: SanityFileAssetReference;
     media?: unknown;
-    _type: "file";
+    _type: 'file';
   };
   heroVideoUrl?: string;
   heroVideoPoster?: {
@@ -2945,7 +2934,7 @@ export type HomePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   heroPrimaryCta?: CtaBlock;
   heroSecondaryCta?: CtaBlock;
@@ -2965,7 +2954,7 @@ export type HomePage = {
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       alt?: string;
-      _type: "image";
+      _type: 'image';
     };
     primaryCtaLabel?: string;
     primaryCtaUrl?: string;
@@ -2988,7 +2977,7 @@ export type HomePage = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    _type: "image";
+    _type: 'image';
   };
   welcomeEyebrow?: string;
   welcomeHeadline?: string;
@@ -3000,7 +2989,7 @@ export type HomePage = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   serviceBand?: {
     worshipLabel?: string;
@@ -3011,7 +3000,7 @@ export type HomePage = {
   weeklyRhythms?: Array<{
     label?: string;
     time?: string;
-    _type: "weeklyRhythm";
+    _type: 'weeklyRhythm';
     _key: string;
   }>;
   eventsEyebrow?: string;
@@ -3085,7 +3074,7 @@ export type HomePage = {
 
 export type MediaTag = {
   _id: string;
-  _type: "media.tag";
+  _type: 'media.tag';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -3093,7 +3082,7 @@ export type MediaTag = {
 };
 
 export type SanityImagePaletteSwatch = {
-  _type: "sanity.imagePaletteSwatch";
+  _type: 'sanity.imagePaletteSwatch';
   background?: string;
   foreground?: string;
   population?: number;
@@ -3101,7 +3090,7 @@ export type SanityImagePaletteSwatch = {
 };
 
 export type SanityImagePalette = {
-  _type: "sanity.imagePalette";
+  _type: 'sanity.imagePalette';
   darkMuted?: SanityImagePaletteSwatch;
   lightVibrant?: SanityImagePaletteSwatch;
   darkVibrant?: SanityImagePaletteSwatch;
@@ -3112,14 +3101,14 @@ export type SanityImagePalette = {
 };
 
 export type SanityImageDimensions = {
-  _type: "sanity.imageDimensions";
+  _type: 'sanity.imageDimensions';
   height?: number;
   width?: number;
   aspectRatio?: number;
 };
 
 export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
+  _type: 'sanity.imageMetadata';
   location?: Geopoint;
   dimensions?: SanityImageDimensions;
   palette?: SanityImagePalette;
@@ -3132,7 +3121,7 @@ export type SanityImageMetadata = {
 
 export type SanityFileAsset = {
   _id: string;
-  _type: "sanity.fileAsset";
+  _type: 'sanity.fileAsset';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -3153,7 +3142,7 @@ export type SanityFileAsset = {
 };
 
 export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
+  _type: 'sanity.assetSourceData';
   name?: string;
   id?: string;
   url?: string;
@@ -3161,7 +3150,7 @@ export type SanityAssetSourceData = {
 
 export type SanityImageAsset = {
   _id: string;
-  _type: "sanity.imageAsset";
+  _type: 'sanity.imageAsset';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -3183,7 +3172,7 @@ export type SanityImageAsset = {
 };
 
 export type Geopoint = {
-  _type: "geopoint";
+  _type: 'geopoint';
   lat?: number;
   lng?: number;
   alt?: number;
@@ -3220,14 +3209,13 @@ export type AllSanitySchemaTypes =
   | SectionQuoteBackgroundImage
   | SectionCtaBandBackground
   | SectionCtaBandBackgroundImage
-  | Page
-  | SanityImageCrop
-  | SanityImageHotspot
-  | Slug
   | SanityFileAssetReference
   | WorshipResource
   | Announcement
   | Sermon
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Slug
   | Event
   | MinistryReference
   | Ministry
@@ -3240,6 +3228,7 @@ export type AllSanitySchemaTypes =
   | ContactPageReference
   | EventsPageReference
   | SermonsPageReference
+  | PageReference
   | CtaBlock
   | FormReference
   | WeddingsPage
@@ -3271,6 +3260,7 @@ export type AllSanitySchemaTypes =
   | SectionImageText
   | SectionRichText
   | Embed
+  | Page
   | SermonsPage
   | EventsPage
   | ContactPage

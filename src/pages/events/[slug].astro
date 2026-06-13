@@ -10,7 +10,7 @@ import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import { resolveSiteSettings } from '@/lib/siteSettings';
 import SanityImage from '@/components/SanityImage.astro';
-import PortableText from '@/components/PortableText';
+import PortableTextStatic from '@/components/PortableTextStatic.astro';
 import FinalCta from '@/components/FinalCta.astro';
 
 export async function getStaticPaths() {
@@ -123,7 +123,7 @@ const pillPrimary =
 
     {event.description && (
       <div class="mx-auto max-w-3xl px-m py-section-lg">
-        <PortableText client:visible value={event.description} className="text-foreground/85 text-lg leading-relaxed" />
+        <PortableTextStatic value={event.description} className="text-foreground/85 text-lg leading-relaxed" />
       </div>
     )}
   </article>

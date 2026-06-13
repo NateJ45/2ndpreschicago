@@ -1,0 +1,48 @@
+name: CI
+
+# This workflow validates the build and runs tests.
+# It does NOT deploy — the live site auto-deploys via Cloudflare Workers
+# on push to master (wired separately in the Cloudflare dashboard).
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      # Public identifiers — safe to inline; no secret or write token here.
+      # Read token (SANITY_API_READ_TOKEN) is intentionally absent: sanityFetch
+      # returns its fallback value when the token is missing, so the build
+      # completes with empty-state pages rather than erroring out.
+      PUBLIC_SANITY_PROJECT_ID: kz01wb83
+      PUBLIC_SANITY_DATASET: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install studio dependencies
+        run: npm ci --prefix studio
+
+      - name: Generate Sanity types
+        run: npm run typegen
+
+      - name: Build Astro
+        run: npm run build
+
+      - name: Build Sanity Studio
+        run: npm --prefix studio run build
+
+      - name: Run tests
+        run: npm test

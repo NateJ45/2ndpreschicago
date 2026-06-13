@@ -50,9 +50,14 @@ const SECTION_MEMBERS = `{
 }`;
 
 // ---- Site settings (used in BaseLayout / Header / Footer) -----------------
+// Module-level memoized promise. The first call triggers the actual Sanity
+// fetch; every subsequent call (across all pages in the same build process)
+// returns the same promise, collapsing 11+ per-page calls to one request.
+let _siteSettingsPromise: Promise<any> | null = null;
 
 export async function getSiteSettings() {
-  return sanityFetch(`*[_type == "siteSettings"][0]{
+  if (_siteSettingsPromise) return _siteSettingsPromise;
+  _siteSettingsPromise = sanityFetch(`*[_type == "siteSettings"][0]{
     title,
     tagline,
     mission,
@@ -89,6 +94,7 @@ export async function getSiteSettings() {
       links[]{ _key, label, href }
     }
   }`, {}, null);
+  return _siteSettingsPromise;
 }
 
 // ---- Announcement (site-wide banner; collection) --------------------------

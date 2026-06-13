@@ -10,6 +10,7 @@ export const site = {
   url: "https://www.secondpreschicago.org",
   storageKeyPrefix: "secondpres",
   themeStorageKey: "secondpres-theme",
+  lang: "en",
 
   // NOTE: contact details (email, pastoral email, phone, address, office hours)
   // and social profile URLs used to live here as hardcoded fallbacks. They were

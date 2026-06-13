@@ -13,20 +13,15 @@
 // published dataset had the value all along (see OPERATIONS.md gotchas).
 // This script is the ground truth for "what is actually in the dataset."
 
-import { readFileSync, existsSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadEnv } from './lib/loadEnv.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-// Same .env parse pattern as the other scripts (see OPERATIONS.md).
-const env = Object.fromEntries(
-  readFileSync(resolve(root, '.env'), 'utf-8')
-    .split('\n')
-    .filter((l) => l && !l.startsWith('#') && l.includes('='))
-    .map((l) => { const [k, ...v] = l.split('='); return [k.trim(), v.join('=').trim()]; }),
-);
+const env = loadEnv(root);
 
 const PROJECT = env.PUBLIC_SANITY_PROJECT_ID;
 const DATASET = env.PUBLIC_SANITY_DATASET ?? 'production';

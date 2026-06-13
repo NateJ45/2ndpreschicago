@@ -15,7 +15,7 @@ import { breadcrumbSchema } from '@/lib/schemas';
 import { site } from '@/data/site';
 import { resolveSiteSettings } from '@/lib/siteSettings';
 import Hero from '@/components/Hero.astro';
-import PortableText from '@/components/PortableText';
+import PortableTextStatic from '@/components/PortableTextStatic.astro';
 import FinalCta from '@/components/FinalCta.astro';
 import Sections from '@/components/Sections.astro';
 
@@ -125,7 +125,7 @@ const schemas = [
                   <p class="mt-s text-foreground/85 leading-relaxed">{f.answer}</p>
                 ) : (
                   <div class="mt-s text-foreground/85 leading-relaxed [&>div>*:first-child]:mt-0">
-                    <PortableText value={f.answer} />
+                    <PortableTextStatic value={f.answer} />
                   </div>
                 )}
               </details>

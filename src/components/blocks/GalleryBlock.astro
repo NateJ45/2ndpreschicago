@@ -16,11 +16,20 @@ const colClass = COLS[block?.columns ?? '3'] ?? COLS['3'];
 
 {
   block && images.length > 0 && (
-    <div class="mx-auto max-w-content px-m">
+    // aria-label provides an accessible name for the gallery region so
+    // screen readers identify it even when there is no visible heading.
+    // When a heading is present it labels the region via aria-labelledby
+    // (the heading id) instead.
+    <div
+      class="mx-auto max-w-content px-m"
+      role="region"
+      aria-label={block.heading ? undefined : (block.eyebrow ?? 'Photo gallery')}
+      aria-labelledby={block.heading ? 'gallery-heading' : undefined}
+    >
       {(block.eyebrow || block.heading || block.intro) && (
         <div class="max-w-2xl mb-l">
           {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
-          {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
+          {block.heading && <h2 id="gallery-heading" class="mt-s font-display text-h2">{block.heading}</h2>}
           {block.intro && <p class="mt-s opacity-80 leading-relaxed">{block.intro}</p>}
         </div>
       )}

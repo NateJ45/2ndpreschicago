@@ -34,6 +34,10 @@ interface Props {
   siteSettings?: any;
   /** When true, emit <meta name="robots" content="noindex, follow">. Used by the 404 page so it never gets indexed. Defaults to false (the page is indexable). */
   noindex?: boolean;
+  /** Open Graph type. Defaults to 'website'. Pass 'article' for sermon and journal post detail pages. */
+  ogType?: 'website' | 'article';
+  /** Article metadata. Only used when ogType is 'article'. */
+  ogArticle?: { publishedAt?: string; author?: string };
 }
 
 const {
@@ -44,6 +48,8 @@ const {
   schemas = [],
   siteSettings = null,
   noindex = false,
+  ogType = 'website',
+  ogArticle,
 } = Astro.props as Props;
 
 const canonical = new URL(Astro.url.pathname, site.url).toString();
@@ -124,7 +130,7 @@ const announcementClass = ANNOUNCEMENT_STYLES[announcement?.style ?? 'info'] ?? 
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={site.lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -133,6 +139,7 @@ const announcementClass = ANNOUNCEMENT_STYLES[announcement?.style ?? 'info'] ?? 
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} Sermons`} href="/sermons/rss.xml" />
     {noindex && <meta name="robots" content="noindex, follow" />}
 
     {/* Mobile browser UI chrome color, theme-aware (Soft Linen / Charcoal Dark). */}
@@ -147,7 +154,13 @@ const announcementClass = ANNOUNCEMENT_STYLES[announcement?.style ?? 'info'] ?? 
         or generate the preload tag from the built CSS manifest. */}
 
     {/* Open Graph */}
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    {ogType === 'article' && ogArticle?.publishedAt && (
+      <meta property="article:published_time" content={ogArticle.publishedAt} />
+    )}
+    {ogType === 'article' && ogArticle?.author && (
+      <meta property="article:author" content={ogArticle.author} />
+    )}
     <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />

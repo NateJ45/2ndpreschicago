@@ -12,18 +12,13 @@
 //      node scripts/seed-hero-keywords.mjs --apply    (write)
 
 import { createClient } from '@sanity/client';
-import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadEnv } from './lib/loadEnv.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
-const env = Object.fromEntries(
-  readFileSync(resolve(root, '.env'), 'utf-8')
-    .split('\n')
-    .filter((l) => l && !l.startsWith('#') && l.includes('='))
-    .map((l) => { const [k, ...v] = l.split('='); return [k.trim(), v.join('=').trim()]; }),
-);
+const env = loadEnv(root);
 
 const client = createClient({
   projectId: env.PUBLIC_SANITY_PROJECT_ID,

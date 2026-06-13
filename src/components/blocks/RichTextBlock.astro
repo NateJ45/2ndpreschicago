@@ -2,7 +2,7 @@
 // Text section block. Inner content only; SectionShell provides the background.
 // Heading/eyebrow inherit the section text color; on dark tones the Portable Text
 // body is forced to inherit (text-current) via descendant overrides so it reads.
-import PortableText from '@/components/PortableText';
+import PortableTextStatic from '@/components/PortableTextStatic.astro';
 
 const { block, defaultTone = 'default' } = Astro.props as { block: any; defaultTone?: string };
 const centered = block?.align === 'center';
@@ -20,7 +20,7 @@ const ptDark = onDark
       {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
       {block.body && (
         <div class={`mt-m leading-relaxed ${centered ? 'text-left' : ''} ${ptDark}`}>
-          <PortableText value={block.body} />
+          <PortableTextStatic value={block.body} />
         </div>
       )}
     </div>

@@ -82,7 +82,15 @@ const schemas = [
 ];
 ---
 
-<BaseLayout {title} {description} {schemas} {siteSettings}>
+<BaseLayout
+  {title}
+  {description}
+  {schemas}
+  {siteSettings}
+  seoImage={sermon.image ?? undefined}
+  ogType="article"
+  ogArticle={{ publishedAt: sermon.date ?? undefined, author: sermon.speaker ?? undefined }}
+>
   <article class="bg-background">
     <div class="mx-auto max-w-3xl px-m pt-section-lg pb-l">
       <p class="text-xs uppercase tracking-widest text-foreground/80 mb-s">
@@ -102,7 +110,7 @@ const schemas = [
             src={embed}
             title={sermon.title}
             loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture"
             allowfullscreen
             class="absolute inset-0 h-full w-full border-0"
           ></iframe>

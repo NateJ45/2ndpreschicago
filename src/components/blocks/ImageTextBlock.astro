@@ -3,7 +3,7 @@
 // Text inherits the section tone color; Portable Text body forced to inherit on
 // dark tones via descendant overrides.
 import SanityImage from '@/components/SanityImage.astro';
-import PortableText from '@/components/PortableText';
+import PortableTextStatic from '@/components/PortableTextStatic.astro';
 
 const { block, defaultTone = 'default' } = Astro.props as { block: any; defaultTone?: string };
 const imageRight = (block?.imageSide ?? 'right') !== 'left';
@@ -26,7 +26,7 @@ const pill =
         {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
         {block.body && (
           <div class={`mt-m leading-relaxed ${ptDark}`}>
-            <PortableText value={block.body} />
+            <PortableTextStatic value={block.body} />
           </div>
         )}
         {block.ctaLabel && block.ctaUrl && (

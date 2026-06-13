@@ -14,27 +14,16 @@
 //
 // Run: node scripts/seed-service-time.mjs
 
-import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createClient } from '@sanity/client';
 
+import { loadEnv } from './lib/loadEnv.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-function loadEnv() {
-  const env = { ...process.env };
-  try {
-    const raw = readFileSync(resolve(root, '.env'), 'utf-8');
-    for (const line of raw.split('\n')) {
-      const m = line.match(/^([A-Z0-9_]+)\s*=\s*(.*)$/);
-      if (m && !env[m[1]]) env[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
-    }
-  } catch { /* .env optional */ }
-  return env;
-}
 
-const env = loadEnv();
+const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
 const token = env.SANITY_API_WRITE_TOKEN;
