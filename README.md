@@ -1,8 +1,28 @@
 # Second Presbyterian Church of Chicago
 
-The website for [Second Presbyterian Church of Chicago](https://www.secondpreschicago.org) (the "Church of the Angels"), a historic, inclusive Reformed congregation (PCUSA) in the South Loop. Built on Astro + Sanity + Cloudflare Workers, migrated from Squarespace.
+The website for **Second Presbyterian Church of Chicago**, the "Church of the Angels," a historic and inclusive Reformed congregation (PCUSA) in the South Loop. Built on Astro + Sanity + Cloudflare Workers, migrated from Squarespace.
 
-Provenance: built on our reusable NCS Astro + Sanity starter. The migration inventory is in `docs/migration/content-inventory.md` and the build plan in `docs/superpowers/plans/2026-05-31-secondpres-church-build.md`.
+**Live:** [secondpreschicago.org](https://www.secondpreschicago.org)
+
+---
+
+## The brief
+
+Second Presbyterian is a National Historic Landmark: a sanctuary of Tiffany glass and painted angels, and a congregation that feeds its neighborhood and welcomes everyone. The site had to carry that weight (history, beauty, a serious worship life) while doing the plain work a church website has to do: help a newcomer plan a first visit, get sermons in front of people, and let the office keep everything current without a developer.
+
+## The work
+
+**A visitor-first front door.** The "I'm New / Plan a Visit" page answers the questions a first-timer actually has: service time, what to expect, parking, kids, accessibility. The one canonical service time is set once and flows to the header, footer, home page, and Google's structured data together, so it can never disagree with itself.
+
+**The building gets its due.** The story of the congregation and the landmark sanctuary, the quartette choir and the 1917 Austin organ, all get real pages instead of a buried paragraph, with a warm editorial design (Instrument Serif over Newsreader; cream, espresso, and bronze) that matches the room.
+
+**The work of the church, online.** Sermons with a livestream call to action and an archive; an events calendar for recurring rhythms and one-time gatherings; the food ministry (the Lunch Bag program and the South Loop Community Table); online giving through Vanco; weddings and venue rental for the historic sanctuary, presented as a real offering with FAQ and pricing.
+
+**Run by the office.** Every page, image, and detail lives in Sanity, so staff update the site themselves and it rebuilds.
+
+## The result
+
+A fast, accessible, editor-run site that looks like the place it represents, and that turns "I might visit that church" into a plan.
 
 ---
 
@@ -10,90 +30,19 @@ Provenance: built on our reusable NCS Astro + Sanity starter. The migration inve
 
 - **Astro 6** (static output) + TypeScript strict mode
 - **Sanity v5** headless CMS (schemas in `studio/schemaTypes/`)
-- **Tailwind 4** via `@tailwindcss/vite` (brand tokens in `src/styles/globals.css`, no `tailwind.config`)
+- **Tailwind 4** via `@tailwindcss/vite` (brand tokens in `src/styles/globals.css`)
 - **React 19** islands for interactivity; Astro components for everything static
-- **Cloudflare Workers** for hosting via `wrangler deploy`
-- **Fonts:** Instrument Serif (display) + Newsreader (body). **Brand:** warm cream `#ECE4DA`, espresso `#36302A`, bronze `#8A6A43`.
+- **Cloudflare Workers** hosting via `wrangler deploy`
 
----
+Provenance: built on the reusable [NCS Astro + Sanity church starter](https://github.com/NateJ45/ncs-church-starter). Migration inventory in `docs/migration/content-inventory.md`.
 
-## Routes
+## Running it locally
 
-| Route | Description |
-|---|---|
-| `/` | Home (sanctuary hero, welcome, worship times, get-involved, events teaser) |
-| `/worship` | The "I'm New / Plan a Visit" page: service time, what to expect, parking, kids, accessibility |
-| `/about` | The church's story + the landmark building |
-| `/what-we-believe` | Beliefs, PCUSA identity, core values |
-| `/music` | The quartette choir and the 1917 Austin organ |
-| `/pastor-staff` | Pastors & staff bios |
-| `/grow`, `/serve`, `/kids` | Get Involved: community groups, outreach, families |
-| `/food` | Food ministry: Lunch Bag + South Loop Community Table |
-| `/use-our-space` | Venue rental and space sharing |
-| `/weddings` | Weddings in the historic sanctuary (FAQ + pricing) |
-| `/give` | Online giving (Vanco), by mail, designated gifts |
-| `/events`, `/events/[slug]` | Events calendar (recurring + one-time) |
-| `/sermons`, `/sermons/[slug]` | Sermons: featured latest + archive + livestream |
-| `/contact` | Contact details + map |
-| `/faq` | Common visitor questions |
-| `/privacy`, `/404` | Privacy policy, custom 404 |
-
-Nav: **I'm New** (the worship/visit page), **About Us** (What We Believe / Music / Pastors & Staff), **Get Involved** (Grow / Serve / Kids / Food Ministry), **Watch** (sermons), **Events**, **Space** (Use Our Space / Weddings / Friends of Historic Second Church), **Give**.
-
----
-
-## How content works
-
-Every page renders from inline content in `src/pages/*.astro` today, so the site is fully functional **with no Sanity project connected**. Sanity is an optional, turnkey upgrade:
-
-- **Events** is a live Sanity collection (`event` + `eventsPage`), with a static fallback list of weekly rhythms so `/events` is never empty.
-- `siteSettings`, `homePage`, `aboutPage`, `privacyPage`, and `notFoundPage` are read from Sanity when present, with inline fallbacks otherwise.
-
-See `CLAUDE.md` for the Foundation-vs-Safe-to-edit taxonomy before changing anything structural.
-
----
-
-## Local dev
-
-```bash
+```sh
 npm install
-npm --prefix studio install
-npm run dev          # Astro dev server at localhost:4321
-npm run studio:dev   # Sanity Studio at localhost:3333 (once a project is configured)
+npm run dev
 ```
 
 ---
 
-## Connect Sanity (optional, for editor-managed content)
-
-1. Create a project at [sanity.io/manage](https://sanity.io/manage) and copy `.env.example` to `.env`, filling in `PUBLIC_SANITY_PROJECT_ID` + tokens.
-2. Seed content:
-   ```bash
-   node scripts/seed-core.mjs        # siteSettings + about/privacy/404 + home SEO
-   node modules/events/seed.mjs      # eventsPage + weekly rhythms + an example event
-   ```
-3. `npm run typegen` then `npm run studio:deploy`.
-
----
-
-## Deploy
-
-```bash
-npm run build        # = typegen-free astro build; use build:full to also run typegen
-npm run deploy       # = npm run build + wrangler deploy
-```
-
-After any Sanity schema change, run `npm run typegen` then `npm run studio:deploy`. See `CLAUDE.md` for the conventions and the gotchas that bite.
-
----
-
-## Docs
-
-| Path | What it covers |
-|---|---|
-| `CLAUDE.md` | Architecture, conventions, the rules that bite, Foundation taxonomy |
-| `OPERATIONS.md` | Tactical playbook (deploy, patch content, audits) |
-| `docs/migration/content-inventory.md` | Everything pulled from the old Squarespace site |
-| `docs/brand/voice.md` | The church's voice and tone |
-| `docs/modules/events.md` | The Events module enable guide |
-| `docs/superpowers/plans/2026-05-31-secondpres-church-build.md` | The build plan |
+Built by [Nixon Creative Studio](https://nixoncreativestudio.com).
