@@ -1,6 +1,6 @@
 # NCS Astro + Sanity Starter — CLAUDE.md
 
-This is the always-loaded reference for the `ncs-astro-sanity-starter` codebase: the conventions and landmines an agent needs on every task. Deep detail for specific areas (theme, components, SEO, performance, Sanity, deployment) lives under `docs/agent/` and is read on demand. The topic index at the bottom is the map.
+This is the always-loaded reference for the `secondpreschicago` codebase (built on the `ncs-astro-sanity-starter` template): the conventions and landmines an agent needs on every task. Deep detail for specific areas (theme, components, SEO, performance, Sanity, deployment) lives under `docs/agent/` and is read on demand. The topic index at the bottom is the map.
 
 > **This repository is the live site for Second Presbyterian Church of Chicago**, built on the NCS starter and migrated from Squarespace. The architecture and conventions below still apply. Project specifics: the Services page is removed, an **Events** module is enabled, and **Sanity is the single source of truth for all site content** (see the callout below). See `README.md`, `docs/migration/content-inventory.md`, and the build plan under `docs/superpowers/plans/`.
 >
@@ -230,6 +230,8 @@ Read these on demand. They are NOT auto-loaded, and they are referenced as plain
 
 | Area | Doc |
 |---|---|
+| **Open patches + waiting-on-a-human queue (read early)** | `docs/PENDING.md` |
+| **Which gate covers what** | `docs/TESTING.md` |
 | **Design brief (one-file system: palette, type, motion, idioms, hard rules)** | `design.md` — attach it (plus screenshots) for any visual work |
 | Stack detail + astro.config landmines | `docs/agent/stack-and-config.md` |
 | Page + section architecture, nav, visibility toggles | `docs/agent/page-architecture.md` |

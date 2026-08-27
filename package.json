@@ -1,5 +1,5 @@
 {
-  "name": "ncs-astro-sanity-starter",
+  "name": "secondpreschicago",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -7,7 +7,11 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/free-dist.mjs",
     "build": "astro build",
+    "free-dist": "node scripts/free-dist.mjs",
+    "parity": "node scripts/page-parity.mjs",
+    "sync-check": "node scripts/sync-check.mjs",
     "build:full": "npm run typegen && astro build",
     "preview": "wrangler dev",
     "astro": "astro",

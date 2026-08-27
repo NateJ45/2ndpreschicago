@@ -1,0 +1,63 @@
+name: Uptime check
+
+# Added 2026-08-27 (PORTS.md card 7, pattern from presacademy).
+#
+# A lightweight safety net: hourly, confirm the live site's key pages return 200.
+# A failed run notifies through GitHub. This is a net, not monitoring - GitHub's
+# scheduler is best-effort and can be delayed under load. For real monitoring,
+# point a dedicated service at the homepage (UptimeRobot's free tier is plenty).
+#
+# The schedule is ON. presacademy commented its schedule out to stop an hourly
+# run billing a minute to log "skipping"; that argument does not apply here,
+# because NateJ45/2ndpreschicago is a PUBLIC repository (confirmed by
+# `gh repo view` on 2026-08-27) and Actions minutes are free on public repos.
+# The SITE_URL gate below means an unconfigured run exits 0 immediately.
+#
+# ACTIVATION (waiting on a human as of 2026-08-27): the SITE_URL repo VARIABLE
+# (not a secret) is unset, so every run warns and exits 0. Set it at DNS
+# cutover:
+#     gh variable set SITE_URL -R NateJ45/2ndpreschicago -b https://www.secondpreschicago.org
+#
+# DO NOT SET IT YET. Curl-verified 2026-08-27: https://www.secondpreschicago.org
+# still answers `Server: Squarespace` and 404s /about, /faq and /privacy, so it
+# is the OLD site and DNS has not cut over. Setting SITE_URL now would fail this
+# check hourly against routes the Squarespace site does not have.
+#
+# TRAILING SLASHES ARE LOAD-BEARING. Verified 2026-08-27 against the real built
+# worker (`wrangler dev -c dist/server/wrangler.json`): Cloudflare's static-asset
+# handling answers /worship with a 307 to /worship/, and curl here does NOT
+# follow redirects, so a path written without its trailing slash fails the check
+# with a 307. Only "/" and real files (e.g. /sitemap-index.xml) are slash-free.
+#
+# ROUTES: chosen to exercise different data paths rather than three flavours of
+# the homepage - the home singleton, a CMS-driven page, two collection indexes,
+# and the static legal page.
+
+on:
+  schedule:
+    - cron: '17 * * * *' # hourly, offset off the top of the hour
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check key pages return 200
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          if [ -z "$SITE_URL" ]; then
+            echo "::warning::SITE_URL variable not set; skipping uptime check."
+            exit 0
+          fi
+          base="${SITE_URL%/}"
+          fail=0
+          for path in "/" "/worship/" "/events/" "/sermons/" "/privacy/"; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 25 "${base}${path}")
+            echo "${code}  ${base}${path}"
+            if [ "$code" != "200" ]; then fail=1; fi
+          done
+          if [ "$fail" = "1" ]; then
+            echo "::error::One or more key pages did not return HTTP 200."
+            exit 1
+          fi

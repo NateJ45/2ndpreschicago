@@ -25,6 +25,11 @@ tmp/
 studio/schema.json
 studio/dist/
 
+# Sanity asset-id cache written by scripts/lib/sanity-lib.mjs (2026-08-27).
+# Machine-local: it maps a repo-relative file path to the asset _id that upload
+# produced, so a re-run of a seed never re-uploads. Never versioned.
+scripts/.asset-map.json
+
 # transient commit message files
 .git-commit-msg.tmp
 
