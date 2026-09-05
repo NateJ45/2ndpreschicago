@@ -23,6 +23,21 @@ updates:
         update-types: ["minor", "patch"]
     open-pull-requests-limit: 5
 
+  # studio/ is a SEPARATE npm project (own package.json + lockfile) this
+  # config never watched, so it silently drifted -- same gap found and fixed
+  # on reid-design-site and mas-monograms 2026-09-05.
+  - package-ecosystem: npm
+    directory: /studio
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+      timezone: America/New_York
+    groups:
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+    open-pull-requests-limit: 5
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
