@@ -34,7 +34,7 @@ A fast, accessible, editor-run site that looks like the place it represents, and
 - **React 19** islands for interactivity; Astro components for everything static
 - **Cloudflare Workers** hosting via `wrangler deploy`
 
-Provenance: built on the reusable [NCS Astro + Sanity church starter](https://github.com/NateJ45/ncs-church-starter). Migration inventory in `docs/migration/content-inventory.md`.
+Provenance: built on the reusable NCS Astro + Sanity church starter, which was archived on 2026-09-06. The live library of record for shared code is now [ncs-astro-sanity-starter](https://github.com/NateJ45/ncs-astro-sanity-starter); CI checks this repo's canonical files against it on every run. Migration inventory in `docs/migration/content-inventory.md`.
 
 ## Running it locally
 
