@@ -17,6 +17,8 @@ import { splitScriptAccent } from '@/lib/scriptAccent';
 import { ChevronDown } from 'lucide-react';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import HeroRotatingWordScript from '@/components/HeroRotatingWordScript.astro';
+import HeroFillScript from '@/components/HeroFillScript.astro';
 
 interface CtaBlock {
   label?: string;
@@ -171,94 +173,14 @@ const wrapperHeight =
     wire the scroll cue to glide past the hero. Runs synchronously so the
     height is set before first paint (no layout shift), then refreshes on
     load, resize, and View Transitions navigations. */}
-{size === 'tall' && (
-  <script is:inline>
-    (function () {
-      function setHeaderH() {
-        var header = document.querySelector('header.site-header');
-        if (header) {
-          document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
-        }
-      }
-      function wireCue() {
-        var cue = document.querySelector('[data-scroll-cue]');
-        if (!cue || cue.dataset.wired === '1') return;
-        cue.dataset.wired = '1';
-        cue.addEventListener('click', function () {
-          var hero = cue.closest('section');
-          if (!hero) return;
-          var hh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 0;
-          var top = hero.offsetTop + hero.offsetHeight - hh;
-          if (window.lenis && typeof window.lenis.scrollTo === 'function') {
-            window.lenis.scrollTo(top);
-          } else {
-            window.scrollTo({ top: top, behavior: 'smooth' });
-          }
-        });
-      }
-      setHeaderH();
-      wireCue();
-      if (!window.__heroLayoutBound) {
-        window.__heroLayoutBound = true;
-        window.addEventListener('resize', setHeaderH, { passive: true });
-        window.addEventListener('load', setHeaderH);
-        document.addEventListener('astro:page-load', function () { setHeaderH(); wireCue(); });
-      }
-    })();
-  </script>
-)}
+{size === 'tall' && <HeroFillScript />}
 
 {/* Rotating-word animator. Runs once per session: cycles the wrapped word
     through alternates every 850ms for ~5 seconds, then locks back to the
     original. Skipped under prefers-reduced-motion or when sessionStorage
     already holds the seen flag. Inline + idempotent so View Transitions
     don't re-trigger on every navigation. */}
-{rotateEnabled && (
-  <script is:inline>
-    (function () {
-      try {
-        if (sessionStorage.getItem('hero-word-rotated') === '1') return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      } catch (_) { /* ignore */ }
-
-      function init() {
-        const el = document.querySelector('[data-rotating-word]');
-        if (!el || el.dataset.rotated === '1') return;
-        el.dataset.rotated = '1';
-        let words;
-        try { words = JSON.parse(el.dataset.rotatingWords || '[]'); } catch (_) { return; }
-        if (!Array.isArray(words) || words.length < 2) return;
-
-        const original = words[0];
-        const intervalMs = 850;
-        // words.length ticks lands us on the original at the final cycle
-        // because words[length % length] === words[0] === original. The
-        // earlier `length + 1` produced one redundant tick that flashed the
-        // original word twice in a row at the end of the sequence.
-        const totalCycles = words.length;
-        let count = 0;
-
-        const id = setInterval(() => {
-          count += 1;
-          const target = count >= totalCycles ? original : words[count % words.length];
-          el.style.transition = 'opacity 200ms ease-out';
-          el.style.opacity = '0';
-          setTimeout(() => {
-            el.textContent = target;
-            el.style.opacity = '1';
-          }, 200);
-
-          if (count >= totalCycles) {
-            clearInterval(id);
-            try { sessionStorage.setItem('hero-word-rotated', '1'); } catch (_) {}
-          }
-        }, intervalMs);
-      }
-      init();
-      document.addEventListener('astro:page-load', init);
-    })();
-  </script>
-)}
+{rotateEnabled && <HeroRotatingWordScript />}
 
 {hasImage ? (
   <section

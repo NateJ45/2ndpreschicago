@@ -25,6 +25,7 @@
 
 import SanityImage from '@/components/SanityImage.astro';
 import { urlFor } from '@/lib/sanity';
+import ArchMediaScript from '@/components/ArchMediaScript.astro';
 
 interface SanityImageObject {
   asset?: { _ref?: string; _id?: string };
@@ -127,50 +128,4 @@ const needsScript = hasVideo || isSlideshow;
   />
 )}
 
-{needsScript && (
-  <script is:inline>
-    (function () {
-      // Drive every arched media instance on the page. Idempotent: each call
-      // tears down the previous timers first, so re-running (View Transitions,
-      // multiple copies of this inline script) never stacks intervals.
-      function initArchMedia() {
-        if (window.__archMediaTimers) {
-          window.__archMediaTimers.forEach(function (t) { clearInterval(t); });
-        }
-        window.__archMediaTimers = [];
-
-        var reduce = false;
-        try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (_) {}
-
-        // Looping videos: honor reduced motion (hold on the poster frame).
-        document.querySelectorAll('video[data-arch-video]').forEach(function (v) {
-          try { if (reduce) v.pause(); else v.play().catch(function () {}); } catch (_) {}
-        });
-
-        if (reduce) return; // slideshows stay on their first slide, static
-
-        document.querySelectorAll('[data-arch-slideshow]').forEach(function (box) {
-          var slides = box.querySelectorAll('.hero-slide');
-          if (slides.length < 2) return;
-          var current = 0;
-          var STEP_MS = 4500; // ~3s hold + 1.5s cross-fade
-          var timer = setInterval(function () {
-            if (document.hidden) return; // pause while the tab is hidden
-            slides[current].classList.remove('is-active');
-            current = (current + 1) % slides.length;
-            slides[current].classList.add('is-active');
-          }, STEP_MS);
-          window.__archMediaTimers.push(timer);
-        });
-      }
-
-      initArchMedia();
-      // Bind the View Transitions re-init exactly once, no matter how many
-      // copies of this inline script the page emitted.
-      if (!window.__archMediaBound) {
-        window.__archMediaBound = true;
-        document.addEventListener('astro:page-load', initArchMedia);
-      }
-    })();
-  </script>
-)}
+{needsScript && <ArchMediaScript />}

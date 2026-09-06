@@ -1,0 +1,49 @@
+---
+// Foundation, edit with care
+// Background slideshow cycler. Rendered by HeroBackground.astro when the hero
+// has two or more background images: cross-fades .hero-slide elements inside
+// [data-hero-slideshow] and re-inits across View Transitions without stacking
+// timers.
+//
+// Lives in its own component because prettier-plugin-astro cannot parse a
+// <script> nested inside a template expression ({cond && (<script>...)}):
+// it reads the script body's braces as expression delimiters. Rendering the
+// script from a component under the same condition keeps the built markup
+// identical and lets the parent file be formatted.
+---
+
+<script is:inline>
+  (function () {
+    function initHeroSlideshow() {
+      // Tear down any timer from a previous page first. The tab and its
+      // document-level listeners persist across Astro View Transitions, so
+      // re-wiring without this would stack intervals on detached slides.
+      if (window.__heroSlideshowTimer) {
+        clearInterval(window.__heroSlideshowTimer);
+        window.__heroSlideshowTimer = null;
+      }
+      var box = document.querySelector('[data-hero-slideshow]');
+      if (!box) return;
+      var slides = box.querySelectorAll('.hero-slide');
+      if (slides.length < 2) return;
+      var reduce = false;
+      try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (_) {}
+      if (reduce) return; // first slide stays visible, no motion
+
+      var current = 0;
+      var STEP_MS = 4500; // 3s hold + 1.5s cross-fade
+      window.__heroSlideshowTimer = setInterval(function () {
+        if (document.hidden) return; // pause while the tab is hidden
+        slides[current].classList.remove('is-active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('is-active');
+      }, STEP_MS);
+    }
+    initHeroSlideshow();
+    // Register the navigation re-init once so the listener never stacks.
+    if (!window.__heroSlideshowBound) {
+      window.__heroSlideshowBound = true;
+      document.addEventListener('astro:page-load', initHeroSlideshow);
+    }
+  })();
+</script>
