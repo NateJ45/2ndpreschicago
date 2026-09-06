@@ -35,9 +35,14 @@ scripts/.parity
 scripts/free-dist.mjs
 scripts/lib/sanity-lib.mjs
 scripts/page-parity.mjs
-scripts/sync-check.mjs
 scripts/with-workerd.mjs
 src/lib/contrast.ts
+
+# NOTE (2026-09-06): scripts/sync-check.mjs was in the list above until the
+# starter formatted it in one family-wide pass and this repo took the formatted
+# bytes (PORTS.md card 36). Prettier is now a fixed point on it, so format:check
+# is a second guard on the canonical text rather than a threat to it. Do not
+# re-add it. The five files still listed are untouched by that pass.
 
 # Wrangler's generated runtime types.
 worker-configuration.d.ts
