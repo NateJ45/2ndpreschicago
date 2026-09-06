@@ -314,7 +314,12 @@ function isGroupActive(items: { href: string }[]) {
       <span class="font-display text-xl leading-none text-foreground sm:text-2xl"
         >Second Presbyterian</span
       >
-      <span class="mt-0.5 font-display text-base leading-tight text-foreground/70 sm:text-lg"
+      {
+        /* /80, not /70: at 18px normal weight the /70 mix measured 4.48:1 on
+           paper (#ece4da), a hair under the 4.5:1 AA floor axe enforces.
+           Same fix as the eyebrow gotcha in OPERATIONS.md. */
+      }
+      <span class="mt-0.5 font-display text-base leading-tight text-foreground/80 sm:text-lg"
         >Church of Chicago</span
       >
     </a>

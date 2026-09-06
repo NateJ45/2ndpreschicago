@@ -69,7 +69,13 @@ const hasSanityBody = Boolean(page?.body);
     size="short"
   />
 
-  <section class="bg-background" aria-label="Privacy policy">
+  {
+    /* "Privacy policy text", not "Privacy policy": the hero above is already a
+       landmark named by its heading, and two landmarks with the same accessible
+       name fail axe landmark-unique (a screen-reader user cannot tell them
+       apart in the landmark list). */
+  }
+  <section class="bg-background" aria-label="Privacy policy text">
     <div class="mx-auto max-w-3xl px-m py-section-lg">
       {
         lastUpdated && (

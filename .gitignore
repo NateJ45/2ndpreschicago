@@ -41,3 +41,8 @@ scripts/.asset-map.json
 
 # Local Sanity dataset backups (not versioned)
 backups/
+
+# Playwright output (family test standard)
+playwright-report/
+test-results/
+.lighthouseci/
