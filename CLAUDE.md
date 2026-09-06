@@ -63,6 +63,21 @@ Standalone scripts:
 
 `public/og-default.png` is committed to the repo because it is a real asset shipped to visitors. `src/lib/sanity.types.ts` is also committed so collaborators don't need to run typegen to see what the schemas look like in code.
 
+## Quality gates (family test standard, 2026-09-06)
+
+The same gates every Astro site in the family runs; `docs/TESTING.md` maps which gate covers what. Before pushing:
+
+- `npm run check` = `astro check && npm run lint`. The fast pre-push gate. `tsconfig.json` excludes `studio/` and `modules/`, so `astro check` covers the site only (the Studio type-checks in its own build).
+- `npm run format:check` (prettier with the astro + tailwind plugins; `npm run format` fixes). `.prettierignore` lists what stays hand-formatted.
+- `npm run test:unit` = the `node --test` suites in `src/lib/*.test.ts`.
+- `npm test` = Playwright: smoke, axe in light and dark, a dark-mode focus-indicator check on the form routes, and reflow at 320/768/1024/1440. It builds the site and serves `dist/client` itself; `npx playwright test --project=chromium --workers=2` is the quick local loop, `npm run test:ui` the interactive one.
+- `npm run check:links` after a build: linkinator over `dist/client`.
+- `npm run check:full` is the older full sweep (typegen, build, studio build, unit tests).
+
+CI (`.github/workflows/ci.yml`) runs all of the above on every push to `main` and `staging` and on PRs; `lighthouse.yml` runs lhci against `lighthouserc.json` with accessibility as a hard gate. Push to `staging` first to see them green on the real runners.
+
+**Gotcha: never put a `<script>` inside a template expression** (`{cond && (<script>...</script>)}`). prettier-plugin-astro hands the script body to the JSX parser and `format:check` fails. Render the script from its own component under the same condition instead: `HeroFillScript.astro`, `HeroRotatingWordScript.astro`, `HeroSlideshowScript.astro` and `ArchMediaScript.astro` are the pattern.
+
 ---
 
 ## Code conventions

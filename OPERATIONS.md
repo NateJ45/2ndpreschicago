@@ -295,6 +295,25 @@ Re-run after large Canvas batches.
 
 ---
 
+## Run the quality gates before a push
+
+Same gates as every site in the family (see `docs/TESTING.md` for what each one covers):
+
+```bash
+npm run check          # astro check + eslint (fast)
+npm run format:check   # prettier; `npm run format` to fix
+npm run test:unit      # node --test over src/lib/*.test.ts
+npm test               # Playwright: smoke, axe light + dark, focus rings, reflow (builds + serves dist/client itself)
+npm run build && npm run check:links   # every internal link in dist/client resolves
+npm run build && npx lhci autorun      # Lighthouse CI against lighthouserc.json
+```
+
+Quick local loop for the browser suites: `npx playwright test --project=chromium --workers=2`. If a stale `http-server` is still on port 4321 from an earlier run, Playwright reuses it and tests the OLD build; kill it first (`npm run free-dist` on Windows).
+
+CI runs the same set on every push to `main` and `staging` plus PRs (`ci.yml`, `lighthouse.yml`). Push to `staging` first and watch `gh run list --branch staging`.
+
+---
+
 ## Run Lighthouse / performance audits
 
 If a regression is suspected:
