@@ -4,13 +4,13 @@
 // Replace these placeholders with your project's real values before launch.
 
 export const site = {
-  name: "Second Presbyterian Church of Chicago",
-  studio: "Second Presbyterian Church of Chicago",
-  domain: "secondpreschicago.org",
-  url: "https://www.secondpreschicago.org",
-  storageKeyPrefix: "secondpres",
-  themeStorageKey: "secondpres-theme",
-  lang: "en",
+  name: 'Second Presbyterian Church of Chicago',
+  studio: 'Second Presbyterian Church of Chicago',
+  domain: 'secondpreschicago.org',
+  url: 'https://www.secondpreschicago.org',
+  storageKeyPrefix: 'secondpres',
+  themeStorageKey: 'secondpres-theme',
+  lang: 'en',
 
   // NOTE: contact details (email, pastoral email, phone, address, office hours)
   // and social profile URLs used to live here as hardcoded fallbacks. They were
@@ -22,18 +22,18 @@ export const site = {
   // Brand colors are also declared in src/styles/globals.css.
   // Mirrored here for any script that needs them outside CSS (OG generator, structured data, etc.).
   brandColors: {
-    primary: "#8A6A43",       // Bronze
-    primaryDark: "#6B4F2E",   // Bronze Dark
-    accent: "#36302A",        // Espresso Ink
-    accentDark: "#241F1A",    // Espresso Dark
-    secondary: "#B9A590",     // Clay
-    tertiary: "#A89A86",      // Warm Stone
-    bg: "#ECE4DA",            // Paper (warm cream)
-    bgSoft: "#F6F3EC",        // Paper Soft
-    border: "#DED6C8",        // Warm Border
-    chapel: "#1E423B",        // Chapel green (Tiffany-glass) — utility bar, footer, CTA
-    chapelDeep: "#16322C",    // Chapel green, deepest base
-    gold: "#A07D45",          // Liturgical gold accent
+    primary: '#8A6A43', // Bronze
+    primaryDark: '#6B4F2E', // Bronze Dark
+    accent: '#36302A', // Espresso Ink
+    accentDark: '#241F1A', // Espresso Dark
+    secondary: '#B9A590', // Clay
+    tertiary: '#A89A86', // Warm Stone
+    bg: '#ECE4DA', // Paper (warm cream)
+    bgSoft: '#F6F3EC', // Paper Soft
+    border: '#DED6C8', // Warm Border
+    chapel: '#1E423B', // Chapel green (Tiffany-glass) — utility bar, footer, CTA
+    chapelDeep: '#16322C', // Chapel green, deepest base
+    gold: '#A07D45', // Liturgical gold accent
   },
 
   // Static asset paths under public/
@@ -43,12 +43,12 @@ export const site = {
   // stay only for the OG image + favicon, which are still served straight
   // from public/.
   assets: {
-    ogDefault: "/og-default.png",
-    favicon: "/favicon.png",
+    ogDefault: '/og-default.png',
+    favicon: '/favicon.png',
   },
 
   // Public repo URL (used in footer credit if shown)
-  repo: "",
+  repo: '',
 } as const;
 
 export type Site = typeof site;

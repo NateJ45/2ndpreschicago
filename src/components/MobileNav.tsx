@@ -22,13 +22,7 @@
 import { useState } from 'react';
 import { Menu, Mail, Phone, ChevronRight } from 'lucide-react';
 import { IconBrandInstagram, IconBrandFacebook } from '@tabler/icons-react';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import ThemeToggle from './ThemeToggle';
 import { telHref } from '@/lib/phone';
 
@@ -67,8 +61,7 @@ export default function MobileNav({ links, siteSettings }: Props) {
   const [open, setOpen] = useState(false);
 
   const tagline =
-    siteSettings?.tagline ??
-    'Serving and celebrating Jesus for the good of the world.';
+    siteSettings?.tagline ?? 'Serving and celebrating Jesus for the good of the world.';
   const email = siteSettings?.email;
   const phone = siteSettings?.phone;
   const ig = siteSettings?.socialInstagram;
@@ -77,24 +70,24 @@ export default function MobileNav({ links, siteSettings }: Props) {
   const close = () => setOpen(false);
 
   return (
-    <div className="lg:hidden absolute right-m top-1/2 -translate-y-1/2">
+    <div className="absolute top-1/2 right-m -translate-y-1/2 lg:hidden">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <button
             type="button"
             aria-label="Open menu"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-foreground hover:bg-accent transition-colors"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-foreground transition-colors hover:bg-accent"
           >
             <Menu size={22} />
           </button>
         </SheetTrigger>
         <SheetContent
           side="right"
-          className="w-[min(380px,90vw)] sm:max-w-none bg-background border-t-4 border-t-primary p-0 gap-0 flex flex-col overflow-y-auto"
+          className="flex w-[min(380px,90vw)] flex-col gap-0 overflow-y-auto border-t-4 border-t-primary bg-background p-0 sm:max-w-none"
         >
           {/* Eyebrow header. */}
-          <SheetHeader className="px-l pt-xl pb-m">
-            <SheetTitle className="text-xs uppercase tracking-eyebrow text-foreground/80 font-body font-normal">
+          <SheetHeader className="pt-xl px-l pb-m">
+            <SheetTitle className="font-body text-xs font-normal tracking-eyebrow text-foreground/80 uppercase">
               Menu
             </SheetTitle>
           </SheetHeader>
@@ -104,14 +97,14 @@ export default function MobileNav({ links, siteSettings }: Props) {
             <a
               href="/worship"
               onClick={close}
-              className="block w-full px-m py-m text-center rounded-full bg-primary text-primary-foreground text-xs uppercase tracking-eyebrow font-semibold hover:bg-primary-dark transition-colors"
+              className="block w-full rounded-full bg-primary px-m py-m text-center text-xs font-semibold tracking-eyebrow text-primary-foreground uppercase transition-colors hover:bg-primary-dark"
             >
               Plan a Visit
             </a>
           </div>
 
           {/* Tagline in display serif for editorial feel. */}
-          <p className="px-l pb-l font-display italic text-h4 text-foreground/85 leading-snug">
+          <p className="px-l pb-l font-display text-h4 leading-snug text-foreground/85 italic">
             {tagline}
           </p>
 
@@ -124,7 +117,7 @@ export default function MobileNav({ links, siteSettings }: Props) {
                     key={item.href}
                     href={item.href}
                     onClick={close}
-                    className="flex items-center px-l py-s text-lg font-display text-foreground hover:bg-muted hover:text-link transition-colors"
+                    className="flex items-center px-l py-s font-display text-lg text-foreground transition-colors hover:bg-muted hover:text-link"
                   >
                     {item.label}
                   </a>
@@ -137,7 +130,7 @@ export default function MobileNav({ links, siteSettings }: Props) {
                 <div key={item.label}>
                   {/* Group heading — visually distinct from flat items. Not
                       a link itself; the sub-items carry the real hrefs. */}
-                  <p className="px-l pt-m pb-xs text-xs uppercase tracking-eyebrow text-foreground/80">
+                  <p className="px-l pt-m pb-xs text-xs tracking-eyebrow text-foreground/80 uppercase">
                     {item.label}
                   </p>
                   {item.items.map((sub) => (
@@ -145,9 +138,13 @@ export default function MobileNav({ links, siteSettings }: Props) {
                       key={sub.href}
                       href={sub.href}
                       onClick={close}
-                      className="flex items-center gap-xs pl-[calc(theme(spacing.l)+0.5rem)] pr-l py-xs text-base font-body text-foreground hover:bg-muted hover:text-link transition-colors"
+                      className="flex items-center gap-xs py-xs pr-l pl-[calc(theme(spacing.l)+0.5rem)] font-body text-base text-foreground transition-colors hover:bg-muted hover:text-link"
                     >
-                      <ChevronRight size={12} className="shrink-0 text-foreground/40" aria-hidden="true" />
+                      <ChevronRight
+                        size={12}
+                        className="shrink-0 text-foreground/40"
+                        aria-hidden="true"
+                      />
                       {sub.label}
                     </a>
                   ))}
@@ -161,7 +158,7 @@ export default function MobileNav({ links, siteSettings }: Props) {
 
           {/* Contact + socials + theme. */}
           <div className="border-t border-border-soft px-l pt-m pb-s">
-            <p className="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">
+            <p className="mb-s text-xs tracking-eyebrow text-foreground/80 uppercase">
               Get in touch
             </p>
             {email && (
@@ -190,7 +187,7 @@ export default function MobileNav({ links, siteSettings }: Props) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-soft text-foreground hover:bg-primary-dark hover:text-white hover:border-primary-dark transition-colors"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-soft text-foreground transition-colors hover:border-primary-dark hover:bg-primary-dark hover:text-white"
                 >
                   <IconBrandInstagram size={20} stroke={1.5} />
                 </a>
@@ -201,7 +198,7 @@ export default function MobileNav({ links, siteSettings }: Props) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-soft text-foreground hover:bg-primary-dark hover:text-white hover:border-primary-dark transition-colors"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-soft text-foreground transition-colors hover:border-primary-dark hover:bg-primary-dark hover:text-white"
                 >
                   <IconBrandFacebook size={20} stroke={1.5} />
                 </a>
@@ -216,9 +213,11 @@ export default function MobileNav({ links, siteSettings }: Props) {
               URLs come from Astro's image pipeline via Header.astro's
               getImage() calls, so this is a WebP file with the same hash
               as the desktop header logo (free cache hit). */}
-          <div className="border-t border-border-soft px-l py-l flex flex-col items-center text-center leading-none">
+          <div className="flex flex-col items-center border-t border-border-soft px-l py-l text-center leading-none">
             <span className="font-display text-xl text-foreground">Second Presbyterian</span>
-            <span className="font-display text-base text-foreground/70 mt-0.5">Church of Chicago</span>
+            <span className="mt-0.5 font-display text-base text-foreground/70">
+              Church of Chicago
+            </span>
           </div>
         </SheetContent>
       </Sheet>

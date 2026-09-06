@@ -55,14 +55,17 @@ const FALLBACK_REASONS = [
   { label: 'Use our space', value: 'Inquire about the building', href: '/use-our-space' },
 ];
 
-const reasons: typeof FALLBACK_REASONS = page?.contactReasons?.length ? page.contactReasons : FALLBACK_REASONS;
+const reasons: typeof FALLBACK_REASONS = page?.contactReasons?.length
+  ? page.contactReasons
+  : FALLBACK_REASONS;
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
     eyebrow={page?.heroEyebrow ?? 'Contact'}
     headline={page?.heroHeadline ?? 'Get in touch'}
-    subhead={page?.heroSubhead ?? 'The best way to meet us is on a Sunday morning. Until then, here is how to reach the church office.'}
+    subhead={page?.heroSubhead ??
+      'The best way to meet us is on a Sunday morning. Until then, here is how to reach the church office.'}
     keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroContact}
@@ -72,21 +75,31 @@ const reasons: typeof FALLBACK_REASONS = page?.contactReasons?.length ? page.con
   />
 
   <section class="bg-background" aria-label="Contact details">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 lg:grid-cols-2 gap-l lg:gap-section-md items-start">
+    <div
+      class="mx-auto grid max-w-content grid-cols-1 items-start gap-l px-m py-section-lg lg:grid-cols-2 lg:gap-section-md"
+    >
       {/* Details */}
       <div class="space-y-l">
-        <ul class="space-y-m list-none p-0 text-lg">
+        <ul class="list-none space-y-m p-0 text-lg">
           <li class="flex items-start gap-s">
             <MapPin size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
             <span>{addressLine}<br />{cityStateZip}</span>
           </li>
           <li class="flex items-start gap-s">
             <Phone size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
-            <a href={telHref(settings.phone)} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors">{settings.phone}</a>
+            <a
+              href={telHref(settings.phone)}
+              class="text-link underline underline-offset-2 transition-colors hover:text-primary-dark"
+              >{settings.phone}</a
+            >
           </li>
           <li class="flex items-start gap-s">
             <Mail size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
-            <a href={`mailto:${settings.email}`} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors break-all">{settings.email}</a>
+            <a
+              href={`mailto:${settings.email}`}
+              class="break-all text-link underline underline-offset-2 transition-colors hover:text-primary-dark"
+              >{settings.email}</a
+            >
           </li>
           <li class="flex items-start gap-s">
             <Clock size={20} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
@@ -95,27 +108,41 @@ const reasons: typeof FALLBACK_REASONS = page?.contactReasons?.length ? page.con
         </ul>
 
         <div class="border-t border-border-soft pt-l">
-          <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">{page?.whoToReachLabel ?? 'Who to reach'}</p>
-          <ul class="space-y-2 list-none p-0">
-            {reasons.map((r) => (
-              <li class="flex flex-wrap justify-between gap-m border-b border-border-soft pb-2 last:border-b-0">
-                <span class="text-foreground">{r.label}</span>
-                <a href={r.href} class="text-link hover:text-primary-dark underline underline-offset-2 transition-colors break-all">{r.value}</a>
-              </li>
-            ))}
+          <p class="mb-s text-xs tracking-eyebrow text-foreground/80 uppercase">
+            {page?.whoToReachLabel ?? 'Who to reach'}
+          </p>
+          <ul class="list-none space-y-2 p-0">
+            {
+              reasons.map((r) => (
+                <li class="flex flex-wrap justify-between gap-m border-b border-border-soft pb-2 last:border-b-0">
+                  <span class="text-foreground">{r.label}</span>
+                  <a
+                    href={r.href}
+                    class="break-all text-link underline underline-offset-2 transition-colors hover:text-primary-dark"
+                  >
+                    {r.value}
+                  </a>
+                </li>
+              ))
+            }
           </ul>
         </div>
 
-        <div class="border-t border-border-soft pt-l text-foreground/80 leading-relaxed">
-          <p class="text-xs uppercase tracking-eyebrow text-foreground/80 mb-s">{page?.gettingHereLabel ?? 'Getting here'}</p>
+        <div class="border-t border-border-soft pt-l leading-relaxed text-foreground/80">
+          <p class="mb-s text-xs tracking-eyebrow text-foreground/80 uppercase">
+            {page?.gettingHereLabel ?? 'Getting here'}
+          </p>
           <p>
-            {page?.gettingHereBody ?? 'We sit on Michigan Avenue in the South Loop, close to public transit, with first-come, first-served free parking. Looking for our food ministry? Find us at the Cullerton door.'}
+            {
+              page?.gettingHereBody ??
+                'We sit on Michigan Avenue in the South Loop, close to public transit, with first-come, first-served free parking. Looking for our food ministry? Find us at the Cullerton door.'
+            }
           </p>
         </div>
       </div>
 
       {/* Map */}
-      <div class="rounded-md overflow-hidden border border-border-soft min-h-[320px] h-full">
+      <div class="h-full min-h-[320px] overflow-hidden rounded-md border border-border-soft">
         <iframe
           title="Map to Second Presbyterian Church of Chicago"
           src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
@@ -123,8 +150,7 @@ const reasons: typeof FALLBACK_REASONS = page?.contactReasons?.length ? page.con
           height="100%"
           style="min-height: 360px; border: 0;"
           loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </section>
@@ -137,11 +163,17 @@ const reasons: typeof FALLBACK_REASONS = page?.contactReasons?.length ? page.con
         headline={page?.formSectionHeadline ?? 'Start the conversation'}
         headingId="contact-form"
       />
-      {page?.formIntroNote && (
-        <p class="mt-m text-lg text-foreground/85 leading-relaxed">{page.formIntroNote}</p>
-      )}
+      {
+        page?.formIntroNote && (
+          <p class="mt-m text-lg leading-relaxed text-foreground/85">{page.formIntroNote}</p>
+        )
+      }
       <div class="mt-l">
-        <FormBlock form={page?.contactForm} fallbackEmail={settings.email} fallbackLabel="Email the Office" />
+        <FormBlock
+          form={page?.contactForm}
+          fallbackEmail={settings.email}
+          fallbackLabel="Email the Office"
+        />
       </div>
     </div>
   </section>
@@ -149,9 +181,12 @@ const reasons: typeof FALLBACK_REASONS = page?.contactReasons?.length ? page.con
   <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
-    headline={page?.finalCtaHeadline ?? "We hope to see you Sunday"}
-    subhead={page?.finalCtaSubhead ?? "We gather for worship every Sunday. Whoever you are, you are welcome here."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    eyebrow={page?.finalCtaEyebrow ?? 'Come and See'}
+    headline={page?.finalCtaHeadline ?? 'We hope to see you Sunday'}
+    subhead={page?.finalCtaSubhead ??
+      'We gather for worship every Sunday. Whoever you are, you are welcome here.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

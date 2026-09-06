@@ -17,9 +17,24 @@ export async function getStaticPaths() {
   // Defined inside getStaticPaths because Astro hoists this function above the
   // component script (module-scope consts aren't in scope here).
   const RESERVED = new Set([
-    'about', 'contact', 'worship', 'weddings', 'use-our-space', 'give', 'grow', 'serve',
-    'kids', 'food', 'music', 'pastor-staff', 'what-we-believe', 'faq', 'privacy',
-    'events', 'sermons', '404',
+    'about',
+    'contact',
+    'worship',
+    'weddings',
+    'use-our-space',
+    'give',
+    'grow',
+    'serve',
+    'kids',
+    'food',
+    'music',
+    'pastor-staff',
+    'what-we-believe',
+    'faq',
+    'privacy',
+    'events',
+    'sermons',
+    '404',
   ]);
   const slugs = await getAllPageSlugs().catch(() => []);
   return slugs.filter((slug) => !RESERVED.has(slug)).map((slug) => ({ params: { slug } }));

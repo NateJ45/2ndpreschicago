@@ -20,7 +20,6 @@ import { createClient } from '@sanity/client';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
@@ -28,7 +27,9 @@ const apiVersion = env.PUBLIC_SANITY_API_VERSION ?? '2026-05-01';
 const token = env.SANITY_API_WRITE_TOKEN || env.SANITY_API_READ_TOKEN;
 
 if (!projectId || !token) {
-  console.error('Missing PUBLIC_SANITY_PROJECT_ID or a write token (SANITY_API_WRITE_TOKEN) in .env');
+  console.error(
+    'Missing PUBLIC_SANITY_PROJECT_ID or a write token (SANITY_API_WRITE_TOKEN) in .env',
+  );
   process.exit(1);
 }
 
@@ -37,31 +38,77 @@ const client = createClient({ projectId, dataset, apiVersion, token, useCdn: fal
 // Interior-designer fields removed from each singleton during the remodel.
 const REMOVED = {
   siteSettings: [
-    'availabilityStatus', 'serviceAreas', 'travelFees', 'googleBusinessUrl',
-    'reviewsNote', 'satisfactionGuarantee', 'sectionVisibility',
+    'availabilityStatus',
+    'serviceAreas',
+    'travelFees',
+    'googleBusinessUrl',
+    'reviewsNote',
+    'satisfactionGuarantee',
+    'sectionVisibility',
     // Church CMS Phase 2: the announcement banner moved from this object to its
     // own Announcement collection.
     'announcement',
   ],
   homePage: [
-    'meetFounderPhoto', 'meetFounderEyebrow', 'meetFounderHeadline', 'meetFounderContent', 'meetFounderCta',
-    'featuredWorkEyebrow', 'featuredWorkHeadline', 'featuredWorkSubhead', 'featuredWorkCta',
-    'featuredJournalEyebrow', 'featuredJournalHeadline', 'featuredJournalSubhead', 'featuredJournalCta',
-    'processPreviewEyebrow', 'processPreviewHeadline', 'processPreviewSubhead', 'processPreviewCta',
-    'featuredTestimonial', 'testimonialsEyebrow', 'testimonialsHeadline', 'testimonialsScriptAccent',
-    'testimonialsSubhead', 'testimonialsToShow', 'testimonialsAttribution',
-    'servicesGridEyebrow', 'servicesGridHeadline', 'servicesGridScriptAccent', 'servicesGridSubhead',
-    'servicesGridCta', 'servicesGridFootnote', 'serviceAreaCue',
+    'meetFounderPhoto',
+    'meetFounderEyebrow',
+    'meetFounderHeadline',
+    'meetFounderContent',
+    'meetFounderCta',
+    'featuredWorkEyebrow',
+    'featuredWorkHeadline',
+    'featuredWorkSubhead',
+    'featuredWorkCta',
+    'featuredJournalEyebrow',
+    'featuredJournalHeadline',
+    'featuredJournalSubhead',
+    'featuredJournalCta',
+    'processPreviewEyebrow',
+    'processPreviewHeadline',
+    'processPreviewSubhead',
+    'processPreviewCta',
+    'featuredTestimonial',
+    'testimonialsEyebrow',
+    'testimonialsHeadline',
+    'testimonialsScriptAccent',
+    'testimonialsSubhead',
+    'testimonialsToShow',
+    'testimonialsAttribution',
+    'servicesGridEyebrow',
+    'servicesGridHeadline',
+    'servicesGridScriptAccent',
+    'servicesGridSubhead',
+    'servicesGridCta',
+    'servicesGridFootnote',
+    'serviceAreaCue',
   ],
   aboutPage: [
-    'philosophyEyebrow', 'philosophyHeadline',
-    'personalEyebrow', 'personalHeadline', 'personalIntro', 'currentlyList', 'rapidFire',
-    'localSpots', 'beyondDesign', 'candidPhoto', 'stats',
-    'founderPhoto', 'founderAttribution', 'backgroundLine', 'serviceAreaMention',
+    'philosophyEyebrow',
+    'philosophyHeadline',
+    'personalEyebrow',
+    'personalHeadline',
+    'personalIntro',
+    'currentlyList',
+    'rapidFire',
+    'localSpots',
+    'beyondDesign',
+    'candidPhoto',
+    'stats',
+    'founderPhoto',
+    'founderAttribution',
+    'backgroundLine',
+    'serviceAreaMention',
   ],
   contactPage: [
-    'formProjectTypeOptions', 'formLocationOptions', 'formBudgetOptions', 'formTimelineOptions',
-    'formSourceOptions', 'postInquiryRoadmap', 'schedulingLink', 'schedulingLinkLabel', 'availabilityNote',
+    'formProjectTypeOptions',
+    'formLocationOptions',
+    'formBudgetOptions',
+    'formTimelineOptions',
+    'formSourceOptions',
+    'postInquiryRoadmap',
+    'schedulingLink',
+    'schedulingLinkLabel',
+    'availabilityNote',
   ],
 };
 

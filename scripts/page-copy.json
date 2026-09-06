@@ -183,7 +183,15 @@
     "finalCtaEyebrow": "Still Wondering?",
     "finalCtaHeadline": "Ask us anything",
     "finalCtaSubhead": "The best answer to most questions is a Sunday morning. Reach out and we will help however we can.",
-    "categoryOrder": ["Visiting", "Worship", "Kids & Family", "Getting Involved", "Giving", "Weddings & Space", "Food Ministry"]
+    "categoryOrder": [
+      "Visiting",
+      "Worship",
+      "Kids & Family",
+      "Getting Involved",
+      "Giving",
+      "Weddings & Space",
+      "Food Ministry"
+    ]
   },
   "eventsPage": {
     "specialEyebrow": "Mark the season",

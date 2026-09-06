@@ -9,6 +9,7 @@
 The literal strings in `src/pages/*.astro` are **not the content** -- they are safety-net fallbacks that render only if a field is ever left empty, so a section can never go blank. **Do not edit copy in the `.astro` files expecting it to change the live site:** the populated Sanity field overrides it. (To make something brand-new editable, see "The `// Safe to edit by hand` convention" at the bottom.) One exception to this "fallback" framing: identity / contact / social values (church name, email, pastoral email, phone, address, office hours, socials) have **no** hardcoded fallback (see the resolver note below) -- an empty one renders blank or hides rather than showing a stand-in.
 
 **Values that repeat across the site are single-sourced, so changing them is one edit:**
+
 - **Worship service time** -> `siteSettings.worshipService` ({ time, day, start/end 24h }). Drives the header bar, footer, home service band, the "This Sunday" line, the worship-page time, and the Google/JSON-LD opening hours, all derived via `src/lib/serviceTime.ts`. Prose elsewhere is deliberately time-agnostic so the time is never repeated. (The FAQ "what time" answer and the home weekly-rhythms list intentionally still name it, as editable content.)
 - **Address / phone / email / pastoral email / office hours** -> `siteSettings`. Each drives every on-page display plus the LocalBusiness JSON-LD and the tap-to-call / map links.
 - **Church name, mission, socials, give / watch URLs** -> `siteSettings`.
@@ -23,7 +24,7 @@ All identity / contact / social values resolve in ONE place: `src/lib/siteSettin
 
 ### Editor-driven (Sanity)
 
-- **All page copy** -- every page singleton's eyebrows, headlines, subheads, body, buttons/CTAs, and in-body links are editable fields, and all are populated, so the Studio shows the live copy. An empty field falls back to the built-in verbatim copy (the inline-fallback safety net), so a section can never go blank. Exception: the *What We Believe* statement of faith is reproduced verbatim and owned by leadership -- edit with care.
+- **All page copy** -- every page singleton's eyebrows, headlines, subheads, body, buttons/CTAs, and in-body links are editable fields, and all are populated, so the Studio shows the live copy. An empty field falls back to the built-in verbatim copy (the inline-fallback safety net), so a section can never go blank. Exception: the _What We Believe_ statement of faith is reproduced verbatim and owned by leadership -- edit with care.
 - **All hero images** -- every `*Page` singleton has a `heroImage` (with alt). The home page also has `heroImages` (one = static, two+ = cross-fading slideshow) and a dated `seasonalHero` override.
 - **Navigation** -- the header menu (`siteSettings.navItems`: Links + Dropdown menus) and the footer link columns (`siteSettings.footerColumns`). Both fall back to the built-in menus when empty; the mobile menu inherits the header. The footer "Get in touch" column is derived from contact fields.
 - **Favicon** -- `siteSettings.favicon` (browser-tab icon); falls back to the bundled church mark in `/public/favicon.png`.
@@ -56,6 +57,7 @@ These are stable design and system decisions that don't belong in editorial:
 ### The `// Safe to edit by hand` convention
 
 At the top of each component file, a header comment marks it as either:
+
 - `// Safe to edit by hand` -- a project maintainer can make changes here without risk of breaking the underlying architecture.
 - `// Foundation, edit with care` -- changes propagate widely; route through a planned session.
 

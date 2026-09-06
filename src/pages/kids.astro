@@ -34,7 +34,8 @@ const schemas = [
   <Hero
     eyebrow={page?.heroEyebrow ?? 'Get Involved'}
     headline={page?.heroHeadline ?? 'Children are welcome here'}
-    subhead={page?.heroSubhead ?? 'At Second, little ones are part of the worshipping congregation, and we welcome their noise and their needs.'}
+    subhead={page?.heroSubhead ??
+      'At Second, little ones are part of the worshipping congregation, and we welcome their noise and their needs.'}
     keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroKids}
@@ -44,21 +45,32 @@ const schemas = [
   />
 
   <section class="bg-background" aria-labelledby="kids-worship">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
+    <div
+      class="mx-auto grid max-w-content grid-cols-1 items-start gap-l px-m py-section-lg md:grid-cols-2 md:gap-section-md"
+    >
       <SectionHeading
         eyebrow={page?.worshipEyebrow ?? 'On Sunday morning'}
         headline={page?.worshipHeadline ?? 'Kids belong in the room'}
         headingId="kids-worship"
       />
-      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+      <div class="space-y-m text-lg leading-relaxed text-foreground/85">
         <p>
-          {page?.worshipBodyP1 ?? "We do not tuck children away. They worship right alongside the rest of us, and there is a children's message during the service just for them."}
+          {
+            page?.worshipBodyP1 ??
+              "We do not tuck children away. They worship right alongside the rest of us, and there is a children's message during the service just for them."
+          }
         </p>
         <p>
-          {page?.worshipBodyP2 ?? 'We keep books, coloring materials, and fidget toys on hand. And if you need a quieter moment, a cry room with an audio stream of the service is always open.'}
+          {
+            page?.worshipBodyP2 ??
+              'We keep books, coloring materials, and fidget toys on hand. And if you need a quieter moment, a cry room with an audio stream of the service is always open.'
+          }
         </p>
         <p>
-          {page?.worshipBodyP3 ?? 'Bringing little ones for the first time? Come as you are. You will not be the only family in the pews, and you will not get any side-eye for the wiggles.'}
+          {
+            page?.worshipBodyP3 ??
+              'Bringing little ones for the first time? Come as you are. You will not be the only family in the pews, and you will not get any side-eye for the wiggles.'
+          }
         </p>
       </div>
     </div>
@@ -67,9 +79,12 @@ const schemas = [
   <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "Bring the Whole Family"}
-    headline={page?.finalCtaHeadline ?? "We would love to meet your family"}
-    subhead={page?.finalCtaSubhead ?? "Join us this Sunday, or reach out with any question about visiting with children."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    eyebrow={page?.finalCtaEyebrow ?? 'Bring the Whole Family'}
+    headline={page?.finalCtaHeadline ?? 'We would love to meet your family'}
+    subhead={page?.finalCtaSubhead ??
+      'Join us this Sunday, or reach out with any question about visiting with children.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

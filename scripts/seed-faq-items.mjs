@@ -21,7 +21,6 @@ import { createClient } from '@sanity/client';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
@@ -29,8 +28,12 @@ const apiVersion = env.PUBLIC_SANITY_API_VERSION ?? '2026-05-01';
 const token = env.SANITY_API_WRITE_TOKEN || env.SANITY_API_READ_TOKEN;
 
 if (!projectId || !token) {
-  console.error('Missing PUBLIC_SANITY_PROJECT_ID or a write token (SANITY_API_WRITE_TOKEN) in .env.');
-  console.error('Schema + UI still ship; the FAQ page falls back to its built-in starter questions.');
+  console.error(
+    'Missing PUBLIC_SANITY_PROJECT_ID or a write token (SANITY_API_WRITE_TOKEN) in .env.',
+  );
+  console.error(
+    'Schema + UI still ship; the FAQ page falls back to its built-in starter questions.',
+  );
   process.exit(1);
 }
 
@@ -89,8 +92,7 @@ const ITEMS = [
     category: 'Worship',
     displayOrder: 2,
     question: 'Can I watch online?',
-    answer:
-      'Yes. We livestream worship on our YouTube channel, so you can join from anywhere.',
+    answer: 'Yes. We livestream worship on our YouTube channel, so you can join from anywhere.',
   },
   {
     id: 'faq-item-6',

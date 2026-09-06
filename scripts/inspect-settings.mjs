@@ -14,18 +14,41 @@ import { loadEnv } from './lib/loadEnv.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
 const token = env.SANITY_API_READ_TOKEN || env.SANITY_API_WRITE_TOKEN;
-if (!projectId || !token) { console.error('Need PUBLIC_SANITY_PROJECT_ID + a token in .env'); process.exit(1); }
+if (!projectId || !token) {
+  console.error('Need PUBLIC_SANITY_PROJECT_ID + a token in .env');
+  process.exit(1);
+}
 
 const client = createClient({ projectId, dataset, token, apiVersion: '2026-05-01', useCdn: false });
 
 // Fields the refactor cares about, grouped by how empty should be treated.
-const REQUIRED = ['title', 'tagline', 'email', 'phone', 'addressLine', 'cityStateZip', 'socialInstagram', 'socialFacebook', 'socialYoutube'];
-const OPTIONAL = ['mission', 'officeHours', 'giveUrl', 'watchUrl', 'appUrl', 'directoryUrl', 'prayerUrl', 'registrationBaseUrl', 'footerCredit', 'footerCreditUrl'];
+const REQUIRED = [
+  'title',
+  'tagline',
+  'email',
+  'phone',
+  'addressLine',
+  'cityStateZip',
+  'socialInstagram',
+  'socialFacebook',
+  'socialYoutube',
+];
+const OPTIONAL = [
+  'mission',
+  'officeHours',
+  'giveUrl',
+  'watchUrl',
+  'appUrl',
+  'directoryUrl',
+  'prayerUrl',
+  'registrationBaseUrl',
+  'footerCredit',
+  'footerCreditUrl',
+];
 
 function isEmpty(v) {
   if (v === null || v === undefined) return true;
@@ -50,21 +73,39 @@ async function run() {
   console.log(`published siteSettings: ${published ? 'yes (id ' + published._id + ')' : 'NONE'}`);
   console.log(`draft siteSettings:     ${draft ? 'yes' : 'none'}\n`);
 
-  if (!doc) { console.log('No siteSettings document found at all.'); return; }
+  if (!doc) {
+    console.log('No siteSettings document found at all.');
+    return;
+  }
 
   console.log('REQUIRED (fallback removal would blank these if empty):');
   for (const f of REQUIRED) console.log(`  ${isEmpty(doc[f]) ? 'X' : 'OK'}  ${f}: ${show(doc[f])}`);
 
   console.log('\nworshipService:');
   const ws = doc.worshipService ?? {};
-  for (const f of ['time', 'day', 'startTime24', 'endTime24']) console.log(`  ${isEmpty(ws[f]) ? 'X' : 'OK'}  worshipService.${f}: ${show(ws[f])}`);
+  for (const f of ['time', 'day', 'startTime24', 'endTime24'])
+    console.log(`  ${isEmpty(ws[f]) ? 'X' : 'OK'}  worshipService.${f}: ${show(ws[f])}`);
 
   console.log('\nOPTIONAL (empty is allowed; element hides):');
-  for (const f of OPTIONAL) console.log(`  ${isEmpty(doc[f]) ? '--' : 'OK'}  ${f}: ${show(doc[f])}`);
+  for (const f of OPTIONAL)
+    console.log(`  ${isEmpty(doc[f]) ? '--' : 'OK'}  ${f}: ${show(doc[f])}`);
 
   console.log('\nfavicon:', show(doc.favicon ? { present: true } : null));
-  console.log('navItems:', Array.isArray(doc.navItems) ? doc.navItems.length + ' item(s)' : '(empty -> built-in default menu)');
-  console.log('footerColumns:', Array.isArray(doc.footerColumns) ? doc.footerColumns.length + ' column(s)' : '(empty -> built-in default columns)');
+  console.log(
+    'navItems:',
+    Array.isArray(doc.navItems)
+      ? doc.navItems.length + ' item(s)'
+      : '(empty -> built-in default menu)',
+  );
+  console.log(
+    'footerColumns:',
+    Array.isArray(doc.footerColumns)
+      ? doc.footerColumns.length + ' column(s)'
+      : '(empty -> built-in default columns)',
+  );
 }
 
-run().catch((e) => { console.error('Inspect failed:', e.message); process.exit(1); });
+run().catch((e) => {
+  console.error('Inspect failed:', e.message);
+  process.exit(1);
+});

@@ -3,13 +3,13 @@
    onto shadcn's semantic tokens (:root / .dark) so brand identity
    carries everywhere the design system is referenced. */
 
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@fontsource/instrument-serif/400.css";
-@import "@fontsource/instrument-serif/400-italic.css";
-@import "@fontsource-variable/newsreader";
-@import "@fontsource-variable/newsreader/standard-italic.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+@import '@fontsource-variable/newsreader';
+@import '@fontsource-variable/newsreader/standard-italic.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -19,18 +19,18 @@
 
 @theme {
   /* Brand palette — neutral Slate default. Swap per project. */
-  --color-primary:      #8A6A43; /* Bronze — interactive accent */
-  --color-primary-dark: #6B4F2E; /* Bronze Dark — anchor/link text */
-  --color-accent:       #36302A; /* Espresso Ink — headings + body */
-  --color-accent-dark:  #241F1A; /* Espresso Dark — dark surfaces */
-  --color-secondary:    #B9A590; /* Clay — borders, eyebrows */
-  --color-tertiary:     #A89A86; /* Warm Stone — sparingly */
-  --color-bg:           #ECE4DA; /* Paper — warm cream surface */
-  --color-bg-soft:      #F6F3EC; /* Soft Paper — alternating surface */
+  --color-primary: #8a6a43; /* Bronze — interactive accent */
+  --color-primary-dark: #6b4f2e; /* Bronze Dark — anchor/link text */
+  --color-accent: #36302a; /* Espresso Ink — headings + body */
+  --color-accent-dark: #241f1a; /* Espresso Dark — dark surfaces */
+  --color-secondary: #b9a590; /* Clay — borders, eyebrows */
+  --color-tertiary: #a89a86; /* Warm Stone — sparingly */
+  --color-bg: #ece4da; /* Paper — warm cream surface */
+  --color-bg-soft: #f6f3ec; /* Soft Paper — alternating surface */
   /* border-soft is theme-aware (declared in the @theme inline map below, with
      per-theme values in :root / .dark). It used to be a static #DED6C8 here,
      which made every faint divider GLOW at ~12:1 on the dark page. */
-  --color-white-pure:   #FFFFFF;
+  --color-white-pure: #ffffff;
 
   /* Chapel accent — deep Tiffany-glass green drawn from the church's own
      stained glass (Second is "The Church of the Angels," nine Tiffany windows).
@@ -40,10 +40,10 @@
      intentionally the same deep green on a light or dark page — text on them is
      always cream (--color-chapel-foreground). Reachable as bg-chapel,
      bg-chapel-deep, text-chapel-foreground. */
-  --color-chapel:            #1E423B; /* deep fir/Tiffany green — utility bar, footer, CTA */
-  --color-chapel-deep:       #16322C; /* deepest green base */
-  --color-chapel-foreground: #F1EAD9; /* warm cream text on chapel surfaces */
-  --color-gold:              #A07D45; /* liturgical gold — hairline rules, small accents */
+  --color-chapel: #1e423b; /* deep fir/Tiffany green — utility bar, footer, CTA */
+  --color-chapel-deep: #16322c; /* deepest green base */
+  --color-chapel-foreground: #f1ead9; /* warm cream text on chapel surfaces */
+  --color-gold: #a07d45; /* liturgical gold — hairline rules, small accents */
 
   /* Arched-top crown radius — the building's architectural signature, applied to
      hero / feature / staff images via the .arch-top utility (a Romanesque
@@ -51,24 +51,24 @@
   --arch-radius: clamp(3.5rem, 14vw, 9rem);
 
   /* Fonts */
-  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
-  --font-body:    "Newsreader Variable", Georgia, "Times New Roman", serif;
-  --font-mono:    ui-monospace, "SF Mono", Consolas, monospace;
-  --font-script:  "Snell Roundhand", "Apple Chancery", cursive;
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-body: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'SF Mono', Consolas, monospace;
+  --font-script: 'Snell Roundhand', 'Apple Chancery', cursive;
 
   /* Fluid heading sizes */
   --text-h6: 1rem;
   --text-h5: clamp(1.125rem, 1.5vw, 1.25rem);
-  --text-h4: clamp(1.25rem,  2vw,   1.5rem);
-  --text-h3: clamp(1.5rem,   2.5vw, 2rem);
-  --text-h2: clamp(2rem,     4vw,   3rem);
-  --text-h1: clamp(2.5rem,   6vw,   5rem);
+  --text-h4: clamp(1.25rem, 2vw, 1.5rem);
+  --text-h3: clamp(1.5rem, 2.5vw, 2rem);
+  --text-h2: clamp(2rem, 4vw, 3rem);
+  --text-h1: clamp(2.5rem, 6vw, 5rem);
 
   /* Typographic micro-rules. Codified so usage stays consistent across
      components — drift from ad-hoc arbitrary values (tracking-[0.22em],
      leading-[1.05]) into shared tokens. */
-  --leading-headline-tight: 1.05;   /* Hero H1 and any oversized display type */
-  --tracking-eyebrow:       0.18em; /* Uppercase eyebrow labels above headings */
+  --leading-headline-tight: 1.05; /* Hero H1 and any oversized display type */
+  --tracking-eyebrow: 0.18em; /* Uppercase eyebrow labels above headings */
 
   /* Fluid spacing.
      Note: the larger section-padding sizes use a `--spacing-section-*`
@@ -79,12 +79,12 @@
      site-wide (they'd inherit the fluid clamp instead of the container
      width). Section utilities are now `py-section-lg`, `mt-section-md`,
      etc. — Tailwind containers stay safe. */
-  --spacing-xs:           clamp(0.25rem, 0.5vw, 0.5rem);
-  --spacing-s:            clamp(0.5rem,  1vw,   1rem);
-  --spacing-m:            clamp(1rem,    2vw,   1.5rem);
-  --spacing-l:            clamp(2rem,    4vw,   3rem);
-  --spacing-section-md:   clamp(3rem,    6vw,   5rem); /* was --spacing-xl */
-  --spacing-section-lg:   clamp(4rem,    8vw,   7rem); /* was --spacing-2xl */
+  --spacing-xs: clamp(0.25rem, 0.5vw, 0.5rem);
+  --spacing-s: clamp(0.5rem, 1vw, 1rem);
+  --spacing-m: clamp(1rem, 2vw, 1.5rem);
+  --spacing-l: clamp(2rem, 4vw, 3rem);
+  --spacing-section-md: clamp(3rem, 6vw, 5rem); /* was --spacing-xl */
+  --spacing-section-lg: clamp(4rem, 8vw, 7rem); /* was --spacing-2xl */
 
   --container-content: 82.5rem;
 
@@ -101,37 +101,37 @@
 /* ---------- shadcn semantic token map (added by CLI, preserved) ------- */
 
 @theme inline {
-    --font-heading: var(--font-display);
-    --font-sans: var(--font-body);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    /* IMPORTANT: bg-accent must be theme-aware (shadcn convention — soft hover
+  --font-heading: var(--font-display);
+  --font-sans: var(--font-body);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  /* IMPORTANT: bg-accent must be theme-aware (shadcn convention — soft hover
        surface, Cream in light / darker warm in dark). The @theme block above
        declares --color-accent as static Charcoal for legacy brand-palette
        reasons, but every component that uses bg-accent (ThemeToggle hover,
@@ -141,49 +141,63 @@
        because @theme inline is declared after @theme. Side effect: text-accent
        is now theme-aware too (Cream in light, darker in dark) — fine because
        no component uses bare text-accent (use text-foreground for body text). */
-    --color-accent: var(--accent);
-    /* Dark-mode-aware brand link/anchor color: Bronze Dark in light mode,
+  --color-accent: var(--accent);
+  /* Dark-mode-aware brand link/anchor color: Bronze Dark in light mode,
        lifted Bronze in dark mode. Use text-link for inline links and bronze
        link-style buttons that need to read in both modes. */
-    --color-link: var(--link);
-    /* Theme-aware Chapel green for KEYWORD EMPHASIS in headlines (the Highland
+  --color-link: var(--link);
+  /* Theme-aware Chapel green for KEYWORD EMPHASIS in headlines (the Highland
        Park "set the key word in a second color" device). Deep green on light
        cream surfaces, lifted green on dark surfaces. Use text-chapel-ink on a
        headline span. (bg-chapel above is the static surface green; this ink
        token is the readable-on-either-background text variant.) */
-    --color-chapel-ink: var(--chapel-ink);
-    /* Theme-aware gold for gold TEXT on theme-flipping surfaces (card badges,
+  --color-chapel-ink: var(--chapel-ink);
+  /* Theme-aware gold for gold TEXT on theme-flipping surfaces (card badges,
        step numerals). The static --color-gold above stays for decorative
        hairlines/rules; as text it fails AA on cream (and on chapel green, where
        the lifted #C7A875 literal is used instead since chapel never flips). */
-    --color-gold-ink: var(--gold-ink);
-    /* Theme-aware faint divider. Static #DED6C8 in light (pixel-identical to
+  --color-gold-ink: var(--gold-ink);
+  /* Theme-aware faint divider. Static #DED6C8 in light (pixel-identical to
        the old token); a soft white veil in dark so hairlines recede instead of
        glowing. Matches the .dark --border oklch idiom. */
-    --color-border-soft: var(--border-soft);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
-    --animate-marquee:          marquee var(--duration) infinite linear;
-    --animate-marquee-vertical:  marquee-vertical var(--duration) linear infinite;
-    --animate-spotlight:         spotlight 2s ease 0.75s 1 forwards;
+  --color-border-soft: var(--border-soft);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
 
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(calc(-100% - var(--gap))); }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
     }
-    @keyframes marquee-vertical {
-      from { transform: translateY(0); }
-      to   { transform: translateY(calc(-100% - var(--gap))); }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
     }
-    @keyframes spotlight {
-      0%   { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
-      100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+  }
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
     }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes spotlight {
+    0% {
+      opacity: 0;
+      transform: translate(-72%, -62%) scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -40%) scale(1);
+    }
+  }
 }
 
 /* ---------- Typographic utilities ------------------------------------- */
@@ -234,58 +248,58 @@
 /* ---------- Light mode (overrides shadcn defaults) -------------------- */
 
 :root {
-    /* Surfaces */
-    --background: #ECE4DA;
-    --foreground: #36302A;
-    --card: #FBF8F2;
-    --card-foreground: #36302A;
-    --popover: #FBF8F2;
-    --popover-foreground: #36302A;
+  /* Surfaces */
+  --background: #ece4da;
+  --foreground: #36302a;
+  --card: #fbf8f2;
+  --card-foreground: #36302a;
+  --popover: #fbf8f2;
+  --popover-foreground: #36302a;
 
-    /* Brand */
-    --primary: #8A6A43;
-    --primary-foreground: #FFFFFF;
-    --secondary: #B9A590;
-    --secondary-foreground: #36302A;
+  /* Brand */
+  --primary: #8a6a43;
+  --primary-foreground: #ffffff;
+  --secondary: #b9a590;
+  --secondary-foreground: #36302a;
 
-    /* Quiet surfaces / muted text */
-    --muted: #F1EBE0;
-    --muted-foreground: #635849;    /* warm gray on cream — verify AA */
+  /* Quiet surfaces / muted text */
+  --muted: #f1ebe0;
+  --muted-foreground: #635849; /* warm gray on cream — verify AA */
 
-    /* Accent */
-    --accent: #E3D9CB;
-    --accent-foreground: #36302A;
+  /* Accent */
+  --accent: #e3d9cb;
+  --accent-foreground: #36302a;
 
-    /* States */
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: #DED6C8;
-    --input: #DED6C8;
-    --ring: #8A6A43;
-    --link: #6B4F2E;                /* deep bronze on cream — verify AA */
-    --chapel-ink: #1E423B;          /* deep Tiffany green keyword emphasis on cream (~9:1) */
-    --gold-ink: #7A5E33;            /* deepened gold as TEXT on cream (4.8:1, AA) */
-    --border-soft: #DED6C8;         /* faint warm divider (same value the old static token had) */
+  /* States */
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #ded6c8;
+  --input: #ded6c8;
+  --ring: #8a6a43;
+  --link: #6b4f2e; /* deep bronze on cream — verify AA */
+  --chapel-ink: #1e423b; /* deep Tiffany green keyword emphasis on cream (~9:1) */
+  --gold-ink: #7a5e33; /* deepened gold as TEXT on cream (4.8:1, AA) */
+  --border-soft: #ded6c8; /* faint warm divider (same value the old static token had) */
 
-    /* Charts (kept neutral, not used at launch) */
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
+  /* Charts (kept neutral, not used at launch) */
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
 
-    --radius: 0.5rem;
+  --radius: 0.5rem;
 
-    /* Sidebar (reserved for Studio-style admin contexts, not used on site) */
-    --sidebar: #ECE4DA;
-    --sidebar-foreground: #36302A;
-    --sidebar-primary: #8A6A43;
-    --sidebar-primary-foreground: #FFFFFF;
-    --sidebar-accent: #F1EBE0;
-    --sidebar-accent-foreground: #36302A;
-    --sidebar-border: #DED6C8;
-    --sidebar-ring: #8A6A43;
+  /* Sidebar (reserved for Studio-style admin contexts, not used on site) */
+  --sidebar: #ece4da;
+  --sidebar-foreground: #36302a;
+  --sidebar-primary: #8a6a43;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f1ebe0;
+  --sidebar-accent-foreground: #36302a;
+  --sidebar-border: #ded6c8;
+  --sidebar-ring: #8a6a43;
 
-    --tint-rgb: 138, 106, 67;
+  --tint-rgb: 138, 106, 67;
 }
 
 /* ---------- Dark mode --------------------------------------------------
@@ -293,55 +307,55 @@
    Slate and Ink hold their identity; surfaces flip to deep cool grays. */
 
 .dark {
-    --background: #1C1813;
-    --foreground: #ECE4DA;
-    /* Card sits one step ABOVE muted (#262019) so the bg -> muted -> card
+  --background: #1c1813;
+  --foreground: #ece4da;
+  /* Card sits one step ABOVE muted (#262019) so the bg -> muted -> card
        ladder light mode has also exists in dark. They used to share one hex,
        which collapsed cards on muted bands into a single flat slab. */
-    --card: #2A231B;
-    --card-foreground: #ECE4DA;
-    --popover: #2A231B;
-    --popover-foreground: #ECE4DA;
+  --card: #2a231b;
+  --card-foreground: #ece4da;
+  --popover: #2a231b;
+  --popover-foreground: #ece4da;
 
-    --primary: #C7A875;
-    /* White (not ink) on the bronze pill background: bg-primary stays the
+  --primary: #c7a875;
+  /* White (not ink) on the bronze pill background: bg-primary stays the
        static #8A6A43 in both themes, so dark-mode dark text dropped contrast to
        3.55:1. White keeps every primary CTA at ~5:1 in dark mode too. */
-    --primary-foreground: #FFFFFF;
-    --secondary: #8A7A64;
-    --secondary-foreground: #ECE4DA;
+  --primary-foreground: #ffffff;
+  --secondary: #8a7a64;
+  --secondary-foreground: #ece4da;
 
-    --muted: #262019;
-    --muted-foreground: #B7AC9A;
+  --muted: #262019;
+  --muted-foreground: #b7ac9a;
 
-    --accent: #2E2820;
-    --accent-foreground: #ECE4DA;
+  --accent: #2e2820;
+  --accent-foreground: #ece4da;
 
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 12%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: #C7A875;
-    --link: #D8BD8C;
-    --chapel-ink: #6FA99A;          /* lifted Tiffany green keyword emphasis on dark */
-    --gold-ink: #C7A875;            /* lifted gold as TEXT on dark surfaces (AA) */
-    --border-soft: oklch(1 0 0 / 14%); /* hairlines recede in dark instead of glowing */
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: #c7a875;
+  --link: #d8bd8c;
+  --chapel-ink: #6fa99a; /* lifted Tiffany green keyword emphasis on dark */
+  --gold-ink: #c7a875; /* lifted gold as TEXT on dark surfaces (AA) */
+  --border-soft: oklch(1 0 0 / 14%); /* hairlines recede in dark instead of glowing */
 
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
 
-    --sidebar: #2A231B;
-    --sidebar-foreground: #ECE4DA;
-    --sidebar-primary: #C7A875;
-    --sidebar-primary-foreground: #1C1813;
-    --sidebar-accent: #2E2820;
-    --sidebar-accent-foreground: #ECE4DA;
-    --sidebar-border: oklch(1 0 0 / 12%);
-    --sidebar-ring: #C7A875;
+  --sidebar: #2a231b;
+  --sidebar-foreground: #ece4da;
+  --sidebar-primary: #c7a875;
+  --sidebar-primary-foreground: #1c1813;
+  --sidebar-accent: #2e2820;
+  --sidebar-accent-foreground: #ece4da;
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: #c7a875;
 
-    --tint-rgb: 199, 168, 117;
+  --tint-rgb: 199, 168, 117;
 }
 
 /* ---------- Base resets and defaults ---------------------------------- */
@@ -374,7 +388,12 @@
   footer :focus-visible {
     outline-color: var(--color-chapel-foreground);
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
     font-weight: 400;
     color: var(--color-accent);
@@ -385,7 +404,12 @@
        Resolves at initial layout (no CLS); inert in older engines. */
     text-wrap: balance;
   }
-  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  .dark h1,
+  .dark h2,
+  .dark h3,
+  .dark h4,
+  .dark h5,
+  .dark h6 {
     color: var(--foreground);
   }
 }
@@ -401,8 +425,8 @@
   /* Use --primary-dark (Bronze Dark) instead of --primary (Warm Bronze) so
      white-on-bronze contrast lands at 5.5:1 instead of 4.06:1. The skip-link
      is small semibold text, which falls under the AA 4.5:1 body-text rule. */
-  background: var(--primary-dark, #434E5C);
-  color: #FFFFFF;
+  background: var(--primary-dark, #434e5c);
+  color: #ffffff;
   text-decoration: none;
   font-weight: 600;
 }
@@ -446,7 +470,7 @@
   position: relative;
 }
 .nav-underline::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 50%;
   bottom: -0.35rem;
@@ -459,7 +483,7 @@
 }
 .nav-underline:hover::after,
 .nav-underline:focus-visible::after,
-.nav-underline[aria-current="page"]::after {
+.nav-underline[aria-current='page']::after {
   transform: translateX(-50%) scaleX(1);
 }
 
@@ -494,7 +518,7 @@
   transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
-.site-header[data-state="hidden"] {
+.site-header[data-state='hidden'] {
   transform: translateY(-100%);
 }
 
@@ -550,7 +574,7 @@
 .dark .surface-warm {
   background-image: radial-gradient(
     ellipse 70% 60% at 50% 0%,
-    rgba(var(--tint-rgb), 0.10),
+    rgba(var(--tint-rgb), 0.1),
     transparent 70%
   );
 }
@@ -593,10 +617,11 @@
   input,
   select,
   textarea,
-  [role="button"],
-  [role="tab"] {
-    transition-property: color, background-color, border-color, outline-color,
-      text-decoration-color, fill, stroke, box-shadow, transform, opacity;
+  [role='button'],
+  [role='tab'] {
+    transition-property:
+      color, background-color, border-color, outline-color, text-decoration-color, fill, stroke,
+      box-shadow, transform, opacity;
     transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
     transition-duration: 440ms;
   }
@@ -634,23 +659,41 @@
    Reduced-motion users get the final state instantly — no animation, no
    stagger, content visible at full opacity. */
 @keyframes hero-fade-up {
-  from { opacity: 0; transform: translateY(0.5rem); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .hero-entry-stagger > * {
   opacity: 0;
   animation: hero-fade-up 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-.hero-entry-stagger > *:nth-child(1) { animation-delay:   0ms; }
-.hero-entry-stagger > *:nth-child(2) { animation-delay: 120ms; }
-.hero-entry-stagger > *:nth-child(3) { animation-delay: 240ms; }
-.hero-entry-stagger > *:nth-child(4) { animation-delay: 360ms; }
+.hero-entry-stagger > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.hero-entry-stagger > *:nth-child(2) {
+  animation-delay: 120ms;
+}
+.hero-entry-stagger > *:nth-child(3) {
+  animation-delay: 240ms;
+}
+.hero-entry-stagger > *:nth-child(4) {
+  animation-delay: 360ms;
+}
 /* n+5 (not just 5): the home hero has SIX direct children; a bare :nth-child(5)
    left the sixth at 0ms delay, so the bottom line popped in BEFORE the
    headline. Open-ended selector + an explicit 6th step keeps any future extra
    child landing last instead of first. */
-.hero-entry-stagger > *:nth-child(n+5) { animation-delay: 480ms; }
-.hero-entry-stagger > *:nth-child(n+6) { animation-delay: 600ms; }
+.hero-entry-stagger > *:nth-child(n + 5) {
+  animation-delay: 480ms;
+}
+.hero-entry-stagger > *:nth-child(n + 6) {
+  animation-delay: 600ms;
+}
 @media (prefers-reduced-motion: reduce) {
   .hero-entry-stagger > * {
     opacity: 1 !important;
@@ -666,7 +709,10 @@
    component <style>, because the slides are rendered by the child SanityImage
    component and would not carry HeroBackground's scope attribute. Reduced-motion
    users keep the first slide static. ---- */
-.hero-slideshow { position: absolute; inset: 0; }
+.hero-slideshow {
+  position: absolute;
+  inset: 0;
+}
 .hero-slide {
   position: absolute;
   inset: 0;
@@ -679,22 +725,40 @@
   animation: hero-kb 16s ease-in-out infinite alternate;
   will-change: opacity, transform;
 }
-.hero-slide.is-active { opacity: 1; }
-.hero-slide:nth-child(3n + 2) { transform-origin: top left; animation-duration: 18s; }
-.hero-slide:nth-child(3n + 3) { transform-origin: bottom right; animation-duration: 20s; }
+.hero-slide.is-active {
+  opacity: 1;
+}
+.hero-slide:nth-child(3n + 2) {
+  transform-origin: top left;
+  animation-duration: 18s;
+}
+.hero-slide:nth-child(3n + 3) {
+  transform-origin: bottom right;
+  animation-duration: 20s;
+}
 @keyframes hero-kb {
-  from { transform: scale(1); }
-  to   { transform: scale(1.07); }
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.07);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-slide { transition: none; animation: none; transform: none; }
+  .hero-slide {
+    transition: none;
+    animation: none;
+    transform: none;
+  }
 }
 
 /* ---- Single static hero image (interior pages + home). A slow, continuous
    Ken Burns drift so a one-image hero still feels alive, reusing the same
    hero-kb keyframe as the slideshow. Transform-only (no layout shift / CLS).
    Reduced-motion users get a perfectly still image. ---- */
-.hero-kb-img { transform-origin: center; }
+.hero-kb-img {
+  transform-origin: center;
+}
 @media (prefers-reduced-motion: no-preference) {
   .hero-kb-img {
     animation: hero-kb 22s ease-in-out infinite alternate;
@@ -708,9 +772,11 @@
    currentColor so it tracks the link's hover color. Apply .link-underline to
    links that don't already carry a static `underline`. Reduced-motion users get
    an instant underline (no wipe). ---- */
-.link-underline { position: relative; }
+.link-underline {
+  position: relative;
+}
 .link-underline::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   bottom: -2px;
@@ -722,9 +788,13 @@
   transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .link-underline:hover::after,
-.link-underline:focus-visible::after { transform: scaleX(1); }
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+}
 @media (prefers-reduced-motion: reduce) {
-  .link-underline::after { transition: none; }
+  .link-underline::after {
+    transition: none;
+  }
 }
 
 /* ---- Drop cap -- float cap on the first paragraph of every journal post.
@@ -802,9 +872,13 @@
   transform: scale(1.06);
 }
 .group:hover .img-zoom .img-tint,
-.img-zoom:hover .img-tint                  { background: rgba(var(--tint-rgb), 0.15); }
+.img-zoom:hover .img-tint {
+  background: rgba(var(--tint-rgb), 0.15);
+}
 .group:hover .img-zoom .img-tint.img-tint-light,
-.img-zoom:hover .img-tint.img-tint-light   { background: rgba(var(--tint-rgb), 0.08); }
+.img-zoom:hover .img-tint.img-tint-light {
+  background: rgba(var(--tint-rgb), 0.08);
+}
 
 /* ---- Grid stagger entrance. Add data-stagger-grid to any card grid container.
    The BaseLayout observer adds .is-staggered on intersection. ---- */
@@ -827,11 +901,21 @@
    The hover properties (transform, box-shadow, border-color) keep a 0ms delay,
    so hovering a later card responds instantly instead of waiting out its
    entrance stagger. The five values map to transition-property order above. */
-[data-stagger-grid].is-staggered > *:nth-child(1)   { transition-delay:   0ms,   0ms, 0ms, 0ms, 0ms; }
-[data-stagger-grid].is-staggered > *:nth-child(2)   { transition-delay: 100ms, 100ms, 0ms, 0ms, 0ms; }
-[data-stagger-grid].is-staggered > *:nth-child(3)   { transition-delay: 200ms, 200ms, 0ms, 0ms, 0ms; }
-[data-stagger-grid].is-staggered > *:nth-child(4)   { transition-delay: 300ms, 300ms, 0ms, 0ms, 0ms; }
-[data-stagger-grid].is-staggered > *:nth-child(n+5) { transition-delay: 400ms, 400ms, 0ms, 0ms, 0ms; }
+[data-stagger-grid].is-staggered > *:nth-child(1) {
+  transition-delay: 0ms, 0ms, 0ms, 0ms, 0ms;
+}
+[data-stagger-grid].is-staggered > *:nth-child(2) {
+  transition-delay: 100ms, 100ms, 0ms, 0ms, 0ms;
+}
+[data-stagger-grid].is-staggered > *:nth-child(3) {
+  transition-delay: 200ms, 200ms, 0ms, 0ms, 0ms;
+}
+[data-stagger-grid].is-staggered > *:nth-child(4) {
+  transition-delay: 300ms, 300ms, 0ms, 0ms, 0ms;
+}
+[data-stagger-grid].is-staggered > *:nth-child(n + 5) {
+  transition-delay: 400ms, 400ms, 0ms, 0ms, 0ms;
+}
 
 /* Portfolio filter override: re-assert .is-filtered-out at specificity (0,2,0)
    so it beats the [data-stagger-grid].is-staggered > * rule (also 0,2,0 but
@@ -883,7 +967,7 @@
   margin: 0 auto;
 }
 .step-connector::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: var(--primary);
@@ -899,20 +983,38 @@
    Header and footer are named and pinned with animation: none so they stay
    put during the swap. Astro's ClientRouter is already wired in BaseLayout.
    Astro respects prefers-reduced-motion automatically — no extra rule needed. ---- */
-main#main           { view-transition-name: main-content; }
-.site-header        { view-transition-name: site-header; }
-footer              { view-transition-name: site-footer; }
+main#main {
+  view-transition-name: main-content;
+}
+.site-header {
+  view-transition-name: site-header;
+}
+footer {
+  view-transition-name: site-footer;
+}
 
 @keyframes vt-fade-out {
-  from { opacity: 1; }
-  to   { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 @keyframes vt-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
-::view-transition-old(main-content) { animation: vt-fade-out 150ms ease forwards; }
-::view-transition-new(main-content) { animation: vt-fade-in  200ms ease forwards; }
+::view-transition-old(main-content) {
+  animation: vt-fade-out 150ms ease forwards;
+}
+::view-transition-new(main-content) {
+  animation: vt-fade-in 200ms ease forwards;
+}
 
 ::view-transition-old(site-header),
 ::view-transition-new(site-header),
@@ -926,7 +1028,7 @@ footer              { view-transition-name: site-footer; }
    negative z-index inside the page wrapper. Visible enough to add tactile
    warmth to large flat surfaces, quiet enough not to read as a pattern. */
 body::before {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   z-index: 0;
@@ -954,7 +1056,9 @@ body::before {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  html { scroll-behavior: auto !important; }
+  html {
+    scroll-behavior: auto !important;
+  }
   /* Polish layer: kill the start-hidden state so content stays visible without
      waiting on the reveal animation. */
   [data-reveal] {
@@ -968,9 +1072,14 @@ body::before {
     translate: none !important;
   }
   /* Curtain: skip the reveal entirely — image always visible */
-  .img-curtain { display: none !important; }
+  .img-curtain {
+    display: none !important;
+  }
   /* Connector: skip the draw animation — Gray track always visible */
-  .step-connector::after { transform: scaleY(1) !important; transition: none !important; }
+  .step-connector::after {
+    transform: scaleY(1) !important;
+    transition: none !important;
+  }
 }
 
 /* ---------- Print stylesheet ------------------------------------------ */
@@ -988,27 +1097,30 @@ body::before {
     --muted: white;
     --border: #d4d4d4;
   }
-  html, body {
+  html,
+  body {
     background: white !important;
     color: black !important;
     font-size: 11pt;
   }
-  body::before { display: none !important; } /* kill the paper-grain overlay */
+  body::before {
+    display: none !important;
+  } /* kill the paper-grain overlay */
 
   /* Hide site chrome + interactive elements that don't translate to paper. */
   .site-header,
   footer,
-  nav[aria-label="More projects"],
-  nav[aria-label="More journal posts"],
+  nav[aria-label='More projects'],
+  nav[aria-label='More journal posts'],
   .reading-progress,
   [data-back-to-top],
-  [data-portfolio-cursor-zone] ~ * [aria-label="View →"],
+  [data-portfolio-cursor-zone] ~ * [aria-label='View →'],
   .no-print {
     display: none !important;
   }
 
   /* Sticky CTA chip, BackToTop button, custom cursor — all fixed elements. */
-  [class*="fixed"] {
+  [class*='fixed'] {
     display: none !important;
   }
 
@@ -1017,28 +1129,42 @@ body::before {
     color: black !important;
     text-decoration: underline;
   }
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
     font-size: 9pt;
     color: #666;
     text-decoration: none;
   }
   /* Don't print appended URLs on internal anchors or mailto/tel — too noisy. */
-  a[href^="/"]::after,
-  a[href^="#"]::after,
-  a[href^="mailto:"]::after,
-  a[href^="tel:"]::after { content: ""; }
+  a[href^='/']::after,
+  a[href^='#']::after,
+  a[href^='mailto:']::after,
+  a[href^='tel:']::after {
+    content: '';
+  }
 
   /* Headings shouldn't break across pages. */
-  h1, h2, h3, h4 { page-break-after: avoid; }
-  figure, .card-lift { page-break-inside: avoid; }
+  h1,
+  h2,
+  h3,
+  h4 {
+    page-break-after: avoid;
+  }
+  figure,
+  .card-lift {
+    page-break-inside: avoid;
+  }
 
   /* Images — preserve aspect ratio, cap height so they fit on a printed page. */
-  img { max-width: 100%; max-height: 8in; height: auto; }
+  img {
+    max-width: 100%;
+    max-height: 8in;
+    height: auto;
+  }
 
   /* Print-only header + footer injected into every page. */
   body::after {
-    content: "Second Presbyterian Church of Chicago · secondpreschicago.org";
+    content: 'Second Presbyterian Church of Chicago · secondpreschicago.org';
     display: block;
     margin-top: 0.5in;
     padding-top: 0.25in;

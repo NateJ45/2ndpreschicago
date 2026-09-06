@@ -38,7 +38,8 @@ const schemas = [
   <Hero
     eyebrow={page?.heroEyebrow ?? 'Music'}
     headline={page?.heroHeadline ?? 'Our musical life at Second'}
-    subhead={page?.heroSubhead ?? 'I will sing of your strength, in the morning I will sing of your love. (Psalm 59:16)'}
+    subhead={page?.heroSubhead ??
+      'I will sing of your strength, in the morning I will sing of your love. (Psalm 59:16)'}
     keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroMusic}
@@ -48,28 +49,41 @@ const schemas = [
   />
 
   <section class="bg-background" aria-labelledby="music-intro">
-    <div class="mx-auto max-w-3xl px-m py-section-lg text-lg text-foreground/85 leading-relaxed space-y-m">
+    <div
+      class="mx-auto max-w-3xl space-y-m px-m py-section-lg text-lg leading-relaxed text-foreground/85"
+    >
       <h2 id="music-intro" class="sr-only">{page?.introHeading ?? 'About our music'}</h2>
       <p>
-        {page?.introBodyP1 ?? 'Sunday worship at Second is sung. Hymns, spirituals, and anthems, accompanied by organ, carry the congregation through the liturgy week by week. Music is not a performance here. It is how we pray together.'}
+        {
+          page?.introBodyP1 ??
+            'Sunday worship at Second is sung. Hymns, spirituals, and anthems, accompanied by organ, carry the congregation through the liturgy week by week. Music is not a performance here. It is how we pray together.'
+        }
       </p>
     </div>
   </section>
 
   {/* Quartette choir */}
   <section class="surface-warm bg-muted" aria-labelledby="quartette-heading">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
+    <div
+      class="mx-auto grid max-w-content grid-cols-1 items-start gap-l px-m py-section-lg md:grid-cols-2 md:gap-section-md"
+    >
       <SectionHeading
         eyebrow={page?.choirEyebrow ?? 'The Quartette Choir'}
         headline={page?.choirHeadline ?? 'A nineteenth-century tradition, still singing'}
         headingId="quartette-heading"
       />
-      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+      <div class="space-y-m text-lg leading-relaxed text-foreground/85">
         <p>
-          {page?.choirBodyP1 ?? "The quartette choir was an early American Protestant practice meant to lift the quality of sung worship. Chicago's first quartette choir was established in 1836, and Second Presbyterian followed about two decades later."}
+          {
+            page?.choirBodyP1 ??
+              "The quartette choir was an early American Protestant practice meant to lift the quality of sung worship. Chicago's first quartette choir was established in 1836, and Second Presbyterian followed about two decades later."
+          }
         </p>
         <p>
-          {page?.choirBodyP2 ?? 'Today our quartet is made up of classical professional vocalists who lead the congregation in hymns, anthems, and service music, week in and week out.'}
+          {
+            page?.choirBodyP2 ??
+              'Today our quartet is made up of classical professional vocalists who lead the congregation in hymns, anthems, and service music, week in and week out.'
+          }
         </p>
       </div>
     </div>
@@ -77,40 +91,58 @@ const schemas = [
 
   {/* The organ */}
   <section class="bg-background" aria-labelledby="organ-heading">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
-      {page?.organImage?.asset ? (
-        <SanityImage
-          source={page.organImage}
-          width={1000}
-          sizes="(min-width: 768px) 45vw, 100vw"
-          alt={page.organImage.alt || "A painted panel of angels with instruments in the sanctuary's Arts and Crafts decoration"}
-          class="w-full h-auto rounded-md shadow-sm order-last md:order-first"
-        />
-      ) : (
-        <Image
-          src={muralAngels}
-          alt="A painted panel of angels with instruments in the sanctuary's Arts and Crafts decoration"
-          widths={[480, 768, 800]}
-          sizes="(min-width: 768px) 45vw, 100vw"
-          class="w-full h-auto rounded-md shadow-sm order-last md:order-first"
-        />
-      )}
-      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+    <div
+      class="mx-auto grid max-w-content grid-cols-1 items-center gap-l px-m py-section-lg md:grid-cols-2 md:gap-section-md"
+    >
+      {
+        page?.organImage?.asset ? (
+          <SanityImage
+            source={page.organImage}
+            width={1000}
+            sizes="(min-width: 768px) 45vw, 100vw"
+            alt={
+              page.organImage.alt ||
+              "A painted panel of angels with instruments in the sanctuary's Arts and Crafts decoration"
+            }
+            class="order-last h-auto w-full rounded-md shadow-sm md:order-first"
+          />
+        ) : (
+          <Image
+            src={muralAngels}
+            alt="A painted panel of angels with instruments in the sanctuary's Arts and Crafts decoration"
+            widths={[480, 768, 800]}
+            sizes="(min-width: 768px) 45vw, 100vw"
+            class="order-last h-auto w-full rounded-md shadow-sm md:order-first"
+          />
+        )
+      }
+      <div class="space-y-m text-lg leading-relaxed text-foreground/85">
         <SectionHeading
           eyebrow={page?.organEyebrow ?? 'The Organ'}
           headline={page?.organHeadline ?? 'Austin Opus 767, built 1917'}
           headingId="organ-heading"
         />
-        <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
-        <p>
-          {page?.organBodyP1 ?? 'Our pipe organ carries salvaged parts of an 1873 Johnson & Son instrument that was lost when fire destroyed the sanctuary in 1900. The organ you hear today was completed by the Austin Organ Company of Hartford, Connecticut, in 1917.'}
-        </p>
-        <p>
-          {page?.organBodyP2 ?? "A “thundersheet,” acquired in the 1930s and likely salvaged from a theater, still produces rolls of thunder during our annual performance of Theodore Dubois’ “The Seven Last Words of Christ.”"}
-        </p>
-        <p class="text-base">
-          {page?.organCreditLead ?? 'Our music is led by'} <a href={page?.organCreditCta?.externalUrl || '/pastor-staff'} class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">{page?.organCreditCta?.label || 'Michael Shawgo, Director of Music & Organist'}</a>.
-        </p>
+        <div class="mt-l space-y-m text-lg leading-relaxed text-foreground/85">
+          <p>
+            {
+              page?.organBodyP1 ??
+                'Our pipe organ carries salvaged parts of an 1873 Johnson & Son instrument that was lost when fire destroyed the sanctuary in 1900. The organ you hear today was completed by the Austin Organ Company of Hartford, Connecticut, in 1917.'
+            }
+          </p>
+          <p>
+            {
+              page?.organBodyP2 ??
+                'A “thundersheet,” acquired in the 1930s and likely salvaged from a theater, still produces rolls of thunder during our annual performance of Theodore Dubois’ “The Seven Last Words of Christ.”'
+            }
+          </p>
+          <p class="text-base">
+            {page?.organCreditLead ?? 'Our music is led by'}
+            <a
+              href={page?.organCreditCta?.externalUrl || '/pastor-staff'}
+              class="text-link underline underline-offset-2 transition-colors hover:text-primary-dark"
+              >{page?.organCreditCta?.label || 'Michael Shawgo, Director of Music & Organist'}</a
+            >.
+          </p>
         </div>
       </div>
     </div>
@@ -119,9 +151,11 @@ const schemas = [
   <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "Come and Hear"}
-    headline={page?.finalCtaHeadline ?? "Hear it for yourself on Sunday"}
-    subhead={page?.finalCtaSubhead ?? "Worship with us on Sunday, or watch the livestream online."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    eyebrow={page?.finalCtaEyebrow ?? 'Come and Hear'}
+    headline={page?.finalCtaHeadline ?? 'Hear it for yourself on Sunday'}
+    subhead={page?.finalCtaSubhead ?? 'Worship with us on Sunday, or watch the livestream online.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

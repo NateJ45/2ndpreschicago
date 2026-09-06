@@ -25,21 +25,30 @@ const pill =
 
 {
   block && (block.heading || block.body || hasMedia) && (
-    <div class="mx-auto max-w-content px-m grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
+    <div class="mx-auto grid max-w-content grid-cols-1 items-center gap-l px-m md:grid-cols-2 md:gap-section-md">
       <div class={mediaLeft ? 'md:order-2' : 'md:order-1'}>
-        {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
+        {block.eyebrow && (
+          <p class="text-xs tracking-eyebrow uppercase opacity-70">{block.eyebrow}</p>
+        )}
         {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
-        {block.body && <p class="mt-m opacity-85 leading-relaxed whitespace-pre-line">{block.body}</p>}
+        {block.body && (
+          <p class="mt-m leading-relaxed whitespace-pre-line opacity-85">{block.body}</p>
+        )}
         {block.ctaLabel && block.ctaUrl && (
           <div class="mt-l">
-            <a href={block.ctaUrl} class={pill}>{block.ctaLabel}</a>
+            <a href={block.ctaUrl} class={pill}>
+              {block.ctaLabel}
+            </a>
           </div>
         )}
       </div>
       {hasMedia && (
         <div class={mediaLeft ? 'md:order-1' : 'md:order-2'}>
           {embedUrl ? (
-            <div class="overflow-hidden rounded-md border border-border-soft" style="aspect-ratio: 16/9;">
+            <div
+              class="overflow-hidden rounded-md border border-border-soft"
+              style="aspect-ratio: 16/9;"
+            >
               <iframe
                 src={embedUrl}
                 title={block.heading || 'Video'}
@@ -51,7 +60,7 @@ const pill =
               />
             </div>
           ) : hasImage ? (
-            <div class="overflow-hidden rounded-md ring-1 ring-border-soft img-zoom group aspect-[4/3]">
+            <div class="img-zoom group aspect-[4/3] overflow-hidden rounded-md ring-1 ring-border-soft">
               <SanityImage
                 source={block.image}
                 width={900}

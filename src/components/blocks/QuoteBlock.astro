@@ -7,10 +7,10 @@ const { block } = Astro.props as { block: any };
 {
   block?.quote && (
     <div class="mx-auto max-w-3xl px-m text-center">
-      <div class="mb-m h-px w-12 bg-gold/70 mx-auto" aria-hidden="true" />
-      <blockquote class="font-display italic text-h3 leading-snug">{block.quote}</blockquote>
+      <div class="mx-auto mb-m h-px w-12 bg-gold/70" aria-hidden="true" />
+      <blockquote class="font-display text-h3 leading-snug italic">{block.quote}</blockquote>
       {block.attribution && (
-        <p class="mt-m text-xs uppercase tracking-eyebrow opacity-70">{block.attribution}</p>
+        <p class="mt-m text-xs tracking-eyebrow uppercase opacity-70">{block.attribution}</p>
       )}
     </div>
   )

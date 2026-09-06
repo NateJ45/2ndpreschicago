@@ -13,7 +13,6 @@ import { createClient } from '@sanity/client';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
@@ -21,7 +20,9 @@ const apiVersion = env.PUBLIC_SANITY_API_VERSION ?? '2026-05-01';
 const token = env.SANITY_API_WRITE_TOKEN || env.SANITY_API_READ_TOKEN;
 
 if (!projectId || !token) {
-  console.error('Missing PUBLIC_SANITY_PROJECT_ID or a write token in .env. Create the announcement in the Studio instead.');
+  console.error(
+    'Missing PUBLIC_SANITY_PROJECT_ID or a write token in .env. Create the announcement in the Studio instead.',
+  );
   process.exit(1);
 }
 

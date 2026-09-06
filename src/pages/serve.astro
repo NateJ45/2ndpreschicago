@@ -32,9 +32,21 @@ const schemas = [
 // (servePage.ways); this const renders when that field is empty, so the page is
 // identical until an editor overrides it.
 const FALLBACK_WAYS = [
-  { name: 'Food ministry', href: '/food', body: 'Help pack and hand out Lunch Bags, or host the South Loop Community Table alongside Care for Friends. This is the heart of how we serve our neighbors.' },
-  { name: 'Sunday hospitality', href: '/worship', body: 'Welcome visitors, help with coffee and fellowship, and make sure everyone who walks in feels at home.' },
-  { name: 'Neighborhood events', href: '/events', body: 'Lend a hand at gatherings like the South Michigan Avenue Block Fest, free and open to all our neighbors.' },
+  {
+    name: 'Food ministry',
+    href: '/food',
+    body: 'Help pack and hand out Lunch Bags, or host the South Loop Community Table alongside Care for Friends. This is the heart of how we serve our neighbors.',
+  },
+  {
+    name: 'Sunday hospitality',
+    href: '/worship',
+    body: 'Welcome visitors, help with coffee and fellowship, and make sure everyone who walks in feels at home.',
+  },
+  {
+    name: 'Neighborhood events',
+    href: '/events',
+    body: 'Lend a hand at gatherings like the South Michigan Avenue Block Fest, free and open to all our neighbors.',
+  },
 ];
 
 const ways: typeof FALLBACK_WAYS = page?.ways?.length ? page.ways : FALLBACK_WAYS;
@@ -44,7 +56,8 @@ const ways: typeof FALLBACK_WAYS = page?.ways?.length ? page.ways : FALLBACK_WAY
   <Hero
     eyebrow={page?.heroEyebrow ?? 'Get Involved'}
     headline={page?.heroHeadline ?? 'Love our neighbors'}
-    subhead={page?.heroSubhead ?? 'We are called to serve and celebrate Jesus for the good of the world. Much of that happens right here in the South Loop.'}
+    subhead={page?.heroSubhead ??
+      'We are called to serve and celebrate Jesus for the good of the world. Much of that happens right here in the South Loop.'}
     keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroServe}
@@ -54,14 +67,26 @@ const ways: typeof FALLBACK_WAYS = page?.ways?.length ? page.ways : FALLBACK_WAY
   />
 
   <section class="bg-background" aria-label="Ways to serve">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-3 gap-m" data-stagger-grid>
-      {ways.map((w) => (
-        <a href={w.href} class="card-lift group block rounded-md border border-border-soft bg-card p-l no-underline">
-          <h2 class="font-display text-h3 text-foreground group-hover:text-link transition-colors">{w.name}</h2>
-          <p class="mt-s text-foreground/85 leading-relaxed">{w.body}</p>
-          <span class="mt-m inline-flex items-center gap-xs text-xs uppercase tracking-eyebrow font-semibold text-link">{page?.serveLinkLabel ?? 'Learn more'} <span aria-hidden="true">&rarr;</span></span>
-        </a>
-      ))}
+    <div
+      class="mx-auto grid max-w-content grid-cols-1 gap-m px-m py-section-lg md:grid-cols-3"
+      data-stagger-grid
+    >
+      {
+        ways.map((w) => (
+          <a
+            href={w.href}
+            class="card-lift group block rounded-md border border-border-soft bg-card p-l no-underline"
+          >
+            <h2 class="font-display text-h3 text-foreground transition-colors group-hover:text-link">
+              {w.name}
+            </h2>
+            <p class="mt-s leading-relaxed text-foreground/85">{w.body}</p>
+            <span class="mt-m inline-flex items-center gap-xs text-xs font-semibold tracking-eyebrow text-link uppercase">
+              {page?.serveLinkLabel ?? 'Learn more'} <span aria-hidden="true">&rarr;</span>
+            </span>
+          </a>
+        ))
+      }
     </div>
   </section>
 
@@ -70,7 +95,10 @@ const ways: typeof FALLBACK_WAYS = page?.ways?.length ? page.ways : FALLBACK_WAY
   <FinalCta
     eyebrow={page?.serveCtaEyebrow ?? 'Lend a Hand'}
     headline={page?.serveCtaHeadline ?? 'Ready to get involved?'}
-    subhead={page?.serveCtaSubhead ?? 'Tell us where you would like to serve and we will help you find a place to plug in.'}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
+    subhead={page?.serveCtaSubhead ??
+      'Tell us where you would like to serve and we will help you find a place to plug in.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

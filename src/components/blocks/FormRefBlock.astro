@@ -10,7 +10,7 @@ const { block, fallbackEmail } = Astro.props as { block: any; fallbackEmail?: st
     <section class="surface-warm bg-muted">
       <div class="mx-auto max-w-3xl px-m py-section-md">
         {block.heading && <h2 class="font-display text-h2 text-foreground">{block.heading}</h2>}
-        {block.intro && <p class="mt-s text-foreground/80 leading-relaxed">{block.intro}</p>}
+        {block.intro && <p class="mt-s leading-relaxed text-foreground/80">{block.intro}</p>}
         <div class="mt-l">
           <FormBlock form={block.form} fallbackEmail={fallbackEmail} />
         </div>

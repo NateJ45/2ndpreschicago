@@ -12,10 +12,10 @@ Hardcoded constants that don't change between deploys: domain name, GitHub repo 
 
 ```ts
 export const site = {
-  name: "Studio Starter",
-  studio: "Studio Starter",
-  domain: "example.com",
-  storageKeyPrefix: "studio-starter",
+  name: 'Studio Starter',
+  studio: 'Studio Starter',
+  domain: 'example.com',
+  storageKeyPrefix: 'studio-starter',
   // ... etc
 } as const;
 ```
@@ -34,9 +34,11 @@ The inline strings in `src/pages/*.astro` are **safety-net fallbacks** (the inli
 > are not active for this project.
 
 **Settings and globals:**
+
 - `siteSettings` (singleton) — church name, tagline, mission, public email + phone, **street address** (`addressLine` + `cityStateZip`), social links, service time; a **Navigation (menus)** group (`navItems` header menu + `footerColumns` footer columns); a **`favicon`** image; a **Connect & integrations** group (watch / give / app / directory / registration / prayer URLs); and a newsletter config. Phone + address surface site-wide (tap-to-call, header bar, footer, map links) and feed the LocalBusiness JSON-LD. Every field falls back to `src/data/site.ts` when blank.
 
 **Reusable collections:**
+
 - `event` — calendar + special/seasonal services (audience, cost, registration, contact, `featuredOnHome`, `specialService` + `liturgicalSeason`).
 - `sermon` — messages shown on `/sermons` (date, speaker, scripture, series string, video link).
 - `staffMember` — pastors & staff (drives `/pastor-staff`).
@@ -48,6 +50,7 @@ The inline strings in `src/pages/*.astro` are **safety-net fallbacks** (the inli
 - `ctaBlock` — reusable object type (label + linkType + target) embedded in other schemas.
 
 **Page singletons:**
+
 - Core: `homePage`, `aboutPage`, `faqPage`, `contactPage`, `eventsPage`, `sermonsPage`, `privacyPage`, `notFoundPage`.
 - Per-page church singletons (via the `definePageSingleton` factory): `worshipPage` (I'm New), `beliefsPage` (What We Believe), `musicPage`, `staffPage`, `growPage`, `servePage`, `kidsPage`, `foodPage`, `useOurSpacePage`, `weddingsPage`, `givePage`.
 - `page` — generic type for brand-new pages at `/<slug>`, built entirely from the block library.
@@ -76,7 +79,7 @@ PUBLIC_SANITY_DATASET=production
 export async function sanityFetch<T>(
   query: string,
   params: Record<string, unknown> = {},
-  fallback: T
+  fallback: T,
 ): Promise<T> {
   if (isSanityUnconfigured()) return fallback;
   return client.fetch<T>(query, params);
@@ -112,6 +115,7 @@ All GROQ queries live in `src/lib/queries.ts`. Each page has a typed query funct
 ### Auto-populated lists
 
 Several pages pull their content from collections automatically:
+
 - Events on `/events`: upcoming `event` documents by date; `specialService` ones surface in the Special Services band; `featuredOnHome` ones appear on the home page.
 - Sermons on `/sermons`: recent `sermon` documents, newest first (the latest is featured).
 - FAQs on the FAQ page: `faqItem` documents grouped by `category`, in the order defined in `faqPage.categoryOrder`.
@@ -129,10 +133,12 @@ This means adding an `event` with `featuredOnHome: true` makes it appear on both
 Two schema-level controls govern what Canvas sees:
 
 **Excluded from Canvas entirely** (`options.canvasApp.exclude: true`):
+
 - All page singletons + the generic `page` -- marketing copy is structural; edit fields directly in Studio.
 - `siteSettings` -- configuration, not prose.
 
 **Available in Canvas with per-field voice hints** (`options.canvasApp.purpose`):
+
 - `faqItem` -- question, answer (the `purpose` strings carry the warm, plain-English church voice).
 
 The `purpose` strings carry compressed voice guidance for each field. These are NOT a hard guardrail -- editors should still apply the project voice in review.

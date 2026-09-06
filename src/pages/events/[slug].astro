@@ -38,8 +38,12 @@ function whenLabel(ev: any): string {
   if (ev.scheduleLabel) return ev.scheduleLabel;
   if (ev.start) {
     return new Date(ev.start).toLocaleString('en-US', {
-      weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
-      hour: 'numeric', minute: '2-digit',
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
     });
   }
   return '';
@@ -90,48 +94,95 @@ const pillPrimary =
   <article>
     <header class="bg-background">
       <div class="mx-auto max-w-3xl px-m pt-section-lg pb-l">
-        <p class="text-xs uppercase tracking-widest text-foreground/80 mb-s">
-          <a href="/events" class="hover:text-primary-dark transition-colors">Events</a>
+        <p class="mb-s text-xs tracking-widest text-foreground/80 uppercase">
+          <a href="/events" class="transition-colors hover:text-primary-dark">Events</a>
           {event.category && <span class="mx-xs">·</span>}
           {event.category && <span>{event.category}</span>}
         </p>
-        <h1 class="font-display text-h1 text-foreground leading-tight">{event.title}</h1>
+        <h1 class="font-display text-h1 leading-tight text-foreground">{event.title}</h1>
         <p class="mt-m text-lg text-foreground/80">{whenLabel(event)}</p>
         {event.location && <p class="mt-xs text-foreground/70">{event.location}</p>}
-        {event.summary && <p class="mt-m text-xl text-foreground/85 leading-relaxed">{event.summary}</p>}
-        {(event.cost || event.audience) && (
-          <p class="mt-m text-foreground/70">{event.cost}{event.cost && event.audience ? ' · ' : ''}{event.audience}</p>
-        )}
-        {event.registrationUrl && (
-          <div class="mt-l">
-            <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>{event.registrationLabel ?? 'Register'}</a>
-          </div>
-        )}
-        {(event.contactName || event.contactEmail) && (
-          <p class="mt-m text-sm text-foreground/70">
-            Questions? Contact {event.contactName || 'the office'}{event.contactEmail ? ' at ' : ''}{event.contactEmail && <a href={`mailto:${event.contactEmail}`} class="text-link hover:text-primary-dark underline underline-offset-2">{event.contactEmail}</a>}.
-          </p>
-        )}
+        {
+          event.summary && (
+            <p class="mt-m text-xl leading-relaxed text-foreground/85">{event.summary}</p>
+          )
+        }
+        {
+          (event.cost || event.audience) && (
+            <p class="mt-m text-foreground/70">
+              {event.cost}
+              {event.cost && event.audience ? ' · ' : ''}
+              {event.audience}
+            </p>
+          )
+        }
+        {
+          event.registrationUrl && (
+            <div class="mt-l">
+              <a
+                href={event.registrationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={pillPrimary}
+              >
+                {event.registrationLabel ?? 'Register'}
+              </a>
+            </div>
+          )
+        }
+        {
+          (event.contactName || event.contactEmail) && (
+            <p class="mt-m text-sm text-foreground/70">
+              Questions? Contact {event.contactName || 'the office'}
+              {event.contactEmail ? ' at ' : ''}
+              {event.contactEmail && (
+                <a
+                  href={`mailto:${event.contactEmail}`}
+                  class="text-link underline underline-offset-2 hover:text-primary-dark"
+                >
+                  {event.contactEmail}
+                </a>
+              )}
+              .
+            </p>
+          )
+        }
       </div>
     </header>
 
-    {event.image?.asset && (
-      <figure class="mx-auto max-w-4xl px-m">
-        <SanityImage source={event.image} width={1600} loading="eager" sizes="(min-width: 920px) 896px, 100vw" class="w-full h-auto rounded-md" />
-      </figure>
-    )}
+    {
+      event.image?.asset && (
+        <figure class="mx-auto max-w-4xl px-m">
+          <SanityImage
+            source={event.image}
+            width={1600}
+            loading="eager"
+            sizes="(min-width: 920px) 896px, 100vw"
+            class="h-auto w-full rounded-md"
+          />
+        </figure>
+      )
+    }
 
-    {event.description && (
-      <div class="mx-auto max-w-3xl px-m py-section-lg">
-        <PortableTextStatic value={event.description} className="text-foreground/85 text-lg leading-relaxed" />
-      </div>
-    )}
+    {
+      event.description && (
+        <div class="mx-auto max-w-3xl px-m py-section-lg">
+          <PortableTextStatic
+            value={event.description}
+            className="text-foreground/85 text-lg leading-relaxed"
+          />
+        </div>
+      )
+    }
   </article>
 
   <FinalCta
-    eyebrow={eventsPage?.detailFinalCtaEyebrow ?? "Come and See"}
-    headline={eventsPage?.detailFinalCtaHeadline ?? "Join us at Second"}
-    subhead={eventsPage?.detailFinalCtaSubhead ?? "Everyone is welcome. Worship is every Sunday, and the door is always open."}
-    cta={eventsPage?.detailFinalCta?.label ? eventsPage.detailFinalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    eyebrow={eventsPage?.detailFinalCtaEyebrow ?? 'Come and See'}
+    headline={eventsPage?.detailFinalCtaHeadline ?? 'Join us at Second'}
+    subhead={eventsPage?.detailFinalCtaSubhead ??
+      'Everyone is welcome. Worship is every Sunday, and the door is always open.'}
+    cta={eventsPage?.detailFinalCta?.label
+      ? eventsPage.detailFinalCta
+      : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

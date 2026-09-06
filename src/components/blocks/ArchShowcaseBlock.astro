@@ -21,26 +21,35 @@ const hasMedia = !!videoSrc || images.length >= 1;
 const animated = !!videoSrc || images.length >= 2;
 ---
 
-{block && hasMedia && (
-  <div class="mx-auto max-w-content px-m">
-    {(block.eyebrow || block.heading || block.intro) && (
-      <div class="mx-auto max-w-2xl text-center">
-        {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
-        {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
-        {block.intro && <p class="mt-m leading-relaxed opacity-80">{block.intro}</p>}
-      </div>
-    )}
-    <div class="mx-auto mt-l w-full max-w-md sm:max-w-lg">
-      <div class:list={['group arch-top overflow-hidden ring-1 ring-primary/40 dark:ring-[#C7A875]/40 shadow-sm aspect-[4/5] sm:aspect-[5/6]', animated ? 'relative' : 'img-zoom']}>
-        <ArchMedia
-          images={images}
-          videoSrc={videoSrc}
-          videoType={videoType}
-          poster={block.videoPoster}
-          fallbackAlt={block.heading || ''}
-          sizes="(min-width: 640px) 32rem, 90vw"
-        />
+{
+  block && hasMedia && (
+    <div class="mx-auto max-w-content px-m">
+      {(block.eyebrow || block.heading || block.intro) && (
+        <div class="mx-auto max-w-2xl text-center">
+          {block.eyebrow && (
+            <p class="text-xs tracking-eyebrow uppercase opacity-70">{block.eyebrow}</p>
+          )}
+          {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
+          {block.intro && <p class="mt-m leading-relaxed opacity-80">{block.intro}</p>}
+        </div>
+      )}
+      <div class="mx-auto mt-l w-full max-w-md sm:max-w-lg">
+        <div
+          class:list={[
+            'group aspect-[4/5] overflow-hidden arch-top shadow-sm ring-1 ring-primary/40 sm:aspect-[5/6] dark:ring-[#C7A875]/40',
+            animated ? 'relative' : 'img-zoom',
+          ]}
+        >
+          <ArchMedia
+            images={images}
+            videoSrc={videoSrc}
+            videoType={videoType}
+            poster={block.videoPoster}
+            fallbackAlt={block.heading || ''}
+            sizes="(min-width: 640px) 32rem, 90vw"
+          />
+        </div>
       </div>
     </div>
-  </div>
-)}
+  )
+}

@@ -122,9 +122,9 @@ To swap them:
 1. Remove the existing `@fontsource` imports at the top of `globals.css`
    (there are three lines to remove):
    ```css
-   @import "@fontsource/libre-baskerville/400.css";
-   @import "@fontsource/libre-baskerville/700.css";
-   @import "@fontsource-variable/inter";
+   @import '@fontsource/libre-baskerville/400.css';
+   @import '@fontsource/libre-baskerville/700.css';
+   @import '@fontsource-variable/inter';
    ```
 2. Install your chosen font package, then add its import(s) in place:
    ```powershell
@@ -133,12 +133,13 @@ To swap them:
    Then in `globals.css`, add the import (regular `@fontsource` packages use
    a weight path; `@fontsource-variable` packages import the package root):
    ```css
-   @import "@fontsource/playfair-display/400.css";
-   @import "@fontsource/playfair-display/700.css";
+   @import '@fontsource/playfair-display/400.css';
+   @import '@fontsource/playfair-display/700.css';
    ```
 3. Update `--font-display` and `--font-body` in the `@theme` block to match.
 
 The script accent is opt-in and OFF by default. To enable it:
+
 1. Install a `@fontsource` calligraphic package (e.g.
    `npm install @fontsource/great-vibes` then
    `@import "@fontsource/great-vibes/400.css"` in `globals.css`).
@@ -283,11 +284,13 @@ This runs `npm run build` (which runs `typegen` then `astro build`) followed by
 **b) Wire the publish webhook**
 
 In Cloudflare:
+
 - Go to Workers & Pages -> your Worker -> Settings -> Variables
 - Add the same env vars from `.env` as Secret bindings (especially
   `SANITY_API_READ_TOKEN`; the `PUBLIC_*` vars can be plain)
 
 In Sanity:
+
 - Go to manage.sanity.io -> your project -> API -> GROQ-powered Webhooks
 - Create a webhook that triggers a Cloudflare Workers deploy on document
   publish events. This ensures a Sanity edit goes live after the next rebuild.

@@ -21,7 +21,6 @@ import { createClient } from '@sanity/client';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
@@ -29,8 +28,12 @@ const apiVersion = env.PUBLIC_SANITY_API_VERSION ?? '2026-05-01';
 const token = env.SANITY_API_WRITE_TOKEN || env.SANITY_API_READ_TOKEN;
 
 if (!projectId || !token) {
-  console.error('Missing PUBLIC_SANITY_PROJECT_ID or a write token (SANITY_API_WRITE_TOKEN) in .env.');
-  console.error('Schema + UI still ship; create the forms in the Studio (Content -> Forms) instead.');
+  console.error(
+    'Missing PUBLIC_SANITY_PROJECT_ID or a write token (SANITY_API_WRITE_TOKEN) in .env.',
+  );
+  console.error(
+    'Schema + UI still ship; create the forms in the Studio (Content -> Forms) instead.',
+  );
   process.exit(1);
 }
 
@@ -57,8 +60,10 @@ const FORMS = [
       field({ label: 'How can we help?', name: 'message', type: 'textarea', required: true }),
     ],
     submitLabel: 'Send Message',
-    successMessage: 'Thank you for reaching out. Someone from the church office will be in touch soon.',
-    consentNote: 'We will only use your details to respond to your message. See our privacy policy.',
+    successMessage:
+      'Thank you for reaching out. Someone from the church office will be in touch soon.',
+    consentNote:
+      'We will only use your details to respond to your message. See our privacy policy.',
     provider: { service: 'web3forms', accessKey: '', notifyEmail: OFFICE_EMAIL },
   },
   {
@@ -67,7 +72,13 @@ const FORMS = [
     slug: 'wedding-inquiry',
     mode: 'native',
     fields: [
-      field({ label: 'Your name', name: 'partner1Name', type: 'text', required: true, width: 'half' }),
+      field({
+        label: 'Your name',
+        name: 'partner1Name',
+        type: 'text',
+        required: true,
+        width: 'half',
+      }),
       field({ label: "Partner's name", name: 'partner2Name', type: 'text', width: 'half' }),
       field({ label: 'Email', name: 'email', type: 'email', required: true, width: 'half' }),
       field({ label: 'Phone', name: 'phone', type: 'tel', width: 'half' }),
@@ -80,12 +91,18 @@ const FORMS = [
         width: 'half',
         options: ['Ceremony only', 'Ceremony and reception'],
       }),
-      field({ label: 'How did you hear about us?', name: 'hearAboutUs', type: 'text', width: 'half' }),
+      field({
+        label: 'How did you hear about us?',
+        name: 'hearAboutUs',
+        type: 'text',
+        width: 'half',
+      }),
       field({ label: 'Tell us about your day', name: 'message', type: 'textarea' }),
     ],
     submitLabel: 'Send Inquiry',
     successMessage: 'Thank you. Our wedding coordinator will be in touch to talk about your date.',
-    consentNote: 'We will only use your details to respond to your inquiry. See our privacy policy.',
+    consentNote:
+      'We will only use your details to respond to your inquiry. See our privacy policy.',
     provider: { service: 'web3forms', accessKey: '', notifyEmail: OFFICE_EMAIL },
   },
   {
@@ -105,7 +122,8 @@ const FORMS = [
     ],
     submitLabel: 'Send Inquiry',
     successMessage: 'Thank you. We will be in touch about availability and fees.',
-    consentNote: 'We will only use your details to respond to your inquiry. See our privacy policy.',
+    consentNote:
+      'We will only use your details to respond to your inquiry. See our privacy policy.',
     provider: { service: 'web3forms', accessKey: '', notifyEmail: OFFICE_EMAIL },
   },
 ];
@@ -140,7 +158,10 @@ async function run() {
     // Published + draft (if any). setIfMissing never overwrites an editor's choice.
     for (const id of [docId, `drafts.${docId}`]) {
       try {
-        await client.patch(id).setIfMissing({ [fieldName]: ref }).commit({ visibility: 'async' });
+        await client
+          .patch(id)
+          .setIfMissing({ [fieldName]: ref })
+          .commit({ visibility: 'async' });
         console.log(`  linked ${id}.${fieldName} -> ${formId} (if missing)`);
       } catch (e) {
         // A missing draft is expected and fine; report anything else.

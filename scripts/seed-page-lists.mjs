@@ -34,7 +34,6 @@ import { loadEnv } from './lib/loadEnv.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
@@ -42,7 +41,9 @@ const apiVersion = env.PUBLIC_SANITY_API_VERSION ?? '2026-05-01';
 const token = env.SANITY_API_WRITE_TOKEN || env.SANITY_API_READ_TOKEN;
 
 if (!projectId || !token) {
-  console.error('Missing PUBLIC_SANITY_PROJECT_ID or a write token (SANITY_API_WRITE_TOKEN) in .env.');
+  console.error(
+    'Missing PUBLIC_SANITY_PROJECT_ID or a write token (SANITY_API_WRITE_TOKEN) in .env.',
+  );
   console.error('Schema + UI still ship; the pages fall back to their built-in starter content.');
   process.exit(1);
 }
@@ -70,13 +71,34 @@ const PAGES = [
     fields: {
       // weddingsPage.weddingFaqs -> defineArrayMember name 'weddingFaq' (q, a)
       weddingFaqs: members('weddingFaqs', 'weddingFaq', [
-        { q: 'Who can get married at Second?', a: 'We welcome gay and straight couples. Because the sanctuary is a consecrated space, religious ceremonies must be Christian. Nonreligious ceremonies are welcome as long as they are respectful of the space and its purpose. There is no dress code.' },
-        { q: 'What about music?', a: 'Our Music Director\'s services are built into a typical wedding package, which may include our exceptional 1917 Austin organ and a piano. Recorded music is available through a CD player or aux cable. The organ predates standardized pitch, so any instrument played with it must be tuned down to match.' },
-        { q: 'Can we use our own officiant?', a: 'Yes. We require premarital counseling for couples married in our sanctuary. Our pastor is glad to officiate Christian weddings, and that fee is waived for members of the congregation.' },
-        { q: 'Can we celebrate communion?', a: 'Ordained Protestant clergy of the sacramental tradition (Presbyterian, Anglican, Methodist, Lutheran, and certain other evangelical churches) may preside at communion with the special permission of the church Session.' },
-        { q: 'How many guests can the sanctuary hold?', a: 'The main floor of the sanctuary seats 600 people, with additional balcony seating should you need it.' },
-        { q: 'What support and spaces are included?', a: 'A Wedding Coordinator assists at the rehearsal and the ceremony. The Bridal Parlor and North Parlor are included for preparation. Parking accommodates 18 vehicles, with more public options nearby, and the sanctuary is accessible.' },
-        { q: 'Is there space for a reception?', a: 'Our Fellowship Hall may be rented for an additional fee. Please note that it is a carpeted space.' },
+        {
+          q: 'Who can get married at Second?',
+          a: 'We welcome gay and straight couples. Because the sanctuary is a consecrated space, religious ceremonies must be Christian. Nonreligious ceremonies are welcome as long as they are respectful of the space and its purpose. There is no dress code.',
+        },
+        {
+          q: 'What about music?',
+          a: "Our Music Director's services are built into a typical wedding package, which may include our exceptional 1917 Austin organ and a piano. Recorded music is available through a CD player or aux cable. The organ predates standardized pitch, so any instrument played with it must be tuned down to match.",
+        },
+        {
+          q: 'Can we use our own officiant?',
+          a: 'Yes. We require premarital counseling for couples married in our sanctuary. Our pastor is glad to officiate Christian weddings, and that fee is waived for members of the congregation.',
+        },
+        {
+          q: 'Can we celebrate communion?',
+          a: 'Ordained Protestant clergy of the sacramental tradition (Presbyterian, Anglican, Methodist, Lutheran, and certain other evangelical churches) may preside at communion with the special permission of the church Session.',
+        },
+        {
+          q: 'How many guests can the sanctuary hold?',
+          a: 'The main floor of the sanctuary seats 600 people, with additional balcony seating should you need it.',
+        },
+        {
+          q: 'What support and spaces are included?',
+          a: 'A Wedding Coordinator assists at the rehearsal and the ceremony. The Bridal Parlor and North Parlor are included for preparation. Parking accommodates 18 vehicles, with more public options nearby, and the sanctuary is accessible.',
+        },
+        {
+          q: 'Is there space for a reception?',
+          a: 'Our Fellowship Hall may be rented for an additional fee. Please note that it is a carpeted space.',
+        },
       ]),
       // weddingsPage.weddingPricing -> defineArrayMember name 'weddingPriceRow' (item, price)
       weddingPricing: members('weddingPricing', 'weddingPriceRow', [
@@ -92,10 +114,30 @@ const PAGES = [
     fields: {
       // growPage.groups -> defineArrayMember name 'communityGroup' (name, when, where, body)
       groups: members('groups', 'communityGroup', [
-        { name: 'Mid-Morning Bible Study', when: 'First and third Thursdays, 10am', where: 'The Pastor\'s Office', body: 'Read through books of the Bible together over coffee.' },
-        { name: 'Theology on Tap', when: 'Third Thursdays, 7pm', where: 'Rotating neighborhood pubs', body: 'Read short pieces of theological writing over drinks and good conversation.' },
-        { name: 'Alpha to Omega Bible Reading Group', when: 'Thursdays, 5pm to 6pm', where: 'By conference call', body: 'Read through the whole Bible together, a stretch at a time.' },
-        { name: 'Second Church Book Group', when: 'Select Sundays, 9:30am', where: 'At the church', body: 'Read and discuss a book together before worship.' },
+        {
+          name: 'Mid-Morning Bible Study',
+          when: 'First and third Thursdays, 10am',
+          where: "The Pastor's Office",
+          body: 'Read through books of the Bible together over coffee.',
+        },
+        {
+          name: 'Theology on Tap',
+          when: 'Third Thursdays, 7pm',
+          where: 'Rotating neighborhood pubs',
+          body: 'Read short pieces of theological writing over drinks and good conversation.',
+        },
+        {
+          name: 'Alpha to Omega Bible Reading Group',
+          when: 'Thursdays, 5pm to 6pm',
+          where: 'By conference call',
+          body: 'Read through the whole Bible together, a stretch at a time.',
+        },
+        {
+          name: 'Second Church Book Group',
+          when: 'Select Sundays, 9:30am',
+          where: 'At the church',
+          body: 'Read and discuss a book together before worship.',
+        },
       ]),
     },
   },
@@ -104,9 +146,21 @@ const PAGES = [
     fields: {
       // servePage.ways -> defineArrayMember name 'serveWay' (name, href, body)
       ways: members('ways', 'serveWay', [
-        { name: 'Food ministry', href: '/food', body: 'Help pack and hand out Lunch Bags, or host the South Loop Community Table alongside Care for Friends. This is the heart of how we serve our neighbors.' },
-        { name: 'Sunday hospitality', href: '/worship', body: 'Welcome visitors, help with coffee and fellowship, and make sure everyone who walks in feels at home.' },
-        { name: 'Neighborhood events', href: '/events', body: 'Lend a hand at gatherings like the South Michigan Avenue Block Fest, free and open to all our neighbors.' },
+        {
+          name: 'Food ministry',
+          href: '/food',
+          body: 'Help pack and hand out Lunch Bags, or host the South Loop Community Table alongside Care for Friends. This is the heart of how we serve our neighbors.',
+        },
+        {
+          name: 'Sunday hospitality',
+          href: '/worship',
+          body: 'Welcome visitors, help with coffee and fellowship, and make sure everyone who walks in feels at home.',
+        },
+        {
+          name: 'Neighborhood events',
+          href: '/events',
+          body: 'Lend a hand at gatherings like the South Michigan Avenue Block Fest, free and open to all our neighbors.',
+        },
       ]),
     },
   },
@@ -115,8 +169,16 @@ const PAGES = [
     fields: {
       // useOurSpacePage.uses -> array of plain strings (no _key/_type)
       uses: [
-        'Youth sports', 'Board meetings', 'Worship', 'Meal programs', 'Social services',
-        'Speakers', 'Concerts', 'Performance rehearsals', 'Parties', '12-step groups',
+        'Youth sports',
+        'Board meetings',
+        'Worship',
+        'Meal programs',
+        'Social services',
+        'Speakers',
+        'Concerts',
+        'Performance rehearsals',
+        'Parties',
+        '12-step groups',
       ],
     },
   },
@@ -139,7 +201,11 @@ const PAGES = [
       // beliefsPage.resources -> defineArrayMember name 'beliefsResource' (label, href, external)
       resources: members('resources', 'beliefsResource', [
         { label: 'Community groups at Second', href: '/grow', external: false },
-        { label: 'Lectio 365', href: 'https://www.24-7prayer.com/resource/lectio-365/', external: true },
+        {
+          label: 'Lectio 365',
+          href: 'https://www.24-7prayer.com/resource/lectio-365/',
+          external: true,
+        },
         { label: 'BibleProject', href: 'https://bibleproject.com/', external: true },
         { label: 'Practicing the Way', href: 'https://practicingtheway.org/', external: true },
       ]),

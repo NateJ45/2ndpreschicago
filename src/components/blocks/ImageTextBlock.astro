@@ -10,7 +10,10 @@ const imageRight = (block?.imageSide ?? 'right') !== 'left';
 const archCls = block?.arched ? 'arch-top-sm' : 'rounded-md';
 const hasImage = !!block?.image?.asset;
 const tone = block?.background?.tone ?? defaultTone;
-const onDark = !!(block?.background?.image?.asset || block?.background?.videoUrl) || tone === 'chapel' || tone === 'chapelDeep';
+const onDark =
+  !!(block?.background?.image?.asset || block?.background?.videoUrl) ||
+  tone === 'chapel' ||
+  tone === 'chapelDeep';
 const ptDark = onDark
   ? '[&_p]:text-current [&_h3]:text-current [&_h4]:text-current [&_li]:text-current [&_a]:text-current [&_strong]:text-current'
   : '';
@@ -20,9 +23,11 @@ const pill =
 
 {
   block && (
-    <div class="mx-auto max-w-content px-m grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
+    <div class="mx-auto grid max-w-content grid-cols-1 items-center gap-l px-m md:grid-cols-2 md:gap-section-md">
       <div class={imageRight ? 'md:order-1' : 'md:order-2'}>
-        {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
+        {block.eyebrow && (
+          <p class="text-xs tracking-eyebrow uppercase opacity-70">{block.eyebrow}</p>
+        )}
         {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
         {block.body && (
           <div class={`mt-m leading-relaxed ${ptDark}`}>
@@ -31,13 +36,17 @@ const pill =
         )}
         {block.ctaLabel && block.ctaUrl && (
           <div class="mt-l">
-            <a href={block.ctaUrl} class={pill}>{block.ctaLabel}</a>
+            <a href={block.ctaUrl} class={pill}>
+              {block.ctaLabel}
+            </a>
           </div>
         )}
       </div>
       {hasImage && (
         <div class={imageRight ? 'md:order-2' : 'md:order-1'}>
-          <div class={`group overflow-hidden ring-1 ring-primary/40 dark:ring-[#C7A875]/40 shadow-sm img-zoom aspect-[4/5] ${archCls}`}>
+          <div
+            class={`group img-zoom aspect-[4/5] overflow-hidden shadow-sm ring-1 ring-primary/40 dark:ring-[#C7A875]/40 ${archCls}`}
+          >
             <SanityImage
               source={block.image}
               width={900}

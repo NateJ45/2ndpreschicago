@@ -35,21 +35,38 @@ const PAD: Record<string, string> = {
 
 const toneCls = hasMedia ? 'text-white' : (TONE[tone] ?? TONE.default);
 const padCls = PAD[padding] ?? PAD.normal;
-const bgImg = hasImage ? urlFor(background.image).width(2000).quality(70).auto('format').url() : null;
+const bgImg = hasImage
+  ? urlFor(background.image).width(2000).quality(70).auto('format').url()
+  : null;
 ---
 
 <section class:list={['relative isolate', toneCls, padCls]}>
-  {hasMedia && (
-    <div class="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-      {videoUrl ? (
-        <video class="h-full w-full object-cover" autoplay muted loop playsinline poster={bgImg ?? undefined}>
-          <source src={videoUrl} />
-        </video>
-      ) : bgImg ? (
-        <img src={bgImg} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
-      ) : null}
-      <div class="absolute inset-0 bg-chapel-deep" style={`opacity:${overlay}`}></div>
-    </div>
-  )}
+  {
+    hasMedia && (
+      <div class="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+        {videoUrl ? (
+          <video
+            class="h-full w-full object-cover"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster={bgImg ?? undefined}
+          >
+            <source src={videoUrl} />
+          </video>
+        ) : bgImg ? (
+          <img
+            src={bgImg}
+            alt=""
+            class="h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        ) : null}
+        <div class="absolute inset-0 bg-chapel-deep" style={`opacity:${overlay}`} />
+      </div>
+    )
+  }
   <slot />
 </section>

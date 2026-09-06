@@ -23,7 +23,6 @@ import { loadEnv } from './lib/loadEnv.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
@@ -31,7 +30,9 @@ const apiVersion = env.PUBLIC_SANITY_API_VERSION ?? '2026-05-01';
 const token = env.SANITY_API_WRITE_TOKEN || env.SANITY_API_READ_TOKEN;
 
 if (!projectId || !token) {
-  console.error('Missing PUBLIC_SANITY_PROJECT_ID or a write token (SANITY_API_WRITE_TOKEN) in .env.');
+  console.error(
+    'Missing PUBLIC_SANITY_PROJECT_ID or a write token (SANITY_API_WRITE_TOKEN) in .env.',
+  );
   process.exit(1);
 }
 
@@ -43,7 +44,10 @@ async function patchDoc(id, fields, label) {
     await client.patch(id).setIfMissing(fields).commit();
     console.log(`  patched ${label}`);
   } catch (e) {
-    if (e?.statusCode === 404) { console.log(`  skipped ${label} (no document)`); return; }
+    if (e?.statusCode === 404) {
+      console.log(`  skipped ${label} (no document)`);
+      return;
+    }
     throw e;
   }
 }
@@ -58,7 +62,12 @@ async function run() {
     await patchDoc(id, fields, id);
     await patchDoc(`drafts.${id}`, fields, `drafts.${id}`);
   }
-  console.log(`\nDone. Seeded ${totalFields} field(s) across ${Object.keys(COPY).length} singletons.`);
+  console.log(
+    `\nDone. Seeded ${totalFields} field(s) across ${Object.keys(COPY).length} singletons.`,
+  );
 }
 
-run().catch((e) => { console.error('Seed failed:', e.message); process.exit(1); });
+run().catch((e) => {
+  console.error('Seed failed:', e.message);
+  process.exit(1);
+});

@@ -16,14 +16,20 @@
     try {
       if (sessionStorage.getItem('hero-word-rotated') === '1') return;
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    } catch (_) { /* ignore */ }
+    } catch (_) {
+      /* ignore */
+    }
 
     function init() {
       const el = document.querySelector('[data-rotating-word]');
       if (!el || el.dataset.rotated === '1') return;
       el.dataset.rotated = '1';
       let words;
-      try { words = JSON.parse(el.dataset.rotatingWords || '[]'); } catch (_) { return; }
+      try {
+        words = JSON.parse(el.dataset.rotatingWords || '[]');
+      } catch (_) {
+        return;
+      }
       if (!Array.isArray(words) || words.length < 2) return;
 
       const original = words[0];
@@ -47,7 +53,9 @@
 
         if (count >= totalCycles) {
           clearInterval(id);
-          try { sessionStorage.setItem('hero-word-rotated', '1'); } catch (_) {}
+          try {
+            sessionStorage.setItem('hero-word-rotated', '1');
+          } catch (_) {}
         }
       }, intervalMs);
     }

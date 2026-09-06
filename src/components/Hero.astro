@@ -120,7 +120,10 @@ const {
   before: scriptBefore,
   word: scriptWord,
   after: scriptAfter,
-} = splitScriptAccent(rotateEnabled ? headline : headline, rotateEnabled ? undefined : scriptAccent);
+} = splitScriptAccent(
+  rotateEnabled ? headline : headline,
+  rotateEnabled ? undefined : scriptAccent,
+);
 
 // Gold keyword emphasis: same split helper, lowest-precedence flourish. Only
 // fires when neither the rotator nor the script accent claimed the headline,
@@ -152,9 +155,8 @@ const subheadParts = parseSubhead(subhead);
 const heroImageList = (Array.isArray(backgroundImages) ? backgroundImages : []).filter(
   (img) => !!img?.asset,
 );
-const effectiveImages = heroImageList.length > 0
-  ? heroImageList
-  : (backgroundImage?.asset ? [backgroundImage] : []);
+const effectiveImages =
+  heroImageList.length > 0 ? heroImageList : backgroundImage?.asset ? [backgroundImage] : [];
 // An image hero renders when there's a Sanity image OR a local fallback photo.
 const hasImage = effectiveImages.length > 0 || !!localImage;
 
@@ -162,65 +164,67 @@ const hasImage = effectiveImages.length > 0 || !!localImage;
 // The exact fill height comes from the .hero-fill class plus the measured
 // --header-h variable (see the inline script and scoped <style> below).
 // "short" stays a generous editorial band for interior pages.
-const wrapperHeight =
-  size === 'tall'
-    ? 'hero-fill'
-    : 'min-h-[42svh] md:min-h-[52svh]';
+const wrapperHeight = size === 'tall' ? 'hero-fill' : 'min-h-[42svh] md:min-h-[52svh]';
 ---
 
-{/* Full-viewport home hero plumbing (size="tall" only): measure the sticky
+{
+  /* Full-viewport home hero plumbing (size="tall" only): measure the sticky
     header into --header-h so the hero fills exactly the space below it, and
     wire the scroll cue to glide past the hero. Runs synchronously so the
     height is set before first paint (no layout shift), then refreshes on
-    load, resize, and View Transitions navigations. */}
+    load, resize, and View Transitions navigations. */
+}
 {size === 'tall' && <HeroFillScript />}
 
-{/* Rotating-word animator. Runs once per session: cycles the wrapped word
+{
+  /* Rotating-word animator. Runs once per session: cycles the wrapped word
     through alternates every 850ms for ~5 seconds, then locks back to the
     original. Skipped under prefers-reduced-motion or when sessionStorage
     already holds the seen flag. Inline + idempotent so View Transitions
-    don't re-trigger on every navigation. */}
+    don't re-trigger on every navigation. */
+}
 {rotateEnabled && <HeroRotatingWordScript />}
 
-{hasImage ? (
-  <section
-    class:list={[
-      'relative overflow-hidden bg-accent-dark text-bg flex flex-col justify-end',
-      wrapperHeight,
-    ]}
-    aria-labelledby={headingId}
-  >
-    {/* Background: a Sanity image / cross-fading slideshow when set (see
+{
+  hasImage ? (
+    <section
+      class:list={[
+        'relative flex flex-col justify-end overflow-hidden bg-accent-dark text-bg',
+        wrapperHeight,
+      ]}
+      aria-labelledby={headingId}
+    >
+      {/* Background: a Sanity image / cross-fading slideshow when set (see
         HeroBackground.astro), otherwise the page's local fallback photo. Both
         carry the same readability overlays and a slow Ken Burns drift. */}
-    {effectiveImages.length > 0 ? (
-      <HeroBackground images={effectiveImages} />
-    ) : (
-      <>
-        <Image
-          src={localImage!}
-          alt={localImageAlt ?? ''}
-          widths={[768, 1280, 1600, 2000]}
-          sizes="100vw"
-          loading="eager"
-          fetchpriority="high"
-          class="absolute inset-0 h-full w-full object-cover object-center hero-kb-img"
-        />
-        {/* Uniform overlay for baseline readability across the whole image. */}
-        <div class="absolute inset-0 bg-accent-dark/25" aria-hidden="true"></div>
-        {/* Bottom-weighted gradient, extra darkening behind the text. */}
-        <div
-          class="absolute inset-0 bg-gradient-to-t from-accent-dark/85 via-accent-dark/45 to-transparent"
-          aria-hidden="true"
-        ></div>
-      </>
-    )}
+      {effectiveImages.length > 0 ? (
+        <HeroBackground images={effectiveImages} />
+      ) : (
+        <>
+          <Image
+            src={localImage!}
+            alt={localImageAlt ?? ''}
+            widths={[768, 1280, 1600, 2000]}
+            sizes="100vw"
+            loading="eager"
+            fetchpriority="high"
+            class="hero-kb-img absolute inset-0 h-full w-full object-cover object-center"
+          />
+          {/* Uniform overlay for baseline readability across the whole image. */}
+          <div class="absolute inset-0 bg-accent-dark/25" aria-hidden="true" />
+          {/* Bottom-weighted gradient, extra darkening behind the text. */}
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-accent-dark/85 via-accent-dark/45 to-transparent"
+            aria-hidden="true"
+          />
+        </>
+      )}
 
-    {/* Content sits at the bottom of the section thanks to justify-end on the
+      {/* Content sits at the bottom of the section thanks to justify-end on the
         section itself. Avoids the h-full-on-flex-item brittleness that left
         content floating mid-hero on min-height containers. */}
-    <div class="relative mx-auto w-full max-w-content px-m pb-section-lg pt-section-md">
-      {/*
+      <div class="relative mx-auto w-full max-w-content px-m pt-section-md pb-section-lg">
+        {/*
         hero-entry-stagger triggers the global page-load fade-up animation
         defined in globals.css. Each direct child of this wrapper fades up
         with a small per-child delay (eyebrow → hairline → h1 → subhead →
@@ -230,79 +234,86 @@ const wrapperHeight =
         inverse-tone treatment so heroes carry the same editorial signature
         as every interior section heading.
       */}
-      <div class="hero-entry-stagger max-w-3xl">
-        {eyebrow && (
-          <p class="text-xs uppercase tracking-eyebrow text-bg/85">{eyebrow}</p>
-        )}
-        {eyebrow && (
-          <div class="mt-xs mb-m h-px w-12 bg-[#C7A875]/60" aria-hidden="true"></div>
-        )}
-        <h1 id={headingId} class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-bg">
-          {rotateEnabled ? (
-            <>
-              <span data-rotating-word data-rotating-words={rotatingPayload}>
-                {headlineFirst}
-              </span>{headlineRest}
-            </>
-          ) : scriptFound ? (
-            <>
-              {scriptBefore}<span class="font-script">{scriptWord}</span>{scriptAfter}
-            </>
-          ) : kwFound ? (
-            <>
-              {/* Lifted gold (the dark-surface gold value): display-size type on
+        <div class="hero-entry-stagger max-w-3xl">
+          {eyebrow && <p class="text-xs tracking-eyebrow text-bg/85 uppercase">{eyebrow}</p>}
+          {eyebrow && <div class="mt-xs mb-m h-px w-12 bg-[#C7A875]/60" aria-hidden="true" />}
+          <h1
+            id={headingId}
+            class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-bg"
+          >
+            {rotateEnabled ? (
+              <>
+                <span data-rotating-word data-rotating-words={rotatingPayload}>
+                  {headlineFirst}
+                </span>
+                {headlineRest}
+              </>
+            ) : scriptFound ? (
+              <>
+                {scriptBefore}
+                <span class="font-script">{scriptWord}</span>
+                {scriptAfter}
+              </>
+            ) : kwFound ? (
+              <>
+                {/* Lifted gold (the dark-surface gold value): display-size type on
                   the dark photo scrim, comfortably past the 3:1 large-text bar. */}
-              {kwBefore}<span class="text-[#C7A875]">{kwWord}</span>{kwAfter}
-            </>
-          ) : (
-            headline
-          )}
-        </h1>
-        {subhead && (
-          <p class="mt-m max-w-2xl text-lg text-pretty text-bg/90">
-            {subheadParts.map((part) =>
-              part.type === 'em'
-                ? <em class="italic font-display text-bg/95">{part.value}</em>
-                : part.value
+                {kwBefore}
+                <span class="text-[#C7A875]">{kwWord}</span>
+                {kwAfter}
+              </>
+            ) : (
+              headline
             )}
-          </p>
-        )}
-        {(primaryCta || secondaryCta) && (
-          <div class="mt-l flex flex-wrap gap-s">
-            {primaryCta && <CtaLink cta={primaryCta} variant="primary" onDark />}
-            {secondaryCta && <CtaLink cta={secondaryCta} variant="secondary" onDark />}
-          </div>
-        )}
+          </h1>
+          {subhead && (
+            <p class="mt-m max-w-2xl text-lg text-pretty text-bg/90">
+              {subheadParts.map((part) =>
+                part.type === 'em' ? (
+                  <em class="font-display text-bg/95 italic">{part.value}</em>
+                ) : (
+                  part.value
+                ),
+              )}
+            </p>
+          )}
+          {(primaryCta || secondaryCta) && (
+            <div class="mt-l flex flex-wrap gap-s">
+              {primaryCta && <CtaLink cta={primaryCta} variant="primary" onDark />}
+              {secondaryCta && <CtaLink cta={secondaryCta} variant="secondary" onDark />}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
 
-    {/* Soft pulsing scroll cue at the bottom-center of the hero. Tells
+      {/* Soft pulsing scroll cue at the bottom-center of the hero. Tells
         visitors there is more below; clicking it glides past the hero.
         Static under prefers-reduced-motion (see the scoped <style>). */}
-    {size === 'tall' && (
-      <button
-        type="button"
-        data-scroll-cue
-        aria-label="Scroll down to see more"
-        class="scroll-cue absolute bottom-4 left-1/2 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full text-bg/85 hover:text-bg hover:bg-bg/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bg/70"
-      >
-        <ChevronDown size={28} strokeWidth={1.5} aria-hidden="true" />
-      </button>
-    )}
-  </section>
-) : (
-  <section class="bg-background" aria-labelledby={headingId}>
-    <div class:list={['mx-auto max-w-content px-m py-section-lg flex items-end', wrapperHeight]}>
-      <SectionHeading
-        eyebrow={eyebrow}
-        headline={headline}
-        subhead={subhead}
-        headingId={headingId}
-        level="h1"
-      />
-    </div>
-  </section>
-)}
+      {size === 'tall' && (
+        <button
+          type="button"
+          data-scroll-cue
+          aria-label="Scroll down to see more"
+          class="scroll-cue absolute bottom-4 left-1/2 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full text-bg/85 transition-colors hover:bg-bg/10 hover:text-bg focus-visible:ring-2 focus-visible:ring-bg/70 focus-visible:outline-none"
+        >
+          <ChevronDown size={28} strokeWidth={1.5} aria-hidden="true" />
+        </button>
+      )}
+    </section>
+  ) : (
+    <section class="bg-background" aria-labelledby={headingId}>
+      <div class:list={['mx-auto flex max-w-content items-end px-m py-section-lg', wrapperHeight]}>
+        <SectionHeading
+          eyebrow={eyebrow}
+          headline={headline}
+          subhead={subhead}
+          headingId={headingId}
+          level="h1"
+        />
+      </div>
+    </section>
+  )
+}
 
 <style>
   /* Full-viewport home hero. Fill the screen below the sticky header on first
@@ -331,8 +342,15 @@ const wrapperHeight =
     animation: scroll-cue-bob 2.4s ease-in-out infinite;
   }
   @keyframes scroll-cue-bob {
-    0%, 100% { transform: translate(-50%, 0); opacity: 0.55; }
-    50%      { transform: translate(-50%, 0.4rem); opacity: 1; }
+    0%,
+    100% {
+      transform: translate(-50%, 0);
+      opacity: 0.55;
+    }
+    50% {
+      transform: translate(-50%, 0.4rem);
+      opacity: 1;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .scroll-cue {

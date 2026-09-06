@@ -10,12 +10,18 @@ const pill =
 {
   block?.headline && (
     <div class="mx-auto max-w-3xl px-m text-center">
-      {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow text-[#C7A875]">{block.eyebrow}</p>}
+      {block.eyebrow && (
+        <p class="text-xs tracking-eyebrow text-[#C7A875] uppercase">{block.eyebrow}</p>
+      )}
       <h2 class="mt-s font-display text-h2">{block.headline}</h2>
-      {block.subhead && <p class="mt-m opacity-85 leading-relaxed">{block.subhead}</p>}
+      {block.subhead && <p class="mt-m leading-relaxed opacity-85">{block.subhead}</p>}
       {block.ctaLabel && block.ctaUrl && (
         <div class="mt-l">
-          <a href={block.ctaUrl} class={pill} {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+          <a
+            href={block.ctaUrl}
+            class={pill}
+            {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          >
             {block.ctaLabel}
           </a>
         </div>

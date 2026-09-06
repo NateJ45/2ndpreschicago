@@ -22,12 +22,14 @@ import { loadEnv } from './lib/loadEnv.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
 const token = env.SANITY_API_WRITE_TOKEN;
-if (!projectId || !token) { console.error('Need PUBLIC_SANITY_PROJECT_ID + SANITY_API_WRITE_TOKEN in .env'); process.exit(1); }
+if (!projectId || !token) {
+  console.error('Need PUBLIC_SANITY_PROJECT_ID + SANITY_API_WRITE_TOKEN in .env');
+  process.exit(1);
+}
 
 const client = createClient({ projectId, dataset, token, apiVersion: '2026-05-01', useCdn: false });
 
@@ -36,21 +38,43 @@ const worshipService = { time: '11am', day: 'Sunday', startTime24: '11:00', endT
 
 // Reworded, time-agnostic prose (must match the new template fallbacks exactly).
 const REWORD = {
-  homePage: { seoDescription: "A historic, welcoming Presbyterian church in Chicago's South Loop. Join us for worship this Sunday. Whoever you are, you are welcome here." },
-  worshipPage: { seoDescription: 'Join us for worship this Sunday. A traditional, liturgical service with communion on the first Sunday of each month. Whoever you are, you are welcome here.' },
-  aboutPage: { finalCtaSubhead: 'Join us for worship this Sunday, and see the Church of the Angels for yourself.' },
-  contactPage: { finalCtaSubhead: 'We gather for worship every Sunday. Whoever you are, you are welcome here.' },
+  homePage: {
+    seoDescription:
+      "A historic, welcoming Presbyterian church in Chicago's South Loop. Join us for worship this Sunday. Whoever you are, you are welcome here.",
+  },
+  worshipPage: {
+    seoDescription:
+      'Join us for worship this Sunday. A traditional, liturgical service with communion on the first Sunday of each month. Whoever you are, you are welcome here.',
+  },
+  aboutPage: {
+    finalCtaSubhead:
+      'Join us for worship this Sunday, and see the Church of the Angels for yourself.',
+  },
+  contactPage: {
+    finalCtaSubhead: 'We gather for worship every Sunday. Whoever you are, you are welcome here.',
+  },
   musicPage: { finalCtaSubhead: 'Worship with us on Sunday, or watch the livestream online.' },
-  kidsPage: { finalCtaSubhead: 'Join us this Sunday, or reach out with any question about visiting with children.' },
-  beliefsPage: { finalCtaSubhead: 'Join us this Sunday, or reach out with any question about faith and life at Second.' },
+  kidsPage: {
+    finalCtaSubhead:
+      'Join us this Sunday, or reach out with any question about visiting with children.',
+  },
+  beliefsPage: {
+    finalCtaSubhead:
+      'Join us this Sunday, or reach out with any question about faith and life at Second.',
+  },
   eventsPage: {
-    finalCtaSubhead: 'Worship is the heart of our week, and everyone is welcome at every gathering.',
-    detailFinalCtaSubhead: 'Everyone is welcome. Worship is every Sunday, and the door is always open.',
+    finalCtaSubhead:
+      'Worship is the heart of our week, and everyone is welcome at every gathering.',
+    detailFinalCtaSubhead:
+      'Everyone is welcome. Worship is every Sunday, and the door is always open.',
   },
   sermonsPage: {
-    watchBody: 'We livestream Sunday worship and post recent messages on our YouTube channel. Watch the latest, or join us live on Sunday.',
-    finalCtaSubhead: 'There is nothing like being in the room. Join us this Sunday at the Church of the Angels.',
-    detailFinalCtaSubhead: 'Worship is every Sunday at the Church of the Angels. Everyone is welcome.',
+    watchBody:
+      'We livestream Sunday worship and post recent messages on our YouTube channel. Watch the latest, or join us live on Sunday.',
+    finalCtaSubhead:
+      'There is nothing like being in the room. Join us this Sunday at the Church of the Angels.',
+    detailFinalCtaSubhead:
+      'Worship is every Sunday at the Church of the Angels. Everyone is welcome.',
   },
 };
 
@@ -62,7 +86,9 @@ async function run() {
     try {
       await client.patch(id).setIfMissing({ worshipService }).commit();
       console.log(`  worshipService -> ${id}`);
-    } catch (e) { if (e?.statusCode !== 404) throw e; }
+    } catch (e) {
+      if (e?.statusCode !== 404) throw e;
+    }
   }
 
   // 2. Reworded prose (overwrite the old "...11am..." values).
@@ -71,10 +97,15 @@ async function run() {
       try {
         await client.patch(id).set(fields).commit();
         console.log(`  reworded ${Object.keys(fields).join(', ')} -> ${id}`);
-      } catch (e) { if (e?.statusCode !== 404) throw e; }
+      } catch (e) {
+        if (e?.statusCode !== 404) throw e;
+      }
     }
   }
   console.log('\nDone.');
 }
 
-run().catch((e) => { console.error('Seed failed:', e.message); process.exit(1); });
+run().catch((e) => {
+  console.error('Seed failed:', e.message);
+  process.exit(1);
+});

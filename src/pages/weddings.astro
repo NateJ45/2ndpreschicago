@@ -34,13 +34,34 @@ const schemas = [
 // (weddingsPage.weddingFaqs / weddingPricing); these consts render when those
 // fields are empty, so the page is identical until an editor overrides them.
 const FALLBACK_FAQS = [
-  { q: 'Who can get married at Second?', a: 'We welcome gay and straight couples. Because the sanctuary is a consecrated space, religious ceremonies must be Christian. Nonreligious ceremonies are welcome as long as they are respectful of the space and its purpose. There is no dress code.' },
-  { q: 'What about music?', a: 'Our Music Director\'s services are built into a typical wedding package, which may include our exceptional 1917 Austin organ and a piano. Recorded music is available through a CD player or aux cable. The organ predates standardized pitch, so any instrument played with it must be tuned down to match.' },
-  { q: 'Can we use our own officiant?', a: 'Yes. We require premarital counseling for couples married in our sanctuary. Our pastor is glad to officiate Christian weddings, and that fee is waived for members of the congregation.' },
-  { q: 'Can we celebrate communion?', a: 'Ordained Protestant clergy of the sacramental tradition (Presbyterian, Anglican, Methodist, Lutheran, and certain other evangelical churches) may preside at communion with the special permission of the church Session.' },
-  { q: 'How many guests can the sanctuary hold?', a: 'The main floor of the sanctuary seats 600 people, with additional balcony seating should you need it.' },
-  { q: 'What support and spaces are included?', a: 'A Wedding Coordinator assists at the rehearsal and the ceremony. The Bridal Parlor and North Parlor are included for preparation. Parking accommodates 18 vehicles, with more public options nearby, and the sanctuary is accessible.' },
-  { q: 'Is there space for a reception?', a: 'Our Fellowship Hall may be rented for an additional fee. Please note that it is a carpeted space.' },
+  {
+    q: 'Who can get married at Second?',
+    a: 'We welcome gay and straight couples. Because the sanctuary is a consecrated space, religious ceremonies must be Christian. Nonreligious ceremonies are welcome as long as they are respectful of the space and its purpose. There is no dress code.',
+  },
+  {
+    q: 'What about music?',
+    a: "Our Music Director's services are built into a typical wedding package, which may include our exceptional 1917 Austin organ and a piano. Recorded music is available through a CD player or aux cable. The organ predates standardized pitch, so any instrument played with it must be tuned down to match.",
+  },
+  {
+    q: 'Can we use our own officiant?',
+    a: 'Yes. We require premarital counseling for couples married in our sanctuary. Our pastor is glad to officiate Christian weddings, and that fee is waived for members of the congregation.',
+  },
+  {
+    q: 'Can we celebrate communion?',
+    a: 'Ordained Protestant clergy of the sacramental tradition (Presbyterian, Anglican, Methodist, Lutheran, and certain other evangelical churches) may preside at communion with the special permission of the church Session.',
+  },
+  {
+    q: 'How many guests can the sanctuary hold?',
+    a: 'The main floor of the sanctuary seats 600 people, with additional balcony seating should you need it.',
+  },
+  {
+    q: 'What support and spaces are included?',
+    a: 'A Wedding Coordinator assists at the rehearsal and the ceremony. The Bridal Parlor and North Parlor are included for preparation. Parking accommodates 18 vehicles, with more public options nearby, and the sanctuary is accessible.',
+  },
+  {
+    q: 'Is there space for a reception?',
+    a: 'Our Fellowship Hall may be rented for an additional fee. Please note that it is a carpeted space.',
+  },
 ];
 
 const FALLBACK_PRICING = [
@@ -51,15 +72,17 @@ const FALLBACK_PRICING = [
 ];
 
 const faqs: typeof FALLBACK_FAQS = page?.weddingFaqs?.length ? page.weddingFaqs : FALLBACK_FAQS;
-const pricing: typeof FALLBACK_PRICING = page?.weddingPricing?.length ? page.weddingPricing : FALLBACK_PRICING;
-
+const pricing: typeof FALLBACK_PRICING = page?.weddingPricing?.length
+  ? page.weddingPricing
+  : FALLBACK_PRICING;
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
   <Hero
     eyebrow={page?.heroEyebrow ?? 'Weddings'}
     headline={page?.heroHeadline ?? 'Get married in a National Historic Landmark'}
-    subhead={page?.heroSubhead ?? 'Our 1901 Arts and Crafts sanctuary, home to nine Tiffany windows and extraordinary murals, draws visitors from all over the world. We host weddings of every size.'}
+    subhead={page?.heroSubhead ??
+      'Our 1901 Arts and Crafts sanctuary, home to nine Tiffany windows and extraordinary murals, draws visitors from all over the world. We host weddings of every size.'}
     keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroWeddings}
@@ -71,17 +94,28 @@ const pricing: typeof FALLBACK_PRICING = page?.weddingPricing?.length ? page.wed
   {/* FAQ */}
   <section class="bg-background" aria-labelledby="weddings-faq">
     <div class="mx-auto max-w-3xl px-m py-section-lg">
-      <SectionHeading eyebrow={page?.faqEyebrow ?? 'The details'} headline={page?.faqHeadline ?? 'Common questions'} headingId="weddings-faq" />
+      <SectionHeading
+        eyebrow={page?.faqEyebrow ?? 'The details'}
+        headline={page?.faqHeadline ?? 'Common questions'}
+        headingId="weddings-faq"
+      />
       <div class="mt-l divide-y divide-border-soft border-t border-b border-border-soft">
-        {faqs.map((f) => (
-          <details class="group py-m">
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-m font-display text-h4 text-foreground">
-              {f.q}
-              <span class="shrink-0 text-link transition-transform group-open:rotate-45" aria-hidden="true">+</span>
-            </summary>
-            <p class="mt-s text-foreground/85 leading-relaxed">{f.a}</p>
-          </details>
-        ))}
+        {
+          faqs.map((f) => (
+            <details class="group py-m">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-m font-display text-h4 text-foreground">
+                {f.q}
+                <span
+                  class="shrink-0 text-link transition-transform group-open:rotate-45"
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </summary>
+              <p class="mt-s leading-relaxed text-foreground/85">{f.a}</p>
+            </details>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -89,16 +123,31 @@ const pricing: typeof FALLBACK_PRICING = page?.weddingPricing?.length ? page.wed
   {/* Pricing */}
   <section class="surface-warm bg-muted" aria-labelledby="weddings-pricing">
     <div class="mx-auto max-w-3xl px-m py-section-lg">
-      <SectionHeading eyebrow={page?.pricingEyebrow ?? 'Pricing'} headline={page?.pricingHeadline ?? 'Clear and upfront'} headingId="weddings-pricing" align="center" class="mx-auto" />
-      <ul class="mt-l list-none p-0 divide-y divide-border-soft border-t border-b border-border-soft">
-        {pricing.map((p) => (
-          <li class="flex items-baseline justify-between gap-m py-m">
-            <span class="text-foreground">{p.item}</span>
-            <span class="font-display text-h4 text-foreground shrink-0">{p.price}</span>
-          </li>
-        ))}
+      <SectionHeading
+        eyebrow={page?.pricingEyebrow ?? 'Pricing'}
+        headline={page?.pricingHeadline ?? 'Clear and upfront'}
+        headingId="weddings-pricing"
+        align="center"
+        class="mx-auto"
+      />
+      <ul
+        class="mt-l list-none divide-y divide-border-soft border-t border-b border-border-soft p-0"
+      >
+        {
+          pricing.map((p) => (
+            <li class="flex items-baseline justify-between gap-m py-m">
+              <span class="text-foreground">{p.item}</span>
+              <span class="shrink-0 font-display text-h4 text-foreground">{p.price}</span>
+            </li>
+          ))
+        }
       </ul>
-      <p class="mt-m text-sm text-foreground/70 text-center">{page?.pricingFootnote ?? 'The Fellowship Hall is available for receptions at an additional fee.'}</p>
+      <p class="mt-m text-center text-sm text-foreground/70">
+        {
+          page?.pricingFootnote ??
+            'The Fellowship Hall is available for receptions at an additional fee.'
+        }
+      </p>
     </div>
   </section>
 
@@ -112,11 +161,18 @@ const pricing: typeof FALLBACK_PRICING = page?.weddingPricing?.length ? page.wed
         align="center"
         class="mx-auto"
       />
-      <p class="mt-m text-lg text-foreground/85 leading-relaxed text-center">
-        {page?.inquireIntro ?? 'Tell us a little about your day and we will be in touch to check availability and answer your questions.'}
+      <p class="mt-m text-center text-lg leading-relaxed text-foreground/85">
+        {
+          page?.inquireIntro ??
+            'Tell us a little about your day and we will be in touch to check availability and answer your questions.'
+        }
       </p>
       <div class="mt-l">
-        <FormBlock form={page?.inquiryForm} fallbackEmail={settings.email} fallbackLabel="Inquire About Your Date" />
+        <FormBlock
+          form={page?.inquiryForm}
+          fallbackEmail={settings.email}
+          fallbackLabel="Inquire About Your Date"
+        />
       </div>
     </div>
   </section>
@@ -124,9 +180,12 @@ const pricing: typeof FALLBACK_PRICING = page?.weddingPricing?.length ? page.wed
   <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "Say Hello"}
+    eyebrow={page?.finalCtaEyebrow ?? 'Say Hello'}
     headline={page?.finalCtaHeadline ?? "Let's talk about your wedding"}
-    subhead={page?.finalCtaSubhead ?? "Reach out to the office to check availability and start planning your day at Second."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Contact the Office', linkType: 'external', externalUrl: '/contact' }}
+    subhead={page?.finalCtaSubhead ??
+      'Reach out to the office to check availability and start planning your day at Second.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Contact the Office', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

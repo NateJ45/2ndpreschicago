@@ -27,7 +27,9 @@
       var slides = box.querySelectorAll('.hero-slide');
       if (slides.length < 2) return;
       var reduce = false;
-      try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (_) {}
+      try {
+        reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch (_) {}
       if (reduce) return; // first slide stays visible, no motion
 
       var current = 0;

@@ -44,7 +44,7 @@ const settings = resolveSiteSettings(siteSettings);
 const title = page?.seoTitle ?? site.name;
 const description =
   page?.seoDescription ??
-  'A historic, welcoming Presbyterian church in Chicago\'s South Loop. Join us for worship this Sunday. Whoever you are, you are welcome here.';
+  "A historic, welcoming Presbyterian church in Chicago's South Loop. Join us for worship this Sunday. Whoever you are, you are welcome here.";
 
 const youtube = settings.social.youtube;
 
@@ -73,10 +73,15 @@ const seasonalActive = !!(
   (!seasonal.endDate || new Date(seasonal.endDate).getTime() >= nowMs)
 );
 
-const heroEyebrow = (seasonalActive ? seasonal.eyebrow : page?.heroEyebrow) ?? HERO_DEFAULTS.eyebrow;
-const heroHeadline = (seasonalActive ? seasonal.headline : page?.heroHeadline) ?? HERO_DEFAULTS.headline;
-const heroKeyword = seasonalActive ? (seasonal.keyword ?? '') : (page?.heroKeyword ?? HERO_DEFAULTS.keyword);
-const heroSubhead = (seasonalActive ? seasonal.subhead : page?.heroSubhead) ?? HERO_DEFAULTS.subhead;
+const heroEyebrow =
+  (seasonalActive ? seasonal.eyebrow : page?.heroEyebrow) ?? HERO_DEFAULTS.eyebrow;
+const heroHeadline =
+  (seasonalActive ? seasonal.headline : page?.heroHeadline) ?? HERO_DEFAULTS.headline;
+const heroKeyword = seasonalActive
+  ? (seasonal.keyword ?? '')
+  : (page?.heroKeyword ?? HERO_DEFAULTS.keyword);
+const heroSubhead =
+  (seasonalActive ? seasonal.subhead : page?.heroSubhead) ?? HERO_DEFAULTS.subhead;
 
 // Hero image: seasonal image > Home hero image(s) > built-in sanctuary photo.
 const seasonalImg = seasonalActive ? seasonal.image : null;
@@ -88,7 +93,9 @@ const hasSanityHero = !!heroImgEffective?.asset;
 // A hero video (uploaded file, or a direct .mp4/.webm link) loops quietly in the
 // arch; 2+ images cross-fade with a slow Ken Burns zoom; one image stays static.
 const heroSlides = (page?.heroImages ?? []).filter((img: any) => !!img?.asset);
-const heroVideoSrc = !seasonalActive ? (page?.heroVideo?.asset?.url ?? page?.heroVideoUrl ?? null) : null;
+const heroVideoSrc = !seasonalActive
+  ? (page?.heroVideo?.asset?.url ?? page?.heroVideoUrl ?? null)
+  : null;
 const heroVideoType = page?.heroVideo?.asset?.mimeType ?? null;
 const isHeroVideo = !!heroVideoSrc;
 const isHeroSlideshow = !seasonalActive && !isHeroVideo && heroSlides.length >= 2;
@@ -101,7 +108,8 @@ const isHeroArchMedia = isHeroVideo || isHeroSlideshow;
 // built-in default. Watch prefers the configured livestream URL.
 const hpc: any = !seasonalActive ? page?.heroPrimaryCta : null;
 const hsc: any = !seasonalActive ? page?.heroSecondaryCta : null;
-const heroPrimaryLabel = (seasonalActive && seasonal.primaryCtaLabel) || hpc?.label || 'Plan a Visit';
+const heroPrimaryLabel =
+  (seasonalActive && seasonal.primaryCtaLabel) || hpc?.label || 'Plan a Visit';
 const heroPrimaryUrl = (seasonalActive && seasonal.primaryCtaUrl) || hpc?.externalUrl || '/worship';
 const watchHref = siteSettings?.watchUrl || youtube;
 const heroSecondaryLabel = hsc?.label || 'Watch Online';
@@ -113,7 +121,11 @@ function splitHeadline(headline: string, keyword: string) {
   if (!keyword) return null;
   const idx = headline.indexOf(keyword);
   if (idx === -1) return null;
-  return { before: headline.slice(0, idx), word: keyword, after: headline.slice(idx + keyword.length) };
+  return {
+    before: headline.slice(0, idx),
+    word: keyword,
+    after: headline.slice(idx + keyword.length),
+  };
 }
 const headlineParts = splitHeadline(heroHeadline, heroKeyword);
 
@@ -134,16 +146,36 @@ const pillOnChapel =
 // Inline fallback ministries. Used when no ministry docs are flagged "featured"
 // in Sanity, so the home next-step row is never empty.
 const ministries = [
-  { title: 'Grow', href: '/grow', body: 'Walk with others on the Way of Jesus through Bible study and good conversation.' },
-  { title: 'Serve', href: '/serve', body: 'Love our South Loop neighbors through hands-on, practical ministry.' },
-  { title: 'Kids', href: '/kids', body: 'Children are part of the worshipping congregation, noise and needs and all.' },
-  { title: 'Food', href: '/food', body: 'Free food for all in need, no questions asked, at our Cullerton door.' },
+  {
+    title: 'Grow',
+    href: '/grow',
+    body: 'Walk with others on the Way of Jesus through Bible study and good conversation.',
+  },
+  {
+    title: 'Serve',
+    href: '/serve',
+    body: 'Love our South Loop neighbors through hands-on, practical ministry.',
+  },
+  {
+    title: 'Kids',
+    href: '/kids',
+    body: 'Children are part of the worshipping congregation, noise and needs and all.',
+  },
+  {
+    title: 'Food',
+    href: '/food',
+    body: 'Free food for all in need, no questions asked, at our Cullerton door.',
+  },
 ];
 
 // Prefer featured ministries from Sanity; fall back to the inline list.
 const ministryCards =
   Array.isArray(featuredMinistries) && featuredMinistries.length > 0
-    ? featuredMinistries.map((m: any) => ({ title: m.title, href: m.link || '#', body: m.summary || '' }))
+    ? featuredMinistries.map((m: any) => ({
+        title: m.title,
+        href: m.link || '#',
+        body: m.summary || '',
+      }))
     : ministries;
 
 // ---- Service-times band (section 2) -------------------------------------
@@ -176,83 +208,116 @@ const FALLBACK_RHYTHMS = [
   { label: 'Mid-Morning Bible Study', time: 'Thursdays, 10am' },
 ];
 
-const weeklyRhythms: typeof FALLBACK_RHYTHMS = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBACK_RHYTHMS;
+const weeklyRhythms: typeof FALLBACK_RHYTHMS = page?.weeklyRhythms?.length
+  ? page.weeklyRhythms
+  : FALLBACK_RHYTHMS;
 ---
 
 <BaseLayout {title} {description} {siteSettings}>
   {/* ===== 1. Split hero — headline + arched photo (the church signature) ===== */}
   <section class="bg-background" aria-labelledby="hero-heading">
-    <div class="mx-auto max-w-content px-m py-section-md md:py-section-lg grid items-center gap-l md:gap-section-md md:grid-cols-[1.05fr_0.95fr]">
+    <div
+      class="mx-auto grid max-w-content items-center gap-l px-m py-section-md md:grid-cols-[1.05fr_0.95fr] md:gap-section-md md:py-section-lg"
+    >
       {/* Left: editorial headline column. */}
-      <div class="hero-entry-stagger order-2 md:order-1 text-center md:text-left">
-        <p class="text-xs uppercase tracking-eyebrow text-foreground/80">{heroEyebrow}</p>
-        <div class="mt-s mb-m h-px w-12 bg-gold/70 mx-auto md:mx-0" aria-hidden="true"></div>
-        <h1 id="hero-heading" class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-foreground">
-          {headlineParts ? (
-            <Fragment>{headlineParts.before}<span class="text-chapel-ink">{headlineParts.word}</span>{headlineParts.after}</Fragment>
-          ) : (
-            heroHeadline
-          )}
+      <div class="hero-entry-stagger order-2 text-center md:order-1 md:text-left">
+        <p class="text-xs tracking-eyebrow text-foreground/80 uppercase">{heroEyebrow}</p>
+        <div class="mx-auto mt-s mb-m h-px w-12 bg-gold/70 md:mx-0" aria-hidden="true"></div>
+        <h1
+          id="hero-heading"
+          class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-foreground"
+        >
+          {
+            headlineParts ? (
+              <Fragment>
+                {headlineParts.before}
+                <span class="text-chapel-ink">{headlineParts.word}</span>
+                {headlineParts.after}
+              </Fragment>
+            ) : (
+              heroHeadline
+            )
+          }
         </h1>
-        <p class="mt-m max-w-xl mx-auto md:mx-0 text-lg text-foreground/80 leading-relaxed">
+        <p class="mx-auto mt-m max-w-xl text-lg leading-relaxed text-foreground/80 md:mx-0">
           {heroSubhead}
         </p>
-        <div class="mt-l flex flex-wrap justify-center md:justify-start gap-s">
+        <div class="mt-l flex flex-wrap justify-center gap-s md:justify-start">
           <a href={heroPrimaryUrl} class={pillPrimary}>{heroPrimaryLabel}</a>
-          <a href={heroSecondaryUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}>{heroSecondaryLabel}</a>
+          <a href={heroSecondaryUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}
+            >{heroSecondaryLabel}</a
+          >
         </div>
-        {thisSunday ? (
-          <div class="mt-m text-sm text-foreground/70">
-            <span class="text-xs uppercase tracking-eyebrow text-muted-foreground">{thisSunday.dateLabel || 'This Sunday'}</span>
-            {thisSunday.sermonTitle && <p class="mt-1 font-display text-h4 text-foreground">{thisSunday.sermonTitle}</p>}
-            {(thisSunday.scripture || thisSunday.preacher) && (
-              <p class="mt-1">{[thisSunday.scripture, thisSunday.preacher].filter(Boolean).join(' · ')}</p>
-            )}
-            {thisSunday.note && <p class="mt-1 text-muted-foreground">{thisSunday.note}</p>}
-          </div>
-        ) : (
-          <p class="mt-m text-sm text-muted-foreground">
-            This Sunday: <span class="font-semibold text-foreground/80">{st.thisSunday}</span>, in person and online.
-          </p>
-        )}
+        {
+          thisSunday ? (
+            <div class="mt-m text-sm text-foreground/70">
+              <span class="text-xs tracking-eyebrow text-muted-foreground uppercase">
+                {thisSunday.dateLabel || 'This Sunday'}
+              </span>
+              {thisSunday.sermonTitle && (
+                <p class="mt-1 font-display text-h4 text-foreground">{thisSunday.sermonTitle}</p>
+              )}
+              {(thisSunday.scripture || thisSunday.preacher) && (
+                <p class="mt-1">
+                  {[thisSunday.scripture, thisSunday.preacher].filter(Boolean).join(' · ')}
+                </p>
+              )}
+              {thisSunday.note && <p class="mt-1 text-muted-foreground">{thisSunday.note}</p>}
+            </div>
+          ) : (
+            <p class="mt-m text-sm text-muted-foreground">
+              This Sunday: <span class="font-semibold text-foreground/80">{st.thisSunday}</span>, in
+              person and online.
+            </p>
+          )
+        }
       </div>
 
-      {/* Right: arched photo — a quiet nod to the building's Romanesque arches.
+      {
+        /* Right: arched photo — a quiet nod to the building's Romanesque arches.
           The arch + bronze frame is repeated on the Welcome image + staff
-          headshots so it reads as the site's signature shape. */}
-      <div class="order-1 md:order-2 mx-auto w-full max-w-md md:max-w-none">
-        <div class:list={['group arch-top overflow-hidden ring-1 ring-primary/40 dark:ring-[#C7A875]/40 shadow-sm aspect-[4/5] sm:aspect-[5/6]', isHeroArchMedia ? 'relative' : 'img-zoom']}>
-          {isHeroArchMedia ? (
-            <ArchMedia
-              images={heroSlides}
-              videoSrc={heroVideoSrc}
-              videoType={heroVideoType}
-              poster={page?.heroVideoPoster}
-              eager
-              fallbackAlt="Second Presbyterian Church of Chicago"
-              sizes="(min-width: 768px) 45vw, 90vw"
-            />
-          ) : hasSanityHero ? (
-            <SanityImage
-              source={heroImgEffective}
-              width={900}
-              sizes="(min-width: 768px) 45vw, 90vw"
-              loading="eager"
-              fetchpriority="high"
-              alt={heroImgEffective?.alt || 'Second Presbyterian Church of Chicago'}
-              class="h-full w-full object-cover"
-            />
-          ) : (
-            <Image
-              src={heroSanctuary}
-              alt="The historic stone sanctuary of Second Presbyterian Church on South Michigan Avenue"
-              widths={[480, 768, 900]}
-              sizes="(min-width: 768px) 45vw, 90vw"
-              loading="eager"
-              fetchpriority="high"
-              class="h-full w-full object-cover"
-            />
-          )}
+          headshots so it reads as the site's signature shape. */
+      }
+      <div class="order-1 mx-auto w-full max-w-md md:order-2 md:max-w-none">
+        <div
+          class:list={[
+            'group aspect-[4/5] overflow-hidden arch-top shadow-sm ring-1 ring-primary/40 sm:aspect-[5/6] dark:ring-[#C7A875]/40',
+            isHeroArchMedia ? 'relative' : 'img-zoom',
+          ]}
+        >
+          {
+            isHeroArchMedia ? (
+              <ArchMedia
+                images={heroSlides}
+                videoSrc={heroVideoSrc}
+                videoType={heroVideoType}
+                poster={page?.heroVideoPoster}
+                eager
+                fallbackAlt="Second Presbyterian Church of Chicago"
+                sizes="(min-width: 768px) 45vw, 90vw"
+              />
+            ) : hasSanityHero ? (
+              <SanityImage
+                source={heroImgEffective}
+                width={900}
+                sizes="(min-width: 768px) 45vw, 90vw"
+                loading="eager"
+                fetchpriority="high"
+                alt={heroImgEffective?.alt || 'Second Presbyterian Church of Chicago'}
+                class="h-full w-full object-cover"
+              />
+            ) : (
+              <Image
+                src={heroSanctuary}
+                alt="The historic stone sanctuary of Second Presbyterian Church on South Michigan Avenue"
+                widths={[480, 768, 900]}
+                sizes="(min-width: 768px) 45vw, 90vw"
+                loading="eager"
+                fetchpriority="high"
+                class="h-full w-full object-cover"
+              />
+            )
+          }
         </div>
       </div>
     </div>
@@ -260,89 +325,126 @@ const weeklyRhythms: typeof FALLBACK_RHYTHMS = page?.weeklyRhythms?.length ? pag
 
   {/* ===== 2. Service-times band — the authoritative when + where =========== */}
   <section class="bg-chapel text-chapel-foreground" aria-label="Sunday worship times">
-    <div class="mx-auto max-w-content px-m py-l grid gap-m md:grid-cols-[1fr_auto] items-center">
-      <div class="grid gap-m sm:grid-cols-3 text-center sm:text-left">
+    <div class="mx-auto grid max-w-content items-center gap-m px-m py-l md:grid-cols-[1fr_auto]">
+      <div class="grid gap-m text-center sm:grid-cols-3 sm:text-left">
         <div>
-          <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70">{serviceBand.worshipLabel}</p>
+          <p class="text-xs tracking-eyebrow text-chapel-foreground/70 uppercase">
+            {serviceBand.worshipLabel}
+          </p>
           <p class="mt-1 font-display text-h4 text-chapel-foreground">{serviceBand.worshipTime}</p>
         </div>
         <div>
-          <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70">{serviceBand.joinLabel}</p>
+          <p class="text-xs tracking-eyebrow text-chapel-foreground/70 uppercase">
+            {serviceBand.joinLabel}
+          </p>
           <p class="mt-1 text-chapel-foreground/85">{serviceBand.joinNote}</p>
         </div>
         <div>
-          <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/70">{serviceBand.whereLabel}</p>
+          <p class="text-xs tracking-eyebrow text-chapel-foreground/70 uppercase">
+            {serviceBand.whereLabel}
+          </p>
           <p class="mt-1 text-chapel-foreground/85">{addressLine}, {cityStateZip}</p>
         </div>
       </div>
-      <div class="flex flex-wrap justify-center md:justify-end gap-s">
-        <a href={page?.serviceBandVisitCta?.externalUrl || '/worship'} class={pillPrimary}>{page?.serviceBandVisitCta?.label || 'Plan a Visit'}</a>
-        <a href={page?.serviceBandWatchCta?.externalUrl || youtube} target="_blank" rel="noopener noreferrer" class={pillOnChapel}>{page?.serviceBandWatchCta?.label || 'Watch'}</a>
+      <div class="flex flex-wrap justify-center gap-s md:justify-end">
+        <a href={page?.serviceBandVisitCta?.externalUrl || '/worship'} class={pillPrimary}
+          >{page?.serviceBandVisitCta?.label || 'Plan a Visit'}</a
+        >
+        <a
+          href={page?.serviceBandWatchCta?.externalUrl || youtube}
+          target="_blank"
+          rel="noopener noreferrer"
+          class={pillOnChapel}>{page?.serviceBandWatchCta?.label || 'Watch'}</a
+        >
       </div>
     </div>
   </section>
 
   {/* ===== 3. Welcome — asymmetric, arched feature image ==================== */}
   <section class="bg-background" aria-labelledby="welcome-heading">
-    <div data-reveal class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
+    <div
+      data-reveal
+      class="mx-auto grid max-w-content grid-cols-1 items-center gap-l px-m py-section-lg md:grid-cols-2 md:gap-section-md"
+    >
       <div>
         <SectionHeading
           eyebrow={page?.welcomeEyebrow ?? 'Welcome'}
           headline={page?.welcomeHeadline ?? 'A landmark church with an open door'}
           headingId="welcome-heading"
         />
-        <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
+        <div class="mt-l space-y-m text-lg leading-relaxed text-foreground/85">
           <p>
-            {page?.welcomeBodyP1 ??
-              'Second Presbyterian is a National Historic Landmark on Michigan Avenue, home to nine Tiffany windows and a sanctuary built for worship. The building is remarkable. The people are the point.'}
+            {
+              page?.welcomeBodyP1 ??
+                'Second Presbyterian is a National Historic Landmark on Michigan Avenue, home to nine Tiffany windows and a sanctuary built for worship. The building is remarkable. The people are the point.'
+            }
           </p>
           <p>
-            {page?.welcomeBodyP2 ??
-              'We are a Reformed congregation in the Presbyterian Church (USA), and we welcome everyone: women and men, gay and straight, lifelong believers and the simply curious. Come as you are.'}
+            {
+              page?.welcomeBodyP2 ??
+                'We are a Reformed congregation in the Presbyterian Church (USA), and we welcome everyone: women and men, gay and straight, lifelong believers and the simply curious. Come as you are.'
+            }
           </p>
           <div class="flex flex-wrap gap-s pt-xs">
-            <a href={page?.welcomeCtaPrimary?.externalUrl || '/what-we-believe'} class={pillOutline}>{page?.welcomeCtaPrimary?.label || 'What We Believe'}</a>
-            <a href={page?.welcomeCtaSecondary?.externalUrl || '/pastor-staff'} class={pillOutline}>{page?.welcomeCtaSecondary?.label || 'Meet Our Pastors'}</a>
+            <a href={page?.welcomeCtaPrimary?.externalUrl || '/what-we-believe'} class={pillOutline}
+              >{page?.welcomeCtaPrimary?.label || 'What We Believe'}</a
+            >
+            <a href={page?.welcomeCtaSecondary?.externalUrl || '/pastor-staff'} class={pillOutline}
+              >{page?.welcomeCtaSecondary?.label || 'Meet Our Pastors'}</a
+            >
           </div>
         </div>
       </div>
-      <div class="group arch-top overflow-hidden ring-1 ring-primary/40 dark:ring-[#C7A875]/40 shadow-sm img-zoom aspect-[5/6] md:aspect-[4/5]">
-        {page?.welcomeImage?.asset ? (
-          <SanityImage
-            source={page.welcomeImage}
-            width={1000}
-            sizes="(min-width: 768px) 45vw, 100vw"
-            alt={page.welcomeImage.alt || 'Inside the sanctuary at Second Presbyterian, with its Tiffany windows and Arts and Crafts ceiling'}
-            class="h-full w-full object-cover"
-          />
-        ) : (
-          <Image
-            src={sanctuaryInterior}
-            alt="Inside the sanctuary at Second Presbyterian, with its Tiffany windows and Arts and Crafts ceiling"
-            widths={[600, 900, 1197]}
-            sizes="(min-width: 768px) 45vw, 100vw"
-            class="h-full w-full object-cover"
-          />
-        )}
+      <div
+        class="group img-zoom aspect-[5/6] overflow-hidden arch-top shadow-sm ring-1 ring-primary/40 md:aspect-[4/5] dark:ring-[#C7A875]/40"
+      >
+        {
+          page?.welcomeImage?.asset ? (
+            <SanityImage
+              source={page.welcomeImage}
+              width={1000}
+              sizes="(min-width: 768px) 45vw, 100vw"
+              alt={
+                page.welcomeImage.alt ||
+                'Inside the sanctuary at Second Presbyterian, with its Tiffany windows and Arts and Crafts ceiling'
+              }
+              class="h-full w-full object-cover"
+            />
+          ) : (
+            <Image
+              src={sanctuaryInterior}
+              alt="Inside the sanctuary at Second Presbyterian, with its Tiffany windows and Arts and Crafts ceiling"
+              widths={[600, 900, 1197]}
+              sizes="(min-width: 768px) 45vw, 100vw"
+              class="h-full w-full object-cover"
+            />
+          )
+        }
       </div>
     </div>
   </section>
 
   {/* ===== 4. Inclusive welcome — a solid Chapel-green band ================= */}
-  {/* Template note: this affirming statement is a self-contained section; a
+  {
+    /* Template note: this affirming statement is a self-contained section; a
       congregation that is not affirming can edit or remove it without touching
       anything else. The green band foregrounds it (the research flags an
-      affirming PCUSA identity as a real differentiator). */}
-  <section class="bg-chapel surface-chapel text-chapel-foreground" aria-label="Our welcome">
+      affirming PCUSA identity as a real differentiator). */
+  }
+  <section class="surface-chapel bg-chapel text-chapel-foreground" aria-label="Our welcome">
     <div data-reveal class="mx-auto max-w-3xl px-m py-section-lg text-center">
-      <div class="mb-m h-px w-12 bg-gold/70 mx-auto" aria-hidden="true"></div>
+      <div class="mx-auto mb-m h-px w-12 bg-gold/70" aria-hidden="true"></div>
       <p class="font-display text-h3 leading-snug">
-        {page?.inclusiveStatement ??
-          'Whoever you are, wherever you are on your journey of faith, you are welcome here.'}
+        {
+          page?.inclusiveStatement ??
+            'Whoever you are, wherever you are on your journey of faith, you are welcome here.'
+        }
       </p>
-      <p class="mt-m text-chapel-foreground/80 leading-relaxed">
-        {page?.inclusiveBody ??
-          'We are an inclusive congregation, and we welcome the full participation of women and LGBTQ people in the life and leadership of the church.'}
+      <p class="mt-m leading-relaxed text-chapel-foreground/80">
+        {
+          page?.inclusiveBody ??
+            'We are an inclusive congregation, and we welcome the full participation of women and LGBTQ people in the life and leadership of the church.'
+        }
       </p>
     </div>
   </section>
@@ -353,68 +455,99 @@ const weeklyRhythms: typeof FALLBACK_RHYTHMS = page?.weeklyRhythms?.length ? pag
       <SectionHeading
         eyebrow={page?.involvedEyebrow ?? 'Get Involved'}
         headline={page?.involvedHeadline ?? 'We are formed in community'}
-        subhead={page?.involvedSubhead ?? 'Join us for worship, fellowship, study, art, and food. There is a place for you here.'}
+        subhead={page?.involvedSubhead ??
+          'Join us for worship, fellowship, study, art, and food. There is a place for you here.'}
         headingId="involved-heading"
         align="center"
         class="mx-auto"
       />
-      <div class="mt-l grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-m" data-stagger-grid>
-        {ministryCards.map((m) => (
-          <a
-            href={m.href}
-            class="card-lift group block rounded-lg border border-border-soft bg-card p-l no-underline"
-          >
-            {/* Small arched gold cap — carries the building's arch motif onto
+      <div class="mt-l grid grid-cols-1 gap-m sm:grid-cols-2 lg:grid-cols-4" data-stagger-grid>
+        {
+          ministryCards.map((m) => (
+            <a
+              href={m.href}
+              class="card-lift group block rounded-lg border border-border-soft bg-card p-l no-underline"
+            >
+              {/* Small arched gold cap — carries the building's arch motif onto
                 the cards without needing a photo per ministry. */}
-            <span class="block h-1.5 w-10 rounded-t-full bg-gold/70 mb-m" aria-hidden="true"></span>
-            <h3 class="font-display text-h4 text-foreground group-hover:text-link transition-colors">{m.title}</h3>
-            <p class="mt-s text-foreground/80 leading-relaxed">{m.body}</p>
-            <span class="mt-m inline-flex items-center gap-xs text-xs uppercase tracking-eyebrow font-semibold text-link">
-              Learn more <span aria-hidden="true">&rarr;</span>
-            </span>
-          </a>
-        ))}
+              <span class="mb-m block h-1.5 w-10 rounded-t-full bg-gold/70" aria-hidden="true" />
+              <h3 class="font-display text-h4 text-foreground transition-colors group-hover:text-link">
+                {m.title}
+              </h3>
+              <p class="mt-s leading-relaxed text-foreground/80">{m.body}</p>
+              <span class="mt-m inline-flex items-center gap-xs text-xs font-semibold tracking-eyebrow text-link uppercase">
+                Learn more <span aria-hidden="true">&rarr;</span>
+              </span>
+            </a>
+          ))
+        }
       </div>
     </div>
   </section>
 
   {/* ===== 6. Events rhythms teaser ======================================== */}
   <section class="surface-warm bg-muted" aria-labelledby="events-heading">
-    <div data-reveal class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-[1fr_1.1fr] gap-l md:gap-section-md items-center">
+    <div
+      data-reveal
+      class="mx-auto grid max-w-content grid-cols-1 items-center gap-l px-m py-section-lg md:grid-cols-[1fr_1.1fr] md:gap-section-md"
+    >
       <SectionHeading
         eyebrow={page?.eventsEyebrow ?? "What's On"}
-        headline={page?.eventsHeadline ?? "There is always something happening at Second"}
+        headline={page?.eventsHeadline ?? 'There is always something happening at Second'}
         headingId="events-heading"
       />
-      <div class="text-foreground/85 text-lg leading-relaxed space-y-s">
-        <p>{page?.eventsIntro ?? 'Worship, study, shared meals, music, and fellowship fill the week. A few of our weekly rhythms:'}</p>
-        <ul class="space-y-2 list-none p-0 text-base">
-          {weeklyRhythms.map((r, i) => (
-            <li class={`flex justify-between gap-m ${i < weeklyRhythms.length - 1 ? 'border-b border-border-soft pb-2' : ''}`}>
-              <span>{r.label}</span><span class="text-foreground/80">{r.time}</span>
-            </li>
-          ))}
+      <div class="space-y-s text-lg leading-relaxed text-foreground/85">
+        <p>
+          {
+            page?.eventsIntro ??
+              'Worship, study, shared meals, music, and fellowship fill the week. A few of our weekly rhythms:'
+          }
+        </p>
+        <ul class="list-none space-y-2 p-0 text-base">
+          {
+            weeklyRhythms.map((r, i) => (
+              <li
+                class={`flex justify-between gap-m ${i < weeklyRhythms.length - 1 ? 'border-b border-border-soft pb-2' : ''}`}
+              >
+                <>
+                  <span>{r.label}</span>
+                  <span class="text-foreground/80">{r.time}</span>
+                </>
+              </li>
+            ))
+          }
         </ul>
         <div class="pt-s">
-          <a href={page?.eventsCalendarCta?.externalUrl || '/events'} class={pillOutline}>{page?.eventsCalendarCta?.label || 'See the Full Calendar'}</a>
+          <a href={page?.eventsCalendarCta?.externalUrl || '/events'} class={pillOutline}
+            >{page?.eventsCalendarCta?.label || 'See the Full Calendar'}</a
+          >
         </div>
       </div>
     </div>
   </section>
 
   {/* ===== 7. The Record newsletter ======================================== */}
-  {/* Works today via a mailto subscribe; swap the button for the
-      NewsletterSignup island once an email provider is configured in Sanity. */}
+  {
+    /* Works today via a mailto subscribe; swap the button for the
+      NewsletterSignup island once an email provider is configured in Sanity. */
+  }
   <section class="bg-background" aria-labelledby="record-heading">
     <div data-reveal class="mx-auto max-w-2xl px-m py-section-lg text-center">
-      <p class="text-xs uppercase tracking-eyebrow text-foreground/80">{page?.recordEyebrow ?? 'The Record'}</p>
-      <div class="mt-s mb-m h-px w-12 bg-gold/70 mx-auto" aria-hidden="true"></div>
-      <h2 id="record-heading" class="font-display text-h2 text-foreground">{page?.recordHeadline ?? 'Stay connected'}</h2>
-      <p class="mt-m text-lg text-foreground/85 leading-relaxed">
+      <p class="text-xs tracking-eyebrow text-foreground/80 uppercase">
+        {page?.recordEyebrow ?? 'The Record'}
+      </p>
+      <div class="mx-auto mt-s mb-m h-px w-12 bg-gold/70" aria-hidden="true"></div>
+      <h2 id="record-heading" class="font-display text-h2 text-foreground">
+        {page?.recordHeadline ?? 'Stay connected'}
+      </h2>
+      <p class="mt-m text-lg leading-relaxed text-foreground/85">
         {page?.recordBody ?? 'News, reflections, and what is coming up at Second, in your inbox.'}
       </p>
       <div class="mt-l flex justify-center">
-        <a href="mailto:office@secondpreschicago.org?subject=Subscribe%20to%20The%20Record" class={pillPrimary}>{page?.recordCtaLabel ?? 'Subscribe to The Record'}</a>
+        <a
+          href="mailto:office@secondpreschicago.org?subject=Subscribe%20to%20The%20Record"
+          class={pillPrimary}>{page?.recordCtaLabel ?? 'Subscribe to The Record'}</a
+        >
       </div>
     </div>
   </section>
@@ -424,10 +557,13 @@ const weeklyRhythms: typeof FALLBACK_RHYTHMS = page?.weeklyRhythms?.length ? pag
 
   {/* ===== 8. Welcoming close (Chapel-green) =============================== */}
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
-    headline={page?.finalCtaHeadline ?? "Whoever you are, you are welcome here."}
-    subhead={page?.finalCtaSubhead ?? "Plan your first visit, or simply show up on Sunday. We will be glad you came."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    eyebrow={page?.finalCtaEyebrow ?? 'Come and See'}
+    headline={page?.finalCtaHeadline ?? 'Whoever you are, you are welcome here.'}
+    subhead={page?.finalCtaSubhead ??
+      'Plan your first visit, or simply show up on Sunday. We will be glad you came.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
     backgroundImage={page?.finalCtaBackgroundImage}
   />
 </BaseLayout>

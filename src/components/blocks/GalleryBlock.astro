@@ -27,16 +27,22 @@ const colClass = COLS[block?.columns ?? '3'] ?? COLS['3'];
       aria-labelledby={block.heading ? 'gallery-heading' : undefined}
     >
       {(block.eyebrow || block.heading || block.intro) && (
-        <div class="max-w-2xl mb-l">
-          {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
-          {block.heading && <h2 id="gallery-heading" class="mt-s font-display text-h2">{block.heading}</h2>}
-          {block.intro && <p class="mt-s opacity-80 leading-relaxed">{block.intro}</p>}
+        <div class="mb-l max-w-2xl">
+          {block.eyebrow && (
+            <p class="text-xs tracking-eyebrow uppercase opacity-70">{block.eyebrow}</p>
+          )}
+          {block.heading && (
+            <h2 id="gallery-heading" class="mt-s font-display text-h2">
+              {block.heading}
+            </h2>
+          )}
+          {block.intro && <p class="mt-s leading-relaxed opacity-80">{block.intro}</p>}
         </div>
       )}
       <div class={`grid ${colClass} gap-s sm:gap-m`} data-stagger-grid>
         {images.map((img: any) => (
           <figure>
-            <div class="overflow-hidden rounded-md ring-1 ring-border-soft img-zoom group aspect-[4/3]">
+            <div class="img-zoom group aspect-[4/3] overflow-hidden rounded-md ring-1 ring-border-soft">
               <SanityImage
                 source={img}
                 width={800}

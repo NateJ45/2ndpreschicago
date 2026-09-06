@@ -26,7 +26,7 @@ const settings = resolveSiteSettings(siteSettings);
 const title = page?.seoTitle ?? `About · ${site.name}`;
 const description =
   page?.seoDescription ??
-  'A National Historic Landmark and a living congregation in Chicago\'s South Loop. The story of Second Presbyterian Church, the Church of the Angels.';
+  "A National Historic Landmark and a living congregation in Chicago's South Loop. The story of Second Presbyterian Church, the Church of the Angels.";
 
 const heroEyebrow = page?.heroEyebrow ?? 'About Second';
 const heroHeadline = page?.heroHeadline ?? 'A landmark church with an open door';
@@ -60,91 +60,122 @@ const pillOutline =
 
   {/* Feature: the angel murals (the church's namesake) */}
   <figure class="mx-auto max-w-content px-m pt-section-lg">
-    {page?.featureImage?.asset ? (
-      <SanityImage
-        source={page.featureImage}
-        width={1000}
-        sizes="(min-width: 1280px) 1216px, 100vw"
-        alt={page.featureImage.alt || 'The painted choir of angels on the sanctuary ceiling that gives the church its nickname'}
-        class="w-full h-auto rounded-md shadow-sm"
-      />
-    ) : (
-      <Image
-        src={angelMurals}
-        alt="The painted choir of angels on the sanctuary ceiling that gives the church its nickname"
-        widths={[768, 1280, 1500]}
-        sizes="(min-width: 1280px) 1216px, 100vw"
-        class="w-full h-auto rounded-md shadow-sm"
-      />
-    )}
-    <figcaption class="mt-s text-sm text-foreground/70 italic text-center">
-      {page?.muralCaption ?? 'The painted angels of the sanctuary, the namesake of the Church of the Angels.'}
+    {
+      page?.featureImage?.asset ? (
+        <SanityImage
+          source={page.featureImage}
+          width={1000}
+          sizes="(min-width: 1280px) 1216px, 100vw"
+          alt={
+            page.featureImage.alt ||
+            'The painted choir of angels on the sanctuary ceiling that gives the church its nickname'
+          }
+          class="h-auto w-full rounded-md shadow-sm"
+        />
+      ) : (
+        <Image
+          src={angelMurals}
+          alt="The painted choir of angels on the sanctuary ceiling that gives the church its nickname"
+          widths={[768, 1280, 1500]}
+          sizes="(min-width: 1280px) 1216px, 100vw"
+          class="h-auto w-full rounded-md shadow-sm"
+        />
+      )
+    }
+    <figcaption class="mt-s text-center text-sm text-foreground/70 italic">
+      {
+        page?.muralCaption ??
+          'The painted angels of the sanctuary, the namesake of the Church of the Angels.'
+      }
     </figcaption>
   </figure>
 
   {/* The building */}
   <section class="bg-background" aria-labelledby="about-building">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
+    <div
+      class="mx-auto grid max-w-content grid-cols-1 items-center gap-l px-m py-section-lg md:grid-cols-2 md:gap-section-md"
+    >
       <div>
         <SectionHeading
           eyebrow={page?.buildingEyebrow ?? 'A National Historic Landmark'}
           headline={page?.buildingHeadline ?? 'The Church of the Angels'}
           headingId="about-building"
         />
-        <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
+        <div class="mt-l space-y-m text-lg leading-relaxed text-foreground/85">
           <p>
-            {page?.buildingBodyP1 ??
-              'Our sanctuary, rebuilt in 1901 in the Arts and Crafts style after fire, is home to nine Tiffany windows and a ceiling of painted angels that gave the church its nickname. Visitors travel from all over the world to see it.'}
+            {
+              page?.buildingBodyP1 ??
+                'Our sanctuary, rebuilt in 1901 in the Arts and Crafts style after fire, is home to nine Tiffany windows and a ceiling of painted angels that gave the church its nickname. Visitors travel from all over the world to see it.'
+            }
           </p>
           <p>
-            {page?.buildingBodyP2 ??
-              'It is one of the great interiors in American church architecture, and it is still, first and last, a room built for worship.'}
+            {
+              page?.buildingBodyP2 ??
+                'It is one of the great interiors in American church architecture, and it is still, first and last, a room built for worship.'
+            }
           </p>
           <div class="pt-xs">
-            <a href={page?.buildingCta?.externalUrl || '/use-our-space'} class={pillOutline}>{page?.buildingCta?.label || 'Visit or Use the Space'}</a>
+            <a href={page?.buildingCta?.externalUrl || '/use-our-space'} class={pillOutline}
+              >{page?.buildingCta?.label || 'Visit or Use the Space'}</a
+            >
           </div>
         </div>
       </div>
-      {page?.buildingImage?.asset ? (
-        <SanityImage
-          source={page.buildingImage}
-          width={1000}
-          sizes="(min-width: 768px) 45vw, 100vw"
-          alt={page.buildingImage.alt || 'The nave of Second Presbyterian, lined with Tiffany windows beneath the Arts and Crafts ceiling'}
-          class="w-full h-auto rounded-md shadow-sm"
-        />
-      ) : (
-        <Image
-          src={sanctuaryInterior}
-          alt="The nave of Second Presbyterian, lined with Tiffany windows beneath the Arts and Crafts ceiling"
-          widths={[600, 900, 1197]}
-          sizes="(min-width: 768px) 45vw, 100vw"
-          class="w-full h-auto rounded-md shadow-sm"
-        />
-      )}
+      {
+        page?.buildingImage?.asset ? (
+          <SanityImage
+            source={page.buildingImage}
+            width={1000}
+            sizes="(min-width: 768px) 45vw, 100vw"
+            alt={
+              page.buildingImage.alt ||
+              'The nave of Second Presbyterian, lined with Tiffany windows beneath the Arts and Crafts ceiling'
+            }
+            class="h-auto w-full rounded-md shadow-sm"
+          />
+        ) : (
+          <Image
+            src={sanctuaryInterior}
+            alt="The nave of Second Presbyterian, lined with Tiffany windows beneath the Arts and Crafts ceiling"
+            widths={[600, 900, 1197]}
+            sizes="(min-width: 768px) 45vw, 100vw"
+            class="h-auto w-full rounded-md shadow-sm"
+          />
+        )
+      }
     </div>
   </section>
 
   {/* Who we are */}
   <section class="surface-warm bg-muted" aria-labelledby="about-who">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-start">
+    <div
+      class="mx-auto grid max-w-content grid-cols-1 items-start gap-l px-m py-section-lg md:grid-cols-2 md:gap-section-md"
+    >
       <SectionHeading
         eyebrow={page?.whoEyebrow ?? 'Who we are'}
         headline={page?.whoHeadline ?? 'A living congregation in the South Loop'}
         headingId="about-who"
       />
-      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+      <div class="space-y-m text-lg leading-relaxed text-foreground/85">
         <p>
-          {page?.whoBodyP1 ??
-            'We are a Reformed congregation in the Presbyterian Church (USA), gathering each week to worship, love, serve, pray, and share the gospel in word and deed.'}
+          {
+            page?.whoBodyP1 ??
+              'We are a Reformed congregation in the Presbyterian Church (USA), gathering each week to worship, love, serve, pray, and share the gospel in word and deed.'
+          }
         </p>
         <p>
-          {page?.whoBodyP2 ??
-            'We welcome everyone: women and men, gay and straight, lifelong believers and the simply curious. Whoever you are, you are welcome here.'}
+          {
+            page?.whoBodyP2 ??
+              'We welcome everyone: women and men, gay and straight, lifelong believers and the simply curious. Whoever you are, you are welcome here.'
+          }
         </p>
         <div class="flex flex-wrap gap-s pt-xs">
-          <a href={page?.whoCtaPrimary?.externalUrl || '/what-we-believe'} class={pillOutline}>{page?.whoCtaPrimary?.label || 'What We Believe'}</a>
-          <a href={page?.whoCtaSecondary?.externalUrl || '/pastor-staff'} class={pillOutline}>{page?.whoCtaSecondary?.label || 'Meet Our Pastors'}</a>
+          <a href={page?.whoCtaPrimary?.externalUrl || '/what-we-believe'} class={pillOutline}
+            >{page?.whoCtaPrimary?.label || 'What We Believe'}</a
+          >
+          <a href={page?.whoCtaSecondary?.externalUrl || '/pastor-staff'} class={pillOutline}
+            >{page?.whoCtaSecondary?.label || 'Meet Our Pastors'}</a
+          >
         </div>
       </div>
     </div>
@@ -153,10 +184,13 @@ const pillOutline =
   <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
-    headline={page?.finalCtaHeadline ?? "There is room for you here"}
-    subhead={page?.finalCtaSubhead ?? "Join us for worship this Sunday, and see the Church of the Angels for yourself."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    eyebrow={page?.finalCtaEyebrow ?? 'Come and See'}
+    headline={page?.finalCtaHeadline ?? 'There is room for you here'}
+    subhead={page?.finalCtaSubhead ??
+      'Join us for worship this Sunday, and see the Church of the Angels for yourself.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
     backgroundImage={page?.finalCtaBackgroundImage}
   />
 </BaseLayout>

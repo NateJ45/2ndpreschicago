@@ -1,6 +1,6 @@
 ---
 description: Audit the live Sanity dataset — counts, missing docs, empty fields, drafts
-argument-hint: "[--fields | --doc <id>]"
+argument-hint: '[--fields | --doc <id>]'
 ---
 
 Run the read-only dataset audit and interpret the results for the user.

@@ -76,58 +76,93 @@ const {
 const hasBackground = !!backgroundImage?.asset;
 
 // Split the headline around the script-accent word when provided.
-const { found: scriptFound, before: scriptBefore, word: scriptWord, after: scriptAfter } =
-  splitScriptAccent(headline, scriptAccent);
+const {
+  found: scriptFound,
+  before: scriptBefore,
+  word: scriptWord,
+  after: scriptAfter,
+} = splitScriptAccent(headline, scriptAccent);
 ---
 
 <section
-  class:list={['bg-chapel surface-chapel text-chapel-foreground', hasBackground && 'relative overflow-hidden']}
+  class:list={[
+    'surface-chapel bg-chapel text-chapel-foreground',
+    hasBackground && 'relative overflow-hidden',
+  ]}
   aria-labelledby={headingId}
 >
-  {/* Optional background photo + fixed charcoal scrim. Rendered only when an
+  {
+    /* Optional background photo + fixed charcoal scrim. Rendered only when an
       image is set; otherwise the section stays the solid Charcoal Dark panel.
       The scrim is tuned dark enough that the cream headline and bronze button
       stay readable over any photo. The image is decorative, so it is
-      aria-hidden with empty alt and sits at z-0 behind the stripe + content. */}
-  {hasBackground && (
-    <div class="absolute inset-0 z-0" aria-hidden="true">
-      <SanityImage
-        source={backgroundImage}
-        width={1920}
-        sizes="100vw"
-        loading="lazy"
-        alt=""
-        class="w-full h-full object-cover"
-      />
-      <div class="absolute inset-0 bg-chapel/80"></div>
-    </div>
-  )}
+      aria-hidden with empty alt and sits at z-0 behind the stripe + content. */
+  }
+  {
+    hasBackground && (
+      <div class="absolute inset-0 z-0" aria-hidden="true">
+        <SanityImage
+          source={backgroundImage}
+          width={1920}
+          sizes="100vw"
+          loading="lazy"
+          alt=""
+          class="h-full w-full object-cover"
+        />
+        <div class="absolute inset-0 bg-chapel/80" />
+      </div>
+    )
+  }
 
-  {/* Bronze accent stripe, same 2px brand signature used at the top of the
+  {
+    /* Bronze accent stripe, same 2px brand signature used at the top of the
       site header, mobile menu, footer, and every marketing card. Softens the
       transition from the previous (usually light) section into this dark
-      panel and ties the close-of-page back into the brand vocabulary. */}
+      panel and ties the close-of-page back into the brand vocabulary. */
+  }
   <div class:list={['h-0.5 bg-primary', hasBackground && 'relative z-10']} aria-hidden="true"></div>
 
-  <div class:list={['mx-auto max-w-content px-m py-section-lg text-center', hasBackground && 'relative z-10']}>
-    {eyebrow && (
-      <p class="text-xs uppercase tracking-eyebrow text-chapel-foreground/75">{eyebrow}</p>
-    )}
-    {/* Triple-arch ornament beneath the eyebrow. Section headings carry the
+  <div
+    class:list={[
+      'mx-auto max-w-content px-m py-section-lg text-center',
+      hasBackground && 'relative z-10',
+    ]}
+  >
+    {
+      eyebrow && (
+        <p class="text-xs tracking-eyebrow text-chapel-foreground/75 uppercase">{eyebrow}</p>
+      )
+    }
+    {
+      /* Triple-arch ornament beneath the eyebrow. Section headings carry the
         gold hairline; the page-closing band gets the arch mark instead, so the
         close of every page ends on the building's own shape (the HPP
-        ornamental-divider pattern, in our architectural vocabulary). */}
-    {eyebrow && (
-      <ArchOrnament class="mt-s mb-m mx-auto text-[#C7A875]/80" />
-    )}
-    <h2 id={headingId} class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-chapel-foreground">
-      {scriptFound
-        ? <>{scriptBefore}<span class="font-script">{scriptWord}</span>{scriptAfter}</>
-        : headline}
+        ornamental-divider pattern, in our architectural vocabulary). */
+    }
+    {eyebrow && <ArchOrnament class="mx-auto mt-s mb-m text-[#C7A875]/80" />}
+    <h2
+      id={headingId}
+      class="font-display text-h1 leading-headline-tight tracking-[-0.02em] text-chapel-foreground"
+    >
+      {
+        scriptFound ? (
+          <>
+            {scriptBefore}
+            <span class="font-script">{scriptWord}</span>
+            {scriptAfter}
+          </>
+        ) : (
+          headline
+        )
+      }
     </h2>
-    {subhead && (
-      <p class="mt-m text-lg text-pretty text-chapel-foreground/85 max-w-2xl mx-auto">{subhead}</p>
-    )}
+    {
+      subhead && (
+        <p class="mx-auto mt-m max-w-2xl text-lg text-pretty text-chapel-foreground/85">
+          {subhead}
+        </p>
+      )
+    }
     <div class="mt-l flex flex-wrap justify-center gap-s">
       <CtaLink
         cta={cta}
@@ -136,13 +171,7 @@ const { found: scriptFound, before: scriptBefore, word: scriptWord, after: scrip
         fallbackHref="/contact"
         fallbackLabel={fallbackCtaLabel}
       />
-      {secondaryCta && (
-        <CtaLink
-          cta={secondaryCta}
-          variant="secondary"
-          onDark
-        />
-      )}
+      {secondaryCta && <CtaLink cta={secondaryCta} variant="secondary" onDark />}
     </div>
   </div>
 </section>

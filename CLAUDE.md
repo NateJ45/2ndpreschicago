@@ -81,22 +81,22 @@ Standalone scripts:
 
 Core routes that ship with the starter (always on, not toggleable):
 
-| Path | Source | Notes |
-|---|---|---|
-| `/` | `src/pages/index.astro` | Home page singleton from Sanity |
-| `/about` | `src/pages/about.astro` | About page singleton |
-| `/faq` | `src/pages/faq.astro` | FAQ page + faqItem collection grouped by category |
-| `/contact` | `src/pages/contact.astro` | Contact details + map (church build removed the Web3Forms form) |
-| `/events` | `src/pages/events/index.astro` | Events module: upcoming + recurring rhythms |
-| `/events/[slug]` | `src/pages/events/[slug].astro` | Event detail |
-| `/sermons` | `src/pages/sermons/index.astro` | Sermons module: featured + archive + livestream |
-| `/sermons/[slug]` | `src/pages/sermons/[slug].astro` | Sermon detail (embedded video) |
-| `/worship` | `src/pages/worship.astro` | The "I'm New / Plan a Visit" page (first-visit info) |
-| `/journal` | `src/pages/journal/index.astro` | Post grid with category chips |
-| `/journal/[slug]` | `src/pages/journal/[slug].astro` | Post detail: reading progress + header + cover + body + related |
-| `/privacy` | `src/pages/privacy.astro` | Privacy policy from singleton, with static fallback when doc is absent |
-| `/sitemap-index.xml` | `@astrojs/sitemap` (auto) | Production sitemap |
-| `/404` | `src/pages/404.astro` | Custom 404 |
+| Path                 | Source                           | Notes                                                                  |
+| -------------------- | -------------------------------- | ---------------------------------------------------------------------- |
+| `/`                  | `src/pages/index.astro`          | Home page singleton from Sanity                                        |
+| `/about`             | `src/pages/about.astro`          | About page singleton                                                   |
+| `/faq`               | `src/pages/faq.astro`            | FAQ page + faqItem collection grouped by category                      |
+| `/contact`           | `src/pages/contact.astro`        | Contact details + map (church build removed the Web3Forms form)        |
+| `/events`            | `src/pages/events/index.astro`   | Events module: upcoming + recurring rhythms                            |
+| `/events/[slug]`     | `src/pages/events/[slug].astro`  | Event detail                                                           |
+| `/sermons`           | `src/pages/sermons/index.astro`  | Sermons module: featured + archive + livestream                        |
+| `/sermons/[slug]`    | `src/pages/sermons/[slug].astro` | Sermon detail (embedded video)                                         |
+| `/worship`           | `src/pages/worship.astro`        | The "I'm New / Plan a Visit" page (first-visit info)                   |
+| `/journal`           | `src/pages/journal/index.astro`  | Post grid with category chips                                          |
+| `/journal/[slug]`    | `src/pages/journal/[slug].astro` | Post detail: reading progress + header + cover + body + related        |
+| `/privacy`           | `src/pages/privacy.astro`        | Privacy policy from singleton, with static fallback when doc is absent |
+| `/sitemap-index.xml` | `@astrojs/sitemap` (auto)        | Production sitemap                                                     |
+| `/404`               | `src/pages/404.astro`            | Custom 404                                                             |
 
 Additional routes come from opt-in modules staged under `modules/`. Each module is documented under `docs/modules/`. Modules: `events` and `sermons` (both ENABLED on this site, see their docs in `docs/modules/`), `portfolio`, `process`, `newsletter`, `lead-magnets`, `style-quiz`, `budget-calculator`, `shop`, `e-design`, `gift-certificates`, `press`, `resources`.
 
@@ -228,32 +228,32 @@ Read these on demand. They are NOT auto-loaded, and they are referenced as plain
 
 `docs/bootstrap/` and `docs/modules/` are forthcoming (authored in a later phase). `docs/bootstrap/NEW-PROJECT.md` will be the setup entry point for adapting this starter to a new project.
 
-| Area | Doc |
-|---|---|
-| **Open patches + waiting-on-a-human queue (read early)** | `docs/PENDING.md` |
-| **Which gate covers what** | `docs/TESTING.md` |
-| **Design brief (one-file system: palette, type, motion, idioms, hard rules)** | `design.md` — attach it (plus screenshots) for any visual work |
-| Stack detail + astro.config landmines | `docs/agent/stack-and-config.md` |
-| Page + section architecture, nav, visibility toggles | `docs/agent/page-architecture.md` |
-| Brand colors + theme system (light/dark discipline) | `docs/agent/theme-and-color.md` |
-| Polish layer (brand stripe, card-lift, scroll, Lenis, script accents) | `docs/agent/polish-layer.md` |
-| Animation layer (Lenis, motion, scroll-reveal, script accent) | `docs/agent/animation.md` |
-| Typography + spacing tokens | `docs/agent/design-tokens.md` |
-| Component catalog + long-read layout | `docs/agent/components.md` |
-| Error + empty states | `docs/agent/error-states.md` |
-| Image handling | `docs/agent/images.md` |
-| Accessibility | `docs/agent/accessibility.md` |
-| SEO + JSON-LD | `docs/agent/seo.md` |
-| Performance budgets + Lighthouse | `docs/agent/performance.md` |
-| Content data + Sanity integration | `docs/agent/sanity.md` |
-| Deployment + env vars + rebuild model | `docs/agent/deployment.md` |
-| Editor-driven vs hardcoded | `docs/agent/editor-vs-hardcoded.md` |
-| Change history | `docs/agent/changelog.md` |
-| New-project setup runbook + pre-launch checklist (forthcoming) | `docs/bootstrap/NEW-PROJECT.md`, `docs/bootstrap/setup-checklist.md` |
-| Per-module enable guides (forthcoming) | `docs/modules/<module-name>.md` |
+| Area                                                                          | Doc                                                                  |
+| ----------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| **Open patches + waiting-on-a-human queue (read early)**                      | `docs/PENDING.md`                                                    |
+| **Which gate covers what**                                                    | `docs/TESTING.md`                                                    |
+| **Design brief (one-file system: palette, type, motion, idioms, hard rules)** | `design.md` — attach it (plus screenshots) for any visual work       |
+| Stack detail + astro.config landmines                                         | `docs/agent/stack-and-config.md`                                     |
+| Page + section architecture, nav, visibility toggles                          | `docs/agent/page-architecture.md`                                    |
+| Brand colors + theme system (light/dark discipline)                           | `docs/agent/theme-and-color.md`                                      |
+| Polish layer (brand stripe, card-lift, scroll, Lenis, script accents)         | `docs/agent/polish-layer.md`                                         |
+| Animation layer (Lenis, motion, scroll-reveal, script accent)                 | `docs/agent/animation.md`                                            |
+| Typography + spacing tokens                                                   | `docs/agent/design-tokens.md`                                        |
+| Component catalog + long-read layout                                          | `docs/agent/components.md`                                           |
+| Error + empty states                                                          | `docs/agent/error-states.md`                                         |
+| Image handling                                                                | `docs/agent/images.md`                                               |
+| Accessibility                                                                 | `docs/agent/accessibility.md`                                        |
+| SEO + JSON-LD                                                                 | `docs/agent/seo.md`                                                  |
+| Performance budgets + Lighthouse                                              | `docs/agent/performance.md`                                          |
+| Content data + Sanity integration                                             | `docs/agent/sanity.md`                                               |
+| Deployment + env vars + rebuild model                                         | `docs/agent/deployment.md`                                           |
+| Editor-driven vs hardcoded                                                    | `docs/agent/editor-vs-hardcoded.md`                                  |
+| Change history                                                                | `docs/agent/changelog.md`                                            |
+| New-project setup runbook + pre-launch checklist (forthcoming)                | `docs/bootstrap/NEW-PROJECT.md`, `docs/bootstrap/setup-checklist.md` |
+| Per-module enable guides (forthcoming)                                        | `docs/modules/<module-name>.md`                                      |
 
 ---
 
-*Structure: this file is the always-loaded constitution. Deep reference lives under `docs/agent/` (see the topic index above). Change history is in `docs/agent/changelog.md`.*
+_Structure: this file is the always-loaded constitution. Deep reference lives under `docs/agent/` (see the topic index above). Change history is in `docs/agent/changelog.md`._
 
 See `OPERATIONS.md` for the tactical playbook (deploy, patch content, run audits, common gotchas).

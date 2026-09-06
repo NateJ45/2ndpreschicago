@@ -34,28 +34,28 @@ hardcoding and a pile of **orphaned** fields. Three distinct problems:
 
 From `node scripts/audit-field-population.mjs` against `kz01wb83/production`:
 
-| Singleton | Fields set / total |
-|---|---|
-| homePage | 8 / 40 |
-| aboutPage | 9 / 27 |
-| worshipPage | 4 / 32 |
-| beliefsPage | 4 / 39 |
-| musicPage | 4 / 22 |
-| staffPage | 4 / 11 |
-| growPage | 4 / 12 |
-| servePage | 4 / 12 |
-| kidsPage | 4 / 16 |
-| foodPage | 4 / 17 |
-| eventsPage | 6 / 18 |
-| sermonsPage | 6 / 15 |
-| useOurSpacePage | 4 / 19 |
-| weddingsPage | 4 / 22 |
-| givePage | 4 / 19 |
-| faqPage | 1 / 18 |
-| contactPage | 3 / 23 |
-| privacyPage | 7 / 11 |
-| notFoundPage | 11 / 12 |
-| siteSettings | 14 / 24 |
+| Singleton       | Fields set / total |
+| --------------- | ------------------ |
+| homePage        | 8 / 40             |
+| aboutPage       | 9 / 27             |
+| worshipPage     | 4 / 32             |
+| beliefsPage     | 4 / 39             |
+| musicPage       | 4 / 22             |
+| staffPage       | 4 / 11             |
+| growPage        | 4 / 12             |
+| servePage       | 4 / 12             |
+| kidsPage        | 4 / 16             |
+| foodPage        | 4 / 17             |
+| eventsPage      | 6 / 18             |
+| sermonsPage     | 6 / 15             |
+| useOurSpacePage | 4 / 19             |
+| weddingsPage    | 4 / 22             |
+| givePage        | 4 / 19             |
+| faqPage         | 1 / 18             |
+| contactPage     | 3 / 23             |
+| privacyPage     | 7 / 11             |
+| notFoundPage    | 11 / 12            |
+| siteSettings    | 14 / 24            |
 
 The ~4-set pages have only their hero (eyebrow/headline/subhead/image, from the
 earlier hero-image seed) populated; every body-copy field is empty. **This is why
@@ -95,6 +95,7 @@ the Studio stops showing a control that does nothing.
 ## Category 3: Truly hardcoded (no Sanity field at all)
 
 ### 3a. Closing CTA button, every page (highest-impact)
+
 `<FinalCta cta={{ label, externalUrl }} />` is a **literal object on all 19 page
 templates** (verified). The eyebrow/headline/subhead above the button are editable
 on most pages, but the **button label and destination can never be edited** in
@@ -102,15 +103,18 @@ Sanity. The shared church page factory (`churchPages.ts`) provides `finalCta*` t
 fields but no CTA-link field.
 
 ### 3b. Section body images (bundled, not editable)
+
 Only the **hero** image is a Sanity field on each page (`page?.heroImage`, with a
 bundled `@/assets` fallback). Every other in-body photo is a hardcoded bundled asset
 with no field:
+
 - home: Welcome section image (`sanctuary-interior.webp`)
 - about: the angel-mural feature image and the building/nave image
 - worship: the Tiffany-windows image
 - music: the mural-angels image
 
 ### 3c. In-body links and labels
+
 Hardcoded label + href, no field: home "Watch Online", "What We Believe", "Meet Our
 Pastors", "See the Full Calendar", "Learn more"; worship "Get Directions" / "Watch
 Online" / "More for kids"; music "Michael Shawgo..." link; about "Visit or Use the
@@ -119,13 +123,16 @@ the Table"; serve "Learn more"; sermons/events empty-state "Plan a Visit" / "Sun
 worship" links. (Many of these are structural nav and may be fine hardcoded.)
 
 ### 3d. Home "events teaser" section (section 6)
+
 The eyebrow "What's On", headline "There is always something happening at Second",
 and the intro paragraph are literals with no field (the `weeklyRhythms` list below
 them IS an editable field). Also the "This Sunday: 11am, in person and online."
 fallback line and the Record-newsletter `mailto:` address are hardcoded.
 
 ### 3e. Collection-detail fields that are dropped
+
 Editors can fill these on a sermon/event and they never appear on the page:
+
 - **event detail** (`events/[slug].astro`): `registrationLabel` (hardcoded "Register"), `cost`, `contactName`, `contactEmail`, `audience`, and `allDay` is ignored in the time logic. All fetched, none rendered (verified).
 - **sermon detail** (`sermons/[slug].astro`): `sermon.image` is fetched but never rendered; the closing CTA eyebrow/headline/subhead are also hardcoded literals (not just the button).
 

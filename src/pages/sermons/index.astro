@@ -56,9 +56,18 @@ const pillOutline =
 
 function meta(s: any): string {
   return [
-    s.date ? new Date(s.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : null,
-    s.speaker, s.series,
-  ].filter(Boolean).join(' · ');
+    s.date
+      ? new Date(s.date).toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+        })
+      : null,
+    s.speaker,
+    s.series,
+  ]
+    .filter(Boolean)
+    .join(' · ');
 }
 ---
 
@@ -75,94 +84,155 @@ function meta(s: any): string {
     size="short"
   />
 
-  {sermons.length > 0 ? (
-    <section class="bg-background" aria-label="Sermons">
-      <div class="mx-auto max-w-content px-m py-section-lg">
-        {/* Watch live + podcast row. The podcast pills only render when the
+  {
+    sermons.length > 0 ? (
+      <section class="bg-background" aria-label="Sermons">
+        <div class="mx-auto max-w-content px-m py-section-lg">
+          {/* Watch live + podcast row. The podcast pills only render when the
             editor sets the URLs in Studio (Sermons index page), so the row is
             never cluttered with dead links. Mirrors HPP's sermons hub: live
             stream first, then subscribe-where-you-listen. */}
-        <div class="mb-section-md flex flex-wrap items-center justify-between gap-m">
-          <p class="text-foreground/80">Worship streams live every Sunday.</p>
-          <div class="flex flex-wrap items-center gap-s">
-            {page?.podcastAppleUrl && (
-              <a href={page.podcastAppleUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}>Apple Podcasts</a>
-            )}
-            {page?.podcastSpotifyUrl && (
-              <a href={page.podcastSpotifyUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}>Spotify</a>
-            )}
-            <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>{page?.watchLiveLabel ?? 'Watch Live'}</a>
+          <div class="mb-section-md flex flex-wrap items-center justify-between gap-m">
+            <p class="text-foreground/80">Worship streams live every Sunday.</p>
+            <div class="flex flex-wrap items-center gap-s">
+              {page?.podcastAppleUrl && (
+                <a
+                  href={page.podcastAppleUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class={pillOutline}
+                >
+                  Apple Podcasts
+                </a>
+              )}
+              {page?.podcastSpotifyUrl && (
+                <a
+                  href={page.podcastSpotifyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class={pillOutline}
+                >
+                  Spotify
+                </a>
+              )}
+              <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>
+                {page?.watchLiveLabel ?? 'Watch Live'}
+              </a>
+            </div>
           </div>
-        </div>
 
-        {/* Featured latest sermon */}
-        {featured && (
-          <a href={`/sermons/${featured.slug?.current ?? ''}`} class="card-lift group block rounded-md border border-border-soft bg-card overflow-hidden mb-l no-underline">
-            <div class="grid grid-cols-1 md:grid-cols-2">
-              {featured.image?.asset ? (
-                <SanityImage source={featured.image} width={900} sizes="(min-width:768px) 50vw, 100vw" class="w-full h-full object-cover" />
-              ) : (
-                <div class="flex aspect-[16/9] md:aspect-auto items-center justify-center bg-chapel surface-chapel p-l" aria-hidden="true">
-                  {/* No artwork yet: a typographic chapel panel instead of a
+          {/* Featured latest sermon */}
+          {featured && (
+            <a
+              href={`/sermons/${featured.slug?.current ?? ''}`}
+              class="card-lift group mb-l block overflow-hidden rounded-md border border-border-soft bg-card no-underline"
+            >
+              <div class="grid grid-cols-1 md:grid-cols-2">
+                {featured.image?.asset ? (
+                  <SanityImage
+                    source={featured.image}
+                    width={900}
+                    sizes="(min-width:768px) 50vw, 100vw"
+                    class="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div
+                    class="surface-chapel flex aspect-[16/9] items-center justify-center bg-chapel p-l md:aspect-auto"
+                    aria-hidden="true"
+                  >
+                    {/* No artwork yet: a typographic chapel panel instead of a
                       blank gray slab. The arch mark + scripture (or series)
                       keeps the featured card feeling designed until real
                       sermon artwork is uploaded in Studio. */}
-                  <div class="text-center">
-                    <ArchOrnament class="mx-auto text-[#C7A875]/80" />
-                    <p class="mt-s font-display italic text-h4 text-chapel-foreground/90">
-                      {featured.scripture || featured.series || 'Sunday worship'}
-                    </p>
+                    <div class="text-center">
+                      <ArchOrnament class="mx-auto text-[#C7A875]/80" />
+                      <p class="mt-s font-display text-h4 text-chapel-foreground/90 italic">
+                        {featured.scripture || featured.series || 'Sunday worship'}
+                      </p>
+                    </div>
                   </div>
+                )}
+                <div class="p-l">
+                  <span class="text-xs tracking-eyebrow text-link uppercase">
+                    {page?.latestEyebrow ?? 'Latest message'}
+                  </span>
+                  <h2 class="mt-xs font-display text-h3 text-foreground transition-colors group-hover:text-link">
+                    {featured.title}
+                  </h2>
+                  <p class="mt-s text-sm text-foreground/70">{meta(featured)}</p>
+                  {featured.scripture && (
+                    <p class="mt-xs text-sm text-foreground/70 italic">{featured.scripture}</p>
+                  )}
                 </div>
-              )}
-              <div class="p-l">
-                <span class="text-xs uppercase tracking-eyebrow text-link">{page?.latestEyebrow ?? 'Latest message'}</span>
-                <h2 class="mt-xs font-display text-h3 text-foreground group-hover:text-link transition-colors">{featured.title}</h2>
-                <p class="mt-s text-sm text-foreground/70">{meta(featured)}</p>
-                {featured.scripture && <p class="mt-xs text-sm text-foreground/70 italic">{featured.scripture}</p>}
               </div>
-            </div>
-          </a>
-        )}
+            </a>
+          )}
 
-        {/* Archive grid */}
-        {rest.length > 0 && (
-          <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-m list-none p-0" data-stagger-grid>
-            {rest.map((s: any) => (
-              <li>
-                <a href={`/sermons/${s.slug?.current ?? ''}`} class="card-lift group block h-full rounded-md border border-border-soft bg-card p-l no-underline">
-                  {s.series && <span class="text-xs uppercase tracking-eyebrow text-link">{s.series}</span>}
-                  <h3 class="mt-xs font-display text-h4 text-foreground group-hover:text-link transition-colors">{s.title}</h3>
-                  <p class="mt-xs text-sm text-foreground/70">{meta(s)}</p>
-                  {s.scripture && <p class="mt-xs text-sm text-foreground/70 italic">{s.scripture}</p>}
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </section>
-  ) : (
-    <section class="surface-warm bg-muted" aria-label="Watch online">
-      <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
-        <SectionHeading eyebrow={page?.watchEyebrow ?? 'Watch online'} headline={page?.watchHeadline ?? 'Join us for worship, wherever you are'} headingId="sermons-watch" align="center" class="mx-auto" />
-        <p class="mt-m text-lg text-foreground/85 leading-relaxed">
-          {page?.watchBody ?? 'We livestream Sunday worship and post recent messages on our YouTube channel. Watch the latest, or join us live on Sunday.'}
-        </p>
-        <div class="mt-l flex flex-wrap justify-center gap-s">
-          <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>{page?.watchYoutubeLabel ?? 'Watch on YouTube'}</a>
-          <a href={page?.emptyVisitCta?.externalUrl || '/worship'} class={pillOutline}>{page?.emptyVisitCta?.label || 'Plan a Visit'}</a>
+          {/* Archive grid */}
+          {rest.length > 0 && (
+            <ul
+              class="grid list-none grid-cols-1 gap-m p-0 sm:grid-cols-2 lg:grid-cols-3"
+              data-stagger-grid
+            >
+              {rest.map((s: any) => (
+                <li>
+                  <a
+                    href={`/sermons/${s.slug?.current ?? ''}`}
+                    class="card-lift group block h-full rounded-md border border-border-soft bg-card p-l no-underline"
+                  >
+                    {s.series && (
+                      <span class="text-xs tracking-eyebrow text-link uppercase">{s.series}</span>
+                    )}
+                    <h3 class="mt-xs font-display text-h4 text-foreground transition-colors group-hover:text-link">
+                      {s.title}
+                    </h3>
+                    <p class="mt-xs text-sm text-foreground/70">{meta(s)}</p>
+                    {s.scripture && (
+                      <p class="mt-xs text-sm text-foreground/70 italic">{s.scripture}</p>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-      </div>
-    </section>
-  )}
+      </section>
+    ) : (
+      <section class="surface-warm bg-muted" aria-label="Watch online">
+        <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
+          <SectionHeading
+            eyebrow={page?.watchEyebrow ?? 'Watch online'}
+            headline={page?.watchHeadline ?? 'Join us for worship, wherever you are'}
+            headingId="sermons-watch"
+            align="center"
+            class="mx-auto"
+          />
+          <p class="mt-m text-lg leading-relaxed text-foreground/85">
+            {page?.watchBody ??
+              'We livestream Sunday worship and post recent messages on our YouTube channel. Watch the latest, or join us live on Sunday.'}
+          </p>
+          <div class="mt-l flex flex-wrap justify-center gap-s">
+            <a href={watchUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>
+              {page?.watchYoutubeLabel ?? 'Watch on YouTube'}
+            </a>
+            <a href={page?.emptyVisitCta?.externalUrl || '/worship'} class={pillOutline}>
+              {page?.emptyVisitCta?.label || 'Plan a Visit'}
+            </a>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
-    headline={page?.finalCtaHeadline ?? "Worship with us in person"}
-    subhead={page?.finalCtaSubhead ?? "There is nothing like being in the room. Join us this Sunday at the Church of the Angels."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    eyebrow={page?.finalCtaEyebrow ?? 'Come and See'}
+    headline={page?.finalCtaHeadline ?? 'Worship with us in person'}
+    subhead={page?.finalCtaSubhead ??
+      'There is nothing like being in the room. Join us this Sunday at the Church of the Angels.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

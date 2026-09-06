@@ -18,9 +18,8 @@ export const GET: APIRoute = async (context) => {
     title: sermon.title ?? '(untitled)',
     link: `/sermons/${sermon.slug?.current ?? ''}`,
     pubDate: sermon.date ? new Date(sermon.date) : undefined,
-    description: [sermon.speaker, sermon.scripture, sermon.series]
-      .filter(Boolean)
-      .join(' | ') || undefined,
+    description:
+      [sermon.speaker, sermon.scripture, sermon.series].filter(Boolean).join(' | ') || undefined,
   }));
 
   return rss({

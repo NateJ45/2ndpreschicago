@@ -40,12 +40,48 @@ const FORMS = [
     intro:
       'Our pastor prays over every request. Share as much or as little as you like, and tell us if you would rather keep it just between you and the pastor.',
     mode: 'native',
-    provider: { service: 'web3forms', accessKey: '', notifyEmail: 'pastorchesna@secondpreschicago.org' },
+    provider: {
+      service: 'web3forms',
+      accessKey: '',
+      notifyEmail: 'pastorchesna@secondpreschicago.org',
+    },
     fields: [
-      { _key: 'name', _type: 'formField', label: 'Your name (optional)', name: 'name', required: false, type: 'text', width: 'half' },
-      { _key: 'email', _type: 'formField', label: 'Email (optional, if you would like us to follow up)', name: 'email', required: false, type: 'email', width: 'half' },
-      { _key: 'request', _type: 'formField', label: 'Your request', name: 'request', required: true, type: 'textarea', width: 'full' },
-      { _key: 'confidential', _type: 'formField', label: 'Keep this between the pastor and me', name: 'confidential', required: false, type: 'checkbox', width: 'full' },
+      {
+        _key: 'name',
+        _type: 'formField',
+        label: 'Your name (optional)',
+        name: 'name',
+        required: false,
+        type: 'text',
+        width: 'half',
+      },
+      {
+        _key: 'email',
+        _type: 'formField',
+        label: 'Email (optional, if you would like us to follow up)',
+        name: 'email',
+        required: false,
+        type: 'email',
+        width: 'half',
+      },
+      {
+        _key: 'request',
+        _type: 'formField',
+        label: 'Your request',
+        name: 'request',
+        required: true,
+        type: 'textarea',
+        width: 'full',
+      },
+      {
+        _key: 'confidential',
+        _type: 'formField',
+        label: 'Keep this between the pastor and me',
+        name: 'confidential',
+        required: false,
+        type: 'checkbox',
+        width: 'full',
+      },
     ],
     submitLabel: 'Send Request',
     successMessage: 'Thank you for trusting us with this. We are praying with you.',
@@ -62,16 +98,78 @@ const FORMS = [
     mode: 'native',
     provider: { service: 'web3forms', accessKey: '', notifyEmail: 'office@secondpreschicago.org' },
     fields: [
-      { _key: 'name', _type: 'formField', label: 'Your name', name: 'name', required: true, type: 'text', width: 'full' },
-      { _key: 'email', _type: 'formField', label: 'Email', name: 'email', required: true, type: 'email', width: 'half' },
-      { _key: 'phone', _type: 'formField', label: 'Phone (optional)', name: 'phone', required: false, type: 'tel', width: 'half' },
-      { _key: 'status', _type: 'formField', label: 'I am...', name: 'status', required: false, type: 'select', width: 'half', options: ['Planning my first visit', 'A recent visitor', 'A regular attender', 'Returning after a while'] },
-      { _key: 'interest', _type: 'formField', label: 'I would like to...', name: 'interest', required: false, type: 'select', width: 'half', options: ['Talk with the pastor', 'Join a community group', 'Help serve', 'Learn about membership', 'Something else'] },
-      { _key: 'message', _type: 'formField', label: 'Anything you want us to know?', name: 'message', required: false, type: 'textarea', width: 'full' },
+      {
+        _key: 'name',
+        _type: 'formField',
+        label: 'Your name',
+        name: 'name',
+        required: true,
+        type: 'text',
+        width: 'full',
+      },
+      {
+        _key: 'email',
+        _type: 'formField',
+        label: 'Email',
+        name: 'email',
+        required: true,
+        type: 'email',
+        width: 'half',
+      },
+      {
+        _key: 'phone',
+        _type: 'formField',
+        label: 'Phone (optional)',
+        name: 'phone',
+        required: false,
+        type: 'tel',
+        width: 'half',
+      },
+      {
+        _key: 'status',
+        _type: 'formField',
+        label: 'I am...',
+        name: 'status',
+        required: false,
+        type: 'select',
+        width: 'half',
+        options: [
+          'Planning my first visit',
+          'A recent visitor',
+          'A regular attender',
+          'Returning after a while',
+        ],
+      },
+      {
+        _key: 'interest',
+        _type: 'formField',
+        label: 'I would like to...',
+        name: 'interest',
+        required: false,
+        type: 'select',
+        width: 'half',
+        options: [
+          'Talk with the pastor',
+          'Join a community group',
+          'Help serve',
+          'Learn about membership',
+          'Something else',
+        ],
+      },
+      {
+        _key: 'message',
+        _type: 'formField',
+        label: 'Anything you want us to know?',
+        name: 'message',
+        required: false,
+        type: 'textarea',
+        width: 'full',
+      },
     ],
     submitLabel: 'Connect',
     successMessage: 'Thank you. Someone from the church will reach out this week.',
-    consentNote: 'We only use your details to follow up with you, and never share them. See our privacy policy.',
+    consentNote:
+      'We only use your details to follow up with you, and never share them. See our privacy policy.',
   },
 ];
 
@@ -127,12 +225,18 @@ const [worship, contact, settings] = await Promise.all([
 const plan = [];
 for (const f of FORMS) plan.push(`createIfNotExists ${f._id}`);
 plan.push(`createIfNotExists ${PRAYER_PAGE._id}  (live at /prayer)`);
-if (worship?.keys?.includes(WORSHIP_SECTION._key)) plan.push('worshipPage: connect-card section already present, skip');
+if (worship?.keys?.includes(WORSHIP_SECTION._key))
+  plan.push('worshipPage: connect-card section already present, skip');
 else plan.push('worshipPage: append connect-card sectionForm to flexibleSections');
-if (contact?.hrefs?.includes('/prayer')) plan.push('contactPage: /prayer row already present, skip');
+if (contact?.hrefs?.includes('/prayer'))
+  plan.push('contactPage: /prayer row already present, skip');
 else plan.push('contactPage: append "Prayer requests" who-to-reach row');
-if (settings?.prayerUrl) plan.push(`siteSettings.prayerUrl already set (${settings.prayerUrl}), skip`);
-else plan.push('siteSettings: set prayerUrl -> https://www.secondpreschicago.org/prayer (footer "Prayer Request" link)');
+if (settings?.prayerUrl)
+  plan.push(`siteSettings.prayerUrl already set (${settings.prayerUrl}), skip`);
+else
+  plan.push(
+    'siteSettings: set prayerUrl -> https://www.secondpreschicago.org/prayer (footer "Prayer Request" link)',
+  );
 
 console.log((APPLY ? 'APPLYING:' : 'DRY RUN (would do):') + '\n  ' + plan.join('\n  '));
 if (!APPLY) process.exit(0);
@@ -142,7 +246,9 @@ for (const f of FORMS) tx = tx.createIfNotExists(f);
 tx = tx.createIfNotExists(PRAYER_PAGE);
 if (!worship?.keys?.includes(WORSHIP_SECTION._key)) {
   tx = tx.patch('worshipPage', (p) =>
-    p.setIfMissing({ flexibleSections: [] }).insert('after', 'flexibleSections[-1]', [WORSHIP_SECTION]),
+    p
+      .setIfMissing({ flexibleSections: [] })
+      .insert('after', 'flexibleSections[-1]', [WORSHIP_SECTION]),
   );
 }
 if (!contact?.hrefs?.includes('/prayer')) {
@@ -152,7 +258,9 @@ if (!contact?.hrefs?.includes('/prayer')) {
 }
 if (!settings?.prayerUrl) {
   // Absolute URL so the url-type field validates cleanly in Studio.
-  tx = tx.patch('siteSettings', (p) => p.set({ prayerUrl: 'https://www.secondpreschicago.org/prayer' }));
+  tx = tx.patch('siteSettings', (p) =>
+    p.set({ prayerUrl: 'https://www.secondpreschicago.org/prayer' }),
+  );
 }
 const res = await tx.commit();
 console.log('\nDone. transactionId:', res.transactionId);

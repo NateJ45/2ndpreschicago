@@ -7,7 +7,10 @@ import PortableTextStatic from '@/components/PortableTextStatic.astro';
 const { block, defaultTone = 'default' } = Astro.props as { block: any; defaultTone?: string };
 const centered = block?.align === 'center';
 const tone = block?.background?.tone ?? defaultTone;
-const onDark = !!(block?.background?.image?.asset || block?.background?.videoUrl) || tone === 'chapel' || tone === 'chapelDeep';
+const onDark =
+  !!(block?.background?.image?.asset || block?.background?.videoUrl) ||
+  tone === 'chapel' ||
+  tone === 'chapelDeep';
 const ptDark = onDark
   ? '[&_p]:text-current [&_h2]:text-current [&_h3]:text-current [&_h4]:text-current [&_li]:text-current [&_a]:text-current [&_strong]:text-current [&_blockquote]:text-current [&_blockquote]:border-current/40'
   : '';
@@ -16,7 +19,9 @@ const ptDark = onDark
 {
   block && (
     <div class={`mx-auto max-w-3xl px-m ${centered ? 'text-center' : ''}`}>
-      {block.eyebrow && <p class="text-xs uppercase tracking-eyebrow opacity-70">{block.eyebrow}</p>}
+      {block.eyebrow && (
+        <p class="text-xs tracking-eyebrow uppercase opacity-70">{block.eyebrow}</p>
+      )}
       {block.heading && <h2 class="mt-s font-display text-h2">{block.heading}</h2>}
       {block.body && (
         <div class={`mt-m leading-relaxed ${centered ? 'text-left' : ''} ${ptDark}`}>

@@ -19,16 +19,23 @@
     // multiple copies of this inline script) never stacks intervals.
     function initArchMedia() {
       if (window.__archMediaTimers) {
-        window.__archMediaTimers.forEach(function (t) { clearInterval(t); });
+        window.__archMediaTimers.forEach(function (t) {
+          clearInterval(t);
+        });
       }
       window.__archMediaTimers = [];
 
       var reduce = false;
-      try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (_) {}
+      try {
+        reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch (_) {}
 
       // Looping videos: honor reduced motion (hold on the poster frame).
       document.querySelectorAll('video[data-arch-video]').forEach(function (v) {
-        try { if (reduce) v.pause(); else v.play().catch(function () {}); } catch (_) {}
+        try {
+          if (reduce) v.pause();
+          else v.play().catch(function () {});
+        } catch (_) {}
       });
 
       if (reduce) return; // slideshows stay on their first slide, static

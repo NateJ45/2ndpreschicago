@@ -13,7 +13,6 @@ import { loadEnv } from './lib/loadEnv.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
@@ -48,7 +47,8 @@ const MINISTRIES = [
     id: 'ministry-kids',
     title: 'Kids & Family',
     audience: 'families',
-    summary: 'A warm welcome and real care for children and families, on Sunday and through the week.',
+    summary:
+      'A warm welcome and real care for children and families, on Sunday and through the week.',
     link: '/kids',
     displayOrder: 3,
   },
@@ -56,7 +56,8 @@ const MINISTRIES = [
     id: 'ministry-food',
     title: 'Food Ministry',
     audience: 'neighbors',
-    summary: 'Free food for all who need it, no questions asked, through Lunch Bag and the South Loop Community Table.',
+    summary:
+      'Free food for all who need it, no questions asked, through Lunch Bag and the South Loop Community Table.',
     link: '/food',
     displayOrder: 4,
   },

@@ -15,7 +15,6 @@ import { loadEnv } from './lib/loadEnv.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
@@ -44,7 +43,12 @@ function bio(paragraphs) {
 }
 
 function favorites(pairs) {
-  return pairs.map(([label, value], i) => ({ _type: 'favoriteItem', _key: `fav${i}`, label, value }));
+  return pairs.map(([label, value], i) => ({
+    _type: 'favoriteItem',
+    _key: `fav${i}`,
+    label,
+    value,
+  }));
 }
 
 const STAFF = [
@@ -61,7 +65,10 @@ const STAFF = [
       'Outside of ministry she loves literature, traveling (23 countries and 28 states so far), sharing meals with friends, and keeping company with her cat, Regan.',
     ],
     favorites: [
-      ['Reading', 'The Divine Conspiracy by Dallas Willard, and When You Are Engulfed in Flames by David Sedaris'],
+      [
+        'Reading',
+        'The Divine Conspiracy by Dallas Willard, and When You Are Engulfed in Flames by David Sedaris',
+      ],
       ['Watching', '30 Rock, Midnight Mass, and Ozark'],
       ['Listening', 'The Ezra Klein Show, the Bible Project podcast, and Sufjan Stevens'],
     ],
@@ -118,7 +125,9 @@ const STAFF = [
 async function run() {
   for (const person of STAFF) {
     const filePath = resolve(root, 'src/assets', person.photo);
-    const asset = await client.assets.upload('image', readFileSync(filePath), { filename: person.photo });
+    const asset = await client.assets.upload('image', readFileSync(filePath), {
+      filename: person.photo,
+    });
     console.log(`  uploaded ${person.photo} -> ${asset._id}`);
 
     const doc = {

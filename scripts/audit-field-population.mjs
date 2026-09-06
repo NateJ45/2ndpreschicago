@@ -20,14 +20,16 @@ import { loadEnv } from './lib/loadEnv.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
 const apiVersion = env.PUBLIC_SANITY_API_VERSION ?? '2026-05-01';
 const token = env.SANITY_API_WRITE_TOKEN || env.SANITY_API_READ_TOKEN;
 
-if (!projectId) { console.error('Missing PUBLIC_SANITY_PROJECT_ID in .env'); process.exit(1); }
+if (!projectId) {
+  console.error('Missing PUBLIC_SANITY_PROJECT_ID in .env');
+  process.exit(1);
+}
 
 const client = createClient({ projectId, dataset, apiVersion, token, useCdn: false });
 
@@ -50,10 +52,26 @@ function isEmpty(v) {
 }
 
 const SINGLETONS = [
-  'siteSettings', 'homePage', 'aboutPage', 'worshipPage', 'beliefsPage', 'musicPage',
-  'staffPage', 'growPage', 'servePage', 'kidsPage', 'foodPage', 'eventsPage',
-  'sermonsPage', 'useOurSpacePage', 'weddingsPage', 'givePage', 'faqPage',
-  'contactPage', 'notFoundPage', 'privacyPage',
+  'siteSettings',
+  'homePage',
+  'aboutPage',
+  'worshipPage',
+  'beliefsPage',
+  'musicPage',
+  'staffPage',
+  'growPage',
+  'servePage',
+  'kidsPage',
+  'foodPage',
+  'eventsPage',
+  'sermonsPage',
+  'useOurSpacePage',
+  'weddingsPage',
+  'givePage',
+  'faqPage',
+  'contactPage',
+  'notFoundPage',
+  'privacyPage',
 ];
 
 async function run() {
@@ -62,9 +80,17 @@ async function run() {
 
   for (const t of SINGLETONS) {
     const fields = schemaFields(t);
-    if (fields.length === 0) { console.log(`${t}: (no schema fields found)`); continue; }
+    if (fields.length === 0) {
+      console.log(`${t}: (no schema fields found)`);
+      continue;
+    }
     const doc = await client.fetch(`*[_type == $t && !(_id in path("drafts.**"))][0]`, { t });
-    if (!doc) { console.log(`\n${t}: NO PUBLISHED DOC — all ${fields.length} fields empty (page is 100% code fallback)`); continue; }
+    if (!doc) {
+      console.log(
+        `\n${t}: NO PUBLISHED DOC — all ${fields.length} fields empty (page is 100% code fallback)`,
+      );
+      continue;
+    }
     const empty = fields.filter((f) => isEmpty(doc[f]));
     const set = fields.filter((f) => !isEmpty(doc[f]));
     console.log(`\n${t}: ${set.length}/${fields.length} set`);
@@ -73,4 +99,7 @@ async function run() {
   console.log('');
 }
 
-run().catch((e) => { console.error('Audit failed:', e.message); process.exit(1); });
+run().catch((e) => {
+  console.error('Audit failed:', e.message);
+  process.exit(1);
+});

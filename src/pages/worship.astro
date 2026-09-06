@@ -27,7 +27,9 @@ const settings = resolveSiteSettings(siteSettings);
 const st = serviceTime(siteSettings?.worshipService);
 
 const fmtDate = (d: string) =>
-  d ? new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+  d
+    ? new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+    : '';
 
 const title = page?.seoTitle ?? `Worship · ${site.name}`;
 const description =
@@ -51,7 +53,8 @@ const pillOutline =
   <Hero
     eyebrow={page?.heroEyebrow ?? 'Sunday Worship'}
     headline={page?.heroHeadline ?? "There's a place for you here."}
-    subhead={page?.heroSubhead ?? "Whether you're a weekly churchgoer, haven't been in ages, or don't know anything about Christianity, you are welcome at Second."}
+    subhead={page?.heroSubhead ??
+      "Whether you're a weekly churchgoer, haven't been in ages, or don't know anything about Christianity, you are welcome at Second."}
     keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroWorship}
@@ -62,24 +65,41 @@ const pillOutline =
 
   {/* Service at a glance */}
   <section class="surface-warm bg-muted" aria-labelledby="worship-times">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-l md:gap-section-md items-start">
+    <div
+      class="mx-auto grid max-w-content grid-cols-1 items-start gap-l px-m py-section-lg md:grid-cols-[1fr_1.2fr] md:gap-section-md"
+    >
       <div>
-        <p class="text-xs uppercase tracking-eyebrow text-foreground/80">{page?.gatherEyebrow ?? 'When we gather'}</p>
+        <p class="text-xs tracking-eyebrow text-foreground/80 uppercase">
+          {page?.gatherEyebrow ?? 'When we gather'}
+        </p>
         <div class="mt-s mb-m h-px w-12 bg-primary/60" aria-hidden="true"></div>
-        <p class="font-display text-h1 text-foreground leading-none">{st.gatherTime}</p>
+        <p class="font-display text-h1 leading-none text-foreground">{st.gatherTime}</p>
         <p class="mt-s text-lg text-foreground/85">{st.gatherDay}</p>
         <p class="mt-m text-foreground/80">{settings.addressLine}<br />{settings.cityStateZip}</p>
         <div class="mt-l flex flex-wrap gap-s">
-          <a href={page?.gatherDirectionsCta?.externalUrl || '/contact'} class={pillPrimary}>{page?.gatherDirectionsCta?.label || 'Get Directions'}</a>
-          <a href={page?.gatherWatchCta?.externalUrl || settings.social.youtube} target="_blank" rel="noopener noreferrer" class={pillOutline}>{page?.gatherWatchCta?.label || 'Watch Online'}</a>
+          <a href={page?.gatherDirectionsCta?.externalUrl || '/contact'} class={pillPrimary}
+            >{page?.gatherDirectionsCta?.label || 'Get Directions'}</a
+          >
+          <a
+            href={page?.gatherWatchCta?.externalUrl || settings.social.youtube}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={pillOutline}>{page?.gatherWatchCta?.label || 'Watch Online'}</a
+          >
         </div>
       </div>
-      <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
+      <div class="space-y-m text-lg leading-relaxed text-foreground/85">
         <p>
-          {page?.serviceBodyP1 ?? 'Our service follows a traditional, liturgical format, with hymns, spirituals, and anthems led by organ and choir. We celebrate the Eucharist on the first Sunday of each month.'}
+          {
+            page?.serviceBodyP1 ??
+              'Our service follows a traditional, liturgical format, with hymns, spirituals, and anthems led by organ and choir. We celebrate the Eucharist on the first Sunday of each month.'
+          }
         </p>
         <p>
-          {page?.serviceBodyP2 ?? 'Come as you are. Casual attire is always welcome. There is no wrong way to be here, and no experience required.'}
+          {
+            page?.serviceBodyP2 ??
+              'Come as you are. Casual attire is always welcome. There is no wrong way to be here, and no experience required.'
+          }
         </p>
       </div>
     </div>
@@ -95,22 +115,55 @@ const pillOutline =
         align="center"
         class="mx-auto"
       />
-      <div class="mt-l grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-m" data-stagger-grid>
+      <div class="mt-l grid grid-cols-1 gap-m sm:grid-cols-2 lg:grid-cols-4" data-stagger-grid>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
-          <h3 class="font-display text-h4 text-foreground">{page?.planCard1Title ?? 'Getting here'}</h3>
-          <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard1Body ?? 'We are at 1936 South Michigan Ave in the South Loop, close to public transit, with first-come, first-served free parking.'}</p>
+          <h3 class="font-display text-h4 text-foreground">
+            {page?.planCard1Title ?? 'Getting here'}
+          </h3>
+          <p class="mt-s leading-relaxed text-foreground/80">
+            {
+              page?.planCard1Body ??
+                'We are at 1936 South Michigan Ave in the South Loop, close to public transit, with first-come, first-served free parking.'
+            }
+          </p>
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
-          <h3 class="font-display text-h4 text-foreground">{page?.planCard2Title ?? 'What to wear'}</h3>
-          <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard2Body ?? 'Whatever feels right to you. Some dress up, many do not. Come as you are.'}</p>
+          <h3 class="font-display text-h4 text-foreground">
+            {page?.planCard2Title ?? 'What to wear'}
+          </h3>
+          <p class="mt-s leading-relaxed text-foreground/80">
+            {
+              page?.planCard2Body ??
+                'Whatever feels right to you. Some dress up, many do not. Come as you are.'
+            }
+          </p>
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
-          <h3 class="font-display text-h4 text-foreground">{page?.planCard3Title ?? 'For families'}</h3>
-          <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard3Body ?? "Children are welcome in worship, with a children's message and a cry room if you need it."} <a href={page?.kidsMoreCta?.externalUrl || '/kids'} class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">{page?.kidsMoreCta?.label || 'More for kids'}</a>.</p>
+          <h3 class="font-display text-h4 text-foreground">
+            {page?.planCard3Title ?? 'For families'}
+          </h3>
+          <p class="mt-s leading-relaxed text-foreground/80">
+            {
+              page?.planCard3Body ??
+                "Children are welcome in worship, with a children's message and a cry room if you need it."
+            }
+            <a
+              href={page?.kidsMoreCta?.externalUrl || '/kids'}
+              class="text-link underline underline-offset-2 transition-colors hover:text-primary-dark"
+              >{page?.kidsMoreCta?.label || 'More for kids'}</a
+            >.
+          </p>
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
-          <h3 class="font-display text-h4 text-foreground">{page?.planCard4Title ?? 'Accessibility'}</h3>
-          <p class="mt-s text-foreground/80 leading-relaxed">{page?.planCard4Body ?? 'The sanctuary is accessible. If you need any accommodation to join us, reach out and we will be glad to help.'}</p>
+          <h3 class="font-display text-h4 text-foreground">
+            {page?.planCard4Title ?? 'Accessibility'}
+          </h3>
+          <p class="mt-s leading-relaxed text-foreground/80">
+            {
+              page?.planCard4Body ??
+                'The sanctuary is accessible. If you need any accommodation to join us, reach out and we will be glad to help.'
+            }
+          </p>
         </article>
       </div>
     </div>
@@ -118,98 +171,123 @@ const pillOutline =
 
   {/* Children in worship */}
   <section class="bg-muted" aria-labelledby="worship-kids">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-l md:gap-section-md items-center">
+    <div
+      class="mx-auto grid max-w-content grid-cols-1 items-center gap-l px-m py-section-lg md:grid-cols-2 md:gap-section-md"
+    >
       <div>
         <SectionHeading
           eyebrow={page?.kidsEyebrow ?? 'Little ones welcome'}
           headline={page?.kidsHeadline ?? 'Children belong in worship'}
           headingId="worship-kids"
         />
-        <div class="mt-l text-foreground/85 text-lg leading-relaxed space-y-m">
+        <div class="mt-l space-y-m text-lg leading-relaxed text-foreground/85">
           <p>
-            {page?.kidsBodyP1 ?? "Little ones are part of the worshipping congregation at Second, and we welcome their noise and their needs. We keep books, coloring materials, and fidget toys on hand, and there is a children's message during the service."}
+            {
+              page?.kidsBodyP1 ??
+                "Little ones are part of the worshipping congregation at Second, and we welcome their noise and their needs. We keep books, coloring materials, and fidget toys on hand, and there is a children's message during the service."
+            }
           </p>
           <p>
-            {page?.kidsBodyP2 ?? 'Need a quieter moment? A cry room with an audio stream of the service is always available.'}
+            {
+              page?.kidsBodyP2 ??
+                'Need a quieter moment? A cry room with an audio stream of the service is always available.'
+            }
           </p>
         </div>
       </div>
-      {page?.childrenImage?.asset ? (
-        <SanityImage
-          source={page.childrenImage}
-          width={1000}
-          sizes="(min-width: 768px) 45vw, 100vw"
-          alt={page.childrenImage.alt || 'Three Tiffany landscape windows of trees and hills in the sanctuary'}
-          class="w-full h-auto rounded-md shadow-sm"
-        />
-      ) : (
-        <Image
-          src={tiffanyWindows}
-          alt="Three Tiffany landscape windows of trees and hills in the sanctuary"
-          widths={[480, 768, 968]}
-          sizes="(min-width: 768px) 45vw, 100vw"
-          class="w-full h-auto rounded-md shadow-sm"
-        />
-      )}
+      {
+        page?.childrenImage?.asset ? (
+          <SanityImage
+            source={page.childrenImage}
+            width={1000}
+            sizes="(min-width: 768px) 45vw, 100vw"
+            alt={
+              page.childrenImage.alt ||
+              'Three Tiffany landscape windows of trees and hills in the sanctuary'
+            }
+            class="h-auto w-full rounded-md shadow-sm"
+          />
+        ) : (
+          <Image
+            src={tiffanyWindows}
+            alt="Three Tiffany landscape windows of trees and hills in the sanctuary"
+            widths={[480, 768, 968]}
+            sizes="(min-width: 768px) 45vw, 100vw"
+            class="h-auto w-full rounded-md shadow-sm"
+          />
+        )
+      }
     </div>
   </section>
 
   {/* Worship resources — bulletins, orders of worship, The Record (Sanity-driven) */}
-  {worshipResources.length > 0 && (
-    <section class="bg-background" aria-labelledby="worship-resources">
-      <div class="mx-auto max-w-content px-m py-section-lg">
-        <SectionHeading
-          eyebrow={page?.resourcesEyebrow ?? 'Worship resources'}
-          headline={page?.resourcesHeadline ?? 'Bulletins and downloads'}
-          headingId="worship-resources"
-        />
-        <ul class="mt-l grid grid-cols-1 sm:grid-cols-2 gap-m list-none p-0">
-          {worshipResources.map((r: any) => {
-            const href = r.fileUrl || r.externalUrl;
-            return (
-              <li class="card-lift rounded-md border border-border-soft bg-card p-l">
-                <p class="text-xs uppercase tracking-eyebrow text-foreground/80">
-                  {r.type}{r.date ? ` · ${fmtDate(r.date)}` : ''}
-                </p>
-                <h3 class="mt-s font-display text-h4 text-foreground">{r.title}</h3>
-                {r.description && <p class="mt-xs text-foreground/80 leading-relaxed">{r.description}</p>}
-                {href && (
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="mt-s inline-block text-link underline underline-offset-2 hover:text-primary-dark transition-colors"
-                  >
-                    {r.fileUrl ? 'Download PDF' : 'Open'}
-                  </a>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </section>
-  )}
+  {
+    worshipResources.length > 0 && (
+      <section class="bg-background" aria-labelledby="worship-resources">
+        <div class="mx-auto max-w-content px-m py-section-lg">
+          <SectionHeading
+            eyebrow={page?.resourcesEyebrow ?? 'Worship resources'}
+            headline={page?.resourcesHeadline ?? 'Bulletins and downloads'}
+            headingId="worship-resources"
+          />
+          <ul class="mt-l grid list-none grid-cols-1 gap-m p-0 sm:grid-cols-2">
+            {worshipResources.map((r: any) => {
+              const href = r.fileUrl || r.externalUrl;
+              return (
+                <li class="card-lift rounded-md border border-border-soft bg-card p-l">
+                  <p class="text-xs tracking-eyebrow text-foreground/80 uppercase">
+                    {r.type}
+                    {r.date ? ` · ${fmtDate(r.date)}` : ''}
+                  </p>
+                  <h3 class="mt-s font-display text-h4 text-foreground">{r.title}</h3>
+                  {r.description && (
+                    <p class="mt-xs leading-relaxed text-foreground/80">{r.description}</p>
+                  )}
+                  {href && (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="mt-s inline-block text-link underline underline-offset-2 transition-colors hover:text-primary-dark"
+                    >
+                      {r.fileUrl ? 'Download PDF' : 'Open'}
+                    </a>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+    )
+  }
 
   {/* Quote */}
   <section class="bg-muted" aria-label="Reflection">
     <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
-      {/* The arch ornament marks the page's one reflective pause, mirroring the
-          closing-band treatment in FinalCta. Theme-aware gold via gold-ink. */}
-      <ArchOrnament class="mb-m mx-auto text-gold-ink/70" />
-      <blockquote class="font-display italic text-h3 text-foreground leading-snug">
+      {
+        /* The arch ornament marks the page's one reflective pause, mirroring the
+          closing-band treatment in FinalCta. Theme-aware gold via gold-ink. */
+      }
+      <ArchOrnament class="mx-auto mb-m text-gold-ink/70" />
+      <blockquote class="font-display text-h3 leading-snug text-foreground italic">
         &ldquo;{page?.quoteText ?? 'We are called to an everlasting preoccupation with God.'}&rdquo;
       </blockquote>
-      <p class="mt-m text-xs uppercase tracking-eyebrow text-foreground/80">{page?.quoteAttribution ?? 'A.W. Tozer'}</p>
+      <p class="mt-m text-xs tracking-eyebrow text-foreground/80 uppercase">
+        {page?.quoteAttribution ?? 'A.W. Tozer'}
+      </p>
     </div>
   </section>
 
   <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
-    headline={page?.finalCtaHeadline ?? "Plan your first visit"}
-    subhead={page?.finalCtaSubhead ?? "Have a question before Sunday? We would love to help you feel at home before you arrive."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
+    eyebrow={page?.finalCtaEyebrow ?? 'Come and See'}
+    headline={page?.finalCtaHeadline ?? 'Plan your first visit'}
+    subhead={page?.finalCtaSubhead ??
+      'Have a question before Sunday? We would love to help you feel at home before you arrive.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
   />
 </BaseLayout>

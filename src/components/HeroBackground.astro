@@ -30,43 +30,45 @@ const isSlideshow = slides.length >= 2;
 const first = slides[0];
 ---
 
-{first && (
-  <>
-    {isSlideshow ? (
-      <div class="hero-slideshow" data-hero-slideshow>
-        {slides.map((img, i) => (
-          <SanityImage
-            source={img}
-            width={2400}
-            sizes="100vw"
-            loading={i === 0 ? 'eager' : 'lazy'}
-            fetchpriority={i === 0 ? 'high' : 'low'}
-            quality={70}
-            alt={i === 0 ? undefined : ''}
-            class={`hero-slide${i === 0 ? ' is-active' : ''}`}
-          />
-        ))}
-      </div>
-    ) : (
-      <SanityImage
-        source={first}
-        width={2400}
-        sizes="100vw"
-        loading="eager"
-        fetchpriority="high"
-        quality={70}
-        class="absolute inset-0 w-full h-full object-cover hero-kb-img"
-      />
-    )}
+{
+  first && (
+    <>
+      {isSlideshow ? (
+        <div class="hero-slideshow" data-hero-slideshow>
+          {slides.map((img, i) => (
+            <SanityImage
+              source={img}
+              width={2400}
+              sizes="100vw"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : 'low'}
+              quality={70}
+              alt={i === 0 ? undefined : ''}
+              class={`hero-slide${i === 0 ? ' is-active' : ''}`}
+            />
+          ))}
+        </div>
+      ) : (
+        <SanityImage
+          source={first}
+          width={2400}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+          quality={70}
+          class="hero-kb-img absolute inset-0 h-full w-full object-cover"
+        />
+      )}
 
-    {/* Uniform overlay, minimum readability across the whole image. */}
-    <div class="absolute inset-0 bg-accent-dark/25" aria-hidden="true"></div>
-    {/* Bottom-weighted gradient, extra darkening behind the text area. */}
-    <div
-      class="absolute inset-0 bg-gradient-to-t from-accent-dark/85 via-accent-dark/45 to-transparent"
-      aria-hidden="true"
-    ></div>
-  </>
-)}
+      {/* Uniform overlay, minimum readability across the whole image. */}
+      <div class="absolute inset-0 bg-accent-dark/25" aria-hidden="true" />
+      {/* Bottom-weighted gradient, extra darkening behind the text area. */}
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-accent-dark/85 via-accent-dark/45 to-transparent"
+        aria-hidden="true"
+      />
+    </>
+  )
+}
 
 {isSlideshow && <HeroSlideshowScript />}

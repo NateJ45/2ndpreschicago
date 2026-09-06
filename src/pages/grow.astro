@@ -32,10 +32,30 @@ const schemas = [
 // (growPage.groups); this const renders when that field is empty, so the page
 // is identical until an editor overrides it.
 const FALLBACK_GROUPS = [
-  { name: 'Mid-Morning Bible Study', when: 'First and third Thursdays, 10am', where: 'The Pastor\'s Office', body: 'Read through books of the Bible together over coffee.' },
-  { name: 'Theology on Tap', when: 'Third Thursdays, 7pm', where: 'Rotating neighborhood pubs', body: 'Read short pieces of theological writing over drinks and good conversation.' },
-  { name: 'Alpha to Omega Bible Reading Group', when: 'Thursdays, 5pm to 6pm', where: 'By conference call', body: 'Read through the whole Bible together, a stretch at a time.' },
-  { name: 'Second Church Book Group', when: 'Select Sundays, 9:30am', where: 'At the church', body: 'Read and discuss a book together before worship.' },
+  {
+    name: 'Mid-Morning Bible Study',
+    when: 'First and third Thursdays, 10am',
+    where: "The Pastor's Office",
+    body: 'Read through books of the Bible together over coffee.',
+  },
+  {
+    name: 'Theology on Tap',
+    when: 'Third Thursdays, 7pm',
+    where: 'Rotating neighborhood pubs',
+    body: 'Read short pieces of theological writing over drinks and good conversation.',
+  },
+  {
+    name: 'Alpha to Omega Bible Reading Group',
+    when: 'Thursdays, 5pm to 6pm',
+    where: 'By conference call',
+    body: 'Read through the whole Bible together, a stretch at a time.',
+  },
+  {
+    name: 'Second Church Book Group',
+    when: 'Select Sundays, 9:30am',
+    where: 'At the church',
+    body: 'Read and discuss a book together before worship.',
+  },
 ];
 
 const groups: typeof FALLBACK_GROUPS = page?.groups?.length ? page.groups : FALLBACK_GROUPS;
@@ -55,14 +75,21 @@ const groups: typeof FALLBACK_GROUPS = page?.groups?.length ? page.groups : FALL
   />
 
   <section class="bg-background" aria-label="Community groups">
-    <div class="mx-auto max-w-content px-m py-section-lg grid grid-cols-1 md:grid-cols-2 gap-m" data-stagger-grid>
-      {groups.map((g) => (
-        <article class="card-lift rounded-md border border-border-soft bg-card p-l">
-          <h2 class="font-display text-h3 text-foreground">{g.name}</h2>
-          <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/80">{g.when} · {g.where}</p>
-          <p class="mt-s text-foreground/85 leading-relaxed">{g.body}</p>
-        </article>
-      ))}
+    <div
+      class="mx-auto grid max-w-content grid-cols-1 gap-m px-m py-section-lg md:grid-cols-2"
+      data-stagger-grid
+    >
+      {
+        groups.map((g) => (
+          <article class="card-lift rounded-md border border-border-soft bg-card p-l">
+            <h2 class="font-display text-h3 text-foreground">{g.name}</h2>
+            <p class="mt-xs text-xs tracking-eyebrow text-foreground/80 uppercase">
+              {g.when} · {g.where}
+            </p>
+            <p class="mt-s leading-relaxed text-foreground/85">{g.body}</p>
+          </article>
+        ))
+      }
     </div>
   </section>
 
@@ -71,7 +98,10 @@ const groups: typeof FALLBACK_GROUPS = page?.groups?.length ? page.groups : FALL
   <FinalCta
     eyebrow={page?.finalCtaEyebrow ?? 'Join In'}
     headline={page?.finalCtaHeadline ?? 'Find your people at Second'}
-    subhead={page?.finalCtaSubhead ?? 'Everyone is welcome at every group. Check the calendar for the next gathering, or just show up.'}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'See the Calendar', linkType: 'external', externalUrl: '/events' }}
+    subhead={page?.finalCtaSubhead ??
+      'Everyone is welcome at every group. Check the calendar for the next gathering, or just show up.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'See the Calendar', linkType: 'external', externalUrl: '/events' }}
   />
 </BaseLayout>

@@ -17,6 +17,7 @@ structural counterpoint. It should feel like a beautifully printed parish
 booklet, not a SaaS template. Polish and elevate this direction; never swap it.
 
 **The signature moves** (use them, don't dilute them):
+
 1. **Arch-top images** (`.arch-top`, `.arch-top-sm`) — the Romanesque crown on
    hero/feature/staff photos. One shared radius token (`--arch-radius`).
 2. **Chapel-green structural bands** — utility bar, footer, closing CTA, quote
@@ -34,20 +35,20 @@ booklet, not a SaaS template. Polish and elevate this direction; never swap it.
 
 ## Palette
 
-| Token (utility) | Light | Dark | Role |
-|---|---|---|---|
-| `bg-background` | `#ECE4DA` Paper | `#1C1813` | page surface |
-| `text-foreground` | `#36302A` Espresso | `#ECE4DA` | body text |
-| `bg-card` / `bg-popover` | `#FBF8F2` | `#262019` | raised surfaces |
-| `bg-muted` | `#F1EBE0` | `#262019` | quiet alt bands |
-| `bg-primary` (static) | `#8A6A43` Bronze | same | CTA pills (white text) |
-| `text-link` | `#6B4F2E` | `#D8BD8C` | inline links, bronze text |
-| `bg-chapel` (static) | `#1E423B` Tiffany green | same | structural bands |
-| `bg-chapel-deep` (static) | `#16322C` | same | footer/CTA deepest base |
-| `text-chapel-foreground` | `#F1EAD9` cream | same | text on chapel |
-| `text-chapel-ink` | `#1E423B` | `#6FA99A` | keyword emphasis on page bg |
-| `text-gold` / `bg-gold` (static) | `#A07D45` | (dark ref `#C7A875` via `--primary`) | hairline rules, small accents |
-| `border-border-soft` | `#DED6C8` | — | faint warm dividers |
+| Token (utility)                  | Light                   | Dark                                 | Role                          |
+| -------------------------------- | ----------------------- | ------------------------------------ | ----------------------------- |
+| `bg-background`                  | `#ECE4DA` Paper         | `#1C1813`                            | page surface                  |
+| `text-foreground`                | `#36302A` Espresso      | `#ECE4DA`                            | body text                     |
+| `bg-card` / `bg-popover`         | `#FBF8F2`               | `#262019`                            | raised surfaces               |
+| `bg-muted`                       | `#F1EBE0`               | `#262019`                            | quiet alt bands               |
+| `bg-primary` (static)            | `#8A6A43` Bronze        | same                                 | CTA pills (white text)        |
+| `text-link`                      | `#6B4F2E`               | `#D8BD8C`                            | inline links, bronze text     |
+| `bg-chapel` (static)             | `#1E423B` Tiffany green | same                                 | structural bands              |
+| `bg-chapel-deep` (static)        | `#16322C`               | same                                 | footer/CTA deepest base       |
+| `text-chapel-foreground`         | `#F1EAD9` cream         | same                                 | text on chapel                |
+| `text-chapel-ink`                | `#1E423B`               | `#6FA99A`                            | keyword emphasis on page bg   |
+| `text-gold` / `bg-gold` (static) | `#A07D45`               | (dark ref `#C7A875` via `--primary`) | hairline rules, small accents |
+| `border-border-soft`             | `#DED6C8`               | —                                    | faint warm dividers           |
 
 Contrast guardrails that already bit once: eyebrows on light surfaces need
 `text-foreground/80`+ (`/65` fails AA); white-on-`bg-primary` is for
@@ -90,7 +91,7 @@ do not exceed these durations; performance (Lighthouse 100s) is defended.
 ## Component idioms
 
 - Buttons: pill (`rounded-full`), uppercase tracked label. Primary = bronze fill
-  + white text; secondary = outline. Always `.press-tactile`.
+  - white text; secondary = outline. Always `.press-tactile`.
 - Cards: `bg-card`, soft border, `.card-lift`, optional arch-top image, generous
   padding. Title serif, meta as eyebrow.
 - Photos: through `SanityImage.astro` (Sanity) or Astro `<Image>` (local). Hero

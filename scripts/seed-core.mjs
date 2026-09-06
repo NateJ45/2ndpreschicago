@@ -22,21 +22,38 @@ import { loadEnv } from './lib/loadEnv.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
 const token = env.SANITY_API_WRITE_TOKEN;
 
-if (!projectId) { console.log('PUBLIC_SANITY_PROJECT_ID is not set. Configure your .env and re-run.'); process.exit(0); }
-if (!token) { console.log('SANITY_API_WRITE_TOKEN is not set. A write token is required to seed content.'); process.exit(0); }
+if (!projectId) {
+  console.log('PUBLIC_SANITY_PROJECT_ID is not set. Configure your .env and re-run.');
+  process.exit(0);
+}
+if (!token) {
+  console.log('SANITY_API_WRITE_TOKEN is not set. A write token is required to seed content.');
+  process.exit(0);
+}
 
 const client = createClient({ projectId, dataset, token, apiVersion: '2026-05-01', useCdn: false });
 
 let _keyCounter = 0;
 const key = () => `seed-${(_keyCounter += 1)}`;
-const pt = (text) => ({ _type: 'block', _key: key(), style: 'normal', markDefs: [], children: [{ _type: 'span', _key: key(), text, marks: [] }] });
-const ptH2 = (text) => ({ _type: 'block', _key: key(), style: 'h2', markDefs: [], children: [{ _type: 'span', _key: key(), text, marks: [] }] });
+const pt = (text) => ({
+  _type: 'block',
+  _key: key(),
+  style: 'normal',
+  markDefs: [],
+  children: [{ _type: 'span', _key: key(), text, marks: [] }],
+});
+const ptH2 = (text) => ({
+  _type: 'block',
+  _key: key(),
+  style: 'h2',
+  markDefs: [],
+  children: [{ _type: 'span', _key: key(), text, marks: [] }],
+});
 
 const docs = [];
 
@@ -53,7 +70,9 @@ docs.push({
   phone: '312-225-4951',
   availabilityStatus: 'Sundays at 11am',
   serviceAreas: ['South Loop, Chicago'],
-  travelFees: [{ _type: 'travelFeeTier', _key: key(), distanceLabel: 'On site', fee: 'Free parking' }],
+  travelFees: [
+    { _type: 'travelFeeTier', _key: key(), distanceLabel: 'On site', fee: 'Free parking' },
+  ],
   socialInstagram: 'https://www.instagram.com/2ndpresbyterian',
   socialFacebook: 'https://www.facebook.com/2ndpreschicago',
   newsletter: {
@@ -94,9 +113,15 @@ docs.push({
   storyEyebrow: 'A National Historic Landmark',
   storyHeadline: 'The Church of the Angels',
   storyContent: [
-    pt('Our sanctuary, rebuilt in 1901 in the Arts and Crafts style after fire, is home to nine Tiffany windows and a ceiling of painted angels that gave the church its nickname. Visitors travel from all over the world to see it.'),
-    pt('It is one of the great interiors in American church architecture, and it is still, first and last, a room built for worship.'),
-    pt('We are a Reformed congregation in the Presbyterian Church (USA), gathering each week to worship, love, serve, pray, and share the gospel in word and deed. We welcome everyone: women and men, gay and straight, lifelong believers and the simply curious.'),
+    pt(
+      'Our sanctuary, rebuilt in 1901 in the Arts and Crafts style after fire, is home to nine Tiffany windows and a ceiling of painted angels that gave the church its nickname. Visitors travel from all over the world to see it.',
+    ),
+    pt(
+      'It is one of the great interiors in American church architecture, and it is still, first and last, a room built for worship.',
+    ),
+    pt(
+      'We are a Reformed congregation in the Presbyterian Church (USA), gathering each week to worship, love, serve, pray, and share the gospel in word and deed. We welcome everyone: women and men, gay and straight, lifelong believers and the simply curious.',
+    ),
   ],
 });
 
@@ -110,14 +135,24 @@ docs.push({
   heroHeadline: 'Privacy Policy',
   lastUpdated: '2026-05-31',
   body: [
-    pt('This is the privacy policy for Second Presbyterian Church of Chicago. The goal here is to be straightforward about what information we collect and why.'),
+    pt(
+      'This is the privacy policy for Second Presbyterian Church of Chicago. The goal here is to be straightforward about what information we collect and why.',
+    ),
     ptH2('What gets collected'),
-    pt('When you email the church or send a message through this site, you share your name, email address, and whatever details you include. We use that information only to respond to you. Nothing else.'),
-    pt('If you subscribe to our newsletter, your email address goes to our email provider so occasional news from the church can reach you. It is not shared with anyone else.'),
+    pt(
+      'When you email the church or send a message through this site, you share your name, email address, and whatever details you include. We use that information only to respond to you. Nothing else.',
+    ),
+    pt(
+      'If you subscribe to our newsletter, your email address goes to our email provider so occasional news from the church can reach you. It is not shared with anyone else.',
+    ),
     ptH2("What doesn't happen"),
-    pt('Your information is never sold. There is no ad targeting on this site. Traffic is measured with privacy-friendly analytics that count visits without setting cookies or identifying individual visitors.'),
+    pt(
+      'Your information is never sold. There is no ad targeting on this site. Traffic is measured with privacy-friendly analytics that count visits without setting cookies or identifying individual visitors.',
+    ),
     ptH2('Questions or data requests'),
-    pt('If you have questions about how your information is handled, or want your data removed, email office@secondpreschicago.org and we will help.'),
+    pt(
+      'If you have questions about how your information is handled, or want your data removed, email office@secondpreschicago.org and we will help.',
+    ),
   ],
 });
 
@@ -146,17 +181,61 @@ docs.push({
   guideIntro:
     'Welcome. Most of the church website is set in the page files, but a few things live here in Sanity so you can edit them without code: your contact details and tagline, the events calendar, and the about/privacy pages.',
   studioMap: [
-    { _type: 'mapRow', _key: key(), area: 'Site Settings', description: 'Church name, tagline, public email and phone, social links, and the newsletter signup. Start here.' },
-    { _type: 'mapRow', _key: key(), area: 'Events', description: 'Add recurring rhythms (worship, Bible study) and one-time events (a concert, a block fest). One-time events drop off after their date.' },
-    { _type: 'mapRow', _key: key(), area: 'About / Privacy / 404 pages', description: 'The hero text and body copy for these pages.' },
+    {
+      _type: 'mapRow',
+      _key: key(),
+      area: 'Site Settings',
+      description:
+        'Church name, tagline, public email and phone, social links, and the newsletter signup. Start here.',
+    },
+    {
+      _type: 'mapRow',
+      _key: key(),
+      area: 'Events',
+      description:
+        'Add recurring rhythms (worship, Bible study) and one-time events (a concert, a block fest). One-time events drop off after their date.',
+    },
+    {
+      _type: 'mapRow',
+      _key: key(),
+      area: 'About / Privacy / 404 pages',
+      description: 'The hero text and body copy for these pages.',
+    },
   ],
   howTos: [
-    { _type: 'howTo', _key: key(), title: 'Add an event', steps: ['Open "Events" from the left navigation.', 'Click "Create new".', 'Choose Recurring or One-time, fill in the title, schedule, and a short summary.', 'Click Publish. It appears on the Events page within a few minutes.'] },
-    { _type: 'howTo', _key: key(), title: 'Update your contact info', steps: ['Open "Site Settings".', 'Edit the email, phone, or social links.', 'Click Publish.'] },
+    {
+      _type: 'howTo',
+      _key: key(),
+      title: 'Add an event',
+      steps: [
+        'Open "Events" from the left navigation.',
+        'Click "Create new".',
+        'Choose Recurring or One-time, fill in the title, schedule, and a short summary.',
+        'Click Publish. It appears on the Events page within a few minutes.',
+      ],
+    },
+    {
+      _type: 'howTo',
+      _key: key(),
+      title: 'Update your contact info',
+      steps: ['Open "Site Settings".', 'Edit the email, phone, or social links.', 'Click Publish.'],
+    },
   ],
   tips: [
-    { _type: 'tip', _key: key(), heading: 'Publishing is quick', tone: 'default', body: 'When you click Publish, the change goes live on the site within a few minutes after the next rebuild.' },
-    { _type: 'tip', _key: key(), heading: 'One-time vs recurring events', tone: 'primary', body: 'Use "Recurring" for weekly rhythms like worship and Bible study, and "One-time" for dated events. One-time events drop off the upcoming list after they pass.' },
+    {
+      _type: 'tip',
+      _key: key(),
+      heading: 'Publishing is quick',
+      tone: 'default',
+      body: 'When you click Publish, the change goes live on the site within a few minutes after the next rebuild.',
+    },
+    {
+      _type: 'tip',
+      _key: key(),
+      heading: 'One-time vs recurring events',
+      tone: 'primary',
+      body: 'Use "Recurring" for weekly rhythms like worship and Bible study, and "One-time" for dated events. One-time events drop off the upcoming list after they pass.',
+    },
   ],
 });
 
@@ -170,12 +249,22 @@ docs.push({
     'First-time visitors and neighbors: people who may not have been to church in years, or ever, and who need to feel genuinely welcome and find the practical details quickly.',
   voiceSummary:
     'Warm, plain-spoken, and unpretentious. Take God seriously and ourselves lightly. Lead with welcome and people, let the landmark building come second.',
-  wordsToAvoid: ['do life together', 'unchurched', 'worship experience', 'life-changing', 'passionate about', 'radical', 'transformative', 'seamless'],
+  wordsToAvoid: [
+    'do life together',
+    'unchurched',
+    'worship experience',
+    'life-changing',
+    'passionate about',
+    'radical',
+    'transformative',
+    'seamless',
+  ],
 });
 
 async function seed() {
   console.log(`Seeding ${docs.length} core documents to ${projectId}/${dataset}...`);
-  let created = 0, replaced = 0;
+  let created = 0,
+    replaced = 0;
   for (const doc of docs) {
     try {
       const existing = await client.fetch(`*[_id == $id][0]._id`, { id: doc._id });

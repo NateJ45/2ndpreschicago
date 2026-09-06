@@ -29,7 +29,9 @@ if (!sermon) {
 }
 
 const title = `${sermon.title} · Sermons · ${site.name}`;
-const description = sermon.scripture ? `${sermon.title} — ${sermon.scripture}` : `A message from ${site.name}.`;
+const description = sermon.scripture
+  ? `${sermon.title} — ${sermon.scripture}`
+  : `A message from ${site.name}.`;
 
 // Turn a YouTube/Vimeo watch URL into an embeddable player URL.
 function embedUrl(url?: string): string | null {
@@ -53,20 +55,32 @@ function embedUrl(url?: string): string | null {
 const embed = embedUrl(sermon.videoUrl);
 
 const dateLabel = sermon.date
-  ? new Date(sermon.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  ? new Date(sermon.date).toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    })
   : '';
 // Liturgical day rides with the date in the meta line ("June 7, 2026 · Third
 // Sunday after Pentecost · Rev. ..."), keeping the record visible up top.
-const metaLine = [dateLabel, sermon.liturgicalDay, sermon.speaker, sermon.series].filter(Boolean).join(' · ');
+const metaLine = [dateLabel, sermon.liturgicalDay, sermon.speaker, sermon.series]
+  .filter(Boolean)
+  .join(' · ');
 
 // Service record: the per-service archive (bulletin, manuscript, hymns, music,
 // leaders). The panel below renders only when at least one item exists, so
 // sermons without a record look exactly as before.
 const hymns: Array<{ _key?: string; title?: string; number?: string }> = sermon.hymns ?? [];
-const serviceMusic: Array<{ _key?: string; role?: string; title?: string; composer?: string }> = sermon.serviceMusic ?? [];
-const worshipLeaders: Array<{ _key?: string; role?: string; name?: string }> = sermon.worshipLeaders ?? [];
+const serviceMusic: Array<{ _key?: string; role?: string; title?: string; composer?: string }> =
+  sermon.serviceMusic ?? [];
+const worshipLeaders: Array<{ _key?: string; role?: string; name?: string }> =
+  sermon.worshipLeaders ?? [];
 const hasServiceRecord = Boolean(
-  sermon.bulletinUrl || sermon.manuscriptUrl || hymns.length || serviceMusic.length || worshipLeaders.length,
+  sermon.bulletinUrl ||
+  sermon.manuscriptUrl ||
+  hymns.length ||
+  serviceMusic.length ||
+  worshipLeaders.length,
 );
 
 // Outline download pill, matching the sermons-index pill vocabulary.
@@ -93,129 +107,186 @@ const schemas = [
 >
   <article class="bg-background">
     <div class="mx-auto max-w-3xl px-m pt-section-lg pb-l">
-      <p class="text-xs uppercase tracking-widest text-foreground/80 mb-s">
-        <a href="/sermons" class="hover:text-primary-dark transition-colors">Sermons</a>
+      <p class="mb-s text-xs tracking-widest text-foreground/80 uppercase">
+        <a href="/sermons" class="transition-colors hover:text-primary-dark">Sermons</a>
         {sermon.series && <span class="mx-xs">·</span>}
         {sermon.series && <span>{sermon.series}</span>}
       </p>
-      <h1 class="font-display text-h1 text-foreground leading-tight">{sermon.title}</h1>
+      <h1 class="font-display text-h1 leading-tight text-foreground">{sermon.title}</h1>
       {metaLine && <p class="mt-m text-foreground/70">{metaLine}</p>}
-      {sermon.scripture && <p class="mt-xs text-lg text-foreground/85 italic">{sermon.scripture}</p>}
+      {
+        sermon.scripture && (
+          <p class="mt-xs text-lg text-foreground/85 italic">{sermon.scripture}</p>
+        )
+      }
     </div>
 
-    {embed && (
-      <div class="mx-auto max-w-4xl px-m">
-        <div class="relative w-full overflow-hidden rounded-md shadow-sm" style="aspect-ratio: 16 / 9;">
-          <iframe
-            src={embed}
-            title={sermon.title}
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture"
-            allowfullscreen
-            class="absolute inset-0 h-full w-full border-0"
-          ></iframe>
+    {
+      embed && (
+        <div class="mx-auto max-w-4xl px-m">
+          <div
+            class="relative w-full overflow-hidden rounded-md shadow-sm"
+            style="aspect-ratio: 16 / 9;"
+          >
+            <iframe
+              src={embed}
+              title={sermon.title}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture"
+              allowfullscreen
+              class="absolute inset-0 h-full w-full border-0"
+            />
+          </div>
         </div>
-      </div>
-    )}
+      )
+    }
 
-    {!embed && sermon.image?.asset && (
-      <figure class="mx-auto max-w-4xl px-m">
-        <SanityImage source={sermon.image} width={1600} sizes="(min-width: 920px) 896px, 100vw" class="w-full h-auto rounded-md" />
-      </figure>
-    )}
+    {
+      !embed && sermon.image?.asset && (
+        <figure class="mx-auto max-w-4xl px-m">
+          <SanityImage
+            source={sermon.image}
+            width={1600}
+            sizes="(min-width: 920px) 896px, 100vw"
+            class="h-auto w-full rounded-md"
+          />
+        </figure>
+      )
+    }
 
     <div class="mx-auto max-w-3xl px-m py-section-lg">
-      {sermon.description && (
-        <PortableText client:visible value={sermon.description} className="text-foreground/85 text-lg leading-relaxed" />
-      )}
-      {sermon.audioUrl && (
-        <p class="mt-l">
-          <a href={sermon.audioUrl} target="_blank" rel="noopener noreferrer" class="text-link underline underline-offset-2 hover:text-primary-dark transition-colors">
-            Listen to the audio →
-          </a>
-        </p>
-      )}
+      {
+        sermon.description && (
+          <PortableText
+            client:visible
+            value={sermon.description}
+            className="text-foreground/85 text-lg leading-relaxed"
+          />
+        )
+      }
+      {
+        sermon.audioUrl && (
+          <p class="mt-l">
+            <a
+              href={sermon.audioUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-link underline underline-offset-2 transition-colors hover:text-primary-dark"
+            >
+              Listen to the audio →
+            </a>
+          </p>
+        )
+      }
 
-      {/* Service record. Renders only when the editor has attached something
+      {
+        /* Service record. Renders only when the editor has attached something
           in the sermon's "Service record" tab: bulletin/manuscript downloads,
           the hymns the congregation sang, the choir + organ music, and who
           served. Date, preacher, liturgical day, and scripture already live in
           the header above, so together the page is a complete record of the
-          service. */}
-      {hasServiceRecord && (
-        <section class="mt-section-md rounded-md border border-border-soft bg-card p-l" aria-labelledby="service-record">
-          <p class="text-xs uppercase tracking-eyebrow text-foreground/80">From this service</p>
-          <div class="mt-s mb-m h-px w-12 bg-gold/70" aria-hidden="true"></div>
-          <h2 id="service-record" class="sr-only">Service record</h2>
+          service. */
+      }
+      {
+        hasServiceRecord && (
+          <section
+            class="mt-section-md rounded-md border border-border-soft bg-card p-l"
+            aria-labelledby="service-record"
+          >
+            <p class="text-xs tracking-eyebrow text-foreground/80 uppercase">From this service</p>
+            <div class="mt-s mb-m h-px w-12 bg-gold/70" aria-hidden="true" />
+            <h2 id="service-record" class="sr-only">
+              Service record
+            </h2>
 
-          {(sermon.bulletinUrl || sermon.manuscriptUrl) && (
-            <div class="flex flex-wrap gap-s">
-              {sermon.bulletinUrl && (
-                <a href={sermon.bulletinUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}>
-                  Bulletin (PDF)
-                </a>
+            {(sermon.bulletinUrl || sermon.manuscriptUrl) && (
+              <div class="flex flex-wrap gap-s">
+                {sermon.bulletinUrl && (
+                  <a
+                    href={sermon.bulletinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class={pillOutline}
+                  >
+                    Bulletin (PDF)
+                  </a>
+                )}
+                {sermon.manuscriptUrl && (
+                  <a
+                    href={sermon.manuscriptUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class={pillOutline}
+                  >
+                    Sermon notes (PDF)
+                  </a>
+                )}
+              </div>
+            )}
+
+            <div class="mt-l grid grid-cols-1 gap-l sm:grid-cols-2">
+              {hymns.length > 0 && (
+                <div>
+                  <h3 class="font-display text-h5 text-foreground">Hymns</h3>
+                  <ul class="mt-s list-none space-y-1 p-0">
+                    {hymns.map((h) => (
+                      <li class="text-foreground/85">
+                        {h.title}
+                        {h.number && <span class="text-muted-foreground"> · {h.number}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
-              {sermon.manuscriptUrl && (
-                <a href={sermon.manuscriptUrl} target="_blank" rel="noopener noreferrer" class={pillOutline}>
-                  Sermon notes (PDF)
-                </a>
+
+              {serviceMusic.length > 0 && (
+                <div>
+                  <h3 class="font-display text-h5 text-foreground">Music</h3>
+                  <ul class="mt-s list-none space-y-1 p-0">
+                    {serviceMusic.map((m) => (
+                      <li class="text-foreground/85">
+                        {m.role && (
+                          <span class="text-xs tracking-eyebrow text-muted-foreground uppercase">
+                            {m.role}:{' '}
+                          </span>
+                        )}
+                        {m.title}
+                        {m.composer && <span class="text-muted-foreground"> · {m.composer}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {worshipLeaders.length > 0 && (
+                <div>
+                  <h3 class="font-display text-h5 text-foreground">Serving in worship</h3>
+                  <ul class="mt-s list-none space-y-1 p-0">
+                    {worshipLeaders.map((w) => (
+                      <li class="text-foreground/85">
+                        <span class="text-xs tracking-eyebrow text-muted-foreground uppercase">
+                          {w.role}:{' '}
+                        </span>
+                        {w.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
-          )}
-
-          <div class="mt-l grid grid-cols-1 sm:grid-cols-2 gap-l">
-            {hymns.length > 0 && (
-              <div>
-                <h3 class="font-display text-h5 text-foreground">Hymns</h3>
-                <ul class="mt-s space-y-1 list-none p-0">
-                  {hymns.map((h) => (
-                    <li class="text-foreground/85">
-                      {h.title}
-                      {h.number && <span class="text-muted-foreground"> · {h.number}</span>}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {serviceMusic.length > 0 && (
-              <div>
-                <h3 class="font-display text-h5 text-foreground">Music</h3>
-                <ul class="mt-s space-y-1 list-none p-0">
-                  {serviceMusic.map((m) => (
-                    <li class="text-foreground/85">
-                      {m.role && <span class="text-xs uppercase tracking-eyebrow text-muted-foreground">{m.role}: </span>}
-                      {m.title}
-                      {m.composer && <span class="text-muted-foreground"> · {m.composer}</span>}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {worshipLeaders.length > 0 && (
-              <div>
-                <h3 class="font-display text-h5 text-foreground">Serving in worship</h3>
-                <ul class="mt-s space-y-1 list-none p-0">
-                  {worshipLeaders.map((w) => (
-                    <li class="text-foreground/85">
-                      <span class="text-xs uppercase tracking-eyebrow text-muted-foreground">{w.role}: </span>
-                      {w.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
+          </section>
+        )
+      }
     </div>
   </article>
 
   <FinalCta
-    eyebrow={sermonsPage?.detailFinalCtaEyebrow ?? "Come and See"}
-    headline={sermonsPage?.detailFinalCtaHeadline ?? "Join us this Sunday"}
-    subhead={sermonsPage?.detailFinalCtaSubhead ?? "Worship is every Sunday at the Church of the Angels. Everyone is welcome."}
-    cta={sermonsPage?.detailFinalCta?.label ? sermonsPage.detailFinalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    eyebrow={sermonsPage?.detailFinalCtaEyebrow ?? 'Come and See'}
+    headline={sermonsPage?.detailFinalCtaHeadline ?? 'Join us this Sunday'}
+    subhead={sermonsPage?.detailFinalCtaSubhead ??
+      'Worship is every Sunday at the Church of the Angels. Everyone is welcome.'}
+    cta={sermonsPage?.detailFinalCta?.label
+      ? sermonsPage.detailFinalCta
+      : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

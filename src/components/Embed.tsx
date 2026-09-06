@@ -49,7 +49,11 @@ export default function Embed({ mode, url, html, title, aspect }: EmbedProps) {
           title={title || 'Embedded content'}
           loading="lazy"
           className="w-full"
-          style={{ border: 0, minHeight: aspect ? undefined : 480, height: aspect ? '100%' : undefined }}
+          style={{
+            border: 0,
+            minHeight: aspect ? undefined : 480,
+            height: aspect ? '100%' : undefined,
+          }}
           referrerPolicy="no-referrer-when-downgrade"
         />
       </div>

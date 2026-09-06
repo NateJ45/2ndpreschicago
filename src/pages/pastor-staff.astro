@@ -59,9 +59,16 @@ const staff = [
       `Outside of ministry she loves literature, traveling (23 countries and 28 states so far), sharing meals with friends, and keeping company with her cat, Regan.`,
     ],
     favorites: [
-      { label: 'Reading', items: 'The Divine Conspiracy by Dallas Willard, and When You Are Engulfed in Flames by David Sedaris' },
+      {
+        label: 'Reading',
+        items:
+          'The Divine Conspiracy by Dallas Willard, and When You Are Engulfed in Flames by David Sedaris',
+      },
       { label: 'Watching', items: '30 Rock, Midnight Mass, and Ozark' },
-      { label: 'Listening', items: 'The Ezra Klein Show, the Bible Project podcast, and Sufjan Stevens' },
+      {
+        label: 'Listening',
+        items: 'The Ezra Klein Show, the Bible Project podcast, and Sufjan Stevens',
+      },
     ],
   },
   {
@@ -117,7 +124,10 @@ const people = useSanityStaff
       localPhoto: null as null,
       bioBlocks: p.bio,
       bioStrings: null as string[] | null,
-      favorites: ((p.favorites ?? []) as any[]).map((f: any) => ({ label: f.label as string, value: f.value as string })),
+      favorites: ((p.favorites ?? []) as any[]).map((f: any) => ({
+        label: f.label as string,
+        value: f.value as string,
+      })),
     }))
   : staff.map((p) => ({
       name: p.name,
@@ -127,7 +137,10 @@ const people = useSanityStaff
       localPhoto: p.photo,
       bioBlocks: null,
       bioStrings: p.bio,
-      favorites: (((p as any).favorites ?? []) as any[]).map((f: any) => ({ label: f.label as string, value: f.items as string })),
+      favorites: (((p as any).favorites ?? []) as any[]).map((f: any) => ({
+        label: f.label as string,
+        value: f.items as string,
+      })),
     }));
 ---
 
@@ -135,7 +148,8 @@ const people = useSanityStaff
   <Hero
     eyebrow={page?.heroEyebrow ?? 'Pastors & Staff'}
     headline={page?.heroHeadline ?? "The people you'll meet at Second"}
-    subhead={page?.heroSubhead ?? 'A small, dedicated team serving a historic congregation in the South Loop.'}
+    subhead={page?.heroSubhead ??
+      'A small, dedicated team serving a historic congregation in the South Loop.'}
     keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroStaff}
@@ -145,66 +159,81 @@ const people = useSanityStaff
   />
 
   <section class="bg-background" aria-label="Pastors and staff">
-    <div class="mx-auto max-w-content px-m py-section-lg space-y-section-md">
-      {people.map((person) => (
-        <article class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-l md:gap-section-md items-start border-b border-border-soft pb-section-md last:border-b-0 last:pb-0">
-          <div class="md:sticky md:top-28">
-            {/* Arched headshot — carries the building's arch motif onto the staff. */}
-            <div class="w-44 sm:w-52 aspect-[4/5] overflow-hidden arch-top-sm ring-1 ring-primary/40 dark:ring-[#C7A875]/40 bg-muted shadow-sm">
-              {person.sanityPhoto ? (
-                <SanityImage
-                  source={person.sanityPhoto}
-                  width={420}
-                  sizes="(min-width: 640px) 208px, 176px"
-                  alt={person.sanityPhoto.alt || `${person.name}, ${person.role} at Second Presbyterian Church`}
-                  class="h-full w-full object-cover"
-                />
-              ) : person.localPhoto ? (
-                <Image
-                  src={person.localPhoto}
-                  alt={`${person.name}, ${person.role} at Second Presbyterian Church`}
-                  widths={[176, 208, 352, 416]}
-                  sizes="(min-width: 640px) 208px, 176px"
-                  class="h-full w-full object-cover"
-                />
-              ) : null}
+    <div class="mx-auto max-w-content space-y-section-md px-m py-section-lg">
+      {
+        people.map((person) => (
+          <article class="grid grid-cols-1 items-start gap-l border-b border-border-soft pb-section-md last:border-b-0 last:pb-0 md:grid-cols-[1fr_2fr] md:gap-section-md">
+            <div class="md:sticky md:top-28">
+              {/* Arched headshot — carries the building's arch motif onto the staff. */}
+              <div class="aspect-[4/5] w-44 overflow-hidden arch-top-sm bg-muted shadow-sm ring-1 ring-primary/40 sm:w-52 dark:ring-[#C7A875]/40">
+                {person.sanityPhoto ? (
+                  <SanityImage
+                    source={person.sanityPhoto}
+                    width={420}
+                    sizes="(min-width: 640px) 208px, 176px"
+                    alt={
+                      person.sanityPhoto.alt ||
+                      `${person.name}, ${person.role} at Second Presbyterian Church`
+                    }
+                    class="h-full w-full object-cover"
+                  />
+                ) : person.localPhoto ? (
+                  <Image
+                    src={person.localPhoto}
+                    alt={`${person.name}, ${person.role} at Second Presbyterian Church`}
+                    widths={[176, 208, 352, 416]}
+                    sizes="(min-width: 640px) 208px, 176px"
+                    class="h-full w-full object-cover"
+                  />
+                ) : null}
+              </div>
+              <h2 class="mt-l font-display text-h3 text-foreground">{person.name}</h2>
+              <p class="mt-xs text-xs tracking-eyebrow text-foreground/80 uppercase">
+                {person.role}
+              </p>
+              {person.email && (
+                <a
+                  href={`mailto:${person.email}`}
+                  class="mt-s inline-block text-sm break-all text-link underline underline-offset-2 transition-colors hover:text-primary-dark"
+                >
+                  {person.email}
+                </a>
+              )}
             </div>
-            <h2 class="mt-l font-display text-h3 text-foreground">{person.name}</h2>
-            <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/80">{person.role}</p>
-            {person.email && (
-              <a href={`mailto:${person.email}`} class="mt-s inline-block text-sm text-link underline underline-offset-2 hover:text-primary-dark transition-colors break-all">
-                {person.email}
-              </a>
-            )}
-          </div>
-          <div class="text-foreground/85 text-lg leading-relaxed space-y-m">
-            {person.bioBlocks ? (
-              <PortableTextStatic value={person.bioBlocks} />
-            ) : (
-              person.bioStrings?.map((p) => <p>{p}</p>)
-            )}
-            {person.favorites && person.favorites.length > 0 && (
-              <dl class="mt-l grid grid-cols-1 gap-y-1 border-t border-border-soft pt-m text-sm text-foreground/70">
-                {person.favorites.map((f) => (
-                  <div class="flex gap-2">
-                    <dt class="w-20 shrink-0 font-semibold uppercase tracking-eyebrow text-xs pt-0.5 text-muted-foreground">{f.label}</dt>
-                    <dd class="flex-1">{f.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            )}
-          </div>
-        </article>
-      ))}
+            <div class="space-y-m text-lg leading-relaxed text-foreground/85">
+              {person.bioBlocks ? (
+                <PortableTextStatic value={person.bioBlocks} />
+              ) : (
+                person.bioStrings?.map((p) => <p>{p}</p>)
+              )}
+              {person.favorites && person.favorites.length > 0 && (
+                <dl class="mt-l grid grid-cols-1 gap-y-1 border-t border-border-soft pt-m text-sm text-foreground/70">
+                  {person.favorites.map((f) => (
+                    <div class="flex gap-2">
+                      <dt class="w-20 shrink-0 pt-0.5 text-xs font-semibold tracking-eyebrow text-muted-foreground uppercase">
+                        {f.label}
+                      </dt>
+                      <dd class="flex-1">{f.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+            </div>
+          </article>
+        ))
+      }
     </div>
   </section>
 
   <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "Come and See"}
-    headline={page?.finalCtaHeadline ?? "We would love to meet you"}
-    subhead={page?.finalCtaSubhead ?? "Join us for worship on Sunday, or reach out to the office any time."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
+    eyebrow={page?.finalCtaEyebrow ?? 'Come and See'}
+    headline={page?.finalCtaHeadline ?? 'We would love to meet you'}
+    subhead={page?.finalCtaSubhead ??
+      'Join us for worship on Sunday, or reach out to the office any time.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Plan a Visit', linkType: 'external', externalUrl: '/worship' }}
   />
 </BaseLayout>

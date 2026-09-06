@@ -8,25 +8,25 @@
 
 Second Presbyterian ships these routes. Each is backed by a Sanity page singleton (content editable, structure in code), except the dated detail pages (collection-driven) and the generic `page` type.
 
-| Path | Source | Notes |
-|---|---|---|
-| `/` | `src/pages/index.astro` | Home singleton; hero + optional dated `seasonalHero` + "This Sunday" |
-| `/about` | `src/pages/about.astro` | About singleton |
-| `/worship` | worship singleton | "I'm New" / plan-a-visit page |
-| `/what-we-believe` | beliefs singleton | Statement of faith is reproduced verbatim (leadership-owned) |
-| `/music` | music singleton | |
-| `/pastor-staff` | staff singleton + `staffMember` | |
-| `/grow`, `/serve`, `/kids`, `/food` | per-page singletons | Get-involved / ministry pages |
-| `/events` | `src/pages/events/index.astro` | Events index + `event` collection (incl. the Special Services band) |
-| `/events/[slug]` | `src/pages/events/[slug].astro` | Event detail |
-| `/sermons` | `src/pages/sermons/index.astro` | Sermons index + `sermon` collection + persistent Watch Live link |
-| `/sermons/[slug]` | `src/pages/sermons/[slug].astro` | Sermon detail |
-| `/use-our-space`, `/weddings` | per-page singletons | + inquiry `form` |
-| `/give` | giving singleton | |
-| `/faq` | `src/pages/faq.astro` | FAQ singleton + `faqItem` collection |
-| `/contact` | `src/pages/contact.astro` | Contact singleton + `form` |
-| `/privacy`, `/404` | privacy singleton; custom 404 | |
-| `/<slug>` | `src/pages/[slug].astro` | Generic `page` type -- editor-built pages from the block library (reserved-slug guard; zero pages = zero routes) |
+| Path                                | Source                           | Notes                                                                                                            |
+| ----------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `/`                                 | `src/pages/index.astro`          | Home singleton; hero + optional dated `seasonalHero` + "This Sunday"                                             |
+| `/about`                            | `src/pages/about.astro`          | About singleton                                                                                                  |
+| `/worship`                          | worship singleton                | "I'm New" / plan-a-visit page                                                                                    |
+| `/what-we-believe`                  | beliefs singleton                | Statement of faith is reproduced verbatim (leadership-owned)                                                     |
+| `/music`                            | music singleton                  |                                                                                                                  |
+| `/pastor-staff`                     | staff singleton + `staffMember`  |                                                                                                                  |
+| `/grow`, `/serve`, `/kids`, `/food` | per-page singletons              | Get-involved / ministry pages                                                                                    |
+| `/events`                           | `src/pages/events/index.astro`   | Events index + `event` collection (incl. the Special Services band)                                              |
+| `/events/[slug]`                    | `src/pages/events/[slug].astro`  | Event detail                                                                                                     |
+| `/sermons`                          | `src/pages/sermons/index.astro`  | Sermons index + `sermon` collection + persistent Watch Live link                                                 |
+| `/sermons/[slug]`                   | `src/pages/sermons/[slug].astro` | Sermon detail                                                                                                    |
+| `/use-our-space`, `/weddings`       | per-page singletons              | + inquiry `form`                                                                                                 |
+| `/give`                             | giving singleton                 |                                                                                                                  |
+| `/faq`                              | `src/pages/faq.astro`            | FAQ singleton + `faqItem` collection                                                                             |
+| `/contact`                          | `src/pages/contact.astro`        | Contact singleton + `form`                                                                                       |
+| `/privacy`, `/404`                  | privacy singleton; custom 404    |                                                                                                                  |
+| `/<slug>`                           | `src/pages/[slug].astro`         | Generic `page` type -- editor-built pages from the block library (reserved-slug guard; zero pages = zero routes) |
 
 The interior-designer starter's opt-in modules (portfolio, journal, shop, e-design, etc.) are NOT active in this build; their docs under `docs/modules/` remain for template reuse only.
 
@@ -43,6 +43,7 @@ Each page is a Sanity singleton whose built-in copy and images are editable fiel
 ### Empty-content behavior (no module toggles)
 
 **Sanity is the single source of truth for all content** (see `editor-vs-hardcoded.md`): every content field is populated, so the Studio mirrors the live site, and the inline strings in the templates are only a safety net. This build also does not use the starter's `sectionVisibility` module-toggle system -- there are no opt-in module sections to gate. Content degrades gracefully on its own:
+
 - **Empty fields fall back** to the built-in verbatim copy (the inline-fallback safety net), so a section can never go blank if a field is cleared. Fields are populated by default, so the Studio shows the live copy rather than a blank input.
 - **Empty collections degrade** (e.g. `/sermons` shows a "watch online" state with the live link when no sermons are posted; an empty FAQ category simply doesn't render; an announcement only shows when enabled and within its date window).
 - **Page-builder sections** are opt-in by nature: a page with no `flexibleSections` just shows its built-in content.

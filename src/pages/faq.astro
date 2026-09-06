@@ -34,22 +34,81 @@ const description =
 // Mirrors scripts/seed-faq-items.mjs (same categories + order). Answers here are
 // plain strings; collection answers are Portable Text.
 const fallbackFaqs = [
-  { category: 'Visiting', question: 'What time is worship?', answer: 'Worship is every Sunday at 11am, and it usually runs about an hour and fifteen minutes. We are at 1936 South Michigan Avenue in the South Loop.' },
-  { category: 'Visiting', question: 'Where do I park?', answer: 'We sit on Michigan Avenue close to public transit, with first-come, first-served free parking. There are additional public parking options nearby.' },
-  { category: 'Visiting', question: 'Do I have to be a member, or a Christian, to come?', answer: 'Not at all. Whether you are a weekly churchgoer, have not been in ages, or do not know anything about Christianity, there is a place for you here. Everyone is welcome.' },
-  { category: 'Worship', question: 'I have never been here. What should I expect?', answer: 'Our service is traditional and liturgical, with hymns, spirituals, and anthems led by organ and choir. We share communion on the first Sunday of each month. Casual attire is always welcome.' },
-  { category: 'Worship', question: 'Can I watch online?', answer: 'Yes. We livestream worship on our YouTube channel, so you can join from anywhere.' },
-  { category: 'Kids & Family', question: 'Can I bring my kids?', answer: 'Please do. Little ones are part of the worshipping congregation, and we welcome their noise and their needs. There is a children\'s message during the service, plus books and quiet toys, and a cry room with an audio stream if you need it.' },
-  { category: 'Giving', question: 'How do I give?', answer: 'You can give online through our secure giving portal, by mail with a check, or designate your gift to the food ministry. Visit the Give page to get started.' },
-  { category: 'Weddings & Space', question: 'Can I get married at Second?', answer: 'Yes. We welcome gay and straight couples to marry in our historic sanctuary. See the Weddings page for details, pricing, and how to inquire about your date.' },
-  { category: 'Weddings & Space', question: 'Can my group use the building?', answer: 'Often, yes. We host all sorts of gatherings throughout the week. See the Use Our Space page and get in touch about fees and availability.' },
-  { category: 'Food Ministry', question: 'I need food. How does that work?', answer: 'Find free food for all in need, no questions asked, at our Cullerton door. Lunch Bag runs Tuesday through Thursday from 11am to 1pm, and the South Loop Community Table gathers on Sunday evenings.' },
+  {
+    category: 'Visiting',
+    question: 'What time is worship?',
+    answer:
+      'Worship is every Sunday at 11am, and it usually runs about an hour and fifteen minutes. We are at 1936 South Michigan Avenue in the South Loop.',
+  },
+  {
+    category: 'Visiting',
+    question: 'Where do I park?',
+    answer:
+      'We sit on Michigan Avenue close to public transit, with first-come, first-served free parking. There are additional public parking options nearby.',
+  },
+  {
+    category: 'Visiting',
+    question: 'Do I have to be a member, or a Christian, to come?',
+    answer:
+      'Not at all. Whether you are a weekly churchgoer, have not been in ages, or do not know anything about Christianity, there is a place for you here. Everyone is welcome.',
+  },
+  {
+    category: 'Worship',
+    question: 'I have never been here. What should I expect?',
+    answer:
+      'Our service is traditional and liturgical, with hymns, spirituals, and anthems led by organ and choir. We share communion on the first Sunday of each month. Casual attire is always welcome.',
+  },
+  {
+    category: 'Worship',
+    question: 'Can I watch online?',
+    answer: 'Yes. We livestream worship on our YouTube channel, so you can join from anywhere.',
+  },
+  {
+    category: 'Kids & Family',
+    question: 'Can I bring my kids?',
+    answer:
+      "Please do. Little ones are part of the worshipping congregation, and we welcome their noise and their needs. There is a children's message during the service, plus books and quiet toys, and a cry room with an audio stream if you need it.",
+  },
+  {
+    category: 'Giving',
+    question: 'How do I give?',
+    answer:
+      'You can give online through our secure giving portal, by mail with a check, or designate your gift to the food ministry. Visit the Give page to get started.',
+  },
+  {
+    category: 'Weddings & Space',
+    question: 'Can I get married at Second?',
+    answer:
+      'Yes. We welcome gay and straight couples to marry in our historic sanctuary. See the Weddings page for details, pricing, and how to inquire about your date.',
+  },
+  {
+    category: 'Weddings & Space',
+    question: 'Can my group use the building?',
+    answer:
+      'Often, yes. We host all sorts of gatherings throughout the week. See the Use Our Space page and get in touch about fees and availability.',
+  },
+  {
+    category: 'Food Ministry',
+    question: 'I need food. How does that work?',
+    answer:
+      'Find free food for all in need, no questions asked, at our Cullerton door. Lunch Bag runs Tuesday through Thursday from 11am to 1pm, and the South Loop Community Table gathers on Sunday evenings.',
+  },
 ];
 
-const DEFAULT_CATEGORY_ORDER = ['Visiting', 'Worship', 'Kids & Family', 'Getting Involved', 'Giving', 'Weddings & Space', 'Food Ministry'];
+const DEFAULT_CATEGORY_ORDER = [
+  'Visiting',
+  'Worship',
+  'Kids & Family',
+  'Getting Involved',
+  'Giving',
+  'Weddings & Space',
+  'Food Ministry',
+];
 
-const faqs: any[] = (Array.isArray(page?.faqs) && page.faqs.length > 0) ? page.faqs : fallbackFaqs;
-const categoryOrder: string[] = (page?.categoryOrder?.length) ? page.categoryOrder : DEFAULT_CATEGORY_ORDER;
+const faqs: any[] = Array.isArray(page?.faqs) && page.faqs.length > 0 ? page.faqs : fallbackFaqs;
+const categoryOrder: string[] = page?.categoryOrder?.length
+  ? page.categoryOrder
+  : DEFAULT_CATEGORY_ORDER;
 
 // Group by the editor's category order, dropping empty categories. Any category
 // present in the data but missing from the order list is appended, so a new
@@ -100,7 +159,8 @@ const schemas = [
   <Hero
     eyebrow={page?.heroEyebrow ?? 'Common Questions'}
     headline={page?.heroHeadline ?? 'Everything you want to know'}
-    subhead={page?.heroSubhead ?? 'If your question is not here, just ask. We would love to help you feel at home before you ever walk in.'}
+    subhead={page?.heroSubhead ??
+      'If your question is not here, just ask. We would love to help you feel at home before you ever walk in.'}
     keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroFaq}
@@ -110,39 +170,49 @@ const schemas = [
   />
 
   <section class="bg-background" aria-label="Frequently asked questions">
-    <div class="mx-auto max-w-3xl px-m py-section-lg space-y-section-md">
-      {grouped.map((group) => (
-        <div>
-          <h2 class="font-display text-h3 text-foreground mb-m">{group.category}</h2>
-          <div class="divide-y divide-border-soft border-t border-b border-border-soft">
-            {group.items.map((f) => (
-              <details class="group py-m">
-                <summary class="flex cursor-pointer list-none items-center justify-between gap-m text-lg text-foreground">
-                  {f.question}
-                  <span class="shrink-0 text-link transition-transform group-open:rotate-45" aria-hidden="true">+</span>
-                </summary>
-                {typeof f.answer === 'string' ? (
-                  <p class="mt-s text-foreground/85 leading-relaxed">{f.answer}</p>
-                ) : (
-                  <div class="mt-s text-foreground/85 leading-relaxed [&>div>*:first-child]:mt-0">
-                    <PortableTextStatic value={f.answer} />
-                  </div>
-                )}
-              </details>
-            ))}
+    <div class="mx-auto max-w-3xl space-y-section-md px-m py-section-lg">
+      {
+        grouped.map((group) => (
+          <div>
+            <h2 class="mb-m font-display text-h3 text-foreground">{group.category}</h2>
+            <div class="divide-y divide-border-soft border-t border-b border-border-soft">
+              {group.items.map((f) => (
+                <details class="group py-m">
+                  <summary class="flex cursor-pointer list-none items-center justify-between gap-m text-lg text-foreground">
+                    {f.question}
+                    <span
+                      class="shrink-0 text-link transition-transform group-open:rotate-45"
+                      aria-hidden="true"
+                    >
+                      +
+                    </span>
+                  </summary>
+                  {typeof f.answer === 'string' ? (
+                    <p class="mt-s leading-relaxed text-foreground/85">{f.answer}</p>
+                  ) : (
+                    <div class="mt-s leading-relaxed text-foreground/85 [&>div>*:first-child]:mt-0">
+                      <PortableTextStatic value={f.answer} />
+                    </div>
+                  )}
+                </details>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </section>
 
   <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "Still Wondering?"}
-    headline={page?.finalCtaHeadline ?? "Ask us anything"}
-    subhead={page?.finalCtaSubhead ?? "The best answer to most questions is a Sunday morning. Reach out and we will help however we can."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
+    eyebrow={page?.finalCtaEyebrow ?? 'Still Wondering?'}
+    headline={page?.finalCtaHeadline ?? 'Ask us anything'}
+    subhead={page?.finalCtaSubhead ??
+      'The best answer to most questions is a Sunday morning. Reach out and we will help however we can.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Get in Touch', linkType: 'external', externalUrl: '/contact' }}
     backgroundImage={page?.finalCtaBackgroundImage}
   />
 </BaseLayout>

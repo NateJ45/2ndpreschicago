@@ -23,7 +23,7 @@ const hasContent = !!(data?.mode && (data.url || data.html));
 {
   hasContent && (
     <div class="my-l">
-      {data.title && <h3 class="font-display text-h4 text-foreground mb-s">{data.title}</h3>}
+      {data.title && <h3 class="mb-s font-display text-h4 text-foreground">{data.title}</h3>}
       <Embed
         client:visible
         mode={data.mode!}

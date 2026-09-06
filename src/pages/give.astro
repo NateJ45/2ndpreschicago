@@ -44,7 +44,8 @@ const pillPrimary =
   <Hero
     eyebrow={page?.heroEyebrow ?? 'Give'}
     headline={page?.heroHeadline ?? 'Thank you'}
-    subhead={page?.heroSubhead ?? 'For entrusting your tithes and offerings to Second. Your generosity sustains worship, music, and a food ministry that feeds our neighbors.'}
+    subhead={page?.heroSubhead ??
+      'For entrusting your tithes and offerings to Second. Your generosity sustains worship, music, and a food ministry that feeds our neighbors.'}
     keyword={page?.heroKeyword}
     backgroundImage={page?.heroImage ?? null}
     localImage={heroGive}
@@ -56,9 +57,14 @@ const pillPrimary =
   {/* Online giving */}
   <section class="bg-background" aria-labelledby="give-online">
     <div class="mx-auto max-w-3xl px-m py-section-lg text-center">
-      <h2 id="give-online" class="font-display text-h2 text-foreground">{page?.onlineHeadline ?? 'Give online'}</h2>
-      <p class="mt-m text-lg text-foreground/85 leading-relaxed">
-        {page?.onlineBodyP1 ?? 'Make a one-time or recurring gift through our secure giving portal. It takes just a minute.'}
+      <h2 id="give-online" class="font-display text-h2 text-foreground">
+        {page?.onlineHeadline ?? 'Give online'}
+      </h2>
+      <p class="mt-m text-lg leading-relaxed text-foreground/85">
+        {
+          page?.onlineBodyP1 ??
+            'Make a one-time or recurring gift through our secure giving portal. It takes just a minute.'
+        }
       </p>
       <div class="mt-l flex justify-center">
         <a href={giveUrl} target="_blank" rel="noopener noreferrer" class={pillPrimary}>Give Now</a>
@@ -70,20 +76,35 @@ const pillPrimary =
   <section class="surface-warm bg-muted" aria-labelledby="give-ways">
     <div class="mx-auto max-w-content px-m py-section-lg">
       <h2 id="give-ways" class="sr-only">{page?.waysHeadline ?? 'Other ways to give'}</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-m">
+      <div class="grid grid-cols-1 gap-m md:grid-cols-2">
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
           <h3 class="font-display text-h4 text-foreground">{page?.mailHeadline ?? 'By mail'}</h3>
-          <p class="mt-s text-foreground/85 leading-relaxed">
-            {page?.mailBodyP1 ?? 'Prefer to send a check? Make it out to Second Presbyterian Church of Chicago and mail it to:'}
+          <p class="mt-s leading-relaxed text-foreground/85">
+            {
+              page?.mailBodyP1 ??
+                'Prefer to send a check? Make it out to Second Presbyterian Church of Chicago and mail it to:'
+            }
           </p>
-          <p class="mt-s text-foreground/80">{site.name}<br />{settings.addressLine}<br />{settings.cityStateZip}</p>
+          <p class="mt-s text-foreground/80">
+            {site.name}<br />{settings.addressLine}<br />{settings.cityStateZip}
+          </p>
         </article>
         <article class="card-lift rounded-md border border-border-soft bg-card p-l">
-          <h3 class="font-display text-h4 text-foreground">{page?.foodHeadline ?? 'Support the food ministry'}</h3>
-          <p class="mt-s text-foreground/85 leading-relaxed">
-            {page?.foodBodyP1 ?? 'Want your gift to go directly to feeding our neighbors? You can designate it for Lunch Bag or the South Loop Community Table.'}
+          <h3 class="font-display text-h4 text-foreground">
+            {page?.foodHeadline ?? 'Support the food ministry'}
+          </h3>
+          <p class="mt-s leading-relaxed text-foreground/85">
+            {
+              page?.foodBodyP1 ??
+                'Want your gift to go directly to feeding our neighbors? You can designate it for Lunch Bag or the South Loop Community Table.'
+            }
           </p>
-          <a href="/food" class="mt-m inline-flex items-center gap-xs text-xs uppercase tracking-eyebrow font-semibold text-link">{page?.foodLinkLabel ?? 'About the food ministry'} <span aria-hidden="true">&rarr;</span></a>
+          <a
+            href="/food"
+            class="mt-m inline-flex items-center gap-xs text-xs font-semibold tracking-eyebrow text-link uppercase"
+            >{page?.foodLinkLabel ?? 'About the food ministry'}
+            <span aria-hidden="true">&rarr;</span></a
+          >
         </article>
       </div>
     </div>
@@ -92,9 +113,12 @@ const pillPrimary =
   <Sections sections={page?.flexibleSections} fallbackEmail={settings.email} />
 
   <FinalCta
-    eyebrow={page?.finalCtaEyebrow ?? "With Gratitude"}
-    headline={page?.finalCtaHeadline ?? "Every gift is a part of the work"}
-    subhead={page?.finalCtaSubhead ?? "Thank you for helping Second serve and celebrate Jesus for the good of the world."}
-    cta={page?.finalCta?.label ? page.finalCta : { label: 'Give Now', linkType: 'external', externalUrl: giveUrl, openInNewTab: true }}
+    eyebrow={page?.finalCtaEyebrow ?? 'With Gratitude'}
+    headline={page?.finalCtaHeadline ?? 'Every gift is a part of the work'}
+    subhead={page?.finalCtaSubhead ??
+      'Thank you for helping Second serve and celebrate Jesus for the good of the world.'}
+    cta={page?.finalCta?.label
+      ? page.finalCta
+      : { label: 'Give Now', linkType: 'external', externalUrl: giveUrl, openInNewTab: true }}
   />
 </BaseLayout>

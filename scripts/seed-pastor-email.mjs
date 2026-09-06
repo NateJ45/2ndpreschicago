@@ -17,12 +17,14 @@ import { loadEnv } from './lib/loadEnv.mjs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-
 const env = loadEnv(root);
 const projectId = env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = env.PUBLIC_SANITY_DATASET ?? 'production';
 const token = env.SANITY_API_WRITE_TOKEN;
-if (!projectId || !token) { console.error('Need PUBLIC_SANITY_PROJECT_ID + SANITY_API_WRITE_TOKEN in .env'); process.exit(1); }
+if (!projectId || !token) {
+  console.error('Need PUBLIC_SANITY_PROJECT_ID + SANITY_API_WRITE_TOKEN in .env');
+  process.exit(1);
+}
 
 const client = createClient({ projectId, dataset, token, apiVersion: '2026-05-01', useCdn: false });
 
@@ -35,11 +37,17 @@ async function run() {
       await client.patch(id).set({ pastorEmail: PASTOR_EMAIL }).commit();
       console.log(`  set on ${id}`);
     } catch (e) {
-      if (e?.statusCode === 404) { console.log(`  skipped ${id} (no document)`); continue; }
+      if (e?.statusCode === 404) {
+        console.log(`  skipped ${id} (no document)`);
+        continue;
+      }
       throw e;
     }
   }
   console.log('\nDone.');
 }
 
-run().catch((e) => { console.error('Seed failed:', e.message); process.exit(1); });
+run().catch((e) => {
+  console.error('Seed failed:', e.message);
+  process.exit(1);
+});
