@@ -47,11 +47,6 @@ jobs:
       - name: Install root dependencies
         run: npm ci
 
-      # The Sanity Studio is its own package under studio/ with its own
-      # lockfile; typegen and the Studio build both run from there.
-      - name: Install studio dependencies
-        run: npm ci --prefix studio
-
       # PORTS.md card 36. Every file here marked "PORTABLE: canonical copy" is
       # diffed against ncs-astro-sanity-starter, the library of record. Both
       # repos are public, so the checkout needs no token. CRLF is normalized to
@@ -112,7 +107,7 @@ jobs:
       # typegen, so src/lib/sanity.types.ts is committed by hand after every
       # schema change - and sooner or later it is not. presacademy shipped types
       # describing a schema that no longer existed, on a green build. CI has just
-      # regenerated the file from studio/schemaTypes; if that changed anything,
+      # regenerated the file from src/sanity/schemaTypes; if that changed anything,
       # the committed copy was stale. Verified 2026-08-27: typegen reproduces the
       # committed file byte-for-byte here (the only local difference is line
       # endings, which git normalizes, so this is clean on Linux CI).
@@ -124,8 +119,9 @@ jobs:
             exit 1
           fi
 
-      # tsconfig.json excludes studio/ and modules/, so this covers the site
-      # only; the Studio is type-checked by its own build below.
+      # tsconfig.json excludes modules/ only. Since the studio folded into this
+      # package (2026-09-06) this covers the Studio config, schemas and custom
+      # components too - they are src/sanity/** now.
       - name: Type check (astro check)
         run: npx astro check
 
@@ -143,16 +139,19 @@ jobs:
       - name: Unit tests (node --test)
         run: npm run test:unit
 
-      - name: Build Astro
+      # Builds the site AND the embedded Studio in one pass: @sanity/astro mounts
+      # the Studio at /studio, so `astro build` bundles it. There is deliberately
+      # no separate Studio build step any more (and no `sanity build`, which
+      # writes to ./dist and would clobber this one).
+      - name: Build Astro (site + embedded Studio)
         run: npm run build
 
-      - name: Build Sanity Studio
-        run: npm --prefix studio run build
-
-      # linkinator over dist/client. The site is output: 'static', so every
-      # route is in there and nothing needs skipping beyond external URLs.
-      # The log must say "scanned N links" with N well above zero; a run that
-      # scans 0 links means the skip pattern swallowed linkinator's own seed.
+      # linkinator over dist/client. The public site is still fully prerendered,
+      # so every public route is in there; /studio, /preview/** and /api/* are
+      # SSR-only and are skipped by the second pattern rather than reported as
+      # broken. The log must say "scanned N links" with N well above zero; a run
+      # that scans 0 links means the skip pattern swallowed linkinator's own
+      # seed.
       - name: Check internal links
         run: npm run check:links
 

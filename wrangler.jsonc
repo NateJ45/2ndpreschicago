@@ -1,8 +1,21 @@
 {
   // Cloudflare Workers configuration for this project.
   // Cloudflare merged Pages into Workers in early 2026; Workers is the path forward.
+  //
+  // THIS FILE IS THE INPUT, NOT THE DEPLOY TARGET (2026-09-06). The build is now
+  // hybrid static + SSR, and @astrojs/cloudflare merges this file with the
+  // routing it generates into dist/server/wrangler.json. Deploy that one:
+  //   npx wrangler deploy -c dist/server/wrangler.json
+  // Deploying this file directly ships a Worker with no SSR routes, so /studio,
+  // /preview/** and /api/* all 404. `npm run deploy` and the staging workflow
+  // already pass the flag; the Cloudflare dashboard's Workers Builds deploy
+  // command for production has to be changed to match.
   "compatibility_date": "2026-05-26",
-  "compatibility_flags": ["global_fetch_strictly_public"],
+  // nodejs_compat (added 2026-09-06 with the embedded Studio and the preview
+  // stack): the SSR routes' render graph can touch process.env (React internals,
+  // the Sanity client, the embedded Studio shell) and without the flag those
+  // reads throw at request time. global_fetch_strictly_public predates it.
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "name": "2ndpreschicago",
   "main": "@astrojs/cloudflare/entrypoints/server",
   // Sessions: @astrojs/cloudflare declares a KV binding named SESSION even
@@ -18,9 +31,22 @@
     },
   ],
   "assets": {
-    "directory": "./dist",
+    // @astrojs/cloudflare v14 splits the build into dist/client (static assets)
+    // + dist/server (the SSR bundle: /studio, /preview/**, /api/*). This said
+    // "./dist" until 2026-09-06, which was already wrong for a plain static
+    // build (the adapter has emitted dist/client since the Astro 7 upgrade) and
+    // became load-bearing once the SSR routes arrived.
+    //
+    // Deliberately NO "not_found_handling" here (removed 2026-09-06). With
+    // "404-page" set, Cloudflare answers NAVIGATION requests (Sec-Fetch-Mode:
+    // navigate) that miss the asset store straight from the static 404 page
+    // WITHOUT invoking the Worker, which silently 404s every SSR route for real
+    // browsers while curl (which sends no Sec-Fetch headers) sees them working.
+    // That broke presacademy's Presentation preview in production on 2026-08-26
+    // and hid from every command-line probe. Without the field, asset misses
+    // invoke the Worker and Astro renders the 404 page itself.
+    "directory": "./dist/client",
     "binding": "ASSETS",
-    "not_found_handling": "404-page",
   },
   "observability": {
     "enabled": true,
