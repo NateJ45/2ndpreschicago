@@ -61,7 +61,7 @@ const SHELL_AWARE = new Set([
 
 // Default background tone when the editor hasn't chosen one (the quote + CTA
 // bands were originally chapel green, so they keep that look by default).
-const DEFAULT_TONE: Record<string, string> = {
+const DEFAULT_TONE: Record<string, 'default' | 'warm' | 'chapel' | 'chapelDeep'> = {
   sectionQuote: 'chapel',
   sectionCtaBand: 'chapel',
 };

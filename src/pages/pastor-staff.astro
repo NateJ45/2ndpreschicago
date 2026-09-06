@@ -117,7 +117,7 @@ const people = useSanityStaff
       localPhoto: null as null,
       bioBlocks: p.bio,
       bioStrings: null as string[] | null,
-      favorites: (p.favorites ?? []).map((f: any) => ({ label: f.label, value: f.value })),
+      favorites: ((p.favorites ?? []) as any[]).map((f: any) => ({ label: f.label as string, value: f.value as string })),
     }))
   : staff.map((p) => ({
       name: p.name,
@@ -127,7 +127,7 @@ const people = useSanityStaff
       localPhoto: p.photo,
       bioBlocks: null,
       bioStrings: p.bio,
-      favorites: ((p as any).favorites ?? []).map((f: any) => ({ label: f.label, value: f.items })),
+      favorites: (((p as any).favorites ?? []) as any[]).map((f: any) => ({ label: f.label as string, value: f.items as string })),
     }));
 ---
 
@@ -159,7 +159,7 @@ const people = useSanityStaff
                   alt={person.sanityPhoto.alt || `${person.name}, ${person.role} at Second Presbyterian Church`}
                   class="h-full w-full object-cover"
                 />
-              ) : (
+              ) : person.localPhoto ? (
                 <Image
                   src={person.localPhoto}
                   alt={`${person.name}, ${person.role} at Second Presbyterian Church`}
@@ -167,7 +167,7 @@ const people = useSanityStaff
                   sizes="(min-width: 640px) 208px, 176px"
                   class="h-full w-full object-cover"
                 />
-              )}
+              ) : null}
             </div>
             <h2 class="mt-l font-display text-h3 text-foreground">{person.name}</h2>
             <p class="mt-xs text-xs uppercase tracking-eyebrow text-foreground/80">{person.role}</p>

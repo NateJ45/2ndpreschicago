@@ -50,8 +50,8 @@ const FALLBACK_PRICING = [
   { item: 'Live stream of the ceremony', price: '$250' },
 ];
 
-const faqs = page?.weddingFaqs?.length ? page.weddingFaqs : FALLBACK_FAQS;
-const pricing = page?.weddingPricing?.length ? page.weddingPricing : FALLBACK_PRICING;
+const faqs: typeof FALLBACK_FAQS = page?.weddingFaqs?.length ? page.weddingFaqs : FALLBACK_FAQS;
+const pricing: typeof FALLBACK_PRICING = page?.weddingPricing?.length ? page.weddingPricing : FALLBACK_PRICING;
 
 ---
 

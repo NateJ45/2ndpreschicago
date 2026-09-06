@@ -6,7 +6,9 @@
     "./worker-configuration.d.ts"
   ],
   "exclude": [
-    "dist"
+    "dist",
+    "studio",
+    "modules"
   ],
   "compilerOptions": {
     "jsx": "react-jsx",

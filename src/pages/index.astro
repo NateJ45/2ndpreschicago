@@ -176,7 +176,7 @@ const FALLBACK_RHYTHMS = [
   { label: 'Mid-Morning Bible Study', time: 'Thursdays, 10am' },
 ];
 
-const weeklyRhythms = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBACK_RHYTHMS;
+const weeklyRhythms: typeof FALLBACK_RHYTHMS = page?.weeklyRhythms?.length ? page.weeklyRhythms : FALLBACK_RHYTHMS;
 ---
 
 <BaseLayout {title} {description} {siteSettings}>

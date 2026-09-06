@@ -38,7 +38,7 @@ const FALLBACK_GROUPS = [
   { name: 'Second Church Book Group', when: 'Select Sundays, 9:30am', where: 'At the church', body: 'Read and discuss a book together before worship.' },
 ];
 
-const groups = page?.groups?.length ? page.groups : FALLBACK_GROUPS;
+const groups: typeof FALLBACK_GROUPS = page?.groups?.length ? page.groups : FALLBACK_GROUPS;
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>

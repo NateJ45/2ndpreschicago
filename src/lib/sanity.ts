@@ -29,7 +29,7 @@
 
 import { createClient, type SanityClient } from '@sanity/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
-import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import type { SanityImageSource } from '@sanity/image-url';
 
 const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET ?? 'production';
@@ -88,11 +88,19 @@ export const client: SanityClient = createClient({
  * than crashing the build.
  *
  * All query helpers in queries.ts route through this function.
+ *
+ * Typing: the result type is the EXPLICIT generic, never inferred from the
+ * fallback. Without NoInfer, `sanityFetch(q, {}, null)` inferred `T = null`,
+ * so every page result narrowed to `never` after an `if (page)` check and
+ * `astro check` reported hundreds of false errors (family standard, 2026-09).
+ * The queries are GROQ strings with hand-written projections, so the default
+ * stays `any`; pass `sanityFetch<Sermon[]>(q, {}, [])` to opt a call into a
+ * real shape.
  */
-export async function sanityFetch<T>(
+export async function sanityFetch<T = any>(
   query: string,
   params: Record<string, unknown> = {},
-  fallback: T,
+  fallback: NoInfer<T>,
 ): Promise<T> {
   if (isSanityUnconfigured) {
     return fallback;

@@ -39,7 +39,7 @@ const FALLBACK_USES = [
   'Speakers', 'Concerts', 'Performance rehearsals', 'Parties', '12-step groups',
 ];
 
-const uses = page?.uses?.length ? page.uses : FALLBACK_USES;
+const uses: typeof FALLBACK_USES = page?.uses?.length ? page.uses : FALLBACK_USES;
 
 ---
 

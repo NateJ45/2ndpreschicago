@@ -37,7 +37,7 @@ const FALLBACK_WAYS = [
   { name: 'Neighborhood events', href: '/events', body: 'Lend a hand at gatherings like the South Michigan Avenue Block Fest, free and open to all our neighbors.' },
 ];
 
-const ways = page?.ways?.length ? page.ways : FALLBACK_WAYS;
+const ways: typeof FALLBACK_WAYS = page?.ways?.length ? page.ways : FALLBACK_WAYS;
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>

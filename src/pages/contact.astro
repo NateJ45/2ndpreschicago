@@ -55,7 +55,7 @@ const FALLBACK_REASONS = [
   { label: 'Use our space', value: 'Inquire about the building', href: '/use-our-space' },
 ];
 
-const reasons = page?.contactReasons?.length ? page.contactReasons : FALLBACK_REASONS;
+const reasons: typeof FALLBACK_REASONS = page?.contactReasons?.length ? page.contactReasons : FALLBACK_REASONS;
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>

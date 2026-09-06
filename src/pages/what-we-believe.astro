@@ -100,7 +100,7 @@ const FALLBACK_RESOURCES = [
   { label: 'Practicing the Way', href: 'https://practicingtheway.org/', external: true },
 ];
 
-const resources = page?.resources?.length ? page.resources : FALLBACK_RESOURCES;
+const resources: typeof FALLBACK_RESOURCES = page?.resources?.length ? page.resources : FALLBACK_RESOURCES;
 ---
 
 <BaseLayout {title} {description} {schemas} {siteSettings}>
