@@ -180,7 +180,8 @@ async function seed() {
     try {
       const existing = await client.fetch(`*[_id == $id][0]._id`, { id: doc._id });
       await client.createOrReplace(doc);
-      existing ? (replaced += 1) : (created += 1);
+      if (existing) replaced += 1;
+      else created += 1;
       console.log(`  ${existing ? 'replaced' : 'created '}  ${doc._type}  ${doc._id}`);
     } catch (err) {
       console.error(`  ERROR on ${doc._id}: ${err.message}`);
