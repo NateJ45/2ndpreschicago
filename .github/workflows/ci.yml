@@ -1,25 +1,40 @@
 name: CI
 
 # This workflow validates the build and runs tests.
-# It does NOT deploy — the live site auto-deploys via Cloudflare Workers
-# on push to main (wired separately in the Cloudflare dashboard).
+# It does NOT deploy: the live site auto-deploys via Cloudflare Workers Builds
+# on push to main (wired separately in the Cloudflare dashboard), and staging
+# deploys to the staging Worker through deploy-staging.yml.
+#
+# 2026-09-06: brought up to the family test standard (WCP is the reference):
+# astro check, eslint, prettier format check, an internal link check over
+# dist/client, and a separate `test` job running the Playwright suites (smoke,
+# axe light + dark, reflow) on chromium and a WebKit iPhone profile.
 
 on:
   push:
     branches: [main, staging]
   pull_request:
+  workflow_dispatch:
+
+# A newer push to the same branch obsoletes the in-flight run; cancel it
+# instead of paying for both.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Public identifiers, safe to inline; no secret or write token here. The
+# production dataset is public, so a token-less build reads the REAL published
+# content: every event, sermon and custom page Sanity holds gets emitted, which
+# is what makes the sweeps below meaningful rather than a placeholder audit.
+# (sanityFetch would fall back to empty-state pages only if the project id
+# itself were missing.)
+env:
+  PUBLIC_SANITY_PROJECT_ID: kz01wb83
+  PUBLIC_SANITY_DATASET: production
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    env:
-      # Public identifiers — safe to inline; no secret or write token here.
-      # Read token (SANITY_API_READ_TOKEN) is intentionally absent: sanityFetch
-      # returns its fallback value when the token is missing, so the build
-      # completes with empty-state pages rather than erroring out.
-      PUBLIC_SANITY_PROJECT_ID: kz01wb83
-      PUBLIC_SANITY_DATASET: production
 
     steps:
       - uses: actions/checkout@v7
@@ -32,11 +47,28 @@ jobs:
       - name: Install root dependencies
         run: npm ci
 
+      # The Sanity Studio is its own package under studio/ with its own
+      # lockfile; typegen and the Studio build both run from there.
       - name: Install studio dependencies
         run: npm ci --prefix studio
 
+      # NODE_OPTIONS raises the heap for this step only. `sanity schema extract`
+      # bundles the whole Studio config and its import graph, and on the hosted
+      # runners it intermittently dies with "Aborted (core dumped)" (exit 134)
+      # while the same command succeeds locally: the classic signature of a
+      # Linux CI box with less memory than the dev machine. It is runner flake,
+      # not a schema problem, so retry up to three times before calling it red.
       - name: Generate Sanity types
-        run: npm run typegen
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: |
+          for attempt in 1 2 3; do
+            if npm run typegen; then exit 0; fi
+            echo "::warning::typegen attempt $attempt failed (runner flake?) - retrying"
+            sleep 15
+          done
+          echo "::error::typegen failed three times"
+          exit 1
 
       # Added 2026-08-27 (PORTS.md card 5). `npm run build` does not chain
       # typegen, so src/lib/sanity.types.ts is committed by hand after every
@@ -54,11 +86,71 @@ jobs:
             exit 1
           fi
 
+      # tsconfig.json excludes studio/ and modules/, so this covers the site
+      # only; the Studio is type-checked by its own build below.
+      - name: Type check (astro check)
+        run: npx astro check
+
+      - name: Lint (eslint)
+        run: npm run lint
+
+      - name: Format check (prettier)
+        run: npm run format:check
+
+      # Node's built-in runner over src/lib/*.test.ts: section visibility,
+      # slugify, utils, and the theme-token contrast pairs (the gate that reads
+      # the real hex tokens out of globals.css; nothing else in this pipeline
+      # can catch a palette edit that pushes body text or a focus ring under
+      # threshold).
+      - name: Unit tests (node --test)
+        run: npm run test:unit
+
       - name: Build Astro
         run: npm run build
 
       - name: Build Sanity Studio
         run: npm --prefix studio run build
 
-      - name: Run tests
-        run: npm test
+      # linkinator over dist/client. The site is output: 'static', so every
+      # route is in there and nothing needs skipping beyond external URLs.
+      # The log must say "scanned N links" with N well above zero; a run that
+      # scans 0 links means the skip pattern swallowed linkinator's own seed.
+      - name: Check internal links
+        run: npm run check:links
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Both projects in playwright.config.ts: chromium (desktop) AND
+      # webkit-iphone (iPhone 14). Installing only chromium makes every webkit
+      # test die with "Executable doesn't exist".
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium webkit
+
+      # smoke (every route 200s and carries the church name in its title), axe
+      # in light, axe in dark as a separate sweep plus a focus-indicator check
+      # on the form routes (a theme swap is a different resting DOM), and
+      # reflow at 320/768/1024/1440 (WCAG 1.4.10 starts at 320, not 375). The
+      # config's webServer runs `npm run build` itself and serves dist/client
+      # on 4321. The html reporter is added on the command line so local runs
+      # keep the quiet `list` output while CI still produces the artifact.
+      - name: Run tests (smoke, a11y light + dark, reflow)
+        run: npm test -- --reporter=github,html
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

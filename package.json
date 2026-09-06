@@ -25,11 +25,17 @@
     "studio:deploy": "npm --prefix studio run deploy",
     "studio:import": "node scripts/import-content.mjs",
     "seed": "node scripts/seed-core.mjs",
-    "test": "node --experimental-strip-types --test src/lib/*.test.ts",
-    "check": "npm run typegen && npm run build && npm --prefix studio run build && npm test",
-    "lint": "eslint src/**/*.{ts,tsx,astro} scripts/**/*.mjs",
-    "lint:fix": "eslint --fix src/**/*.{ts,tsx,astro} scripts/**/*.mjs",
-    "format": "prettier --write ."
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:unit": "node --experimental-strip-types --test src/lib/*.test.ts",
+    "check": "astro check && npm run lint",
+    "check:full": "npm run typegen && npm run build && npm --prefix studio run build && npm run test:unit",
+    "lint": "eslint src scripts tests playwright.config.ts",
+    "lint:fix": "eslint --fix src scripts tests playwright.config.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "serve:dist": "http-server dist/client -p 4321 -s -c-1 --silent",
+    "check:links": "linkinator ./dist/client --recurse --skip \"^https?://(?!(localhost|127[.]0[.]0[.]1)[:/])\""
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.0",

@@ -26,12 +26,12 @@ export default [
   // block below corrects rule severity for those virtual paths.
   ...tseslint.configs.recommended.map((cfg) => ({
     ...cfg,
-    files: ['src/**/*.{ts,tsx}', 'scripts/**/*.mjs'],
+    files: ['src/**/*.{ts,tsx}', 'scripts/**/*.mjs', 'tests/**/*.ts', 'playwright.config.ts'],
   })),
 
   // -- Rule overrides for TS/mjs (non-Astro virtual paths) -------------------
   {
-    files: ['src/**/*.{ts,tsx}', 'scripts/**/*.mjs'],
+    files: ['src/**/*.{ts,tsx}', 'scripts/**/*.mjs', 'tests/**/*.ts', 'playwright.config.ts'],
     // Exclude Astro virtual paths -- they are handled in the Astro override below
     ignores: ['**/*.astro/**'],
     plugins: {

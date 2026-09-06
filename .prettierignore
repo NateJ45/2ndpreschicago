@@ -2,6 +2,50 @@ dist
 node_modules
 .astro
 .wrangler
+.lighthouseci
 src/lib/sanity.types.ts
 package-lock.json
 public
+playwright-report
+test-results
+tests/**/__screenshots__
+
+# The nested Sanity Studio package has its own toolchain and lockfile; the
+# family standard formats the site, not the Studio.
+studio
+
+# Opt-in module sources staged for later activation (see CLAUDE.md). They are
+# not built or type-checked here, so they are not formatted here either.
+modules
+
+# Sanity typegen intermediate (also gitignored). Machine-written JSON.
+schema.json
+
+# Generated idempotency cache from the seed scripts (also gitignored).
+scripts/.asset-map.json
+
+# Rendered-HTML parity baselines (scripts/page-parity.mjs). They are byte
+# snapshots of built pages; prettier must never rewrite them.
+scripts/.parity
+
+# PORTABLE files (see docs/TESTING.md, canonical-file drift): byte-exact with
+# ncs-astro-sanity-starter, which is the library of record. Reformatting them
+# here would make `npm run sync-check` report DRIFT. Reformat in the starter
+# first, then port.
+scripts/free-dist.mjs
+scripts/lib/sanity-lib.mjs
+scripts/page-parity.mjs
+scripts/sync-check.mjs
+scripts/with-workerd.mjs
+src/lib/contrast.ts
+
+# Wrangler's generated runtime types.
+worker-configuration.d.ts
+
+# Planning history, specs and research notes: prose archives whose code fences
+# are pseudo-code excerpts prettier cannot parse, and a record that is not
+# meant to be rewritten.
+docs/superpowers
+docs/research
+docs/migration
+docs/remodel
