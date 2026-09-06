@@ -23,13 +23,22 @@ updates:
         update-types: ['minor', 'patch']
     open-pull-requests-limit: 5
     ignore:
-      # The Sanity stack is version-locked as a SET, not per package. The
-      # installed sanity core pins @sanity/ui and @sanity/client to the
-      # majors below the latest, so a lone bump nests a second @sanity/ui
-      # instead of replacing it; two instances means two styled-components
-      # contexts and the signed-in Studio dies while the login screen still
-      # works. The whole set moves in one deliberate migration, never by
-      # Dependabot. Same rule WCP and presacademy already use.
+      # The Sanity stack is version-locked as a SET, not per package, and it
+      # moves in one deliberate migration, never by Dependabot. Same rule WCP
+      # and presacademy already use.
+      #
+      # The reason differs slightly HERE, so do not copy the sibling repos'
+      # wording back over this. In those repos the Studio is bundled into the
+      # Astro app, so a lone @sanity/ui bump nests a second copy next to the
+      # one the sanity core wants: two styled-components contexts, and the
+      # signed-in Studio dies while the login screen still works. This repo
+      # keeps the Studio in its own package under studio/ with its own
+      # lockfile, so site and Studio code are never in one bundle and the two
+      # trees cannot collide that way (CLAUDE.md gotcha #9).
+      #
+      # The root package's only Sanity dependency is @sanity/client, pinned
+      # EXACTLY at 7.26.2 (2026-09-06). The pin is what stops a caret walking
+      # into @sanity/client 8, which is a real major with its own migration.
       - dependency-name: 'sanity'
       - dependency-name: '@sanity/*'
       - dependency-name: 'sanity-plugin-*'
@@ -49,6 +58,13 @@ updates:
         update-types: ['minor', 'patch']
     open-pull-requests-limit: 5
     ignore:
+      # These three ignores arrived on 2026-09-06, AFTER Dependabot had already
+      # carried this Studio from sanity 6.4 to 6.12 and across the @sanity/ui 4
+      # boundary (#19 on 2026-09-04, #20 on 2026-09-05). That is why the Studio
+      # here sits at what the studio-wide migration plan calls phase 2 while the
+      # sibling repos are still on phase 1. It builds and typegens clean, but no
+      # one has signed in to the deployed Studio since. See CLAUDE.md gotcha #10
+      # before bumping anything in this block.
       - dependency-name: 'sanity'
       - dependency-name: '@sanity/*'
       - dependency-name: 'sanity-plugin-*'
