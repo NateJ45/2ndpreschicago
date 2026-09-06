@@ -12,7 +12,7 @@
 import { sanityFetch } from './sanity';
 
 // Common Portable Text + image projection shorthand
-const IMAGE_PROJECTION = `{
+export const IMAGE_PROJECTION = `{
   ...,
   asset->,
   "alt": coalesce(alt, asset->altText, "")
@@ -35,7 +35,7 @@ const FORM_PROJECTION = `{
 
 // Page-builder block members (flexibleSections[] / page.sections[]). Resolves
 // image + form references; other blocks carry their fields via the spread.
-const SECTION_MEMBERS = `{
+export const SECTION_MEMBERS = `{
   ...,
   background{ ..., image${IMAGE_PROJECTION} },
   _type == "sectionImageText" => { image${IMAGE_PROJECTION} },
@@ -50,15 +50,13 @@ const SECTION_MEMBERS = `{
 }`;
 
 // ---- Site settings (used in BaseLayout / Header / Footer) -----------------
-// Module-level memoized promise. The first call triggers the actual Sanity
-// fetch; every subsequent call (across all pages in the same build process)
-// returns the same promise, collapsing 11+ per-page calls to one request.
-let _siteSettingsPromise: Promise<any> | null = null;
-
-export async function getSiteSettings() {
-  if (_siteSettingsPromise) return _siteSettingsPromise;
-  _siteSettingsPromise = sanityFetch(
-    `*[_type == "siteSettings"][0]{
+// The projection is a NAMED export (2026-09-06) because the preview shell needs
+// the same one: src/layouts/PreviewLayout.astro fetches siteSettings through the
+// draft-aware preview client, not through sanityFetch, so it cannot call
+// getSiteSettings(). Sharing the projection is what keeps the preview's header
+// and footer identical to the live site's; a hand-rolled second projection there
+// would drift the moment a menu field is added.
+export const SITE_SETTINGS_PROJECTION = `{
     title,
     tagline,
     mission,
@@ -94,7 +92,17 @@ export async function getSiteSettings() {
       title,
       links[]{ _key, label, href }
     }
-  }`,
+  }`;
+
+// Module-level memoized promise. The first call triggers the actual Sanity
+// fetch; every subsequent call (across all pages in the same build process)
+// returns the same promise, collapsing 11+ per-page calls to one request.
+let _siteSettingsPromise: Promise<any> | null = null;
+
+export async function getSiteSettings() {
+  if (_siteSettingsPromise) return _siteSettingsPromise;
+  _siteSettingsPromise = sanityFetch(
+    `*[_type == "siteSettings"][0]${SITE_SETTINGS_PROJECTION}`,
     {},
     null,
   );

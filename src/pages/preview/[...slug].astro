@@ -1,0 +1,266 @@
+---
+/* ============================================================================
+   Preview route - draft-aware pages for the Studio Presentation tool
+   (ported from mas-monograms 2026-09-06, PORTS.md cards 10 and 17; original
+   lineage: ncs-astro-sanity-starter, presacademy and WCP)
+   ============================================================================
+   One SSR route renders ANY previewable page in draft mode for the Presentation
+   Tool: it reads the perspective cookie, fetches the doc draft-aware (stega on),
+   and renders it.
+
+   WHAT SHAPE THIS SITE'S PREVIEW TAKES, AND WHY
+
+   The family has two page shapes. BUILDER pages, whose body is a page-builder
+   array, preview at FULL FIDELITY through the same section renderer the live
+   page uses. BESPOKE pages, whose middles are drawn in code, preview as their
+   EDITABLE SURFACE: hero, lists, closing call to action, with a note saying so.
+
+   Second Pres is a hybrid, and this route treats it as one. Every page singleton
+   carries a real `flexibleSections[]` array, so the section stack below the hero
+   renders through the REAL src/components/Sections.astro and looks exactly like
+   production. The parts that are NOT in the builder - the events list, the sermon
+   archive, the staff grid, the fixed "plan your visit" cards - are drawn in code
+   by the live page files and cannot render here without duplicating them, which
+   would be a second implementation to keep in step. Those pages instead show
+   their hero, their real sections, and their own repeatable lists as labelled
+   editable blocks, plus a note on the page explaining what is held in code.
+
+   That surface is honest rather than decorative: the hero is the real Hero
+   component, the sections are the real section components, and every repeatable
+   array carries the `data-sanity` attribute that gives in-canvas add / duplicate
+   / remove / reorder (PORTS.md card 17).
+
+   THE PAGE MAP IS NOT DUPLICATED HERE. It is derived from SINGLETON_PAGE_PATHS
+   in src/sanity/urls.ts, the same module src/sanity/resolve.ts derives from. The
+   one copy still kept by hand is FIRST_SEGMENT_PREVIEWABLE in
+   src/layouts/PreviewLayout.astro, whose browser <script> cannot import.
+   noindex comes from PreviewLayout.
+   ============================================================================ */
+export const prerender = false;
+
+import { perspectiveCookieName } from '@sanity/preview-url-secret/constants';
+import PreviewLayout from '@/layouts/PreviewLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Sections from '@/components/Sections.astro';
+import heroFallback from '@/assets/hero-sanctuary.webp';
+import { previewFetch, previewConfig, previewUnconfiguredResponse } from '@/lib/cms-preview';
+import { IMAGE_PROJECTION, SECTION_MEMBERS } from '@/lib/queries';
+import { arrayItemEditAttr, fieldEditAttr, type EditableArrayField } from '@/lib/preview-edit-attr';
+import { SINGLETON_PAGE_LABELS, SINGLETON_PAGE_PATHS } from '@/sanity/urls';
+
+// Fresh clone / unset secret: say so, do not 500.
+const config = previewConfig();
+if (!config.ok) {
+  return previewUnconfiguredResponse(config.missing);
+}
+
+const draftMode = Astro.cookies.has(perspectiveCookieName);
+
+// Never let a browser cache a preview page. These SSR responses carried NO
+// Cache-Control in an earlier repo in the family, so browsers applied heuristic
+// caching and the Presentation iframe kept serving the PREVIOUS deploy's page
+// (stale island hashes, invisible new editor features) until the cache aged out.
+// Draft content is per-cookie anyway; caching it was never right.
+Astro.response.headers.set('Cache-Control', 'no-store');
+const slug = (Astro.params.slug as string | undefined) || '';
+
+/**
+ * The bespoke repeatable arrays each page owns, in the order they appear on the
+ * live page. `flexibleSections` is NOT listed: it renders for real through
+ * Sections.astro below. These are the field names the in-canvas controls patch,
+ * so they must match src/sanity/schemaTypes/<type>.ts exactly. Labels come from
+ * SINGLETON_PAGE_LABELS; a page with no bespoke arrays needs no entry here.
+ */
+const PAGE_ARRAYS: Record<string, Array<{ field: EditableArrayField; label: string }>> = {
+  homePage: [
+    { field: 'heroRotatingWords', label: 'Hero rotating words' },
+    { field: 'weeklyRhythms', label: 'The week at Second Pres' },
+  ],
+  beliefsPage: [{ field: 'resources', label: 'Resources' }],
+  growPage: [{ field: 'groups', label: 'Groups' }],
+  servePage: [{ field: 'ways', label: 'Ways to serve' }],
+  useOurSpacePage: [{ field: 'uses', label: 'What the space is used for' }],
+  weddingsPage: [
+    { field: 'weddingPricing', label: 'Pricing' },
+    { field: 'weddingFaqs', label: 'Wedding FAQs' },
+  ],
+  faqPage: [{ field: 'categoryOrder', label: 'Category order' }],
+  contactPage: [{ field: 'contactReasons', label: 'Who to contact' }],
+};
+
+// Path -> singleton type, derived from the one map (src/sanity/urls.ts). '' is
+// the home page, matching /preview with no trailing segment.
+const TYPE_BY_PATH: Record<string, string> = Object.fromEntries(
+  Object.entries(SINGLETON_PAGE_PATHS).map(([type, path]) => [path.replace(/^\//, ''), type]),
+);
+
+interface PreviewDoc {
+  _id: string;
+  _type: string;
+  [key: string]: unknown;
+}
+
+// Every hero / SEO field any page type may carry, plus its bespoke arrays raw,
+// plus the builder array resolved exactly the way the live queries resolve it.
+// `...` pulls everything else through without naming each field, so adding a
+// field to a page schema needs no query edit here.
+const PREVIEW_FIELDS = `{
+  ...,
+  heroImage${IMAGE_PROJECTION},
+  heroImages[]${IMAGE_PROJECTION},
+  seoImage${IMAGE_PROJECTION},
+  flexibleSections[]${SECTION_MEMBERS},
+  sections[]${SECTION_MEMBERS}
+}`;
+
+const singletonType = TYPE_BY_PATH[slug];
+
+let doc: PreviewDoc | null = null;
+let label: string;
+let arraysConfig: Array<{ field: EditableArrayField; label: string }>;
+let sectionsField: 'flexibleSections' | 'sections';
+
+if (singletonType) {
+  doc = await previewFetch<PreviewDoc | null>(
+    draftMode,
+    `*[_type == $type][0]${PREVIEW_FIELDS}`,
+    { type: singletonType },
+  );
+  label = SINGLETON_PAGE_LABELS[singletonType] ?? singletonType;
+  arraysConfig = PAGE_ARRAYS[singletonType] ?? [];
+  sectionsField = 'flexibleSections';
+} else if (slug && !slug.includes('/')) {
+  // A generic custom page (the `page` type) at /preview/<slug>.
+  doc = await previewFetch<PreviewDoc | null>(
+    draftMode,
+    `*[_type == "page" && slug.current == $slug][0]${PREVIEW_FIELDS}`,
+    { slug },
+  );
+  label = typeof doc?.title === 'string' ? doc.title : slug;
+  arraysConfig = [];
+  sectionsField = 'sections';
+} else {
+  return new Response(
+    `"${slug}" is not a previewable page. Previewable: ${Object.values(SINGLETON_PAGE_PATHS)
+      .map((p) => (p === '/' ? '/preview' : `/preview${p}`))
+      .join(', ')}, plus /preview/<slug> for any custom page.`,
+    { status: 404 },
+  );
+}
+
+if (!doc) {
+  return new Response(
+    singletonType
+      ? `No "${singletonType}" document found. Create it in the Studio, then reopen the preview.`
+      : `No custom page with the slug "${slug}". Create it in the Studio, then reopen the preview.`,
+    { status: 404 },
+  );
+}
+
+// The doc id the overlay and /preview/live listen on. The draft perspective can
+// return the drafts. twin's id; strip the prefix so the listen filter matches
+// both twins.
+const pageId = doc._id.replace(/^drafts\./, '');
+
+// ---------------------------------------------------------------------------
+// In-canvas controls (PORTS.md card 17)
+// ---------------------------------------------------------------------------
+// Passed regardless of draftMode. The attribute is inert without the Studio's
+// overlay, this route is noindex and never part of the static build, and a
+// preview opened before the cookie lands would otherwise render uncontrollable
+// items.
+const editDoc = { id: pageId, type: doc._type };
+
+// The 404 page names its hero lines `eyebrow` / `headline`; every other page
+// calls them `heroEyebrow` / `heroHeadline`. Coalescing here is what lets one
+// route draw both, and src/lib/page-fields.ts records which name belongs to
+// which type so the in-canvas card writes to the field that page really has.
+const str = (v: unknown): string => (typeof v === 'string' ? v : '');
+const heroEyebrow = str(doc.heroEyebrow) || str(doc.eyebrow);
+const heroHeadline =
+  str(doc.heroHeadline) || str(doc.headline) || str(doc.title) || str(doc.seoTitle) || label;
+const heroImages = (Array.isArray(doc.heroImages) ? doc.heroImages : []).filter(
+  (i: any) => i?.asset,
+);
+
+const sections = Array.isArray(doc[sectionsField]) ? (doc[sectionsField] as any[]) : [];
+
+// The bespoke arrays this page actually has, paired with their config.
+const arrays = arraysConfig
+  .map((a) => ({ ...a, items: (doc?.[a.field] as any[] | undefined) ?? [] }))
+  .filter((a) => Array.isArray(a.items));
+
+/** The scalar strings on an array item, in schema order, for the card body. */
+function itemLines(item: unknown): string[] {
+  if (!item || typeof item !== 'object') return [String(item ?? '')];
+  return Object.entries(item as Record<string, unknown>)
+    .filter(([k, v]) => !k.startsWith('_') && (typeof v === 'string' || typeof v === 'number'))
+    .map(([, v]) => String(v))
+    .filter(Boolean);
+}
+
+const title = `${label} - Preview`;
+---
+
+<PreviewLayout {title} {draftMode} {pageId}>
+  <Hero
+    eyebrow={heroEyebrow}
+    headline={heroHeadline}
+    subhead={str(doc.heroSubhead)}
+    keyword={str(doc.heroKeyword) || undefined}
+    backgroundImage={(doc.heroImage as any) ?? null}
+    backgroundImages={heroImages.length > 1 ? (heroImages as any) : null}
+    localImage={heroFallback}
+    headingId="preview-hero"
+    size="short"
+  />
+
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <p class="rounded-md border border-border bg-card px-4 py-3 text-sm text-foreground/80">
+      This is a draft preview. The hero and the page sections below render exactly as they will on
+      the live site. Anything this page draws in code (the events list, the sermon archive, the
+      staff grid, the fixed visit cards) is not repeated here; those parts render on the live site
+      after you publish. Click any words to edit them.
+    </p>
+  </div>
+
+  {
+    sections.length > 0 && (
+      <div data-sanity={fieldEditAttr(editDoc, sectionsField)}>
+        <Sections sections={sections} />
+      </div>
+    )
+  }
+
+  {
+    arrays.map(({ field, label: arrayLabel, items }) => (
+      <section class="mx-auto max-w-3xl px-4 py-4">
+        <h2 class="mb-3 font-display text-2xl text-foreground">{arrayLabel}</h2>
+        {items.length === 0 ? (
+          <p class="rounded-md border border-dashed border-border px-4 py-6 text-sm text-foreground/70">
+            Nothing here yet. Use the plus control in this canvas, or the "{arrayLabel}" field in
+            the editor panel, to add the first one.
+          </p>
+        ) : (
+          <ul class="grid gap-3">
+            {items.map((item: any, i: number) => (
+              <li
+                class="rounded-md border border-border bg-card px-4 py-3"
+                data-sanity={arrayItemEditAttr(editDoc, field, item?._key ?? i)}
+              >
+                <span class="mr-2 text-xs font-semibold text-foreground/50">{i + 1}</span>
+                {itemLines(item).map((line, j) => (
+                  <p
+                    class={j === 0 ? 'font-semibold text-foreground' : 'text-sm text-foreground/80'}
+                  >
+                    {line}
+                  </p>
+                ))}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    ))
+  }
+</PreviewLayout>
