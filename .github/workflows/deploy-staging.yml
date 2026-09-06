@@ -65,6 +65,17 @@ jobs:
         run: npm run typegen
 
       - name: Build
+        # The Sanity project id is PUBLIC by design (it ships in every client
+        # bundle and every GROQ URL), so it lives in repo VARIABLES, not
+        # secrets. Without it astro.config falls back to
+        # 'placeholder-project-id' and the EMBEDDED Studio then calls
+        # placeholder-project-id.api.sanity.io, which does not resolve: the
+        # Studio shows "Couldn't reach the Sanity servers", which reads like a
+        # network or CORS fault and is neither. Found 2026-09-06, the first
+        # time this repo had a Studio to serve.
+        env:
+          PUBLIC_SANITY_PROJECT_ID: ${{ vars.PUBLIC_SANITY_PROJECT_ID }}
+          PUBLIC_SANITY_DATASET: ${{ vars.PUBLIC_SANITY_DATASET }}
         run: npm run build
 
       - name: Deploy to the staging Worker
