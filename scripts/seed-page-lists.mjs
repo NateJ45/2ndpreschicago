@@ -52,7 +52,7 @@ const client = createClient({ projectId, dataset, apiVersion, token, useCdn: fal
 
 // Tag each array-of-objects item with its schema member _type + a stable,
 // unique _key. The member names are verified against the schema files
-// (studio/schemaTypes/{churchPages,contactPage,homePage}.ts).
+// (src/sanity/schemaTypes/{churchPages,contactPage,homePage}.ts).
 function members(field, type, rows) {
   return rows.map((row, i) => ({ _type: type, _key: `${field}-${i}`, ...row }));
 }

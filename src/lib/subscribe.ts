@@ -88,7 +88,10 @@ export async function subscribeEmail(opts: SubscribeOptions): Promise<SubscribeR
       // 4xx/5xx from the ESP — surface a friendly message.
       let msg = "Couldn't sign you up right now. Try again in a minute.";
       try {
-        const json = await res.json();
+        // Typed explicitly since 2026-09-06: adding @cloudflare/workers-types
+        // (needed by the SSR preview routes) narrows `Response.json()` to `{}`
+        // rather than `any`, so the two property reads below stopped compiling.
+        const json = (await res.json()) as { message?: unknown; error?: unknown } | null;
         if (typeof json?.message === 'string') msg = json.message;
         else if (typeof json?.error === 'string') msg = json.error;
       } catch {

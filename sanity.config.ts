@@ -1,21 +1,38 @@
 // Foundation, edit with care
-// Sanity Studio configuration for the ncs-astro-sanity-starter template.
-// Replace SANITY_STUDIO_PROJECT_ID in studio/.env with the real ID from
-// manage.sanity.io after running `sanity init` (or after creating the project
-// manually). Studio reads it via the cli config — see sanity.cli.ts for
-// runtime overrides.
+// =============================================================================
+// Sanity Studio configuration - loaded by the EMBEDDED /studio
+// =============================================================================
+// Moved here from studio/sanity.config.ts on 2026-09-06, when the nested studio/
+// package was folded into this one (PORTS.md card 10).
+//
+// The studio now lives in the SAME package as the site. One node_modules, one
+// copy of every module, which is what keeps the styled-components / @sanity/ui
+// theme context intact: a nested studio package gives TWO module instances of
+// styled-components, so the ThemeProvider mounted by one is invisible to
+// useTheme in the other and the desk dies on its first custom-component render
+// (styled-components error #18, then "Cannot read properties of undefined
+// (reading 'v2')") while the login screen, which is core code only, renders
+// fine. That was presacademy's 2026-08-26 production outage.
+//
+// @sanity/astro mounts this config at /studio (see astro.config.mjs); the sanity
+// CLI (sanity.cli.ts) uses it for typegen and dataset commands. Deploying the
+// site now deploys the Studio, so the embedded one can never drift stale.
 
 import { defineConfig, buildLegacyTheme } from 'sanity';
 import { structureTool } from 'sanity/structure';
+import { presentationTool } from 'sanity/presentation';
 import { visionTool } from '@sanity/vision';
 import { media } from 'sanity-plugin-media';
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash';
-import { schemaTypes } from './schemaTypes';
-import { deskStructure } from './structure';
-import StudioLogo from './components/StudioLogo';
-import StudioLayout from './components/StudioLayout';
-import { CharacterCountInput } from './components/CharacterCountInput';
-import { documentBadges } from './components/documentBadges';
+import { schemaTypes } from './src/sanity/schemaTypes';
+import { deskStructure } from './src/sanity/structure';
+import { resolve } from './src/sanity/resolve';
+import { envVal } from './src/sanity/urls';
+import { PreviewNavigator } from './src/sanity/components/PreviewNavigator';
+import StudioLogo from './src/sanity/components/StudioLogo';
+import StudioLayout from './src/sanity/components/StudioLayout';
+import { CharacterCountInput } from './src/sanity/components/CharacterCountInput';
+import { documentBadges } from './src/sanity/components/documentBadges';
 
 // Brand theme for the Studio UI. Uses Sanity's legacy theme builder which
 // maps a handful of CSS custom properties to the Studio's full internal design
@@ -85,58 +102,35 @@ const studioTheme = {
     : baseTheme.fonts,
 };
 
-// Set this to your deployed Workers URL (e.g. 'https://my-project.workers.dev') after deploy.
-export const SITE_URL_FOR_PREVIEW = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:4321';
+// Dev detection must FAIL CLOSED. The obvious test is
+// `process.env.NODE_ENV !== 'production'`, which was correct for the old
+// standalone studio build but is WRONG for the embedded one: the Astro/Vite
+// client bundle injects `globalThis.process ??= {}`, so `process` exists with an
+// empty env, NODE_ENV is undefined, and the comparison is true IN PRODUCTION.
+// That would ship the Vision GROQ console to the church's editors. Test
+// positively for dev instead, so an unknown environment gets the editor build.
+const IS_DEV =
+  (import.meta as { env?: { DEV?: boolean } }).env?.DEV === true ||
+  (typeof process !== 'undefined' && process.env?.NODE_ENV === 'development');
 
-// Map doc _type → live-site path. Singletons get a fixed path; slug-based
-// docs build the path from the doc's slug. Returns null for types that have
-// no viewable page (siteSettings) — the preview pane is hidden for those.
-// Exported so structure.ts can call it when wiring per-doc views.
-export function urlForDoc(schemaType: string, doc: any): string | null {
-  const SITE_URL = SITE_URL_FOR_PREVIEW;
-  const slug = doc?.slug?.current;
-  switch (schemaType) {
-    // Core pages
-    case 'homePage':      return `${SITE_URL}/`;
-    case 'aboutPage':     return `${SITE_URL}/about`;
-    case 'faqPage':       return `${SITE_URL}/faq`;
-    case 'contactPage':   return `${SITE_URL}/contact`;
-    case 'notFoundPage':  return `${SITE_URL}/404`;
-    case 'privacyPage':   return `${SITE_URL}/privacy`;
-    // Church index pages + per-page singletons
-    case 'eventsPage':       return `${SITE_URL}/events`;
-    case 'sermonsPage':      return `${SITE_URL}/sermons`;
-    case 'worshipPage':      return `${SITE_URL}/worship`;
-    case 'beliefsPage':      return `${SITE_URL}/what-we-believe`;
-    case 'musicPage':        return `${SITE_URL}/music`;
-    case 'staffPage':        return `${SITE_URL}/pastor-staff`;
-    case 'growPage':         return `${SITE_URL}/grow`;
-    case 'servePage':        return `${SITE_URL}/serve`;
-    case 'kidsPage':         return `${SITE_URL}/kids`;
-    case 'foodPage':         return `${SITE_URL}/food`;
-    case 'useOurSpacePage':  return `${SITE_URL}/use-our-space`;
-    case 'weddingsPage':     return `${SITE_URL}/weddings`;
-    case 'givePage':         return `${SITE_URL}/give`;
-    // Collections: dated detail pages by slug; staff list + FAQ list pages.
-    case 'event':       return slug ? `${SITE_URL}/events/${slug}` : `${SITE_URL}/events`;
-    case 'sermon':      return slug ? `${SITE_URL}/sermons/${slug}` : `${SITE_URL}/sermons`;
-    case 'staffMember': return `${SITE_URL}/pastor-staff`;
-    case 'faqItem':     return `${SITE_URL}/faq`;
-    // Generic custom pages live at /<slug>.
-    case 'page':        return slug ? `${SITE_URL}/${slug}` : null;
-    default:            return null;
-  }
-}
+// The live-site URL map (urlForDoc / SITE_URL_FOR_PREVIEW) moved to
+// src/sanity/urls.ts when the studio folded in (2026-09-06). It is imported by
+// the desk structure and by the Presentation resolver, so it has to live
+// somewhere both can reach without importing this config file and creating a
+// cycle.
 
 export default defineConfig({
   name: 'secondpres',
   // Short title shown in the browser tab when editing.
   title: 'Second Presbyterian Church of Chicago',
 
-  // Set SANITY_STUDIO_PROJECT_ID and SANITY_STUDIO_DATASET in studio/.env
-  // (or as env vars) after creating your Sanity project at sanity.io/manage.
-  projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'placeholder-project-id',
-  dataset: process.env.SANITY_STUDIO_DATASET || 'production',
+  // envVal reads process.env (the sanity CLI) OR import.meta.env (the embedded
+  // Studio, bundled by Astro/Vite, where `process.env` is an empty object). A
+  // bare process.env read here would leave the deployed Studio with no project
+  // id. See src/sanity/urls.ts.
+  projectId:
+    envVal('SANITY_STUDIO_PROJECT_ID', 'PUBLIC_SANITY_PROJECT_ID') || 'placeholder-project-id',
+  dataset: envVal('SANITY_STUDIO_DATASET', 'PUBLIC_SANITY_DATASET') || 'production',
 
   // Brand theme — Slate primary + Paper background.
   theme: studioTheme,
@@ -164,12 +158,19 @@ export default defineConfig({
   plugins: [
     structureTool({
       structure: deskStructure,
-      // No defaultDocumentNode override: documents show the form only. This is a
-      // static site with no live draft preview, so an iframe "Preview" tab would
-      // load the last PUBLISHED build (not the editor's current draft) and
-      // mislead editors. Changes go live after Publish + the site rebuild; see
-      // the "How This Works" guide. (urlForDoc / SITE_URL_FOR_PREVIEW are kept
-      // above for reference if a real preview environment is added later.)
+      // No defaultDocumentNode override: documents show the form only, and the
+      // live preview is Presentation's job (below), not an iframe pane's.
+      //
+      // WHY THIS COMMENT CHANGED (2026-09-06). It used to argue that this site
+      // deliberately had NO preview, because an iframe pane on a fully static
+      // site would load the last PUBLISHED build rather than the editor's
+      // current draft, and so would mislead editors about what they were
+      // looking at. That objection was right about an iframe pane, and it is
+      // exactly what the Presentation stack answers: /preview/** is an SSR
+      // route that reads DRAFT content with the runtime token, so what the
+      // preview shows is the draft, not the last deploy. The old reasoning is
+      // kept here rather than deleted because it is the reason the preview had
+      // to be built this way instead of the cheap way.
     }),
     // Unsplash plugin — adds an "Unsplash" tab to every image picker. The
     // package's correct registration is via the plugins array (not
@@ -180,9 +181,35 @@ export default defineConfig({
     // for browsing every uploaded image at once with tag + filter + bulk-edit.
     // Much better than the inline image picker for "what's in our library".
     media(),
+    // Click-to-edit live preview against the Studio-only /preview/* routes
+    // (never the real public pages: see src/sanity/resolve.ts and the site's
+    // src/pages/preview/). previewMode only sets `enable`, because `disable` is
+    // a documented no-op in this Sanity version, so exiting preview is a plain
+    // link to /api/draft-mode/disable (see PreviewLayout.astro). The relative
+    // URLs assume the EMBEDDED /studio, i.e. same origin as the site.
+    //
+    // REQUIRES the SANITY_TOKEN (or the existing SANITY_API_READ_TOKEN) runtime
+    // secret. Without it the preview routes fail closed and this tool shows a
+    // 503 naming what is missing rather than a stack trace.
+    presentationTool({
+      resolve,
+      previewUrl: {
+        initial: '/preview',
+        previewMode: { enable: '/api/draft-mode/enable' },
+      },
+      // The Squarespace-style page list beside the preview: click a page, the
+      // preview jumps there and the edit panel follows.
+      components: {
+        unstable_navigator: {
+          component: PreviewNavigator,
+          minWidth: 160,
+          maxWidth: 280,
+        },
+      },
+    }),
     // Vision (GROQ query runner) is a developer tool, not an editor tool.
     // Gate it to local dev so it doesn't clutter the deployed Studio.
-    ...(process.env.NODE_ENV !== 'production' ? [visionTool()] : []),
+    ...(IS_DEV ? [visionTool()] : []),
   ],
 
   schema: {

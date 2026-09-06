@@ -26,12 +26,30 @@ export default [
   // block below corrects rule severity for those virtual paths.
   ...tseslint.configs.recommended.map((cfg) => ({
     ...cfg,
-    files: ['src/**/*.{ts,tsx}', 'scripts/**/*.mjs', 'tests/**/*.ts', 'playwright.config.ts'],
+    files: [
+      'src/**/*.{ts,tsx}',
+      'scripts/**/*.mjs',
+      'tests/**/*.ts',
+      'playwright.config.ts',
+      // The Studio config moved to the repo root when the nested studio/
+      // package folded in (2026-09-06), so lint it here too.
+      'sanity.config.ts',
+      'sanity.cli.ts',
+    ],
   })),
 
   // -- Rule overrides for TS/mjs (non-Astro virtual paths) -------------------
   {
-    files: ['src/**/*.{ts,tsx}', 'scripts/**/*.mjs', 'tests/**/*.ts', 'playwright.config.ts'],
+    files: [
+      'src/**/*.{ts,tsx}',
+      'scripts/**/*.mjs',
+      'tests/**/*.ts',
+      'playwright.config.ts',
+      // The Studio config moved to the repo root when the nested studio/
+      // package folded in (2026-09-06), so lint it here too.
+      'sanity.config.ts',
+      'sanity.cli.ts',
+    ],
     // Exclude Astro virtual paths -- they are handled in the Astro override below
     ignores: ['**/*.astro/**'],
     plugins: {

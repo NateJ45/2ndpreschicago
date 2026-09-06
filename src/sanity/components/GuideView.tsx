@@ -79,7 +79,7 @@ function Block({ block }: { block: GuideBlock }): React.JSX.Element | null {
       );
     case 'steps':
       return (
-        <Stack space={3}>
+        <Stack gap={3}>
           {block.items.map((item, i) => (
             <NumberedRow key={i} n={i + 1} text={item} />
           ))}
@@ -87,7 +87,7 @@ function Block({ block }: { block: GuideBlock }): React.JSX.Element | null {
       );
     case 'bullets':
       return (
-        <Stack space={3}>
+        <Stack gap={3}>
           {block.items.map((item, i) => (
             <BulletRow key={i} text={item} />
           ))}
@@ -104,7 +104,7 @@ function Block({ block }: { block: GuideBlock }): React.JSX.Element | null {
     case 'callout':
       return (
         <Card tone={block.tone ?? 'primary'} padding={3} radius={2} shadow={1}>
-          <Stack space={2}>
+          <Stack gap={2}>
             {block.title && (
               <Text size={1} weight="semibold">
                 {block.title}
@@ -172,9 +172,9 @@ export default function GuideView(props: PaneProps): React.JSX.Element {
   return (
     <Box padding={4} style={{ height: '100%', overflowY: 'auto' }}>
       <Box style={{ maxWidth: 680, margin: '0 auto' }}>
-        <Stack space={4}>
+        <Stack gap={4}>
           {/* Header */}
-          <Stack space={3}>
+          <Stack gap={3}>
             <Flex gap={3} align="center">
               <Text size={4}>
                 <Icon />
@@ -192,7 +192,7 @@ export default function GuideView(props: PaneProps): React.JSX.Element {
           </Stack>
 
           <Card borderTop paddingTop={4}>
-            <Stack space={4}>
+            <Stack gap={4}>
               {guide.body.map((block, i) => (
                 <Block key={i} block={block} />
               ))}

@@ -23,7 +23,8 @@ name: Sanity dataset backup
 #
 # RESTORE: download the artifact from the workflow run, then
 #     npx sanity dataset import sanity-backup-YYYY-MM-DD.tar.gz production
-# (run it from studio/, which is where the sanity CLI is installed).
+# (run it from the repo root, which is where the sanity CLI is installed since
+# the studio folded into this package on 2026-09-06).
 
 on:
   schedule:
@@ -31,10 +32,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  # The gate deliberately does NOT check out the repo and has no
-  # working-directory default: a job-level default pointing at studio/ would
-  # fail here because nothing has been checked out. That is why the export job
-  # below carries the default instead of the workflow.
   gate:
     runs-on: ubuntu-latest
     outputs:
@@ -55,10 +52,6 @@ jobs:
     needs: gate
     if: needs.gate.outputs.ready == 'true'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        # The sanity CLI is a dependency of the studio package, not the root.
-        working-directory: studio
     steps:
       - uses: actions/checkout@v7
 
@@ -66,7 +59,9 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install studio dependencies
+      # The sanity CLI is a root dependency now (the nested studio/ package was
+      # folded in on 2026-09-06), so this runs from the repo root.
+      - name: Install dependencies
         run: npm ci
 
       - name: Export production dataset
@@ -84,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: sanity-backup
-          path: studio/sanity-backup-*.tar.gz
+          path: sanity-backup-*.tar.gz
           # GitHub keeps artifacts 90 days. For longer or off-site retention,
           # push the tarball to R2 here instead.
           retention-days: 90

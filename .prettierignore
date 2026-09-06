@@ -10,10 +10,6 @@ playwright-report
 test-results
 tests/**/__screenshots__
 
-# The nested Sanity Studio package has its own toolchain and lockfile; the
-# family standard formats the site, not the Studio.
-studio
-
 # Opt-in module sources staged for later activation (see CLAUDE.md). They are
 # not built or type-checked here, so they are not formatted here either.
 modules
