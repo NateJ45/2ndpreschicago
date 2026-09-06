@@ -109,13 +109,19 @@ export function pathForDoc(schemaType: string, doc: any): string | null {
   const slug = doc?.slug?.current;
   switch (schemaType) {
     // Collections: dated detail pages by slug; staff list + FAQ list pages.
-    case 'event':       return slug ? `/events/${slug}` : '/events';
-    case 'sermon':      return slug ? `/sermons/${slug}` : '/sermons';
-    case 'staffMember': return '/pastor-staff';
-    case 'faqItem':     return '/faq';
+    case 'event':
+      return slug ? `/events/${slug}` : '/events';
+    case 'sermon':
+      return slug ? `/sermons/${slug}` : '/sermons';
+    case 'staffMember':
+      return '/pastor-staff';
+    case 'faqItem':
+      return '/faq';
     // Generic custom pages live at /<slug>.
-    case 'page':        return slug ? `/${slug}` : null;
-    default:            return null;
+    case 'page':
+      return slug ? `/${slug}` : null;
+    default:
+      return null;
   }
 }
 

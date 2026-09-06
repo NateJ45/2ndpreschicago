@@ -45,8 +45,8 @@ import { documentBadges } from './src/sanity/components/documentBadges';
 // utility bar, footer, and closing CTA. The fonts are patched on below.
 const studioThemeProps = {
   // Foundation — neutrals everything else derives from.
-  '--black': '#36302A',   // Espresso Ink — darkest text
-  '--white': '#FBF8F2',   // Soft Paper — lightest surface
+  '--black': '#36302A', // Espresso Ink — darkest text
+  '--white': '#FBF8F2', // Soft Paper — lightest surface
   '--gray-base': '#6E6354', // Warm taupe — tints every neutral warm, not cool
 
   // Brand accent — Warm Bronze.

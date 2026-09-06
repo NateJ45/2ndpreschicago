@@ -18,21 +18,24 @@ export const announcement = defineType({
       name: 'title',
       title: 'Internal name',
       type: 'string',
-      description: 'For your reference in the Studio (e.g. "Christmas Eve services"). Not shown on the site.',
+      description:
+        'For your reference in the Studio (e.g. "Christmas Eve services"). Not shown on the site.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'message',
       title: 'Message',
       type: 'string',
-      description: 'The text shown in the banner. Example: "Join us for Christmas Eve worship at 5pm and 11pm."',
+      description:
+        'The text shown in the banner. Example: "Join us for Christmas Eve worship at 5pm and 11pm."',
       validation: (Rule) => Rule.required().max(160),
     }),
     defineField({
       name: 'style',
       title: 'Style',
       type: 'string',
-      description: 'Info = calm green. Special = gold, for seasonal good news. Urgent = red, for closures.',
+      description:
+        'Info = calm green. Special = gold, for seasonal good news. Urgent = red, for closures.',
       options: {
         list: [
           { title: 'Info', value: 'info' },
@@ -79,9 +82,18 @@ export const announcement = defineType({
     }),
   ],
   preview: {
-    select: { title: 'message', style: 'style', enabled: 'enabled', start: 'startDate', end: 'endDate' },
+    select: {
+      title: 'message',
+      style: 'style',
+      enabled: 'enabled',
+      start: 'startDate',
+      end: 'endDate',
+    },
     prepare: ({ title, style, enabled, start, end }) => {
-      const window = [start ? new Date(start).toLocaleDateString() : null, end ? new Date(end).toLocaleDateString() : null]
+      const window = [
+        start ? new Date(start).toLocaleDateString() : null,
+        end ? new Date(end).toLocaleDateString() : null,
+      ]
         .filter(Boolean)
         .join(' to ');
       return {

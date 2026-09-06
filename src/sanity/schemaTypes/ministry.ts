@@ -86,14 +86,21 @@ export const ministry = defineType({
       name: 'description',
       title: 'Full description (optional)',
       type: 'array',
-      of: [defineArrayMember({ type: 'block', styles: [{ title: 'Paragraph', value: 'normal' }], lists: [{ title: 'Bullet', value: 'bullet' }] })],
+      of: [
+        defineArrayMember({
+          type: 'block',
+          styles: [{ title: 'Paragraph', value: 'normal' }],
+          lists: [{ title: 'Bullet', value: 'bullet' }],
+        }),
+      ],
     }),
     defineField({
       name: 'parentMinistry',
       title: 'Part of (optional)',
       type: 'reference',
       to: [{ type: 'ministry' }],
-      description: 'Nest this under a larger ministry (e.g. Middle School Group is part of Youth). Sub-programs can be listed on the parent ministry.',
+      description:
+        'Nest this under a larger ministry (e.g. Middle School Group is part of Youth). Sub-programs can be listed on the parent ministry.',
     }),
     defineField({
       name: 'registrationUrl',
@@ -129,6 +136,13 @@ export const ministry = defineType({
     select: { title: 'title', subtitle: 'audience', media: 'image' },
   },
   orderings: [
-    { title: 'Display order', name: 'displayOrder', by: [{ field: 'displayOrder', direction: 'asc' }, { field: 'title', direction: 'asc' }] },
+    {
+      title: 'Display order',
+      name: 'displayOrder',
+      by: [
+        { field: 'displayOrder', direction: 'asc' },
+        { field: 'title', direction: 'asc' },
+      ],
+    },
   ],
 });

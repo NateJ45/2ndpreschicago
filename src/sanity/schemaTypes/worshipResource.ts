@@ -55,7 +55,8 @@ export const worshipResource = defineType({
       name: 'externalUrl',
       title: 'External link',
       type: 'url',
-      description: 'Use instead of an upload when the document lives elsewhere (Google Drive, Dropbox).',
+      description:
+        'Use instead of an upload when the document lives elsewhere (Google Drive, Dropbox).',
     }),
     defineField({
       name: 'description',
@@ -69,11 +70,20 @@ export const worshipResource = defineType({
     select: { title: 'title', type: 'type', date: 'date' },
     prepare: ({ title, type, date }) => ({
       title: title || 'Worship resource',
-      subtitle: [type, date ? new Date(date).toLocaleDateString() : null].filter(Boolean).join(' · '),
+      subtitle: [type, date ? new Date(date).toLocaleDateString() : null]
+        .filter(Boolean)
+        .join(' · '),
     }),
   },
   orderings: [
     { title: 'Newest first', name: 'dateDesc', by: [{ field: 'date', direction: 'desc' }] },
-    { title: 'Type', name: 'type', by: [{ field: 'type', direction: 'asc' }, { field: 'date', direction: 'desc' }] },
+    {
+      title: 'Type',
+      name: 'type',
+      by: [
+        { field: 'type', direction: 'asc' },
+        { field: 'date', direction: 'desc' },
+      ],
+    },
   ],
 });

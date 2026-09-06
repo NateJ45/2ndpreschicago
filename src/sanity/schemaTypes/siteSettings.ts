@@ -46,7 +46,8 @@ export const siteSettings = defineType({
       title: 'Mission line',
       type: 'text',
       rows: 2,
-      description: 'One-sentence mission shown in the footer. Example: "Serving and celebrating Jesus for the good of the world."',
+      description:
+        'One-sentence mission shown in the footer. Example: "Serving and celebrating Jesus for the good of the world."',
       group: 'identity',
     }),
     defineField({
@@ -55,8 +56,7 @@ export const siteSettings = defineType({
       type: 'string',
       description: 'Public email address shown on the Contact page and footer.',
       group: 'identity',
-      validation: (Rule) =>
-        Rule.required().regex(/.+@.+\..+/, { name: 'email', invert: false }),
+      validation: (Rule) => Rule.required().regex(/.+@.+\..+/, { name: 'email', invert: false }),
     }),
     defineField({
       name: 'pastorEmail',
@@ -77,7 +77,8 @@ export const siteSettings = defineType({
       name: 'officeHours',
       title: 'Office hours (optional)',
       type: 'string',
-      description: 'Shown on the Contact page. Example: "Tuesday-Friday, 10am-2pm". Leave blank to hide.',
+      description:
+        'Shown on the Contact page. Example: "Tuesday-Friday, 10am-2pm". Leave blank to hide.',
       group: 'identity',
     }),
     defineField({
@@ -134,7 +135,8 @@ export const siteSettings = defineType({
               name: 'href',
               title: 'Address',
               type: 'string',
-              description: 'A page on this site like /worship, or a full web address like https://example.com.',
+              description:
+                'A page on this site like /worship, or a full web address like https://example.com.',
               validation: (Rule) => Rule.required(),
             }),
           ],
@@ -277,10 +279,31 @@ export const siteSettings = defineType({
         'The one place to set your Sunday service time. It updates the header, footer, home page, worship page, and your Google listing automatically. Leave a field blank to use the built-in default.',
       options: { collapsible: false },
       fields: [
-        defineField({ name: 'time', title: 'Time', type: 'string', description: 'How the time reads on the site. Example: "11am".' }),
-        defineField({ name: 'day', title: 'Day', type: 'string', description: 'The day of the week, singular. Example: "Sunday". The site adds "s" or "every" where needed.' }),
-        defineField({ name: 'startTime24', title: 'Start time, 24-hour (for search engines)', type: 'string', description: 'Used in the data Google reads. 24-hour clock. Example: "11:00".' }),
-        defineField({ name: 'endTime24', title: 'End time, 24-hour (for search engines)', type: 'string', description: 'Used in the data Google reads. 24-hour clock. Example: "12:15".' }),
+        defineField({
+          name: 'time',
+          title: 'Time',
+          type: 'string',
+          description: 'How the time reads on the site. Example: "11am".',
+        }),
+        defineField({
+          name: 'day',
+          title: 'Day',
+          type: 'string',
+          description:
+            'The day of the week, singular. Example: "Sunday". The site adds "s" or "every" where needed.',
+        }),
+        defineField({
+          name: 'startTime24',
+          title: 'Start time, 24-hour (for search engines)',
+          type: 'string',
+          description: 'Used in the data Google reads. 24-hour clock. Example: "11:00".',
+        }),
+        defineField({
+          name: 'endTime24',
+          title: 'End time, 24-hour (for search engines)',
+          type: 'string',
+          description: 'Used in the data Google reads. 24-hour clock. Example: "12:15".',
+        }),
       ],
     }),
 
@@ -292,14 +315,16 @@ export const siteSettings = defineType({
       name: 'watchUrl',
       title: 'Livestream / Watch URL',
       type: 'url',
-      description: 'Where "Watch Live" points (YouTube channel or livestream). Leave blank to use the Sermons page.',
+      description:
+        'Where "Watch Live" points (YouTube channel or livestream). Leave blank to use the Sermons page.',
       group: 'connect',
     }),
     defineField({
       name: 'giveUrl',
       title: 'Giving link',
       type: 'url',
-      description: 'Online giving portal (e.g. Vanco, Subsplash Giving). Leave blank to use the Give page.',
+      description:
+        'Online giving portal (e.g. Vanco, Subsplash Giving). Leave blank to use the Give page.',
       group: 'connect',
     }),
     defineField({
@@ -313,21 +338,24 @@ export const siteSettings = defineType({
       name: 'directoryUrl',
       title: 'Member directory link',
       type: 'url',
-      description: 'Link to an online member directory (e.g. Planning Center, Instant Church Directory). Leave blank to hide.',
+      description:
+        'Link to an online member directory (e.g. Planning Center, Instant Church Directory). Leave blank to hide.',
       group: 'connect',
     }),
     defineField({
       name: 'registrationBaseUrl',
       title: 'Registration / sign-up base link',
       type: 'url',
-      description: 'Default place to register for events when an event has no link of its own (e.g. a Planning Center or Eventbrite organizer page).',
+      description:
+        'Default place to register for events when an event has no link of its own (e.g. a Planning Center or Eventbrite organizer page).',
       group: 'connect',
     }),
     defineField({
       name: 'prayerUrl',
       title: 'Prayer / connection card link',
       type: 'url',
-      description: 'Link to a prayer-request or connection-card form. Surfaces as a footer link when set.',
+      description:
+        'Link to a prayer-request or connection-card form. Surfaces as a footer link when set.',
       group: 'connect',
     }),
 
@@ -339,7 +367,8 @@ export const siteSettings = defineType({
       name: 'seoImage',
       title: 'Default social share image',
       type: 'image',
-      description: 'The image shown when any page is shared on social media (the Open Graph image). Use a wide image, about 1200 by 630 pixels. Individual pages can override this. Leave blank to use the auto-generated branded cards.',
+      description:
+        'The image shown when any page is shared on social media (the Open Graph image). Use a wide image, about 1200 by 630 pixels. Individual pages can override this. Leave blank to use the auto-generated branded cards.',
       options: { hotspot: true },
       group: 'social',
       fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
@@ -355,7 +384,8 @@ export const siteSettings = defineType({
       name: 'footerCreditUrl',
       title: 'Footer credit URL',
       type: 'url',
-      description: 'Optional. When set, the footer credit becomes a link to this URL (opens in a new tab).',
+      description:
+        'Optional. When set, the footer credit becomes a link to this URL (opens in a new tab).',
       group: 'social',
     }),
 
@@ -375,14 +405,58 @@ export const siteSettings = defineType({
           description: 'When off, the newsletter block does not render anywhere on the site.',
           initialValue: false,
         }),
-        defineField({ name: 'providerLabel', title: 'Provider label', type: 'string', description: 'Internal label only. Example: "MailerLite". Not shown to visitors.' }),
-        defineField({ name: 'formActionUrl', title: 'Form action URL', type: 'url', description: "The embedded-form POST endpoint from your email provider's dashboard." }),
-        defineField({ name: 'audienceId', title: 'Audience / list ID', type: 'string', description: 'Your provider list or audience ID.' }),
-        defineField({ name: 'heading', title: 'Heading', type: 'string', description: 'Headline above the signup form. Example: "Get The Record in your inbox."' }),
-        defineField({ name: 'blurb', title: 'Blurb', type: 'text', rows: 3, description: 'One or two sentences under the heading explaining what subscribers get.' }),
-        defineField({ name: 'buttonLabel', title: 'Button label', type: 'string', initialValue: 'Subscribe' }),
-        defineField({ name: 'successMessage', title: 'Success message', type: 'text', rows: 2, description: 'Message shown after a successful signup.' }),
-        defineField({ name: 'consentNote', title: 'Consent note', type: 'text', rows: 2, description: 'Small-print consent line near the submit button. Link to /privacy included automatically.' }),
+        defineField({
+          name: 'providerLabel',
+          title: 'Provider label',
+          type: 'string',
+          description: 'Internal label only. Example: "MailerLite". Not shown to visitors.',
+        }),
+        defineField({
+          name: 'formActionUrl',
+          title: 'Form action URL',
+          type: 'url',
+          description: "The embedded-form POST endpoint from your email provider's dashboard.",
+        }),
+        defineField({
+          name: 'audienceId',
+          title: 'Audience / list ID',
+          type: 'string',
+          description: 'Your provider list or audience ID.',
+        }),
+        defineField({
+          name: 'heading',
+          title: 'Heading',
+          type: 'string',
+          description: 'Headline above the signup form. Example: "Get The Record in your inbox."',
+        }),
+        defineField({
+          name: 'blurb',
+          title: 'Blurb',
+          type: 'text',
+          rows: 3,
+          description: 'One or two sentences under the heading explaining what subscribers get.',
+        }),
+        defineField({
+          name: 'buttonLabel',
+          title: 'Button label',
+          type: 'string',
+          initialValue: 'Subscribe',
+        }),
+        defineField({
+          name: 'successMessage',
+          title: 'Success message',
+          type: 'text',
+          rows: 2,
+          description: 'Message shown after a successful signup.',
+        }),
+        defineField({
+          name: 'consentNote',
+          title: 'Consent note',
+          type: 'text',
+          rows: 2,
+          description:
+            'Small-print consent line near the submit button. Link to /privacy included automatically.',
+        }),
       ],
     }),
 

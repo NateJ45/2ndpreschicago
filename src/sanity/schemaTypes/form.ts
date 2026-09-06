@@ -21,7 +21,8 @@ export const form = defineType({
       name: 'title',
       title: 'Internal name',
       type: 'string',
-      description: 'For your reference in the Studio, e.g. "Wedding Inquiry". Not shown on the site.',
+      description:
+        'For your reference in the Studio, e.g. "Wedding Inquiry". Not shown on the site.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -31,7 +32,12 @@ export const form = defineType({
       options: { source: 'title' },
       validation: (Rule) => Rule.required(),
     }),
-    defineField({ name: 'heading', title: 'Heading (shown above the form)', type: 'string', group: 'content' }),
+    defineField({
+      name: 'heading',
+      title: 'Heading (shown above the form)',
+      type: 'string',
+      group: 'content',
+    }),
     defineField({ name: 'intro', title: 'Intro text', type: 'text', rows: 3, group: 'content' }),
     defineField({
       name: 'mode',
@@ -61,13 +67,20 @@ export const form = defineType({
           type: 'object',
           name: 'formField',
           fields: [
-            defineField({ name: 'label', title: 'Label', type: 'string', validation: (R) => R.required() }),
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
             defineField({
               name: 'name',
               title: 'Field key',
               type: 'string',
-              description: 'Sent with the submission, e.g. "email", "eventDate". Lowercase, no spaces.',
-              validation: (R) => R.required().regex(/^[a-zA-Z0-9_]+$/, { name: 'letters, numbers, underscore' }),
+              description:
+                'Sent with the submission, e.g. "email", "eventDate". Lowercase, no spaces.',
+              validation: (R) =>
+                R.required().regex(/^[a-zA-Z0-9_]+$/, { name: 'letters, numbers, underscore' }),
             }),
             defineField({
               name: 'type',
@@ -87,7 +100,12 @@ export const form = defineType({
               initialValue: 'text',
               validation: (R) => R.required(),
             }),
-            defineField({ name: 'required', title: 'Required', type: 'boolean', initialValue: false }),
+            defineField({
+              name: 'required',
+              title: 'Required',
+              type: 'boolean',
+              initialValue: false,
+            }),
             defineField({ name: 'placeholder', title: 'Placeholder', type: 'string' }),
             defineField({ name: 'helpText', title: 'Help text', type: 'string' }),
             defineField({
@@ -138,7 +156,8 @@ export const form = defineType({
       type: 'text',
       rows: 2,
       group: 'fields',
-      description: 'Shown under the button. If it contains "privacy policy", that phrase links to /privacy.',
+      description:
+        'Shown under the button. If it contains "privacy policy", that phrase links to /privacy.',
       hidden: ({ parent }) => parent?.mode === 'embed',
     }),
 
@@ -175,7 +194,8 @@ export const form = defineType({
           name: 'notifyEmail',
           title: 'Notification email',
           type: 'string',
-          description: 'Where replies should go. Used as the mailto target when Service is "Open visitor email app".',
+          description:
+            'Where replies should go. Used as the mailto target when Service is "Open visitor email app".',
         }),
       ],
     }),
@@ -196,7 +216,8 @@ export const form = defineType({
       type: 'text',
       rows: 6,
       group: 'embed',
-      description: 'Paste the full embed code from Subsplash, Planning Center, Jotform, etc. Scripts are executed safely.',
+      description:
+        'Paste the full embed code from Subsplash, Planning Center, Jotform, etc. Scripts are executed safely.',
       hidden: ({ parent }) => parent?.mode !== 'embed',
     }),
   ],

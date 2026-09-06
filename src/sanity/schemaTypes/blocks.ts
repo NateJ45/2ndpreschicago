@@ -36,7 +36,12 @@ const richBody = {
             type: 'object',
             title: 'Link',
             fields: [
-              { name: 'href', type: 'url', title: 'URL', validation: (R: any) => R.uri({ allowRelative: true }) },
+              {
+                name: 'href',
+                type: 'url',
+                title: 'URL',
+                validation: (R: any) => R.uri({ allowRelative: true }),
+              },
               { name: 'openInNewTab', type: 'boolean', title: 'Open in new tab' },
             ],
           },
@@ -55,7 +60,8 @@ export function bgField() {
     title: 'Section background',
     type: 'object',
     options: { collapsible: true, collapsed: true },
-    description: 'Optional. Set a brand color tone, or drop in a background photo/video with a dark overlay so text stays readable.',
+    description:
+      'Optional. Set a brand color tone, or drop in a background photo/video with a dark overlay so text stays readable.',
     fields: [
       defineField({
         name: 'tone',
@@ -78,13 +84,15 @@ export function bgField() {
         type: 'image',
         options: { hotspot: true },
         fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
-        description: 'Sits behind the section under a dark overlay. Text is shown in white over it.',
+        description:
+          'Sits behind the section under a dark overlay. Text is shown in white over it.',
       }),
       defineField({
         name: 'videoUrl',
         title: 'Background video URL (optional)',
         type: 'url',
-        description: 'A direct .mp4 or .webm file URL. Plays muted, looped, behind the section. Overrides the image.',
+        description:
+          'A direct .mp4 or .webm file URL. Plays muted, looped, behind the section. Overrides the image.',
       }),
       defineField({
         name: 'overlay',
@@ -92,7 +100,8 @@ export function bgField() {
         type: 'number',
         initialValue: 55,
         validation: (R) => R.min(0).max(90),
-        description: 'Only applies when an image or video is set. Higher = darker, for better text contrast.',
+        description:
+          'Only applies when an image or video is set. Higher = darker, for better text contrast.',
       }),
       defineField({
         name: 'padding',
@@ -124,12 +133,21 @@ export const sectionRichText = defineType({
       name: 'align',
       title: 'Alignment',
       type: 'string',
-      options: { list: [{ title: 'Left', value: 'left' }, { title: 'Center', value: 'center' }], layout: 'radio' },
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Center', value: 'center' },
+        ],
+        layout: 'radio',
+      },
       initialValue: 'left',
     }),
     bgField(),
   ],
-  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Text section' }) },
+  preview: {
+    select: { title: 'heading' },
+    prepare: ({ title }) => ({ title: title || 'Text section' }),
+  },
 });
 
 export const sectionImageText = defineType({
@@ -148,18 +166,37 @@ export const sectionImageText = defineType({
       name: 'imageSide',
       title: 'Image side',
       type: 'string',
-      options: { list: [{ title: 'Left', value: 'left' }, { title: 'Right', value: 'right' }], layout: 'radio' },
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Right', value: 'right' },
+        ],
+        layout: 'radio',
+      },
       initialValue: 'right',
     }),
-    defineField({ name: 'arched', title: 'Arched image (church motif)', type: 'boolean', initialValue: true }),
+    defineField({
+      name: 'arched',
+      title: 'Arched image (church motif)',
+      type: 'boolean',
+      initialValue: true,
+    }),
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
     defineField({ name: 'heading', title: 'Heading', type: 'string' }),
     defineField({ name: 'body', title: 'Body', ...richBody }),
     defineField({ name: 'ctaLabel', title: 'Button label', type: 'string' }),
-    defineField({ name: 'ctaUrl', title: 'Button link', type: 'string', description: 'Internal path like "/give" or a full URL.' }),
+    defineField({
+      name: 'ctaUrl',
+      title: 'Button link',
+      type: 'string',
+      description: 'Internal path like "/give" or a full URL.',
+    }),
     bgField(),
   ],
-  preview: { select: { title: 'heading', media: 'image' }, prepare: ({ title, media }) => ({ title: title || 'Image + text', media }) },
+  preview: {
+    select: { title: 'heading', media: 'image' },
+    prepare: ({ title, media }) => ({ title: title || 'Image + text', media }),
+  },
 });
 
 export const sectionCardGrid = defineType({
@@ -186,9 +223,19 @@ export const sectionCardGrid = defineType({
           type: 'object',
           name: 'card',
           fields: [
-            defineField({ name: 'title', title: 'Title', type: 'string', validation: (R) => R.required() }),
+            defineField({
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
             defineField({ name: 'body', title: 'Body', type: 'text', rows: 3 }),
-            defineField({ name: 'link', title: 'Link', type: 'string', description: 'Optional. Makes the card clickable.' }),
+            defineField({
+              name: 'link',
+              title: 'Link',
+              type: 'string',
+              description: 'Optional. Makes the card clickable.',
+            }),
           ],
           preview: { select: { title: 'title', subtitle: 'body' } },
         }),
@@ -196,7 +243,10 @@ export const sectionCardGrid = defineType({
     }),
     bgField(),
   ],
-  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Card grid' }) },
+  preview: {
+    select: { title: 'heading' },
+    prepare: ({ title }) => ({ title: title || 'Card grid' }),
+  },
 });
 
 export const sectionQuote = defineType({
@@ -204,8 +254,19 @@ export const sectionQuote = defineType({
   title: 'Quote / scripture',
   type: 'object',
   fields: [
-    defineField({ name: 'quote', title: 'Quote', type: 'text', rows: 3, validation: (R) => R.required() }),
-    defineField({ name: 'attribution', title: 'Attribution', type: 'string', description: 'e.g. a person or a scripture reference.' }),
+    defineField({
+      name: 'quote',
+      title: 'Quote',
+      type: 'text',
+      rows: 3,
+      validation: (R) => R.required(),
+    }),
+    defineField({
+      name: 'attribution',
+      title: 'Attribution',
+      type: 'string',
+      description: 'e.g. a person or a scripture reference.',
+    }),
     bgField(),
   ],
   preview: { select: { title: 'quote', subtitle: 'attribution' } },
@@ -217,13 +278,26 @@ export const sectionCtaBand = defineType({
   type: 'object',
   fields: [
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
-    defineField({ name: 'headline', title: 'Headline', type: 'string', validation: (R) => R.required() }),
+    defineField({
+      name: 'headline',
+      title: 'Headline',
+      type: 'string',
+      validation: (R) => R.required(),
+    }),
     defineField({ name: 'subhead', title: 'Subhead', type: 'text', rows: 2 }),
     defineField({ name: 'ctaLabel', title: 'Button label', type: 'string' }),
-    defineField({ name: 'ctaUrl', title: 'Button link', type: 'string', description: 'Internal path like "/worship" or a full URL.' }),
+    defineField({
+      name: 'ctaUrl',
+      title: 'Button link',
+      type: 'string',
+      description: 'Internal path like "/worship" or a full URL.',
+    }),
     bgField(),
   ],
-  preview: { select: { title: 'headline' }, prepare: ({ title }) => ({ title: title || 'CTA band' }) },
+  preview: {
+    select: { title: 'headline' },
+    prepare: ({ title }) => ({ title: title || 'CTA band' }),
+  },
 });
 
 export const sectionForm = defineType({
@@ -233,9 +307,18 @@ export const sectionForm = defineType({
   fields: [
     defineField({ name: 'heading', title: 'Heading', type: 'string' }),
     defineField({ name: 'intro', title: 'Intro', type: 'text', rows: 2 }),
-    defineField({ name: 'form', title: 'Form', type: 'reference', to: [{ type: 'form' }], validation: (R) => R.required() }),
+    defineField({
+      name: 'form',
+      title: 'Form',
+      type: 'reference',
+      to: [{ type: 'form' }],
+      validation: (R) => R.required(),
+    }),
   ],
-  preview: { select: { title: 'heading', form: 'form.title' }, prepare: ({ title, form }) => ({ title: title || form || 'Form' }) },
+  preview: {
+    select: { title: 'heading', form: 'form.title' },
+    prepare: ({ title, form }) => ({ title: title || form || 'Form' }),
+  },
 });
 
 export const sectionFeatureCards = defineType({
@@ -253,7 +336,12 @@ export const sectionFeatureCards = defineType({
       options: { list: ['2', '3', '4'], layout: 'radio' },
       initialValue: '3',
     }),
-    defineField({ name: 'arched', title: 'Arched card images (church motif)', type: 'boolean', initialValue: false }),
+    defineField({
+      name: 'arched',
+      title: 'Arched card images (church motif)',
+      type: 'boolean',
+      initialValue: false,
+    }),
     defineField({
       name: 'cards',
       title: 'Cards',
@@ -271,9 +359,19 @@ export const sectionFeatureCards = defineType({
               fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
             }),
             defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
-            defineField({ name: 'title', title: 'Title', type: 'string', validation: (R) => R.required() }),
+            defineField({
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
             defineField({ name: 'body', title: 'Body', type: 'text', rows: 3 }),
-            defineField({ name: 'badge', title: 'Badge (optional)', type: 'string', description: 'Small tag, e.g. "New" or "Weekly".' }),
+            defineField({
+              name: 'badge',
+              title: 'Badge (optional)',
+              type: 'string',
+              description: 'Small tag, e.g. "New" or "Weekly".',
+            }),
             defineField({ name: 'ctaLabel', title: 'Link label', type: 'string' }),
             defineField({ name: 'ctaUrl', title: 'Link URL', type: 'string' }),
           ],
@@ -283,7 +381,10 @@ export const sectionFeatureCards = defineType({
     }),
     bgField(),
   ],
-  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Feature cards' }) },
+  preview: {
+    select: { title: 'heading' },
+    prepare: ({ title }) => ({ title: title || 'Feature cards' }),
+  },
 });
 
 export const sectionStats = defineType({
@@ -310,8 +411,19 @@ export const sectionStats = defineType({
           type: 'object',
           name: 'stat',
           fields: [
-            defineField({ name: 'value', title: 'Value', type: 'string', description: 'e.g. "1901", "600", "9". Free text so you can write "600+".', validation: (R) => R.required() }),
-            defineField({ name: 'label', title: 'Label', type: 'string', validation: (R) => R.required() }),
+            defineField({
+              name: 'value',
+              title: 'Value',
+              type: 'string',
+              description: 'e.g. "1901", "600", "9". Free text so you can write "600+".',
+              validation: (R) => R.required(),
+            }),
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
             defineField({ name: 'note', title: 'Note (optional)', type: 'string' }),
           ],
           preview: { select: { title: 'value', subtitle: 'label' } },
@@ -340,8 +452,19 @@ export const sectionAccordion = defineType({
           type: 'object',
           name: 'qa',
           fields: [
-            defineField({ name: 'question', title: 'Question', type: 'string', validation: (R) => R.required() }),
-            defineField({ name: 'answer', title: 'Answer', type: 'text', rows: 4, validation: (R) => R.required() }),
+            defineField({
+              name: 'question',
+              title: 'Question',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'Answer',
+              type: 'text',
+              rows: 4,
+              validation: (R) => R.required(),
+            }),
           ],
           preview: { select: { title: 'question' } },
         }),
@@ -349,7 +472,10 @@ export const sectionAccordion = defineType({
     }),
     bgField(),
   ],
-  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'FAQ / accordion' }) },
+  preview: {
+    select: { title: 'heading' },
+    prepare: ({ title }) => ({ title: title || 'FAQ / accordion' }),
+  },
 });
 
 export const sectionGallery = defineType({
@@ -385,7 +511,10 @@ export const sectionGallery = defineType({
     }),
     bgField(),
   ],
-  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Photo gallery' }) },
+  preview: {
+    select: { title: 'heading' },
+    prepare: ({ title }) => ({ title: title || 'Photo gallery' }),
+  },
 });
 
 export const sectionSteps = defineType({
@@ -405,7 +534,12 @@ export const sectionSteps = defineType({
           type: 'object',
           name: 'step',
           fields: [
-            defineField({ name: 'title', title: 'Title', type: 'string', validation: (R) => R.required() }),
+            defineField({
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
             defineField({ name: 'body', title: 'Body', type: 'text', rows: 3 }),
           ],
           preview: { select: { title: 'title', subtitle: 'body' } },
@@ -424,7 +558,13 @@ export const sectionLogos = defineType({
   fields: [
     defineField({ name: 'heading', title: 'Heading', type: 'string' }),
     defineField({ name: 'intro', title: 'Intro', type: 'text', rows: 2 }),
-    defineField({ name: 'grayscale', title: 'Grayscale logos', type: 'boolean', initialValue: true, description: 'Show logos in grayscale, full color on hover.' }),
+    defineField({
+      name: 'grayscale',
+      title: 'Grayscale logos',
+      type: 'boolean',
+      initialValue: true,
+      description: 'Show logos in grayscale, full color on hover.',
+    }),
     defineField({
       name: 'items',
       title: 'Logos',
@@ -434,7 +574,12 @@ export const sectionLogos = defineType({
           type: 'image',
           options: { hotspot: true },
           fields: [
-            defineField({ name: 'alt', title: 'Name / alt text', type: 'string', validation: (R) => R.required() }),
+            defineField({
+              name: 'alt',
+              title: 'Name / alt text',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
             defineField({ name: 'url', title: 'Link (optional)', type: 'url' }),
           ],
         }),
@@ -443,7 +588,10 @@ export const sectionLogos = defineType({
     }),
     bgField(),
   ],
-  preview: { select: { title: 'heading' }, prepare: ({ title }) => ({ title: title || 'Logos / partners' }) },
+  preview: {
+    select: { title: 'heading' },
+    prepare: ({ title }) => ({ title: title || 'Logos / partners' }),
+  },
 });
 
 export const sectionMediaFeature = defineType({
@@ -458,10 +606,21 @@ export const sectionMediaFeature = defineType({
       name: 'mediaSide',
       title: 'Media side',
       type: 'string',
-      options: { list: [{ title: 'Left', value: 'left' }, { title: 'Right', value: 'right' }], layout: 'radio' },
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Right', value: 'right' },
+        ],
+        layout: 'radio',
+      },
       initialValue: 'left',
     }),
-    defineField({ name: 'videoUrl', title: 'Video URL (YouTube/Vimeo)', type: 'url', description: 'Shows an embedded player. Takes priority over the image.' }),
+    defineField({
+      name: 'videoUrl',
+      title: 'Video URL (YouTube/Vimeo)',
+      type: 'url',
+      description: 'Shows an embedded player. Takes priority over the image.',
+    }),
     defineField({
       name: 'image',
       title: 'Image (used if no video)',
@@ -473,7 +632,10 @@ export const sectionMediaFeature = defineType({
     defineField({ name: 'ctaUrl', title: 'Button link', type: 'string' }),
     bgField(),
   ],
-  preview: { select: { title: 'heading', media: 'image' }, prepare: ({ title, media }) => ({ title: title || 'Media feature', media }) },
+  preview: {
+    select: { title: 'heading', media: 'image' },
+    prepare: ({ title, media }) => ({ title: title || 'Media feature', media }),
+  },
 });
 
 export const sectionDynamicList = defineType({
@@ -500,10 +662,19 @@ export const sectionDynamicList = defineType({
       initialValue: 'upcomingEvents',
       validation: (R) => R.required(),
     }),
-    defineField({ name: 'count', title: 'How many', type: 'number', initialValue: 3, validation: (R) => R.min(1).max(12) }),
+    defineField({
+      name: 'count',
+      title: 'How many',
+      type: 'number',
+      initialValue: 3,
+      validation: (R) => R.min(1).max(12),
+    }),
     bgField(),
   ],
-  preview: { select: { title: 'heading', source: 'source' }, prepare: ({ title, source }) => ({ title: title || 'Dynamic list', subtitle: source }) },
+  preview: {
+    select: { title: 'heading', source: 'source' },
+    prepare: ({ title, source }) => ({ title: title || 'Dynamic list', subtitle: source }),
+  },
 });
 
 export const sectionArchShowcase = defineType({

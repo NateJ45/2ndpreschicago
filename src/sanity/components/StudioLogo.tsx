@@ -17,7 +17,9 @@ import churchMark from './church-mark.png';
 
 export default function StudioLogo() {
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
+    <span
+      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}
+    >
       <span
         style={{
           display: 'inline-flex',

@@ -81,7 +81,12 @@ export const sermon = defineType({
             { title: 'Heading', value: 'h3' },
           ],
           lists: [{ title: 'Bullet', value: 'bullet' }],
-          marks: { decorators: [{ title: 'Bold', value: 'strong' }, { title: 'Italic', value: 'em' }] },
+          marks: {
+            decorators: [
+              { title: 'Bold', value: 'strong' },
+              { title: 'Italic', value: 'em' },
+            ],
+          },
         }),
       ],
     }),
@@ -112,7 +117,8 @@ export const sermon = defineType({
       title: 'Liturgical day (optional)',
       type: 'string',
       group: 'record',
-      description: 'The day in the church year, e.g. "Third Sunday after Pentecost" or "Christmas Eve". Shown with the date.',
+      description:
+        'The day in the church year, e.g. "Third Sunday after Pentecost" or "Christmas Eve". Shown with the date.',
     }),
     defineField({
       name: 'bulletin',
@@ -129,21 +135,33 @@ export const sermon = defineType({
       type: 'file',
       group: 'record',
       options: { accept: '.pdf' },
-      description: 'The written sermon or preaching notes. Shows as a "Sermon notes (PDF)" download on the sermon page.',
+      description:
+        'The written sermon or preaching notes. Shows as a "Sermon notes (PDF)" download on the sermon page.',
     }),
     defineField({
       name: 'hymns',
       title: 'Hymns sung',
       type: 'array',
       group: 'record',
-      description: 'The congregational hymns from this service, in order. Add the hymnal number if you have it.',
+      description:
+        'The congregational hymns from this service, in order. Add the hymnal number if you have it.',
       of: [
         defineArrayMember({
           type: 'object',
           name: 'hymn',
           fields: [
-            defineField({ name: 'title', title: 'Hymn title', type: 'string', validation: (R) => R.required() }),
-            defineField({ name: 'number', title: 'Hymnal number (optional)', type: 'string', description: 'e.g. "Glory to God 401".' }),
+            defineField({
+              name: 'title',
+              title: 'Hymn title',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
+            defineField({
+              name: 'number',
+              title: 'Hymnal number (optional)',
+              type: 'string',
+              description: 'e.g. "Glory to God 401".',
+            }),
           ],
           preview: { select: { title: 'title', subtitle: 'number' } },
         }),
@@ -160,8 +178,18 @@ export const sermon = defineType({
           type: 'object',
           name: 'musicPiece',
           fields: [
-            defineField({ name: 'role', title: 'Part of the service', type: 'string', description: 'e.g. "Prelude", "Anthem", "Offertory", "Postlude".' }),
-            defineField({ name: 'title', title: 'Piece', type: 'string', validation: (R) => R.required() }),
+            defineField({
+              name: 'role',
+              title: 'Part of the service',
+              type: 'string',
+              description: 'e.g. "Prelude", "Anthem", "Offertory", "Postlude".',
+            }),
+            defineField({
+              name: 'title',
+              title: 'Piece',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
             defineField({ name: 'composer', title: 'Composer (optional)', type: 'string' }),
           ],
           preview: { select: { title: 'title', subtitle: 'role' } },
@@ -173,14 +201,26 @@ export const sermon = defineType({
       title: 'Serving in worship',
       type: 'array',
       group: 'record',
-      description: 'Who led the service: liturgist, organist, soloists, readers. The preacher is already the Speaker field.',
+      description:
+        'Who led the service: liturgist, organist, soloists, readers. The preacher is already the Speaker field.',
       of: [
         defineArrayMember({
           type: 'object',
           name: 'worshipLeader',
           fields: [
-            defineField({ name: 'role', title: 'Role', type: 'string', validation: (R) => R.required(), description: 'e.g. "Liturgist", "Organist", "Soloist".' }),
-            defineField({ name: 'name', title: 'Name', type: 'string', validation: (R) => R.required() }),
+            defineField({
+              name: 'role',
+              title: 'Role',
+              type: 'string',
+              validation: (R) => R.required(),
+              description: 'e.g. "Liturgist", "Organist", "Soloist".',
+            }),
+            defineField({
+              name: 'name',
+              title: 'Name',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
           ],
           preview: { select: { title: 'name', subtitle: 'role' } },
         }),
@@ -191,12 +231,21 @@ export const sermon = defineType({
     select: { title: 'title', speaker: 'speaker', date: 'date', media: 'image' },
     prepare: ({ title, speaker, date, media }) => ({
       title: title ?? 'Untitled sermon',
-      subtitle: [speaker, date ? new Date(date).toLocaleDateString() : null].filter(Boolean).join(' · '),
+      subtitle: [speaker, date ? new Date(date).toLocaleDateString() : null]
+        .filter(Boolean)
+        .join(' · '),
       media,
     }),
   },
   orderings: [
     { title: 'Newest first', name: 'dateDesc', by: [{ field: 'date', direction: 'desc' }] },
-    { title: 'Series', name: 'series', by: [{ field: 'series', direction: 'asc' }, { field: 'date', direction: 'desc' }] },
+    {
+      title: 'Series',
+      name: 'series',
+      by: [
+        { field: 'series', direction: 'asc' },
+        { field: 'date', direction: 'desc' },
+      ],
+    },
   ],
 });

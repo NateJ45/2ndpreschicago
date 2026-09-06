@@ -44,7 +44,12 @@ export const staffMember = defineType({
           type: 'block',
           styles: [{ title: 'Paragraph', value: 'normal' }],
           lists: [],
-          marks: { decorators: [{ title: 'Bold', value: 'strong' }, { title: 'Italic', value: 'em' }] },
+          marks: {
+            decorators: [
+              { title: 'Bold', value: 'strong' },
+              { title: 'Italic', value: 'em' },
+            ],
+          },
         }),
       ],
     }),
@@ -58,8 +63,18 @@ export const staffMember = defineType({
           type: 'object',
           name: 'favoriteItem',
           fields: [
-            defineField({ name: 'label', title: 'Label', type: 'string', validation: (Rule) => Rule.required() }),
-            defineField({ name: 'value', title: 'Value', type: 'string', validation: (Rule) => Rule.required() }),
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'value',
+              title: 'Value',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
           ],
           preview: { select: { title: 'label', subtitle: 'value' } },
         }),
@@ -77,6 +92,13 @@ export const staffMember = defineType({
     select: { title: 'name', subtitle: 'role', media: 'photo' },
   },
   orderings: [
-    { title: 'Display order', name: 'displayOrder', by: [{ field: 'displayOrder', direction: 'asc' }, { field: 'name', direction: 'asc' }] },
+    {
+      title: 'Display order',
+      name: 'displayOrder',
+      by: [
+        { field: 'displayOrder', direction: 'asc' },
+        { field: 'name', direction: 'asc' },
+      ],
+    },
   ],
 });

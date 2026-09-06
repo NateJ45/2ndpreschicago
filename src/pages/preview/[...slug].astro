@@ -121,11 +121,9 @@ let arraysConfig: Array<{ field: EditableArrayField; label: string }>;
 let sectionsField: 'flexibleSections' | 'sections';
 
 if (singletonType) {
-  doc = await previewFetch<PreviewDoc | null>(
-    draftMode,
-    `*[_type == $type][0]${PREVIEW_FIELDS}`,
-    { type: singletonType },
-  );
+  doc = await previewFetch<PreviewDoc | null>(draftMode, `*[_type == $type][0]${PREVIEW_FIELDS}`, {
+    type: singletonType,
+  });
   label = SINGLETON_PAGE_LABELS[singletonType] ?? singletonType;
   arraysConfig = PAGE_ARRAYS[singletonType] ?? [];
   sectionsField = 'flexibleSections';

@@ -153,9 +153,7 @@ if (FIELDS_MODE) {
       fieldsByType[t.name] = Object.keys(t.attributes ?? {}).filter((k) => !SYS.has(k));
     }
   } else {
-    console.log(
-      '\n(schema.json not found — run `npm run typegen` for the full absent-field diff)',
-    );
+    console.log('\n(schema.json not found — run `npm run typegen` for the full absent-field diff)');
   }
 
   console.log('\n== Field-level audit ==');

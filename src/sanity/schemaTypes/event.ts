@@ -28,7 +28,8 @@ export const event = defineType({
       name: 'eventType',
       title: 'Type',
       type: 'string',
-      description: 'Recurring events (weekly worship, Bible study) always show. One-time events show until their date passes.',
+      description:
+        'Recurring events (weekly worship, Bible study) always show. One-time events show until their date passes.',
       options: {
         list: [
           { title: 'Recurring', value: 'recurring' },
@@ -79,7 +80,8 @@ export const event = defineType({
       name: 'specialService',
       title: 'Special service',
       type: 'boolean',
-      description: 'A holy-day or special worship service (Christmas Eve, Ash Wednesday, Maundy Thursday, Easter). Shows in the "Special services" band.',
+      description:
+        'A holy-day or special worship service (Christmas Eve, Ash Wednesday, Maundy Thursday, Easter). Shows in the "Special services" band.',
       initialValue: false,
     }),
     defineField({
@@ -104,13 +106,15 @@ export const event = defineType({
       name: 'scheduleLabel',
       title: 'Schedule (display text)',
       type: 'string',
-      description: 'How the time reads on the page. Examples: "Sundays, 11am" or "Saturday, June 27, 11am to 3pm". For recurring events this is the main time shown.',
+      description:
+        'How the time reads on the page. Examples: "Sundays, 11am" or "Saturday, June 27, 11am to 3pm". For recurring events this is the main time shown.',
     }),
     defineField({
       name: 'start',
       title: 'Start date & time',
       type: 'datetime',
-      description: 'For one-time events, set the actual date so it sorts and drops off after it passes. Optional for recurring events.',
+      description:
+        'For one-time events, set the actual date so it sorts and drops off after it passes. Optional for recurring events.',
     }),
     defineField({
       name: 'end',
@@ -162,7 +166,14 @@ export const event = defineType({
                 name: 'link',
                 type: 'object',
                 title: 'Link',
-                fields: [{ name: 'href', type: 'url', title: 'URL', validation: (R: any) => R.uri({ allowRelative: true }) }],
+                fields: [
+                  {
+                    name: 'href',
+                    type: 'url',
+                    title: 'URL',
+                    validation: (R: any) => R.uri({ allowRelative: true }),
+                  },
+                ],
               },
             ],
           },
@@ -179,7 +190,8 @@ export const event = defineType({
       name: 'registrationLabel',
       title: 'Registration button label',
       type: 'string',
-      description: 'Optional. Defaults to "Register". Example: "RSVP", "Save your seat", "Sign up".',
+      description:
+        'Optional. Defaults to "Register". Example: "RSVP", "Save your seat", "Sign up".',
     }),
     defineField({
       name: 'cost',
@@ -221,7 +233,13 @@ export const event = defineType({
     }),
   ],
   preview: {
-    select: { title: 'title', eventType: 'eventType', schedule: 'scheduleLabel', start: 'start', media: 'image' },
+    select: {
+      title: 'title',
+      eventType: 'eventType',
+      schedule: 'scheduleLabel',
+      start: 'start',
+      media: 'image',
+    },
     prepare: ({ title, eventType, schedule, start, media }) => ({
       title: title ?? 'Untitled event',
       subtitle: `${eventType === 'recurring' ? '↻ ' : ''}${schedule ?? (start ? new Date(start).toLocaleDateString() : '')}`,
@@ -229,7 +247,11 @@ export const event = defineType({
     }),
   },
   orderings: [
-    { title: 'Start date (soonest first)', name: 'startAsc', by: [{ field: 'start', direction: 'asc' }] },
+    {
+      title: 'Start date (soonest first)',
+      name: 'startAsc',
+      by: [{ field: 'start', direction: 'asc' }],
+    },
     { title: 'Title', name: 'titleAsc', by: [{ field: 'title', direction: 'asc' }] },
   ],
 });

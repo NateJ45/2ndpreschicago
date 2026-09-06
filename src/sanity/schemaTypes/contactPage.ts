@@ -24,8 +24,12 @@ export const contactPage = defineType({
       title: 'SEO title',
       type: 'string',
       group: 'seo',
-      description: 'Browser tab and Google result title. Aim for 50 to 60 characters. Front-load the location or service.',
-      validation: (Rule) => Rule.max(60).warning('Titles longer than about 60 characters get cut off in Google search results.'),
+      description:
+        'Browser tab and Google result title. Aim for 50 to 60 characters. Front-load the location or service.',
+      validation: (Rule) =>
+        Rule.max(60).warning(
+          'Titles longer than about 60 characters get cut off in Google search results.',
+        ),
     }),
     defineField({
       name: 'seoDescription',
@@ -33,24 +37,45 @@ export const contactPage = defineType({
       type: 'text',
       rows: 3,
       group: 'seo',
-      description: 'The sentence under the title in Google results. Aim for 150 to 160 characters. Write it for a person, not a search engine.',
-      validation: (Rule) => Rule.max(160).warning('Descriptions longer than about 160 characters get cut off in Google search results.'),
+      description:
+        'The sentence under the title in Google results. Aim for 150 to 160 characters. Write it for a person, not a search engine.',
+      validation: (Rule) =>
+        Rule.max(160).warning(
+          'Descriptions longer than about 160 characters get cut off in Google search results.',
+        ),
     }),
     defineField({
       name: 'seoImage',
       title: 'Social share image (this page)',
       type: 'image',
       group: 'seo',
-      description: 'Optional. The image shown when this page is shared on social media or in a text. Overrides the site default in Site Settings. Use a wide image, about 1200 by 630 pixels. Leave blank to use the site default.',
+      description:
+        'Optional. The image shown when this page is shared on social media or in a text. Overrides the site default in Site Settings. Use a wide image, about 1200 by 630 pixels. Leave blank to use the site default.',
       options: { hotspot: true },
-      fields: [
-        defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
-      ],
+      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
     }),
 
-    defineField({ name: 'heroEyebrow', title: 'Hero eyebrow', type: 'string', group: 'hero', initialValue: 'Contact' }),
-    defineField({ name: 'heroHeadline', title: 'Hero headline', type: 'string', group: 'hero', initialValue: 'Start the Conversation.' }),
-    defineField({ name: 'heroSubhead', title: 'Hero subhead', type: 'text', rows: 2, group: 'hero' }),
+    defineField({
+      name: 'heroEyebrow',
+      title: 'Hero eyebrow',
+      type: 'string',
+      group: 'hero',
+      initialValue: 'Contact',
+    }),
+    defineField({
+      name: 'heroHeadline',
+      title: 'Hero headline',
+      type: 'string',
+      group: 'hero',
+      initialValue: 'Start the Conversation.',
+    }),
+    defineField({
+      name: 'heroSubhead',
+      title: 'Hero subhead',
+      type: 'text',
+      rows: 2,
+      group: 'hero',
+    }),
     defineField({
       name: 'heroKeyword',
       title: 'Hero keyword (gold emphasis)',
@@ -64,10 +89,16 @@ export const contactPage = defineType({
       title: 'Hero background image',
       type: 'image',
       group: 'hero',
-      description: 'Full-bleed photo behind the hero text. Pick a landscape shot; the page applies a dark gradient over the bottom for readability.',
+      description:
+        'Full-bleed photo behind the hero text. Pick a landscape shot; the page applies a dark gradient over the bottom for readability.',
       options: { hotspot: true },
       fields: [
-        defineField({ name: 'alt', title: 'Alt text', type: 'string', validation: (R) => R.required() }),
+        defineField({
+          name: 'alt',
+          title: 'Alt text',
+          type: 'string',
+          validation: (R) => R.required(),
+        }),
       ],
     }),
     defineField({
@@ -93,7 +124,8 @@ export const contactPage = defineType({
       type: 'reference',
       to: [{ type: 'form' }],
       group: 'form',
-      description: 'The form shown on the contact page. Leave empty to show direct contact links only.',
+      description:
+        'The form shown on the contact page. Leave empty to show direct contact links only.',
     }),
     // removed interior-designer contact form dropdown option fields (formProjectTypeOptions, formLocationOptions, formBudgetOptions, formTimelineOptions, formSourceOptions) during church remodel
     defineField({
@@ -115,9 +147,15 @@ export const contactPage = defineType({
       title: 'Editor note (not shown on the site)',
       type: 'text',
       rows: 3,
-      description: 'Internal-only reminder for editors. Anything you write here stays in Studio and never renders on the live page.',
+      description:
+        'Internal-only reminder for editors. Anything you write here stays in Studio and never renders on the live page.',
     }),
-    defineField({ name: 'whoToReachLabel', title: 'Who to reach label', type: 'string', group: 'content' }),
+    defineField({
+      name: 'whoToReachLabel',
+      title: 'Who to reach label',
+      type: 'string',
+      group: 'content',
+    }),
     defineField({
       name: 'contactReasons',
       title: 'Who to reach rows',
@@ -130,27 +168,86 @@ export const contactPage = defineType({
           type: 'object',
           name: 'contactReason',
           fields: [
-            defineField({ name: 'label', title: 'Label', type: 'string', validation: (R) => R.required() }),
-            defineField({ name: 'value', title: 'Shown text', type: 'string', description: 'The text shown on the right, e.g. an email address or "See wedding details".', validation: (R) => R.required() }),
-            defineField({ name: 'href', title: 'Link', type: 'string', description: 'A "mailto:" email link, an internal path like "/weddings", or a full URL.', validation: (R) => R.required() }),
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              validation: (R) => R.required(),
+            }),
+            defineField({
+              name: 'value',
+              title: 'Shown text',
+              type: 'string',
+              description:
+                'The text shown on the right, e.g. an email address or "See wedding details".',
+              validation: (R) => R.required(),
+            }),
+            defineField({
+              name: 'href',
+              title: 'Link',
+              type: 'string',
+              description:
+                'A "mailto:" email link, an internal path like "/weddings", or a full URL.',
+              validation: (R) => R.required(),
+            }),
           ],
           preview: { select: { title: 'label', subtitle: 'value' } },
         }),
       ],
     }),
-    defineField({ name: 'gettingHereLabel', title: 'Getting here label', type: 'string', group: 'content' }),
-    defineField({ name: 'gettingHereBody', title: 'Getting here body', type: 'text', rows: 3, group: 'content' }),
-    defineField({ name: 'formSectionHeadline', title: 'Form section headline', type: 'string', group: 'content' }),
-    defineField({ name: 'finalCtaEyebrow', title: 'Closing CTA eyebrow', type: 'string', group: 'content' }),
-    defineField({ name: 'finalCtaHeadline', title: 'Closing CTA headline', type: 'string', group: 'content' }),
-    defineField({ name: 'finalCtaSubhead', title: 'Closing CTA subhead', type: 'text', rows: 2, group: 'content' }),
-    defineField({ name: 'finalCta', title: 'Closing CTA button', type: 'ctaBlock', group: 'content', description: 'The button in the closing call-to-action band. Leave empty to use the built-in default button.' }),
+    defineField({
+      name: 'gettingHereLabel',
+      title: 'Getting here label',
+      type: 'string',
+      group: 'content',
+    }),
+    defineField({
+      name: 'gettingHereBody',
+      title: 'Getting here body',
+      type: 'text',
+      rows: 3,
+      group: 'content',
+    }),
+    defineField({
+      name: 'formSectionHeadline',
+      title: 'Form section headline',
+      type: 'string',
+      group: 'content',
+    }),
+    defineField({
+      name: 'finalCtaEyebrow',
+      title: 'Closing CTA eyebrow',
+      type: 'string',
+      group: 'content',
+    }),
+    defineField({
+      name: 'finalCtaHeadline',
+      title: 'Closing CTA headline',
+      type: 'string',
+      group: 'content',
+    }),
+    defineField({
+      name: 'finalCtaSubhead',
+      title: 'Closing CTA subhead',
+      type: 'text',
+      rows: 2,
+      group: 'content',
+    }),
+    defineField({
+      name: 'finalCta',
+      title: 'Closing CTA button',
+      type: 'ctaBlock',
+      group: 'content',
+      description:
+        'The button in the closing call-to-action band. Leave empty to use the built-in default button.',
+    }),
     defineField({
       name: 'flexibleSections',
       title: 'Page sections',
       type: 'array',
       group: 'sections',
-      description: 'Add on-brand sections to this page (text, image + text, cards, quote, CTA band, form, embed). They render below the built-in content. Drag to reorder.',
+      description:
+        'Add on-brand sections to this page (text, image + text, cards, quote, CTA band, form, embed). They render below the built-in content. Drag to reorder.',
       of: FLEXIBLE_SECTION_MEMBERS,
     }),
   ],

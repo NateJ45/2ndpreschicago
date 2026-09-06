@@ -43,7 +43,8 @@ export const embed = defineType({
       title: 'Embed snippet (HTML)',
       type: 'text',
       rows: 6,
-      description: 'Paste the full embed code (Subsplash, Planning Center, Jotform). Scripts run safely.',
+      description:
+        'Paste the full embed code (Subsplash, Planning Center, Jotform). Scripts run safely.',
       hidden: ({ parent }) => parent?.mode !== 'html',
     }),
     defineField({

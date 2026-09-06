@@ -84,12 +84,7 @@ const HIDDEN_FROM_DEFAULT = new Set<string>([
  * live draft preview, so we do NOT attach an iframe "Preview" view (it would
  * load the last published build, not the editor's draft, and mislead editors).
  */
-function singleton(
-  S: StructureBuilder,
-  schemaType: string,
-  title: string,
-  icon: any,
-) {
+function singleton(S: StructureBuilder, schemaType: string, title: string, icon: any) {
   return S.listItem()
     .title(title)
     .icon(icon)
@@ -203,7 +198,9 @@ export const deskStructure = (S: StructureBuilder, _context: StructureResolverCo
               S.documentTypeListItem('ministry').title('Ministries').icon(HeartIcon),
               S.documentTypeListItem('faqItem').title('FAQ Items').icon(HelpCircleIcon),
               S.documentTypeListItem('form').title('Forms').icon(EnvelopeIcon),
-              S.documentTypeListItem('worshipResource').title('Worship Resources').icon(DocumentsIcon),
+              S.documentTypeListItem('worshipResource')
+                .title('Worship Resources')
+                .icon(DocumentsIcon),
               S.documentTypeListItem('announcement').title('Announcements').icon(BellIcon),
             ]),
         ),
@@ -218,5 +215,7 @@ export const deskStructure = (S: StructureBuilder, _context: StructureResolverCo
 
       // Safety net: surface any document type we have NOT explicitly placed above
       // (and keep the hidden set, including media.tag, out of the desk root).
-      ...S.documentTypeListItems().filter((item) => !HIDDEN_FROM_DEFAULT.has(item.getId() as string)),
+      ...S.documentTypeListItems().filter(
+        (item) => !HIDDEN_FROM_DEFAULT.has(item.getId() as string),
+      ),
     ]);

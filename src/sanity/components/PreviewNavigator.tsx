@@ -67,9 +67,7 @@ async function fetchRows(client: ReturnType<typeof useClient>): Promise<NavRow[]
   // Raw perspective on purpose: we need BOTH twins for the status dots. One
   // query covers the singletons and the custom pages; the custom ones also carry
   // their title and slug, which the singletons do not need.
-  const docs = await client.fetch<
-    { _id: string; _type: string; title?: string; slug?: string }[]
-  >(
+  const docs = await client.fetch<{ _id: string; _type: string; title?: string; slug?: string }[]>(
     '*[_type in $types || _type == "page"]{ _id, _type, title, "slug": slug.current }',
     { types: MAIN_PAGES.map((p) => p.type) },
   );
@@ -268,43 +266,43 @@ export function PreviewNavigator() {
                       </Box>
                     )}
                     <Flex align="center" gap={1}>
-                    <Card
-                      as="button"
-                      flex={1}
-                      padding={2}
-                      radius={2}
-                      tone={active ? 'primary' : 'default'}
-                      pressed={active}
-                      style={{ cursor: 'pointer', textAlign: 'left', minWidth: 0 }}
-                      onClick={() => go(r.href, r.type, r.id)}
-                    >
-                      <Flex align="center" gap={2}>
-                        <Text
-                          size={1}
-                          weight={active ? 'semibold' : 'regular'}
-                          textOverflow="ellipsis"
-                          style={{ flex: 1, minWidth: 0 }}
-                        >
-                          {r.label}
-                        </Text>
-                        <StatusDot row={r} />
-                      </Flex>
-                    </Card>
-                    {r.liveHref && (
-                      /* Outside the row button: a button may not nest a link.
-                         Opens the REAL page in a new tab. */
-                      <Button
-                        as="a"
-                        href={r.liveHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        mode="bleed"
+                      <Card
+                        as="button"
+                        flex={1}
                         padding={2}
-                        icon={LaunchIcon}
-                        title={`Open the live page (${r.liveHref})`}
-                        aria-label={`Open the live page for ${r.label}`}
-                      />
-                    )}
+                        radius={2}
+                        tone={active ? 'primary' : 'default'}
+                        pressed={active}
+                        style={{ cursor: 'pointer', textAlign: 'left', minWidth: 0 }}
+                        onClick={() => go(r.href, r.type, r.id)}
+                      >
+                        <Flex align="center" gap={2}>
+                          <Text
+                            size={1}
+                            weight={active ? 'semibold' : 'regular'}
+                            textOverflow="ellipsis"
+                            style={{ flex: 1, minWidth: 0 }}
+                          >
+                            {r.label}
+                          </Text>
+                          <StatusDot row={r} />
+                        </Flex>
+                      </Card>
+                      {r.liveHref && (
+                        /* Outside the row button: a button may not nest a link.
+                         Opens the REAL page in a new tab. */
+                        <Button
+                          as="a"
+                          href={r.liveHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          mode="bleed"
+                          padding={2}
+                          icon={LaunchIcon}
+                          title={`Open the live page (${r.liveHref})`}
+                          aria-label={`Open the live page for ${r.label}`}
+                        />
+                      )}
                     </Flex>
                   </Fragment>
                 );

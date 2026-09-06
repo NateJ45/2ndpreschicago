@@ -39,7 +39,12 @@ export type GuideBlock =
   | { kind: 'steps'; items: string[] }
   | { kind: 'bullets'; items: string[] }
   | { kind: 'path'; items: string[] }
-  | { kind: 'callout'; tone?: 'primary' | 'positive' | 'caution' | 'default'; title?: string; text: string }
+  | {
+      kind: 'callout';
+      tone?: 'primary' | 'positive' | 'caution' | 'default';
+      title?: string;
+      text: string;
+    }
   | { kind: 'seealso'; items: string[] };
 
 export interface Guide {
@@ -101,7 +106,10 @@ export const guides: Guide[] = [
           '**Alt text**: a short sentence describing a photo, read aloud to blind visitors and read by Google.',
         ],
       },
-      { kind: 'seealso', items: ["Edit a page's words & photos", 'Do it yourself vs. call Nathan'] },
+      {
+        kind: 'seealso',
+        items: ["Edit a page's words & photos", 'Do it yourself vs. call Nathan'],
+      },
     ],
   },
 
@@ -217,7 +225,9 @@ export const guides: Guide[] = [
       { kind: 'h', text: 'Take it down' },
       {
         kind: 'steps',
-        items: ['Open the announcement, turn **Enabled** off (or set the **End** date to today), and Publish.'],
+        items: [
+          'Open the announcement, turn **Enabled** off (or set the **End** date to today), and Publish.',
+        ],
       },
       {
         kind: 'callout',
@@ -253,7 +263,10 @@ export const guides: Guide[] = [
       { kind: 'path', items: ['Pages', 'FAQ', 'Category order'] },
       {
         kind: 'steps',
-        items: ['Open **Pages**, then **FAQ**, and find **Category order**.', 'Drag the categories into the order you want. Publish.'],
+        items: [
+          'Open **Pages**, then **FAQ**, and find **Category order**.',
+          'Drag the categories into the order you want. Publish.',
+        ],
       },
       {
         kind: 'callout',
@@ -279,7 +292,10 @@ export const guides: Guide[] = [
       },
       {
         kind: 'steps',
-        items: ['Open **Pages**, then **Sermons (index page)**.', 'Check the watch / livestream link is correct. Publish.'],
+        items: [
+          'Open **Pages**, then **Sermons (index page)**.',
+          'Check the watch / livestream link is correct. Publish.',
+        ],
       },
       { kind: 'h', text: 'Post a recorded message' },
       { kind: 'path', items: ['Sermons', 'New sermon'] },
@@ -473,7 +489,10 @@ export const guides: Guide[] = [
         ],
       },
       { kind: 'h', text: "Change a section's background" },
-      { kind: 'p', text: 'Each section has a **Background** control so it sits nicely on the page.' },
+      {
+        kind: 'p',
+        text: 'Each section has a **Background** control so it sits nicely on the page.',
+      },
       {
         kind: 'bullets',
         items: [
