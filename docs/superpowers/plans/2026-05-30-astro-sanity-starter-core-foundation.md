@@ -44,7 +44,7 @@ git init
 
 - [ ] **Step 3: Clean install both workspaces**
 
-Run: `npm install` (root), then `npm --prefix studio install`
+Run: `npm install` (root), then `npm install`
 Expected: both complete with no peer-dependency errors that block install.
 
 - [ ] **Step 4: Baseline build to confirm the fork works as-is**
@@ -71,8 +71,8 @@ The goal of this stage is a lean core that builds without the specialized surfac
 
 **Files:**
 - Create: `modules/<name>/studio/` for each module
-- Modify: `studio/schemaTypes/index.ts`
-- Move: the schema files listed below out of `studio/schemaTypes/`
+- Modify: `src/sanity/schemaTypes/index.ts`
+- Move: the schema files listed below out of `src/sanity/schemaTypes/`
 
 - [ ] **Step 1: Create the module directories**
 
@@ -84,7 +84,7 @@ foreach ($m in $mods) { New-Item -ItemType Directory -Force "modules\$m\studio" 
 
 - [ ] **Step 2: Move each module's schema files**
 
-Move these from `studio/schemaTypes/` into the matching `modules/<name>/studio/`:
+Move these from `src/sanity/schemaTypes/` into the matching `modules/<name>/studio/`:
 
 - `portfolio`: `portfolioPage.ts`, `project.ts`
 - `process`: `processPage.ts`, `processStep.ts`
@@ -99,7 +99,7 @@ Move these from `studio/schemaTypes/` into the matching `modules/<name>/studio/`
 
 Keep in core (do NOT move): `siteSettings`, `homePage`, `aboutPage`, `contactPage`, `servicesPage`, `service`, `faqPage`, `faqItem`, `journalPage`, `journalEntry`, `journalCategory`, `testimonial`, `philosophyPoint`, `ctaBlock`, `notFoundPage`, `privacyPage`, `studioGuide`, `studioNotes`, `studioPlaybook`.
 
-- [ ] **Step 3: Drop the moved types from `studio/schemaTypes/index.ts`**
+- [ ] **Step 3: Drop the moved types from `src/sanity/schemaTypes/index.ts`**
 
 Remove the `import` lines and the array entries for: `budgetCalculator`, `eDesignPage`, `giftPage`, `leadMagnet`, `portfolioPage`, `pressItem`, `pressPage`, `processPage`, `processStep`, `project`, `resourcesPage`, `shopCollection`, `shopItem`, `shopPage`, `styleQuiz`. Leave the comment banner and all core entries.
 
@@ -128,11 +128,11 @@ git commit -m "refactor: move specialized schemas into modules/, de-register fro
 ### Task 3: Strip the moved types from the desk structure
 
 **Files:**
-- Modify: `studio/structure.ts`
+- Modify: `src/sanity/structure.ts`
 
 - [ ] **Step 1: Trim the type arrays**
 
-In `studio/structure.ts`, remove the moved types from `SINGLETON_TYPES` (`processPage`, `portfolioPage`, `eDesignPage`, `shopPage`, `giftPage`, `resourcesPage`, `pressPage`, `styleQuiz`, `budgetCalculator`) and from `ORDERABLE_TYPES` (`project`, `processStep`, `leadMagnet`, `shopCollection`, `shopItem`, `pressItem`). Leave `service` and `philosophyPoint` in `ORDERABLE_TYPES`.
+In `src/sanity/structure.ts`, remove the moved types from `SINGLETON_TYPES` (`processPage`, `portfolioPage`, `eDesignPage`, `shopPage`, `giftPage`, `resourcesPage`, `pressPage`, `styleQuiz`, `budgetCalculator`) and from `ORDERABLE_TYPES` (`project`, `processStep`, `leadMagnet`, `shopCollection`, `shopItem`, `pressItem`). Leave `service` and `philosophyPoint` in `ORDERABLE_TYPES`.
 
 - [ ] **Step 2: Remove their desk list items**
 
@@ -144,7 +144,7 @@ Remove from the `@sanity/icons` import any icon used only by deleted items (e.g.
 
 - [ ] **Step 4: Verify the Studio builds**
 
-Run: `npm --prefix studio run build`
+Run: `npm run build`
 Expected: PASS, no unresolved imports.
 
 - [ ] **Step 5: Commit**
@@ -380,7 +380,7 @@ Replace `public/favicon.svg` with a neutral mark (a simple monogram disc in Slat
 Select-String -Path "src\**\*","public\**\*","scripts\**\*" -Pattern "Reid|Staci|Perkins|Plainfield|reiddesignllc|Indianapolis|Carmel|Fishers|Westfield|Zionsville|Noblesville" -CaseSensitive:$false
 ```
 
-Expected after this stage: hits only inside `modules/` (acceptable, Phase 2 cleans those) and never in `src/`, `public/`, `studio/schemaTypes/` core, or `scripts/` kept files.
+Expected after this stage: hits only inside `modules/` (acceptable, Phase 2 cleans those) and never in `src/`, `public/`, `src/sanity/schemaTypes/` core, or `scripts/` kept files.
 
 - [ ] **Step 5: Verify header/footer/OG**
 
@@ -533,7 +533,7 @@ git commit -m "docs: genericize CLAUDE.md into the stack constitution"
 ### Task 13: Configure the starter for its own Sanity + domain placeholders
 
 **Files:**
-- Modify: `src/lib/sanity.ts` (projectId/dataset via env), `astro.config.mjs` (`site`), `wrangler.jsonc` (name), `studio/sanity.config.ts` + `studio/sanity.cli.ts` (projectId)
+- Modify: `src/lib/sanity.ts` (projectId/dataset via env), `astro.config.mjs` (`site`), `wrangler.jsonc` (name), `sanity.config.ts` + `sanity.cli.ts` (projectId)
 
 - [ ] **Step 1: Move the Sanity projectId/dataset to env with placeholders**
 
@@ -576,7 +576,7 @@ Expected: hits only inside `modules/` (Phase 2 territory) and an optional proven
 
 - [ ] **Step 2: Clean build of both workspaces**
 
-Run: `npm run build` then `npm --prefix studio run build`
+Run: `npm run build` then `npm run build`
 Expected: both PASS.
 
 - [ ] **Step 3: Full visual verification of the core**
@@ -589,7 +589,7 @@ Run Lighthouse (desktop) on `/`, `/about`, `/journal`. Expected: 100 on Accessib
 
 - [ ] **Step 5: Add the spec and a minimal README, then make the first real commit**
 
-Copy the approved design spec into `docs/superpowers/specs/` in the new repo. Write a short `README.md`: what the starter is, the stack, `npm install` + `npm --prefix studio install` + `npm run dev`, and a pointer to `CLAUDE.md` and (coming in Phase 3) `docs/bootstrap/NEW-PROJECT.md`.
+Copy the approved design spec into `docs/superpowers/specs/` in the new repo. Write a short `README.md`: what the starter is, the stack, `npm install` + `npm install` + `npm run dev`, and a pointer to `CLAUDE.md` and (coming in Phase 3) `docs/bootstrap/NEW-PROJECT.md`.
 
 ```powershell
 git add -A

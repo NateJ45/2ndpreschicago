@@ -29,7 +29,7 @@ A fast, accessible, editor-run site that looks like the place it represents, and
 ## Stack
 
 - **Astro 6** (static output) + TypeScript strict mode
-- **Sanity v5** headless CMS (schemas in `studio/schemaTypes/`)
+- **Sanity v5** headless CMS (schemas in `src/sanity/schemaTypes/`)
 - **Tailwind 4** via `@tailwindcss/vite` (brand tokens in `src/styles/globals.css`)
 - **React 19** islands for interactivity; Astro components for everything static
 - **Cloudflare Workers** hosting via `wrangler deploy`

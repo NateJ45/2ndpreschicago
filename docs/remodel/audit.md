@@ -88,12 +88,12 @@ analog. The "convert" work is field-level surgery inside the KEEP-with-cuts sing
 ---
 
 ## 3. Cross-file cleanup tied to the cuts (so nothing dangles)
-1. `studio/schemaTypes/index.ts` — remove imports + array entries for every CUT type.
-2. `studio/schemaTypes/ctaBlock.ts` — drop `journalPage`/`journalEntry` from `internalLink.to`.
-3. `studio/structure.ts` — remove the "Start Here" desk list (studioGuide/studioNotes/studioPlaybook +
+1. `src/sanity/schemaTypes/index.ts` — remove imports + array entries for every CUT type.
+2. `src/sanity/schemaTypes/ctaBlock.ts` — drop `journalPage`/`journalEntry` from `internalLink.to`.
+3. `src/sanity/structure.ts` — remove the "Start Here" desk list (studioGuide/studioNotes/studioPlaybook +
    custom components), the Journal desk section, `philosophyPoint` from ORDERABLE_TYPES, journal/studio
    entries in SINGLETON_TYPES + HIDDEN_FROM_DEFAULT, and the testimonial/philosophyPoint Content items.
-4. `studio/sanity.config.ts` — prune the stale `SINGLETON_TYPES` set and dead `urlForDoc` cases
+4. `sanity.config.ts` — prune the stale `SINGLETON_TYPES` set and dead `urlForDoc` cases
    (processPage/portfolioPage/eDesignPage/shopPage/giftPage/resourcesPage/pressPage/styleQuiz/
    budgetCalculator/project/processStep/pressItem/shopCollection/shopItem/leadMagnet/service/servicesPage/journal*).
 5. `src/lib/queries.ts` — remove dead exports: `getServicesPage`, `getAllProjects` + `CoreProjectCard`,

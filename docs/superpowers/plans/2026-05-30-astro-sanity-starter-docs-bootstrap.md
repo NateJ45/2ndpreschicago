@@ -115,7 +115,7 @@ Expected: zero hits (provenance lines excepted). Commit `git commit -m "docs(age
 
 Sections, in order, each with exact commands and the file to touch:
 
-1. **Clone + install** — use the GitHub template, `npm install`, `npm --prefix studio install`.
+1. **Clone + install** — use the GitHub template, `npm install`, `npm install`.
 2. **Point Sanity** — create the Sanity project (or reuse), set `PUBLIC_SANITY_PROJECT_ID` + `PUBLIC_SANITY_DATASET` in `.env`, set the same in the Studio config, `npm run studio:deploy` once.
 3. **Set identity + domain** — fill `src/data/site.ts`; set `astro.config.mjs` `site`; set `wrangler.jsonc` `name`.
 4. **Nail the design (the seam)** — edit the `@theme` palette + `:root`/`.dark` in `globals.css`; choose fonts (swap the `@fontsource` imports + `--font-*` tokens); regenerate logo/favicon/OG (`npm run og`, the logo-variant generator); optionally re-enable the script accent. Link to `docs/agent/theme-and-color.md`.

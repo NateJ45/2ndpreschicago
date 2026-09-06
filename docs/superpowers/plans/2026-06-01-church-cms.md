@@ -1,6 +1,6 @@
 # Church CMS Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: superpowers:executing-plans (inline) to implement task-by-task. Steps use checkbox (`- [ ]`) syntax. This project has **no unit-test runner**; "verification" means `npm run typegen` clean, `npm run build` green, `npm --prefix studio run build` green, and Playwright screenshots of touched pages (light/dark, mobile/desktop). TDD test-fail/test-pass cycles are replaced by these gates.
+> **For agentic workers:** REQUIRED SUB-SKILL: superpowers:executing-plans (inline) to implement task-by-task. Steps use checkbox (`- [ ]`) syntax. This project has **no unit-test runner**; "verification" means `npm run typegen` clean, `npm run build` green, `npm run build` green, and Playwright screenshots of touched pages (light/dark, mobile/desktop). TDD test-fail/test-pass cycles are replaced by these gates.
 
 **Goal:** Let a non-technical pastor + secretary run the entire Second Pres site from Sanity for a year (configurable forms, announcements, operational content, fully editable pages), while keeping the project a reusable church template.
 
@@ -17,30 +17,30 @@
 ## File Structure (created / modified across all phases)
 
 **Phase 1 — forms**
-- Create `studio/schemaTypes/form.ts` — the `form` collection + inline `formField` object.
+- Create `src/sanity/schemaTypes/form.ts` — the `form` collection + inline `formField` object.
 - Create `src/components/Embed.tsx` — shared iframe / script-safe embed island (reused in Phase 2).
 - Create `src/components/FormRenderer.tsx` — native + embed form island.
 - Create `src/components/FormBlock.astro` — resolves a form (or fallback) and mounts the island.
 - Create `scripts/seed-forms.mjs` — idempotent seed of 3 forms + reference wiring.
-- Modify `studio/schemaTypes/churchPages.ts` — factory gains optional `extraGroups`/`extraFields`; weddings + use-our-space get an `inquiryForm` reference.
-- Modify `studio/schemaTypes/contactPage.ts` — add `contactForm` reference.
-- Modify `studio/schemaTypes/index.ts` — register `form`.
-- Modify `studio/structure.ts` — add `form` to the Content list.
+- Modify `src/sanity/schemaTypes/churchPages.ts` — factory gains optional `extraGroups`/`extraFields`; weddings + use-our-space get an `inquiryForm` reference.
+- Modify `src/sanity/schemaTypes/contactPage.ts` — add `contactForm` reference.
+- Modify `src/sanity/schemaTypes/index.ts` — register `form`.
+- Modify `src/sanity/structure.ts` — add `form` to the Content list.
 - Modify `src/lib/queries.ts` — `FORM_PROJECTION`, `getContactPage` (form-aware), `getWeddingsPage`, `getUseOurSpacePage`, `getForm`.
 - Modify `src/pages/contact.astro`, `src/pages/weddings.astro`, `src/pages/use-our-space.astro` — render the form via `FormBlock`.
 
 **Phase 2 — operational + integrations**
-- Create `studio/schemaTypes/announcement.ts`, `worshipResource.ts`, `sermonSeries.ts`, `embed.ts` (object).
+- Create `src/sanity/schemaTypes/announcement.ts`, `worshipResource.ts`, `sermonSeries.ts`, `embed.ts` (object).
 - Modify `event.ts`, `ministry.ts` (enrich), `siteSettings.ts` (Connect & integrations group; drop `announcement` object), `sermon.ts` (`series` → reference), `index.ts`, `structure.ts`, `sanity.config.ts`.
 - Create `src/components/EmbedBlock.astro`; worship-resources section partial; `/ministries` index.
 - Migrations: `scripts/migrate-sermon-series.mjs`, extend cleanup for `siteSettings.announcement`.
 - Modify `src/lib/queries.ts`, `src/layouts/BaseLayout.astro`, `/worship`, `/events`, home.
 
 **Phase 3 — home + seasonal hero**
-- Modify `studio/schemaTypes/homePage.ts` (heroKeyword, `seasonalHero` object, `thisSunday` object, home section copy fields), `src/pages/index.astro`, `src/lib/queries.ts`.
+- Modify `src/sanity/schemaTypes/homePage.ts` (heroKeyword, `seasonalHero` object, `thisSunday` object, home section copy fields), `src/pages/index.astro`, `src/lib/queries.ts`.
 
 **Phase 4 — full editability**
-- Create `studio/schemaTypes/blocks/*` (richText, imageText, cardGrid, quote, ctaBand, accordion, embed ref, formRef, gallery, dynamicList) + `src/components/Sections.astro` + one component per block.
+- Create `src/sanity/schemaTypes/blocks/*` (richText, imageText, cardGrid, quote, ctaBand, accordion, embed ref, formRef, gallery, dynamicList) + `src/components/Sections.astro` + one component per block.
 - Add structured fields + `flexibleSections[]` to each page singleton; convert each `.astro` to render from Sanity with inline copy as fallback. Optional generic `page` type + `/[slug]`.
 - Seed every field from current copy.
 
@@ -52,9 +52,9 @@
 
 ### Task 1.1: `form` schema (collection + `formField` object)
 
-**Files:** Create `studio/schemaTypes/form.ts`; Modify `studio/schemaTypes/index.ts`.
+**Files:** Create `src/sanity/schemaTypes/form.ts`; Modify `src/sanity/schemaTypes/index.ts`.
 
-- [ ] **Step 1: Write `studio/schemaTypes/form.ts`**
+- [ ] **Step 1: Write `src/sanity/schemaTypes/form.ts`**
 
 ```ts
 // Configurable contact/inquiry form. A church admin builds a form here (native
@@ -205,7 +205,7 @@ export const form = defineType({
 });
 ```
 
-- [ ] **Step 2: Register in `studio/schemaTypes/index.ts`** — import `form` and add it to the object-types block (top, since pages reference it) right after `ctaBlock`:
+- [ ] **Step 2: Register in `src/sanity/schemaTypes/index.ts`** — import `form` and add it to the object-types block (top, since pages reference it) right after `ctaBlock`:
 
 ```ts
 import { form } from './form';
@@ -216,13 +216,13 @@ export const schemaTypes = [
   // Singletons ...
 ```
 
-- [ ] **Step 3: Verify Studio compiles** — Run: `npm --prefix studio run build` — Expected: green (no schema errors).
+- [ ] **Step 3: Verify Studio compiles** — Run: `npm run build` — Expected: green (no schema errors).
 
-- [ ] **Step 4: Commit** — `git add studio/schemaTypes/form.ts studio/schemaTypes/index.ts && git commit -m "Add configurable form schema (native fields + external embed)"`
+- [ ] **Step 4: Commit** — `git add src/sanity/schemaTypes/form.ts src/sanity/schemaTypes/index.ts && git commit -m "Add configurable form schema (native fields + external embed)"`
 
 ### Task 1.2: Page reference fields (factory extension + contactPage)
 
-**Files:** Modify `studio/schemaTypes/churchPages.ts`, `studio/schemaTypes/contactPage.ts`.
+**Files:** Modify `src/sanity/schemaTypes/churchPages.ts`, `src/sanity/schemaTypes/contactPage.ts`.
 
 - [ ] **Step 1: Extend the factory** — change `definePageSingleton` signature to accept extra groups + fields; insert `...(extra.fields ?? [])` as the last entry of the `fields` array (after `seoImage`), and `...(extra.groups ?? [])` after the seo group. Import `defineField` is already present.
 
@@ -273,7 +273,7 @@ defineField({
 }),
 ```
 
-- [ ] **Step 4: Typegen + Studio build** — Run: `npm run typegen` then `npm --prefix studio run build` — Expected: both green.
+- [ ] **Step 4: Typegen + Studio build** — Run: `npm run typegen` then `npm run build` — Expected: both green.
 
 - [ ] **Step 5: Commit** — `git add studio/ src/lib/sanity.types.ts && git commit -m "Wire form references into contact, weddings, use-our-space singletons"`
 
@@ -718,7 +718,7 @@ export async function getForm(slug: string) {
 
 ### Task 1.9: Phase 1 verification
 
-- [ ] Build green (`npm run build`), Studio build green (`npm --prefix studio run build`).
+- [ ] Build green (`npm run build`), Studio build green (`npm run build`).
 - [ ] `npm run dev`; Playwright screenshot `/contact`, `/weddings`, `/use-our-space` in light + dark, mobile + desktop; confirm the form renders, validates, and the mailto fallback works with no key.
 - [ ] Confirm the three forms appear under Content → Forms in the Studio and the page singletons show the reference field.
 
@@ -727,7 +727,7 @@ export async function getForm(slug: string) {
 ## PHASE 2 — Operational content + integrations
 
 ### Task 2.1: `announcement` collection (replaces `siteSettings.announcement` object)
-- New `studio/schemaTypes/announcement.ts`: `title`, `message` (string), `link` ({label,url}), `style` (info|special|urgent), `startDate`/`endDate` (datetime), `enabled` (boolean). Preview shows message + window.
+- New `src/sanity/schemaTypes/announcement.ts`: `title`, `message` (string), `link` ({label,url}), `style` (info|special|urgent), `startDate`/`endDate` (datetime), `enabled` (boolean). Preview shows message + window.
 - `getActiveAnnouncement()` in queries: `*[_type=="announcement" && enabled && (!defined(startDate)||startDate<=$now) && (!defined(endDate)||endDate>=$now)] | order(select(style=="urgent"=>0,style=="special"=>1,2) asc, endDate asc)[0]`.
 - BaseLayout: replace `siteSettings.announcement` read with `getActiveAnnouncement`; map `style` → existing banner colors (info=primary, special=chapel, urgent=destructive). Keep markup.
 - Migration: re-create existing announcement data as a doc, then extend `scripts/cleanup-orphaned-fields.mjs` to unset `siteSettings.announcement`; remove the object field from `siteSettings.ts`. Seed one disabled sample announcement.
@@ -787,7 +787,7 @@ export async function getForm(slug: string) {
 ## PHASE 4 — Full page editability (block library + structured fields)
 
 ### Task 4.1: Block object types + `Sections.astro`
-- `studio/schemaTypes/blocks/`: `richText`, `imageText`, `cardGrid`, `quote`, `ctaBand`, `accordion` (reuse `ui/accordion` via FaqAccordion pattern), `embed` (Phase 2), `formRef` (reference form), `gallery`, `dynamicList` (latestSermons|upcomingEvents|ministries|staff|worshipResources + count).
+- `src/sanity/schemaTypes/blocks/`: `richText`, `imageText`, `cardGrid`, `quote`, `ctaBand`, `accordion` (reuse `ui/accordion` via FaqAccordion pattern), `embed` (Phase 2), `formRef` (reference form), `gallery`, `dynamicList` (latestSermons|upcomingEvents|ministries|staff|worshipResources + count).
 - `src/components/Sections.astro` maps `block._type` → component; one component per block under `src/components/blocks/`. Each renders on-brand (tokens + arch motif + chapel bands).
 
 ### Task 4.2: Per-page structured fields + `flexibleSections[]`
@@ -807,7 +807,7 @@ export async function getForm(slug: string) {
 - [ ] `npm run typegen` after each schema change; commit `src/lib/sanity.types.ts`.
 - [ ] Extend `src/lib/queries.ts` with projection + fallback per type.
 - [ ] Migrations backed up first; cleanup script for orphaned fields (never "Remove field").
-- [ ] Build green; `npm --prefix studio run build` green; screenshots; one sample doc per new type.
+- [ ] Build green; `npm run build` green; screenshots; one sample doc per new type.
 - [ ] `npm run studio:deploy`; commit per phase. Site stays green + shippable after every phase.
 
 ## Self-review notes (against the spec)

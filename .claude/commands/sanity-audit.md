@@ -19,7 +19,7 @@ Run the read-only dataset audit and interpret the results for the user.
    - **A missing singleton** means a page renders entirely from code fallbacks.
    - In `--fields` output, most "absent" fields are intentional optionals
      (`seoImage`, `flexibleSections`, `heroScriptAccent`, integration URLs,
-     `favicon`). Check the schema description in `studio/schemaTypes/` before
+     `favicon`). Check the schema description in `src/sanity/schemaTypes/` before
      calling a gap a problem. Known intentional state as of 2026-06: the
      `worshipResource` collection is empty (no bulletins uploaded yet); the
      2 `sermon` docs are placeholders without video URLs; `ministry` docs lack

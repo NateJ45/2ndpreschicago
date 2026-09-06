@@ -51,9 +51,9 @@ Rule: a module owns only files unique to it. Anything shared with the core stays
 ## Enable
 
 1. Copy schemas:
-   `Copy-Item modules/<name>/studio/*.ts studio/schemaTypes/`
-2. Register in `studio/schemaTypes/index.ts`: add `import { <type> } from './<type>'` and add `<type>` to the `schemaTypes` array (collections after singletons).
-3. Register in `studio/structure.ts`: add to `SINGLETON_TYPES` / `ORDERABLE_TYPES` as noted, and add the desk list item(s) shown below.
+   `Copy-Item modules/<name>/studio/*.ts src/sanity/schemaTypes/`
+2. Register in `src/sanity/schemaTypes/index.ts`: add `import { <type> } from './<type>'` and add `<type>` to the `schemaTypes` array (collections after singletons).
+3. Register in `src/sanity/structure.ts`: add to `SINGLETON_TYPES` / `ORDERABLE_TYPES` as noted, and add the desk list item(s) shown below.
 4. Copy app files:
    `Copy-Item -Recurse modules/<name>/src/* src/`
 5. Add the nav entry in `src/components/Header.astro`: `<link/dropdown item as shown>`.

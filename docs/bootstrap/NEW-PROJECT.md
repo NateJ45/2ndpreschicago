@@ -16,7 +16,7 @@ section before touching anything in the "Foundation" list.
 git clone https://github.com/your-org/ncs-astro-sanity-starter my-new-site
 cd my-new-site
 npm install
-npm --prefix studio install
+npm install
 ```
 
 The build works with no Sanity project configured. `sanityFetch` returns empty
@@ -208,9 +208,9 @@ For each module you want to activate:
 
 1. Open its enable doc (`docs/modules/<name>.md`).
 2. Follow all numbered steps in order:
-   - Step 1: copy schemas into `studio/schemaTypes/`.
-   - Step 2: register schemas in `studio/schemaTypes/index.ts`.
-   - Step 3: register in `studio/structure.ts`.
+   - Step 1: copy schemas into `src/sanity/schemaTypes/`.
+   - Step 2: register schemas in `src/sanity/schemaTypes/index.ts`.
+   - Step 3: register in `src/sanity/structure.ts`.
    - Step 4: copy app files with `Copy-Item`.
    - **Step 4b: add the module's query functions to `src/lib/queries.ts`.**
      This step is easy to miss -- the core starter does not include module
@@ -311,7 +311,7 @@ taxonomy in `CLAUDE.md`. Key files to route through a planned session:
   shadcn overrides, base resets)
 - `src/layouts/BaseLayout.astro` (anti-FOUC script, scroll wiring, Lenis init)
 - `src/lib/sanity.ts` (the `isSanityUnconfigured` guard is load-bearing)
-- `studio/schemaTypes/*.ts` (field changes can break existing Sanity content)
+- `src/sanity/schemaTypes/*.ts` (field changes can break existing Sanity content)
 - `src/lib/queries.ts` and `src/lib/sanity.types.ts`
 - `astro.config.mjs`, `wrangler.jsonc`, `package.json`
 - `public/_headers` (security headers)

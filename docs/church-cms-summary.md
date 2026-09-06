@@ -100,8 +100,8 @@ Goal: let a non-technical pastor + secretary run the site from Sanity for a year
   service times, announcements, FAQs, sermons, editing a page, building a page, sections +
   backgrounds, photos, the brand system, editing the top menu & footer, and a do-it-yourself
   vs. call-Nathan boundary). Repo-based and locked (staff cannot edit or delete it; it travels
-  with the template): `studio/guides/content.tsx` (copy as plain data) + `studio/components/GuideView.tsx`
-  (renderer) + desk wiring in `studio/structure.ts`. No schema change. Spec:
+  with the template): `src/sanity/guides/content.tsx` (copy as plain data) + `src/sanity/components/GuideView.tsx`
+  (renderer) + desk wiring in `src/sanity/structure.ts`. No schema change. Spec:
   `docs/superpowers/specs/2026-06-01-studio-how-this-works-design.md`.
 - **Studio themed to the brand.** `sanity.config.ts` re-pointed from the starter Slate theme to
   the site's own tokens (Bronze accent + focus, warm Paper surfaces, Espresso Ink text, warm

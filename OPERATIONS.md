@@ -24,7 +24,15 @@ git commit -m "..."
 git push origin main
 ```
 
-Cloudflare detects the push, runs `npm run build` in their CI, and deploys the resulting `dist/` to the Worker. Takes about 1 to 2 minutes. Watch in the Cloudflare dashboard under Workers → [your-worker-name] → Deployments.
+Cloudflare detects the push, runs `npm run build` in their CI, and deploys the Worker. Takes about 1 to 2 minutes. Watch in the Cloudflare dashboard under Workers → 2ndpreschicago → Deployments.
+
+> **The deploy command changed on 2026-09-06 and the dashboard has to be told.** The build is hybrid static + SSR now (the embedded Studio and the preview routes), so `astro build` writes `dist/client` for the asset store and `dist/server` for the Worker. The deploy command must be:
+>
+> ```
+> npx wrangler deploy -c dist/server/wrangler.json
+> ```
+>
+> Until it is changed, production deploys the root `wrangler.jsonc` directly and ships a Worker with no SSR routes: every public page still renders, and `/studio`, `/preview/**` and `/api/*` all 404.
 
 **Verify a deploy landed:**
 
@@ -40,7 +48,7 @@ Use `until ! grep -q '...'` (with the bang) when waiting for something to be **r
 
 ```bash
 npm run deploy
-# = npm run build && wrangler deploy
+# = npm run build && wrangler deploy -c dist/server/wrangler.json
 ```
 
 Only needed if you're testing a config change locally before committing, or if the auto-deploy webhook is broken.
@@ -122,31 +130,31 @@ Sanity Studio includes a built-in Comments feature (the speech-bubble icon that 
 
 Comments stay attached to the specific field until resolved. Comments do not affect published content in any way.
 
-### Studio deploy
+### The Studio deploys with the site
 
-Studio code (schemas, structure, plugins) deploys separately from the site:
+Since 2026-09-06 there is one canonical Studio and it is the one embedded at
+`https://<the site>/studio`. `astro build` bundles it, so a schema change reaches
+editors on the next site deploy. There is no separate Studio deploy step and no
+`studio:deploy` script.
 
-```bash
-npm run studio:deploy
-# = npm --prefix studio run deploy
-```
+After a schema change:
 
-Run this after any change in `studio/schemaTypes/`, `studio/structure.ts`, or `studio/sanity.config.ts` — otherwise the hosted Studio doesn't see the new schema fields.
+1. `npm run typegen` to regenerate `schema.json` and `src/lib/sanity.types.ts`.
+2. Commit the regenerated types (CI fails if the committed copy is stale).
+3. Push. The site deploy carries the schema.
 
-Always run `npm run typegen` after schema changes so `src/lib/sanity.types.ts` is fresh, then commit.
+### The hosted Studio at secondpreschicago.sanity.studio is deprecated
 
-### Critical: run studio:deploy after every schema change
+It still exists and still points at the same production dataset, but nothing
+updates it any more: it only changes when somebody runs `npx sanity deploy` by
+hand, which is exactly the silent-drift shape the embedded Studio removes. It
+should be retired in sanity.io/manage. Until it is, treat it as a stale mirror
+and send editors to `/studio` on the site.
 
-If you add or rename a field in a schema file and forget to run `npm run studio:deploy`, the hosted Studio will show "unknown fields" warnings next to the new data, and editors will see a prompt offering to "Remove field." **Do NOT click "Remove field" in Studio.** That action deletes the actual Sanity document data for every document that has that field populated. It cannot be undone without a dataset restore.
-
-The correct sequence after any schema edit:
-
-1. Edit the schema file in `studio/schemaTypes/`.
-2. `npm run typegen` to regenerate `src/lib/sanity.types.ts`.
-3. `npm run studio:deploy` to push the schema update to the hosted Studio.
-4. Commit + push.
-
-The site build can run any time after step 1. The Studio deploy (step 3) is what clears the "unknown fields" warning.
+If it IS redeployed while its schema is behind, it will show "unknown fields"
+warnings next to data in new fields, and offer to "Remove field." **Do NOT click
+"Remove field."** That deletes the Sanity document data for every document that
+has that field populated, and it cannot be undone without a dataset restore.
 
 ---
 
@@ -204,7 +212,7 @@ The items below apply to any project built on this starter. Replace the angle-br
 - [ ] Create Sanity project; set `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET` in `.env` and Cloudflare → Workers → Variables
 - [ ] Set `SANITY_API_READ_TOKEN` (scoped read token from Sanity Manage → API → Tokens)
 - [ ] Set `SANITY_API_WRITE_TOKEN` in `.env` locally for running seed/patch scripts
-- [ ] Run `npm run studio:deploy` to publish the Studio
+- [ ] Confirm `/studio` on the deployed site loads and an editor can sign in
 - [ ] Configure the Sanity → Cloudflare rebuild webhook with the deny-list filter (see above)
 
 **Wire external services:**
@@ -376,12 +384,12 @@ The PNGs land in `src/assets/` (NOT `public/`) so Astro's `<Image>` / `getImage(
 
 ### Add a new field to a page singleton
 
-1. Edit `studio/schemaTypes/<page>.ts` — add `defineField(...)`.
+1. Edit `src/sanity/schemaTypes/<page>.ts` — add `defineField(...)`.
 2. `npm run typegen` (runs schema-extract + sanity typegen).
 3. Add the field to the GROQ projection in `src/lib/queries.ts`.
 4. Use the field in the corresponding Astro page with a sensible fallback.
 5. Write a backfill script in `scripts/` to set the value on the existing production doc (use `setIfMissing` so future editor changes aren't clobbered).
-6. `npm run studio:deploy` to push the new field to the hosted Studio.
+6. Push, so the site deploy carries the new field into the embedded Studio.
 7. Commit + push.
 
 ---

@@ -35,7 +35,7 @@ Accessibility: when media is set, the overlay guarantees contrast; alt text requ
 
 ## Expanded block library
 
-Each block: a schema object in `studio/schemaTypes/blocks.ts` (added to `FLEXIBLE_SECTION_MEMBERS`), a component in `src/components/blocks/`, mapped in `Sections.astro`, wrapped in `SectionShell`. All carry the shared `sectionBackground`.
+Each block: a schema object in `src/sanity/schemaTypes/blocks.ts` (added to `FLEXIBLE_SECTION_MEMBERS`), a component in `src/components/blocks/`, mapped in `Sections.astro`, wrapped in `SectionShell`. All carry the shared `sectionBackground`.
 
 1. **gallery** — images[] (image + alt + caption), `columns` (2/3/4), `lightbox` (bool). Grid via react-photo-album; lightbox via yet-another-react-lightbox island. Solves "change a single photo to a photo gallery."
 2. **stats** — items[] {value, label, note?}, `columns` (2/3/4). Animated count-up via StatsCounter when numeric; static otherwise.

@@ -25,14 +25,14 @@ defined inline, warm and encouraging, no fear.
   single `CHURCH` constant for trivial per-client swapping.
 
 ## Architecture (3 files in `studio/`)
-- `studio/guides/content.tsx` — guide data: an ordered array of
+- `src/sanity/guides/content.tsx` — guide data: an ordered array of
   `{ slug, title, icon, lead, diy, body[] }`. `body` uses a small declarative block vocabulary
   (`h`, `p`, `steps`, `bullets`, `path`, `callout`, `seealso`) with inline `**bold**`. Plus the
   `CHURCH` constant. No JSX authoring required to edit copy.
-- `studio/components/GuideView.tsx` — renders one guide (looked up by `props.options.guideSlug`)
+- `src/sanity/components/GuideView.tsx` — renders one guide (looked up by `props.options.guideSlug`)
   with `@sanity/ui` (Card / Stack / Heading / Text / Badge / Flex). Read-only, scrollable, themed
   to the Paper-and-Ink Studio.
-- `studio/structure.ts` — a pinned "How This Works" list (BookIcon) at the desk top; one
+- `src/sanity/structure.ts` — a pinned "How This Works" list (BookIcon) at the desk top; one
   `S.listItem(...).child(S.component(GuideView).options({ guideSlug }))` per guide.
 
 ## Guides (12)

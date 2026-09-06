@@ -79,7 +79,7 @@ Header CTA: "Plan a Visit" → `/worship`. Footer columns rewritten to: Visit (W
 
 **Disable services**
 - Delete or redirect `src/pages/services.astro`
-- Remove `service` + `servicesPage` from `studio/schemaTypes/index.ts` + `studio/structure.ts`
+- Remove `service` + `servicesPage` from `src/sanity/schemaTypes/index.ts` + `src/sanity/structure.ts`
 - Remove services references from `index.astro` + `Footer.astro`
 
 **Events module (new) — `modules/events/`**
@@ -89,7 +89,7 @@ Header CTA: "Plan a Visit" → `/worship`. Footer columns rewritten to: Visit (W
 - Create `modules/events/src/pages/events/[slug].astro`
 - Create `modules/events/seed.mjs`
 - Create `docs/modules/events.md` (enable doc)
-- Then ENABLE: copy schemas to `studio/schemaTypes/`, register in index.ts + structure.ts, copy pages to `src/pages/events/`, add queries to `src/lib/queries.ts`, nav already added.
+- Then ENABLE: copy schemas to `src/sanity/schemaTypes/`, register in index.ts + structure.ts, copy pages to `src/pages/events/`, add queries to `src/lib/queries.ts`, nav already added.
 
 **Core pages (rewrite fallbacks → church copy)**
 - `src/pages/index.astro` (home), `about.astro` (story/history/beliefs), `contact.astro`, `faq.astro` (wedding FAQ), `privacy.astro`
@@ -144,7 +144,7 @@ Header CTA: "Plan a Visit" → `/worship`. Footer columns rewritten to: Visit (W
 - [ ] Author `modules/events/src/pages/events/index.astro` (upcoming list grouped recurring vs one-time; empty state) modeled on portfolio index + content-inventory event list.
 - [ ] Author `modules/events/src/pages/events/[slug].astro` (detail) modeled on journal/[slug].
 - [ ] Author `modules/events/seed.mjs` + `docs/modules/events.md`.
-- [ ] ENABLE: copy schemas → studio/schemaTypes/, register index.ts + structure.ts (+ CalendarIcon), copy pages → src/pages/events/, add `getEventsPage`/`getAllEvents`/`getEventBySlug`/`getAllEventSlugs` to queries.ts.
+- [ ] ENABLE: copy schemas → src/sanity/schemaTypes/, register index.ts + structure.ts (+ CalendarIcon), copy pages → src/pages/events/, add `getEventsPage`/`getAllEvents`/`getEventBySlug`/`getAllEventSlugs` to queries.ts.
 - [ ] `npm run typegen` + `npm run build` → PASS; `/events` + `/events/[slug]` render.
 
 ### Phase 7 — FAQ, privacy, voice

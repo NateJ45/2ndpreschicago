@@ -27,7 +27,8 @@ _Provenance: forked from the Reid Design build; adapted for Second Presbyterian 
 Full stack notes and the `astro.config.mjs` landmines are in `docs/agent/stack-and-config.md`. The must-knows:
 
 - **Astro 6.3.x**, TypeScript strict, `output: 'static'`. Node 22.12+.
-- **Sanity v6** is the CMS (schemas in `studio/schemaTypes/`), living in its own `studio/` package. All editable content lives in Sanity. `npm run typegen` regenerates types from the schemas. Version topology and the pinning rules are gotchas #9 and #10 below.
+- **Sanity v6** is the CMS (schemas in `src/sanity/schemaTypes/`), embedded at `/studio` in THIS package. All editable content lives in Sanity. `npm run typegen` regenerates types from the schemas. Version topology and the pinning rules are gotchas #9 and #10 below.
+- **Live preview** (PORTS.md cards 10, 11, 17, 28, 29): `presentationTool` in `sanity.config.ts` points at the SSR routes under `/preview/**`, which read DRAFT content with the runtime `SANITY_TOKEN`. Draft mode is handshaken through `/api/draft-mode/enable`.
 - **Tailwind 4 via `@tailwindcss/vite`.** There is no `tailwind.config.mjs`. Brand tokens live in `@theme` blocks in `src/styles/globals.css`.
 - **React 19 islands** for interactivity; Astro components for everything static.
 - **Cloudflare Workers** for hosting, not Pages (Pages is in maintenance mode). Deploy with `wrangler deploy`.
@@ -36,7 +37,8 @@ Full stack notes and the `astro.config.mjs` landmines are in `docs/agent/stack-a
 
 ### The rules that bite if you forget them
 
-1. **Run `npm run studio:deploy` after ANY schema change.** Skip it and the hosted Studio shows "unknown fields" next to a "Remove field" prompt. **Never click "Remove field":** it deletes that field's data across every document and cannot be undone without a dataset restore. Correct sequence: edit schema, `npm run typegen`, `npm run studio:deploy`, commit.
+1. **The Studio deploys with the site.** Since 2026-09-06 the canonical Studio is the embedded one at `/studio`: `astro build` bundles it, so a schema change reaches editors on the next deploy and cannot drift stale. Correct sequence after a schema edit: `npm run typegen`, commit the regenerated `src/lib/sanity.types.ts`, push.
+   The hosted twin at `secondpreschicago.sanity.studio` is DEPRECATED and should be retired in sanity.io/manage. There is no `studio:deploy` script any more. If anyone does redeploy it while it still exists, it will show "unknown fields" next to a "Remove field" prompt whenever its schema is behind. **Never click "Remove field":** it deletes that field's data across every document and cannot be undone without a dataset restore.
 2. **No em-dashes in public-facing site copy** (the text visitors read: page copy, component text, Sanity content). Use commas, colons, or restructure. Code comments, commit messages, plans, specs, and internal docs are exempt.
 3. **Build in both light AND dark mode** on every UI change. Detail in `docs/agent/theme-and-color.md`.
 4. **Desktop nav is server-rendered** in `Header.astro`. Do not regress it to a client-only island. Detail in `docs/agent/page-architecture.md`.
@@ -44,11 +46,15 @@ Full stack notes and the `astro.config.mjs` landmines are in `docs/agent/stack-a
 6. **Content is statically built.** A Sanity edit only goes live after a rebuild (push to `main`, or the publish webhook). Detail in `docs/agent/deployment.md`.
 7. **`npm run typegen` runs before `astro build`** as part of the build chain. `src/lib/sanity.types.ts` is committed so collaborators don't need to run typegen to see the schema types in code. Run it locally after any schema change.
 8. **`@astrojs/cloudflare` is pinned to exactly `13.5.5`.** Version `13.6.0` regressed Astro's image optimizer: optimized images write to `dist/client/_astro/` while the optimizer reads from `dist/_astro/`. Do not bump the adapter version without doing a verifying build.
-9. **This repo's Sanity topology is TWO packages, and that is why the family's "@sanity/ui pinning" rules mostly do not apply here** (verified 2026-09-06). The root package is the Astro site and its ONLY Sanity dependency is `@sanity/client` (pinned exactly, `7.26.2`), used for build-time reads through `sanityFetch`. It has no `sanity` core, no `@sanity/ui`, no `styled-components`, no `@sanity/visual-editing`, and no `/studio` or `/preview` route. `studio/` is a separate npm package with its own lockfile, holding the whole Studio: `sanity` 6.12.0, `@sanity/ui` 4.0.7, `styled-components` 6.5.3.
-   The duplicate-instance failure that the sibling repos pin against (two `@sanity/ui` copies, two styled-components theme contexts, a Studio that renders its login screen and then dies once you sign in) needs Studio code and site code in ONE bundle. Here they are never in the same bundle, so the two trees cannot collide. The check is still worth running after any Sanity change, but it must sweep both trees separately and each must show exactly one copy:
-   `find node_modules studio/node_modules -path "*@sanity/ui/package.json"` and the same for `styled-components`.
-   **Two consequences.** (a) `@sanity/client` legitimately appears many times in `studio/node_modules` (7.27.0 hoisted, 8.5.0 nested under the core and the plugins). That is fine: it is a data client with no React context, and it is not the invariant. (b) `studio/sanity.cli.ts` sets `deployment.autoUpdates: true`, so the DEPLOYED Studio at `secondpreschicago.sanity.studio` loads `sanity` and `@sanity/vision` from `sanity-cdn.com` at the range in `studio/package.json` (`^6.12.0`), not from the lockfile. Pinning an exact version in `studio/package.json` therefore controls typegen and `sanity build`, but only the RANGE reaches the hosted Studio. Changing that range changes what editors run.
-10. **The studio crossed the `@sanity/ui` 4 boundary via Dependabot on 2026-09-04/05, before the Sanity ignore rules landed** (see `.github/dependabot.yml`). It builds clean and typegen reproduces the committed types byte for byte, and the custom Studio components only import `@sanity/ui` primitives that are still root exports in v4 (`Badge`, `Box`, `Card`, `Flex`, `Heading`, `Stack`, `Text`). The components that moved to subpaths in v4 (`Menu`, `Toast`, `Tooltip`, `Popover`, `Autocomplete`, `Breadcrumbs`, `Code`) are not used here. What has NOT been verified is a signed-in editor session: the login screen is core code and renders fine even when the theme context is broken, so a green build proves nothing about the desk. Two specific things to look at when anyone next signs in: the `buildLegacyTheme` call in `sanity.config.ts` (v4 themes via CSS variables, so the brand palette may not fully apply) and the absence of the v4-required `@sanity/ui/styles.css` import, which leaves `SrOnly`, `Spinner` and text-overflow unstyled.
+9. **The Studio lives in THIS package, and the one-instance invariant is now live** (folded 2026-09-06, PORTS.md card 10). There is one `package.json`, one lockfile and one `node_modules`. That is what keeps the styled-components / `@sanity/ui` theme context intact: two module instances means two React contexts, the ThemeProvider mounted by one is invisible to `useTheme` in the other, and the desk dies on its first custom-component render (styled-components error #18, then `Cannot read properties of undefined (reading 'v2')`) while the login screen, which is core code only, renders fine. That was presacademy's 2026-08-26 production outage. `astro.config.mjs` also carries `resolve.dedupe` as belt and braces.
+   Verify after ANY Sanity dependency change, on disk rather than from the lockfile:
+   `find node_modules -path "*@sanity/ui/package.json"` must print exactly ONE line, and the same for `styled-components` and `@sanity/client`.
+   `@sanity/icons` is deliberately NOT deduped: sanity core and `@sanity/ui` want different majors, and icons are stateless SVG with no React context.
+   A second, weaker check exists and its expected answer is TWO, not one: `grep -l "errors.md#" dist/client/_astro/*.js` lists the Studio chunk and the preview-overlay chunk. Those are two different documents (the Studio page, and the preview page inside its iframe), never one, so two copies is correct. mas-monograms shows the same two.
+10. **This repo is the family's PHASE-2 PIONEER, and phase 2 has three teeth.** Everyone else is on phase 1 (`sanity` 6.9.1 / `@sanity/ui` 3.5.4). Here the set is `sanity` 6.12.0, `@sanity/ui` 4.0.7, `@sanity/astro` 3.5.1, `@sanity/visual-editing` 6.1.2, `@sanity/client` **8.5.0**, `@sanity/preview-url-secret` 4.1.5, `styled-components` 6.5.3, react 19.2.8, astro 7.3.1. Two `overrides` entries hold it together: `@sanity/visual-editing` (because `@sanity/astro` 3.5.1 asks for `^5.5.0` and would otherwise nest a second copy plus a second `@sanity/ui`) and `@sanity/client`.
+    - **`sanity` 6.12 requires `@sanity/client` v8, and a v7 pin breaks the build in a way that reads like a bundler bug.** `sanity/lib/index.js` imports `isTimeoutError` from `@sanity/client`; v7 does not export it. With `@sanity/client` pinned at 7.27.0 the client build died with `[MISSING_EXPORT] "Vt" is not exported by node_modules/sanity/lib/datastores-*.js` and nothing in that message names `@sanity/client`. `npm ls @sanity/client` is what found it: 7.27.0 hoisted at the root, 8.5.0 nested under sanity, and Vite's `resolve.dedupe` forcing everything onto the wrong one. The fix is to pin v8 at the root AND add the override. Every repo that follows onto phase 2 will hit this the same way.
+    - **`@sanity/ui` v4 renamed `space` to `gap`** on `Stack`, `Flex`, `Grid`, `Hotkeys` and `Select`, and typed the old prop as `never` rather than deleting it, so it surfaces as `Type 'number' is not assignable to type 'undefined'`. `Badge`'s `mode` prop is gone (`BadgeMode = never`). Both were invisible here until the fold, because `tsconfig.json` used to exclude `studio/` and the Studio was never type-checked.
+    - **Components that moved to subpaths in v4** (`Menu`, `Toast`, `Tooltip`, `Popover`, `Autocomplete`, `Breadcrumbs`, `Code`) are not used here. `buildLegacyTheme` still works and is still what this Studio uses; it is deprecated but not removed, and it is light-only (the Studio's Dark appearance setting leaves panels white). Migrating to `@sanity/ui`'s `buildTheme` would buy a real dark Studio at the cost of the Bronze/Paper/Ink brand tinting. Not taken: the theme is the editors' familiar one.
 
 ---
 
@@ -56,28 +62,46 @@ Full stack notes and the `astro.config.mjs` landmines are in `docs/agent/stack-a
 
 `npm run build` is a chain:
 
-1. `npm run typegen` runs `sanity typegen generate` against the schemas in `studio/schemaTypes/`. Writes `src/lib/sanity.types.ts` so Astro queries get full type safety on Sanity responses. Runs before `astro build` so the types exist when the prerender worker imports them.
+1. `npm run typegen` runs `sanity typegen generate` against the schemas in `src/sanity/schemaTypes/`. Writes `src/lib/sanity.types.ts` so Astro queries get full type safety on Sanity responses. Runs before `astro build` so the types exist when the prerender worker imports them.
 2. `astro build` runs as normal. Pages fetch content from Sanity at build time via the `sanityFetch` wrapper in `src/lib/sanity.ts`. When no Sanity project is configured, `sanityFetch` returns the provided fallback for every query, and the build still completes successfully with empty-state pages.
 
 Standalone scripts:
 
 - `npm run typegen` to regenerate Sanity TypeScript types after editing schemas (run this after any schema change before testing locally).
 - `npm run og` to re-run `scripts/generate-og-default.mjs` and regenerate `public/og-default.png` (after changing brand colors, tagline, or the wordmark in the script's inputs block).
-- `npm run studio:dev` to start the Sanity Studio locally for content editing.
-- `npm run studio:deploy` to deploy the Sanity Studio to its hosted URL. **Run this after every schema change.** If you skip it, the hosted Studio shows "unknown fields" warnings next to data in new fields, and the editor sees a prompt to "Remove field." Do NOT click "Remove field" in Studio: it deletes the Sanity document data for every document with that field populated, and it cannot be undone without a dataset restore. The correct sequence is: edit schema, `npm run typegen`, `npm run studio:deploy`, commit.
+- `npm run studio:dev` (`sanity dev`) to run the Studio standalone on port 3333. The embedded one at `/studio` comes up with `npm run dev` like any other route.
+- There is deliberately no `studio:build` script. `sanity build` writes to `./dist` and would clobber the Astro build; the Studio is built by `astro build`. A standalone bundle needs an explicit dir: `npx sanity build .studio-dist`.
 
 `public/og-default.png` is committed to the repo because it is a real asset shipped to visitors. `src/lib/sanity.types.ts` is also committed so collaborators don't need to run typegen to see what the schemas look like in code.
+
+### The build is HYBRID, and the deploy command changed (2026-09-06)
+
+`output` is still `'static'` and every public page is still prerendered. What changed is that four route groups opt out with `export const prerender = false`: `/studio`'s shell is served as a static page but `/preview/**`, `/api/draft-mode/*` and `/preview/live` are SSR. So `astro build` emits **two** directories:
+
+- `dist/client` — the prerendered site plus every asset. This is what Cloudflare serves from the asset store, what Playwright serves, what linkinator walks, and what Lighthouse audits.
+- `dist/server` — the Worker bundle, plus `dist/server/wrangler.json`: the root `wrangler.jsonc` merged with the adapter's SSR routing.
+
+**Deploy `dist/server/wrangler.json`, not `wrangler.jsonc`:**
+
+```
+npx wrangler deploy -c dist/server/wrangler.json
+```
+
+`npm run deploy` and `.github/workflows/deploy-staging.yml` already do. Deploying the root config directly ships a Worker with no SSR routes, so the static pages look fine and `/studio`, `/preview/**` and `/api/*` all 404. Note a fresh STATIC build emitted `dist/client/wrangler.json`; the hybrid build emits `dist/server/wrangler.json`. Check which one exists before wiring a new deploy command rather than assuming.
+
+`wrangler.jsonc` also lost `assets.not_found_handling: "404-page"`. With it set, Cloudflare answers navigation requests (`Sec-Fetch-Mode: navigate`) that miss the asset store straight from the static 404 page **without invoking the Worker**, which silently 404s every SSR route for real browsers while `curl` (which sends no `Sec-Fetch` headers) sees them working. That broke presacademy's preview in production and hid from every command-line probe.
 
 ## Quality gates (family test standard, 2026-09-06)
 
 The same gates every Astro site in the family runs; `docs/TESTING.md` maps which gate covers what. Before pushing:
 
-- `npm run check` = `astro check && npm run lint`. The fast pre-push gate. `tsconfig.json` excludes `studio/` and `modules/`, so `astro check` covers the site only (the Studio type-checks in its own build).
+- `npm run check` = `astro check && npm run lint`. The fast pre-push gate. `tsconfig.json` now excludes only `modules/`, so `astro check` covers the Studio config, schemas and custom components too (they are `src/sanity/**`).
 - `npm run format:check` (prettier with the astro + tailwind plugins; `npm run format` fixes). `.prettierignore` lists what stays hand-formatted.
 - `npm run test:unit` = the `node --test` suites in `src/lib/*.test.ts`.
 - `npm test` = Playwright: smoke, axe in light and dark, a dark-mode focus-indicator check on the form routes, and reflow at 320/768/1024/1440. It builds the site and serves `dist/client` itself; `npx playwright test --project=chromium --workers=2` is the quick local loop, `npm run test:ui` the interactive one.
 - `npm run check:links` after a build: linkinator over `dist/client`.
-- `npm run check:full` is the older full sweep (typegen, build, studio build, unit tests).
+- `npm run check:full` is the older full sweep (typegen, build, unit tests).
+- `npm run sync-check` diffs every file marked `PORTABLE: canonical copy` against `ncs-astro-sanity-starter`, the library of record. CI runs it as a hard gate against the starter's `main` (or its `staging`, for a staging build), so a canonical file must match the STARTER'S BRANCH, not a sibling site's working tree.
 
 CI (`.github/workflows/ci.yml`) runs all of the above on every push to `main` and `staging` and on PRs; `lighthouse.yml` runs lhci against `lighthouserc.json` with accessibility as a hard gate. Push to `staging` first to see them green on the real runners.
 
@@ -115,6 +139,9 @@ Core routes that ship with the starter (always on, not toggleable):
 | `/journal`           | `src/pages/journal/index.astro`  | Post grid with category chips                                          |
 | `/journal/[slug]`    | `src/pages/journal/[slug].astro` | Post detail: reading progress + header + cover + body + related        |
 | `/privacy`           | `src/pages/privacy.astro`        | Privacy policy from singleton, with static fallback when doc is absent |
+| `/studio`            | `@sanity/astro` (embedded)       | The Sanity Studio. Config is the repo-root `sanity.config.ts`          |
+| `/preview/**`        | `src/pages/preview/`             | SSR draft preview for the Presentation tool. noindex, never in sitemap |
+| `/api/draft-mode/*`  | `src/pages/api/draft-mode/`      | Draft-mode handshake (`enable` validates Sanity's one-time secret)     |
 | `/sitemap-index.xml` | `@astrojs/sitemap` (auto)        | Production sitemap                                                     |
 | `/404`               | `src/pages/404.astro`            | Custom 404                                                             |
 
@@ -144,7 +171,7 @@ These are the files where a project maintainer can make changes without risk of 
 ## Foundation, edit with care (route through a planned session)
 
 - `src/styles/globals.css` — the full file beyond the design seam tokens: shadcn `:root` / `.dark` overrides, **polish-layer utilities** (`.card-lift`, `.press-tactile`, `.nav-underline`, `.site-header`, `.reading-progress`, `.surface-warm`, `[data-reveal]`), base resets, paper-grain `body::before`, print stylesheet
-- `studio/schemaTypes/*.ts` — Sanity schemas. Changing fields can break existing content. See gotcha #1 above.
+- `src/sanity/schemaTypes/*.ts` — Sanity schemas. Changing fields can break existing content. See gotcha #1 above.
 - `src/lib/sanity.ts` — Sanity client, `sanityFetch` wrapper, `urlFor`, `parseSanityAssetDimensions`. The `isSanityUnconfigured` guard and graceful-fallback behavior are load-bearing for fresh-clone builds.
 - `src/lib/queries.ts`, `src/lib/sanity.types.ts` — GROQ queries and generated types
 - `src/lib/scriptAccent.ts` — shared helper `splitScriptAccent(headline, accent)` used by `Hero.astro`, `SectionHeading.astro`, and `FinalCta.astro`
