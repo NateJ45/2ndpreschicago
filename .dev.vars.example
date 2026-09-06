@@ -1,0 +1,31 @@
+# Copy to `.dev.vars` for local `wrangler dev`. RUNTIME secrets only.
+#
+# .env is BUILD time (Astro reads it through import.meta.env, and every public
+# page is prerendered). .dev.vars is REQUEST time: it is what the Worker's
+# `cloudflare:workers` env holds, and it is the only way the SSR routes added on
+# 2026-09-06 can read a token.
+#
+# WHICH ROUTES CARE
+#   /preview/**            draft-aware pages for the Studio Presentation tool
+#   /preview/live          the SSE proxy that streams edits into the preview
+#   /api/draft-mode/enable the draft-mode handshake
+#
+# All of them fail CLOSED without a token: they answer 503 naming what is
+# missing rather than a stack trace. With a token, an unauthenticated GET of
+# /api/draft-mode/enable answers 401 "Invalid preview secret", which is the
+# quickest way to tell the two states apart.
+#
+# NOTE for `wrangler dev -c dist/server/wrangler.json`: wrangler looks for
+# .dev.vars next to the CONFIG, so copy this file to dist/server/.dev.vars for
+# that command (dist/ is gitignored, so it is a scratch copy).
+#
+# In production and on staging these are Worker SECRETS, not vars:
+#   npx wrangler secret put SANITY_TOKEN --name 2ndpreschicago
+#   npx wrangler secret put SANITY_TOKEN --name 2ndpreschicago-staging
+# A build-time variable in Workers Builds is NOT enough: it never reaches the
+# request-time env.
+
+# A Sanity READ token (Viewer permission). Nothing in the preview path writes.
+# SANITY_API_READ_TOKEN is accepted as an alias, since this repo already ships
+# a build-time read token under that name.
+SANITY_TOKEN=
