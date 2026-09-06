@@ -53,6 +53,25 @@ const ENV_WEB3FORMS_KEY = import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undef
 const inputCls =
   'w-full px-s py-s border border-input bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-ring min-h-[44px]';
 
+// A <select> keeps the same box but carries NO focus utilities of its own, so
+// the global `:focus-visible { outline: 2px solid var(--ring) }` in globals.css
+// is what draws its indicator.
+//
+// Why it cannot use the ring above: Tailwind's focus:ring-* compiles to a
+// box-shadow, and WebKit renders native form controls itself and drops
+// box-shadow on them. The `focus:outline-none` that pairs with the ring then
+// suppressed the global outline too, so both selects on the Sanity forms had
+// NO visible focus indicator at all in Safari and iOS, a WCAG 2.4.7 failure.
+// Measured in a real WebKit on 2026-09-06 rather than assumed: the select does
+// enter :focus and :focus-visible, but its computed box-shadow stays `none`
+// while focused, on the same class every passing text field carries.
+//
+// The global outline is the same indicator every other focusable thing on the
+// site already uses, is theme-reactive, and paints on native controls in every
+// engine. Do not add focus:outline-none back here.
+const selectCls =
+  'w-full px-s py-s border border-input bg-background text-foreground rounded-md min-h-[44px]';
+
 export default function FormRenderer({ form, fallbackEmail }: Props) {
   if (!form) return null;
 
@@ -270,7 +289,7 @@ export default function FormRenderer({ form, fallbackEmail }: Props) {
                     name={f.name}
                     value={(values[f.name] as string) || ''}
                     onChange={(e) => setField(f.name, e.target.value)}
-                    className={inputCls}
+                    className={selectCls}
                   >
                     <option value="">Select…</option>
                     {(f.options ?? []).map((o) => (
