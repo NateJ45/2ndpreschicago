@@ -22,6 +22,17 @@ updates:
       minor-and-patch:
         update-types: ['minor', 'patch']
     open-pull-requests-limit: 5
+    ignore:
+      # The Sanity stack is version-locked as a SET, not per package. The
+      # installed sanity core pins @sanity/ui and @sanity/client to the
+      # majors below the latest, so a lone bump nests a second @sanity/ui
+      # instead of replacing it; two instances means two styled-components
+      # contexts and the signed-in Studio dies while the login screen still
+      # works. The whole set moves in one deliberate migration, never by
+      # Dependabot. Same rule WCP and presacademy already use.
+      - dependency-name: 'sanity'
+      - dependency-name: '@sanity/*'
+      - dependency-name: 'sanity-plugin-*'
 
   # studio/ is a SEPARATE npm project (own package.json + lockfile) this
   # config never watched, so it silently drifted -- same gap found and fixed
@@ -38,6 +49,9 @@ updates:
         update-types: ['minor', 'patch']
     open-pull-requests-limit: 5
     ignore:
+      - dependency-name: 'sanity'
+      - dependency-name: '@sanity/*'
+      - dependency-name: 'sanity-plugin-*'
       # TypeScript 7 (the native Go compiler) drops the JavaScript compiler API
       # that Astro's tooling drives astro check and the build through, so it
       # breaks the site. 6.0.3 is the studio standard (2026-09-06); the studio
