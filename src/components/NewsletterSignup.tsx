@@ -200,7 +200,7 @@ export default function NewsletterSignup({ newsletter, source = 'newsletter' }: 
       </form>
 
       {/* Consent / privacy note. Parses the privacy link pattern for the /privacy page. */}
-      <p className="mt-s text-xs leading-relaxed text-foreground/70">
+      <p className="mt-s text-xs leading-relaxed text-foreground/80">
         {consentNote.includes('privacy policy') ? (
           <>
             {consentNote.replace('privacy policy', '').trimEnd()}{' '}

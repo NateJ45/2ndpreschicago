@@ -101,7 +101,7 @@ const pillPrimary =
         </p>
         <h1 class="font-display text-h1 leading-tight text-foreground">{event.title}</h1>
         <p class="mt-m text-lg text-foreground/80">{whenLabel(event)}</p>
-        {event.location && <p class="mt-xs text-foreground/70">{event.location}</p>}
+        {event.location && <p class="mt-xs text-foreground/80">{event.location}</p>}
         {
           event.summary && (
             <p class="mt-m text-xl leading-relaxed text-foreground/85">{event.summary}</p>
@@ -109,7 +109,7 @@ const pillPrimary =
         }
         {
           (event.cost || event.audience) && (
-            <p class="mt-m text-foreground/70">
+            <p class="mt-m text-foreground/80">
               {event.cost}
               {event.cost && event.audience ? ' · ' : ''}
               {event.audience}
@@ -132,7 +132,7 @@ const pillPrimary =
         }
         {
           (event.contactName || event.contactEmail) && (
-            <p class="mt-m text-sm text-foreground/70">
+            <p class="mt-m text-sm text-foreground/80">
               Questions? Contact {event.contactName || 'the office'}
               {event.contactEmail ? ' at ' : ''}
               {event.contactEmail && (

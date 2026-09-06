@@ -290,7 +290,7 @@ export default function FormRenderer({ form, fallbackEmail }: Props) {
                     className={inputCls}
                   />
                 )}
-                {f.helpText && <p className="mt-1 text-xs text-foreground/70">{f.helpText}</p>}
+                {f.helpText && <p className="mt-1 text-xs text-foreground/80">{f.helpText}</p>}
               </div>
             );
           })}
@@ -306,7 +306,7 @@ export default function FormRenderer({ form, fallbackEmail }: Props) {
       </form>
 
       {consentNote && (
-        <p className="mt-s text-xs leading-relaxed text-foreground/70">
+        <p className="mt-s text-xs leading-relaxed text-foreground/80">
           {consentNote.includes('privacy policy') ? (
             <>
               {consentNote.replace('privacy policy', '').trimEnd()}{' '}

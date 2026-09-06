@@ -215,7 +215,7 @@ export default function MobileNav({ links, siteSettings }: Props) {
               as the desktop header logo (free cache hit). */}
           <div className="flex flex-col items-center border-t border-border-soft px-l py-l text-center leading-none">
             <span className="font-display text-xl text-foreground">Second Presbyterian</span>
-            <span className="mt-0.5 font-display text-base text-foreground/70">
+            <span className="mt-0.5 font-display text-base text-foreground/80">
               Church of Chicago
             </span>
           </div>
