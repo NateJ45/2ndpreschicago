@@ -251,22 +251,26 @@ const weeklyRhythms: typeof FALLBACK_RHYTHMS = page?.weeklyRhythms?.length
         {
           thisSunday ? (
             <div class="mt-m text-sm text-foreground/80">
-              <span class="text-xs tracking-eyebrow text-muted-foreground uppercase">
+              <span class="text-xs tracking-eyebrow text-foreground/80 uppercase">
                 {thisSunday.dateLabel || 'This Sunday'}
               </span>
               {thisSunday.sermonTitle && (
-                <p class="mt-1 font-display text-h4 text-foreground">{thisSunday.sermonTitle}</p>
+                <a href="/sermons" class="group mt-1 block no-underline">
+                  <p class="font-display text-h4 text-foreground transition-colors group-hover:text-link">
+                    {thisSunday.sermonTitle}
+                  </p>
+                </a>
               )}
               {(thisSunday.scripture || thisSunday.preacher) && (
                 <p class="mt-1">
                   {[thisSunday.scripture, thisSunday.preacher].filter(Boolean).join(' · ')}
                 </p>
               )}
-              {thisSunday.note && <p class="mt-1 text-muted-foreground">{thisSunday.note}</p>}
+              {thisSunday.note && <p class="mt-1 text-sm text-foreground/80">{thisSunday.note}</p>}
             </div>
           ) : (
-            <p class="mt-m text-sm text-muted-foreground">
-              This Sunday: <span class="font-semibold text-foreground/80">{st.thisSunday}</span>, in
+            <p class="mt-m text-sm text-foreground/80">
+              This Sunday: <span class="font-semibold text-foreground">{st.thisSunday}</span>, in
               person and online.
             </p>
           )
@@ -368,7 +372,7 @@ const weeklyRhythms: typeof FALLBACK_RHYTHMS = page?.weeklyRhythms?.length
     >
       <div>
         <SectionHeading
-          eyebrow={page?.welcomeEyebrow ?? 'Welcome'}
+          eyebrow={page?.welcomeEyebrow ?? 'Who We Are'}
           headline={page?.welcomeHeadline ?? 'A landmark church with an open door'}
           headingId="welcome-heading"
         />
@@ -546,6 +550,7 @@ const weeklyRhythms: typeof FALLBACK_RHYTHMS = page?.weeklyRhythms?.length
       <div class="mt-l flex justify-center">
         <a
           href="mailto:office@secondpreschicago.org?subject=Subscribe%20to%20The%20Record"
+          title="Opens your email app"
           class={pillPrimary}>{page?.recordCtaLabel ?? 'Subscribe to The Record'}</a
         >
       </div>
