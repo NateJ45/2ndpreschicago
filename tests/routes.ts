@@ -40,6 +40,15 @@ export const fixedRoutes: string[] = [
 // than hard-code slugs that exist in one build and not another, discover
 // whatever the build actually produced: every `<dir>/index.html` in
 // dist/client that is not a fixed route above.
+// Route prefixes that are Studio plumbing, not public pages. `/studio` is a
+// real `dist/client/studio/index.html` since the Studio was embedded
+// (2026-09-06) and would otherwise be discovered as a page: it is the Sanity
+// Studio shell, so it carries no church name in its <title> and is not ours to
+// hold to the site's a11y and reflow rules. `/preview` and `/api` are SSR-only
+// and never appear in dist/client at all; they are listed so this stays right
+// if that ever changes.
+const NON_PUBLIC_PREFIXES = ['/studio', '/preview', '/api'];
+
 function discoverBuiltRoutes(): string[] {
   const dist = join(process.cwd(), 'dist', 'client');
   if (!existsSync(dist)) return [];
@@ -50,6 +59,7 @@ function discoverBuiltRoutes(): string[] {
       const full = join(dir, name);
       if (!statSync(full).isDirectory()) continue;
       const route = `${prefix}/${name}`;
+      if (NON_PUBLIC_PREFIXES.some((p) => route === p || route.startsWith(`${p}/`))) continue;
       if (existsSync(join(full, 'index.html')) && !fixedRoutes.includes(route)) {
         found.push(route);
       }

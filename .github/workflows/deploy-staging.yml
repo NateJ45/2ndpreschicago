@@ -73,3 +73,36 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy -c dist/server/wrangler.json --name 2ndpreschicago-staging
+
+      # THIS DEPLOY WIPES THE STAGING WORKER'S SECRETS, so put the one that
+      # matters back (found 2026-09-06).
+      #
+      # `wrangler deploy --name <other>` inherits the existing bindings of the
+      # worker the CONFIG names, which here is "2ndpreschicago" (production),
+      # and then uploads that binding set to "2ndpreschicago-staging". Staging's
+      # own secrets are never read, so every staging deploy silently removes
+      # them. It is not theoretical: SANITY_TOKEN was put on the staging Worker
+      # at 17:43 UTC on 2026-09-06 and the 17:53 staging deploy dropped it,
+      # which is why /api/draft-mode/enable answered 503 rather than 401
+      # afterwards. Nothing failed, nothing warned; the preview just stopped
+      # being configured.
+      #
+      # Re-putting it here makes the wipe self-healing. The tidier fix is a
+      # separate wrangler config whose `name` IS 2ndpreschicago-staging, so the
+      # inherit reads the right worker and no --name override is needed; that is
+      # a bigger change and can come later.
+      #
+      # Needs a repo secret named SANITY_TOKEN (a Sanity READ token; nothing in
+      # the preview path writes). Without it this step warns and the preview
+      # routes fail closed with a 503 naming what is missing.
+      - name: Restore the runtime Sanity token on the staging Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: |
+          if [ -z "$SANITY_TOKEN" ]; then
+            echo "::warning::SANITY_TOKEN repo secret not set; /preview and /api/draft-mode/* will answer 503 on staging."
+            exit 0
+          fi
+          printf '%s' "$SANITY_TOKEN" | npx wrangler secret put SANITY_TOKEN --name 2ndpreschicago-staging
