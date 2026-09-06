@@ -2,11 +2,11 @@ name: CI
 
 # This workflow validates the build and runs tests.
 # It does NOT deploy — the live site auto-deploys via Cloudflare Workers
-# on push to master (wired separately in the Cloudflare dashboard).
+# on push to main (wired separately in the Cloudflare dashboard).
 
 on:
   push:
-    branches: [master, main]
+    branches: [main, staging]
   pull_request:
 
 jobs:

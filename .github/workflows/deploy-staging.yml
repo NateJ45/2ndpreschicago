@@ -3,7 +3,7 @@ name: Deploy staging preview
 # Deploys the `staging` branch to a SEPARATE Cloudflare Worker
 # (2ndpreschicago-staging) so a change can be checked on the real edge before
 # it reaches the live site. Production deploys via Cloudflare Workers Builds
-# on push to master, wired separately in the Cloudflare dashboard — this
+# on push to main, wired separately in the Cloudflare dashboard — this
 # workflow is the only way to rehearse a change first.
 #
 # Activates once these repo secrets exist: CLOUDFLARE_API_TOKEN,

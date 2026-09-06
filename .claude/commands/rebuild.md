@@ -12,7 +12,7 @@ until a rebuild runs (see docs/agent/deployment.md). This command triggers one.
 2. If the tree is clean, trigger the rebuild with an empty commit:
    ```
    git commit --allow-empty -m "chore: trigger production rebuild for published Sanity content"
-   git push origin master
+   git push origin main
    ```
    Cloudflare detects the push and runs `npm run build` (which re-fetches all
    Sanity content at build time). Live in roughly 1 to 3 minutes.
